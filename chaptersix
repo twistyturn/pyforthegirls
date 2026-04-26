@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pyforthegirls :: chapter 6 :: fourteen months</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<style>
+  /* ============ Y2K-007 PALETTE ============ */
+  :root {
+    --bg-deep: #1a0628;
+    --bg-mid: #2d0a3d;
+    --pink-hot: #ff66c4;
+    --pink-soft: #ffb3e6;
+    --pink-bubble: #ffd6f0;
+    --lavender: #c8a8e8;
+    --cyan-glow: #66ffff;
+    --lime-acid: #c8ff66;
+    --silver: #d8d8e8;
+    --chrome-1: #b8b8d0;
+    --chrome-2: #f0f0ff;
+    --window-bg: #f4d4f0;
+    --window-border: #ff66c4;
+    --shadow-hard: 4px 4px 0 #1a0628;
+    --shadow-soft: 0 0 24px rgba(255, 102, 196, 0.4);
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+min-height: 100vh;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+color: var(–silver);
+background: var(–bg-deep);
+overflow-x: hidden;
+cursor: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘24’ height=‘24’ viewBox=‘0 0 24 24’%3E%3Cpath fill=’%23ff66c4’ stroke=’%23fff’ stroke-width=‘1’ d=‘M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z’/%3E%3C/svg%3E”) 2 2, auto;
+}
+
+/* ============ ANIMATED BACKGROUND ============ */
+body::before {
+content: ‘’;
+position: fixed; inset: 0; z-index: -2;
+background:
+radial-gradient(ellipse at 20% 30%, rgba(255, 102, 196, 0.18), transparent 50%),
+radial-gradient(ellipse at 80% 70%, rgba(102, 255, 255, 0.12), transparent 50%),
+radial-gradient(ellipse at 50% 100%, rgba(200, 168, 232, 0.15), transparent 60%),
+var(–bg-deep);
+}
+body::after {
+content: ‘’;
+position: fixed; inset: 0; z-index: -1;
+background-image:
+repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
+pointer-events: none;
+}
+
+/* sparkle layer */
+.sparkles {
+position: fixed; inset: 0; pointer-events: none; z-index: 1;
+}
+.sparkle {
+position: absolute;
+width: 6px; height: 6px;
+background: radial-gradient(circle, #fff 0%, var(–pink-hot) 50%, transparent 70%);
+border-radius: 50%;
+animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+0%, 100% { opacity: 0; transform: scale(0); }
+50% { opacity: 1; transform: scale(1); }
+}
+
+/* ============ DESKTOP / TASKBAR ============ */
+.desktop {
+min-height: 100vh;
+padding: 16px 16px 56px 16px;
+position: relative;
+}
+.taskbar {
+position: fixed; bottom: 0; left: 0; right: 0;
+height: 40px;
+background: linear-gradient(180deg, var(–chrome-2) 0%, var(–chrome-1) 100%);
+border-top: 2px solid var(–window-border);
+display: flex;
+align-items: center;
+padding: 0 12px;
+gap: 12px;
+z-index: 100;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+}
+.start-btn {
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+border: 2px solid var(–bg-deep);
+border-right-color: #ff99d6;
+border-bottom-color: #ff99d6;
+padding: 4px 14px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+font-weight: bold;
+box-shadow: 2px 2px 0 var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+.start-btn::before { content: ’✿ ’; }
+.taskbar-time {
+margin-left: auto;
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 10px;
+border: 1px solid var(–bg-deep);
+box-shadow: inset 1px 1px 0 #000;
+font-family: ‘VT323’, monospace;
+font-size: 14px;
+}
+.taskbar-mail {
+background: var(–bg-deep);
+color: var(–cyan-glow);
+padding: 3px 8px;
+border: 1px solid var(–lavender);
+font-size: 11px;
+animation: blink 1.5s steps(2) infinite;
+cursor: pointer;
+}
+@keyframes blink { 50% { opacity: 0.4; } }
+
+/* ============ DESKTOP ICONS ============ */
+.icon-grid {
+display: grid;
+grid-template-columns: 80px;
+gap: 12px;
+margin-bottom: 24px;
+}
+.desktop-icon {
+text-align: center;
+color: var(–silver);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+cursor: pointer;
+padding: 4px;
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
+.desktop-icon-img {
+width: 48px; height: 48px;
+margin: 0 auto 4px;
+display: flex; align-items: center; justify-content: center;
+font-size: 32px;
+filter: drop-shadow(2px 2px 0 var(–bg-deep));
+}
+
+/* ============ WINDOWS ============ */
+.window {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+}
+.window-titlebar {
+background: linear-gradient(90deg, var(–pink-hot) 0%, var(–lavender) 100%);
+color: white;
+padding: 4px 8px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 1px;
+text-transform: uppercase;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 2px solid var(–bg-deep);
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.window-titlebar-buttons {
+display: flex; gap: 4px;
+}
+.titlebar-btn {
+width: 16px; height: 14px;
+background: var(–chrome-2);
+border: 1px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+line-height: 12px;
+text-align: center;
+cursor: pointer;
+}
+.window-content { padding: 16px; }
+
+/* ============ AIM-STYLE BUDDY MESSAGE / STORY POPUP ============ */
+.story-window {
+max-width: 540px;
+margin: 24px auto;
+animation: window-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes window-pop {
+from { transform: scale(0.85); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+.story-window .window-titlebar { background: linear-gradient(90deg, #ff66c4, #c8a8e8); }
+.diary-entry {
+background: #fff8f0;
+background-image:
+repeating-linear-gradient(180deg, transparent 0, transparent 23px, #ffd6e8 23px, #ffd6e8 24px);
+color: #2d0a3d;
+padding: 24px 20px 20px 36px;
+font-family: ‘Nanum Pen Script’, ‘Special Elite’, cursive;
+font-size: 19px;
+line-height: 24px;
+border-left: 8px solid var(–pink-hot);
+position: relative;
+}
+.diary-entry::before {
+content: ‘’;
+position: absolute;
+left: 18px; top: 0; bottom: 0;
+border-left: 1px solid #ff99cc;
+}
+.diary-meta {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #999;
+margin-bottom: 8px;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+/* ============ TERMINAL / CODE EDITOR ============ */
+.terminal-window { max-width: 760px; margin: 24px auto; }
+.terminal-window .window-titlebar {
+background: linear-gradient(90deg, var(–bg-deep), var(–bg-mid));
+color: var(–lime-acid);
+}
+.editor-wrap {
+display: grid;
+grid-template-columns: 1fr;
+gap: 0;
+}
+.file-tab {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 12px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+border-bottom: 1px solid var(–pink-hot);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.file-tab::before { content: ‘▸’; color: var(–pink-hot); }
+.code-area {
+background: #0a0218;
+color: var(–cyan-glow);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 17px;
+line-height: 1.4;
+border: none;
+width: 100%;
+min-height: 140px;
+resize: vertical;
+outline: none;
+tab-size: 4;
+caret-color: var(–pink-hot);
+}
+.code-area:focus { box-shadow: inset 0 0 12px rgba(255, 102, 196, 0.3); }
+.editor-bar {
+background: var(–chrome-1);
+padding: 8px 12px;
+display: flex;
+gap: 8px;
+border-top: 2px solid var(–bg-deep);
+flex-wrap: wrap;
+align-items: center;
+}
+.btn {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+padding: 6px 12px;
+border: 2px solid var(–bg-deep);
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+color: var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+box-shadow: 2px 2px 0 var(–bg-deep);
+transition: transform 0.05s;
+font-weight: bold;
+}
+.btn:hover { background: linear-gradient(180deg, var(–pink-bubble), var(–pink-soft)); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(–bg-deep); }
+.btn.btn-secondary {
+background: linear-gradient(180deg, var(–chrome-2), var(–chrome-1));
+}
+.btn.btn-acid {
+background: linear-gradient(180deg, #e6ff99, var(–lime-acid));
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.output-area {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 16px;
+min-height: 60px;
+border-top: 2px solid var(–pink-hot);
+white-space: pre-wrap;
+word-wrap: break-word;
+line-height: 1.4;
+}
+.output-area .err { color: #ff6688; }
+.output-area .ok { color: var(–lime-acid); }
+.output-area .info { color: var(–cyan-glow); }
+
+/* ============ TASK / OBJECTIVE PANEL ============ */
+.task-panel {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.task-panel .window-titlebar { background: linear-gradient(90deg, var(–lime-acid), #99cc66); color: var(–bg-deep); text-shadow: none; }
+.task-content { padding: 16px; }
+.task-content h3 {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+margin-bottom: 8px;
+color: var(–bg-deep);
+}
+.task-content p, .task-content li {
+font-family: ‘VT323’, monospace;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+margin-bottom: 8px;
+}
+.task-content ul { padding-left: 20px; }
+.task-content code {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 1px 6px;
+font-family: ‘VT323’, monospace;
+border-radius: 2px;
+font-size: 16px;
+}
+.hint-box {
+background: linear-gradient(180deg, #ffe6f5, var(–pink-bubble));
+border: 1px dashed var(–pink-hot);
+padding: 10px 12px;
+margin-top: 12px;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+color: var(–bg-deep);
+}
+.hint-box::before {
+content: ’✿ HINT: ’;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+}
+
+/* ============ MENTOR / BUDDY POPUP ============ */
+.buddy-popup {
+position: fixed;
+bottom: 60px;
+right: 20px;
+width: 280px;
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+z-index: 200;
+animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+font-family: ‘VT323’, monospace;
+}
+.buddy-popup .window-titlebar { background: linear-gradient(90deg, var(–cyan-glow), var(–lavender)); }
+.buddy-content {
+padding: 12px;
+color: var(–bg-deep);
+font-size: 16px;
+line-height: 1.3;
+}
+.buddy-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+margin-bottom: 6px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM COMPOSE / LOG (Ch5) ============ */
+.aim-window {
+border: 2px solid var(–bg-deep);
+background: #f0e8ff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+}
+.aim-window .window-titlebar {
+background: linear-gradient(90deg, #6699ff, #99ccff);
+color: #fff;
+}
+.aim-buddy-strip {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-buddy-strip .online-dot {
+color: var(–lime-acid);
+font-size: 14px;
+vertical-align: middle;
+}
+.aim-compose-body {
+padding: 16px;
+background: #fff;
+color: var(–bg-deep);
+font-size: 18px;
+line-height: 1.5;
+min-height: 120px;
+border: 1px solid var(–bg-deep);
+margin: 12px;
+white-space: pre-wrap;
+}
+.aim-log-body {
+padding: 14px;
+background: #fff;
+margin: 12px;
+border: 1px solid var(–bg-deep);
+max-height: 70vh;
+overflow-y: auto;
+}
+.aim-message {
+margin-bottom: 10px;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+}
+.aim-message-from {
+color: #cc3399;
+font-weight: bold;
+margin-right: 6px;
+}
+.aim-message.aim-message-you .aim-message-from {
+color: #2266bb;
+}
+.aim-message.aim-message-you {
+background: rgba(102, 153, 255, 0.08);
+padding: 6px 10px;
+border-left: 3px solid #2266bb;
+}
+.aim-message-pause {
+text-align: center;
+color: #999;
+font-size: 18px;
+margin: 14px 0;
+letter-spacing: 4px;
+}
+
+/* ============ ARCHIVE VIEW (Ch6 styled chat scroll) ============ */
+.archive-window {
+border: 2px solid var(–bg-deep);
+background: #fafafa;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+}
+.archive-window .window-titlebar {
+background: linear-gradient(90deg, #66cc99, #99dd99);
+color: var(–bg-deep);
+text-shadow: none;
+}
+.archive-window .archive-meta {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: var(–bg-deep);
+letter-spacing: 1px;
+}
+.archive-body {
+padding: 14px 16px;
+background: #fff;
+color: var(–bg-deep);
+font-size: 15px;
+line-height: 1.45;
+max-height: 70vh;
+overflow-y: auto;
+font-family: ‘VT323’, monospace;
+}
+.archive-line {
+margin-bottom: 4px;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+.archive-line .archive-timestamp {
+color: #888;
+font-size: 13px;
+margin-right: 4px;
+}
+.archive-line .archive-sender-tegan {
+color: #cc3399;
+font-weight: bold;
+margin-right: 4px;
+}
+.archive-line .archive-sender-hannah {
+color: #2266bb;
+font-weight: bold;
+margin-right: 4px;
+}
+.archive-line .archive-content {
+color: var(–bg-deep);
+}
+.archive-line .archive-content.redacted-line {
+/* messages with [REDACTED] get a subtle background */
+background: rgba(0, 0, 0, 0.04);
+padding: 0 4px;
+}
+
+.aim-send-bar {
+padding: 10px 12px;
+background: var(–window-bg);
+border-top: 1px solid var(–bg-deep);
+text-align: right;
+}
+.aim-send-btn {
+background: var(–lime-acid);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+padding: 8px 18px;
+cursor: pointer;
+box-shadow: 2px 2px 0 var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-send-btn:hover { background: #ccff66; }
+.aim-send-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+
+/* ============ INTRO SCREEN ============ */
+.intro-screen {
+position: fixed; inset: 0;
+background: var(–bg-deep);
+z-index: 9999;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+flex-direction: column;
+padding: 40px 20px;
+overflow-y: auto;
+}
+.intro-logo {
+font-family: ‘Press Start 2P’, monospace;
+font-size: 28px;
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow), var(–lime-acid), var(–pink-hot));
+background-size: 300% 100%;
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+animation: shimmer 4s linear infinite;
+text-align: center;
+line-height: 1.5;
+margin-bottom: 24px;
+text-shadow: 0 0 30px rgba(255, 102, 196, 0.5);
+}
+@keyframes shimmer {
+0% { background-position: 0% 50%; }
+100% { background-position: 300% 50%; }
+}
+.intro-tag {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–lavender);
+letter-spacing: 3px;
+margin-bottom: 36px;
+text-align: center;
+}
+.intro-prose {
+max-width: 560px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+color: var(–silver);
+line-height: 1.5;
+margin-bottom: 24px;
+text-align: left;
+background: var(–bg-mid);
+padding: 20px;
+border: 2px solid var(–pink-hot);
+box-shadow: var(–shadow-soft);
+}
+.intro-prose p { margin-bottom: 12px; }
+.intro-prose .em { color: var(–pink-hot); font-style: italic; }
+.intro-input {
+background: var(–bg-deep);
+color: var(–lime-acid);
+border: 2px solid var(–pink-hot);
+padding: 8px 12px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+width: 280px;
+text-align: center;
+outline: none;
+margin-bottom: 16px;
+}
+.intro-input:focus { box-shadow: 0 0 12px var(–pink-hot); }
+
+/* ============ FRAGMENT BOARD (Roottrees-style) ============ */
+.fragment-board {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.fragment-board .window-titlebar {
+background: linear-gradient(90deg, #ffaa66, var(–pink-hot));
+}
+.fragment-grid {
+padding: 12px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 10px;
+background:
+repeating-linear-gradient(45deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.fragment-card {
+background: #fff;
+border: 1.5px solid var(–bg-deep);
+padding: 8px;
+font-family: ‘VT323’, monospace;
+font-size: 13px;
+color: var(–bg-deep);
+box-shadow: 2px 2px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-1deg);
+transition: transform 0.15s, box-shadow 0.15s;
+cursor: default;
+word-wrap: break-word;
+overflow: hidden;
+}
+.fragment-card:nth-child(2n) { transform: rotate(1deg); }
+.fragment-card:nth-child(3n) { transform: rotate(-0.5deg); }
+.fragment-card:nth-child(5n) { transform: rotate(0.7deg); }
+.fragment-card:hover {
+transform: rotate(0) scale(1.04);
+box-shadow: 4px 4px 0 var(–pink-hot);
+z-index: 10;
+}
+.fragment-card.sms {
+background: #d4f4d4;
+border-color: #336633;
+}
+.fragment-card.aim {
+background: #d4e4ff;
+border-color: #334466;
+}
+.fragment-platform {
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+background: var(–bg-deep);
+color: var(–pink-hot);
+padding: 1px 4px;
+margin-bottom: 4px;
+display: inline-block;
+letter-spacing: 1px;
+}
+.fragment-card.sms .fragment-platform { color: var(–lime-acid); }
+.fragment-time {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #666;
+margin-bottom: 3px;
+}
+.fragment-from {
+font-weight: bold;
+color: var(–pink-hot);
+font-size: 11px;
+margin-bottom: 2px;
+}
+.fragment-card.aim .fragment-from { color: #336699; }
+.fragment-content {
+font-size: 13px;
+line-height: 1.3;
+}
+.fragment-id {
+position: absolute;
+top: 2px;
+right: 4px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+color: #999;
+}
+
+/* ============ H-BOARD (suspect cards) ============ */
+.hboard-grid {
+padding: 16px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 14px;
+background:
+repeating-linear-gradient(135deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.hboard-card {
+background: #fff8f0;
+border: 2px solid var(–bg-deep);
+padding: 12px;
+font-family: ‘VT323’, monospace;
+color: var(–bg-deep);
+box-shadow: 3px 3px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-0.8deg);
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.hboard-card:nth-child(2n) { transform: rotate(0.6deg); }
+.hboard-card:nth-child(3n) { transform: rotate(-0.4deg); }
+.hboard-card:hover {
+transform: rotate(0) scale(1.03);
+box-shadow: 5px 5px 0 var(–pink-hot);
+z-index: 10;
+}
+.hboard-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+color: var(–pink-hot);
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 4px;
+border-bottom: 1px dashed var(–bg-deep);
+padding-bottom: 4px;
+}
+.hboard-role {
+font-size: 14px;
+font-style: italic;
+color: #666;
+margin-bottom: 8px;
+}
+.hboard-row {
+font-size: 14px;
+line-height: 1.3;
+margin-bottom: 4px;
+}
+.hboard-label {
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+color: var(–bg-deep);
+background: var(–lime-acid);
+padding: 1px 4px;
+letter-spacing: 1px;
+display: inline-block;
+margin-right: 4px;
+}
+
+/* ============ DECORATIVE BITS ============ */
+.marquee-strip {
+background: var(–bg-deep);
+color: var(–pink-hot);
+border-top: 1px solid var(–pink-hot);
+border-bottom: 1px solid var(–pink-hot);
+overflow: hidden;
+padding: 4px 0;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 2px;
+margin: 12px 0;
+}
+.marquee-strip span {
+display: inline-block;
+padding-left: 100%;
+animation: marquee 30s linear infinite;
+white-space: nowrap;
+}
+@keyframes marquee {
+0% { transform: translateX(0); }
+100% { transform: translateX(-100%); }
+}
+
+.progress-bar-outer {
+background: var(–bg-deep);
+border: 1px solid var(–bg-deep);
+height: 12px;
+margin-top: 8px;
+box-shadow: inset 1px 1px 0 #000;
+}
+.progress-bar-inner {
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow));
+height: 100%;
+transition: width 0.5s ease-out;
+background-size: 20px 20px;
+background-image: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+animation: stripe-shift 1s linear infinite;
+}
+@keyframes stripe-shift { to { background-position: 20px 0; } }
+
+.glitter-divider {
+text-align: center;
+color: var(–pink-hot);
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+margin: 16px 0;
+letter-spacing: 8px;
+}
+
+/* hidden by default */
+.hidden { display: none !important; }
+
+/* small mobile adjustments */
+@media (max-width: 600px) {
+.intro-logo { font-size: 18px; }
+.intro-prose { font-size: 16px; padding: 16px; }
+.buddy-popup { width: calc(100% - 40px); right: 20px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ============ INTRO / NAME SCREEN ============ -->
+
+<div class="intro-screen" id="introScreen">
+  <div class="intro-logo">pyforthegirls</div>
+  <div class="intro-tag">★ chapter six ★ fourteen months ★</div>
+  <div class="intro-prose">
+    <p>A week since the night you read Tegan's letter.</p>
+    <p>Hannah waited eight hours at the rendezvous and Tegan never came. Somebody got to her in the minutes between the boathouse and the bus stop. Somebody close enough to be there fast, who knew she'd be alone.</p>
+    <p><span class="em">wren_h</span> has been online for two days and hasn't messaged you. <span class="em">glorfindel_lives</span> has been online the whole time, waiting.</p>
+  </div>
+  <input class="intro-input" id="userNameInput" placeholder="enter your name" maxlength="20" autofocus>
+  <button class="btn btn-acid" id="startBtn" style="font-size: 12px; padding: 10px 24px;">▸ ASK HANNAH</button>
+</div>
+
+<!-- ============ MAIN DESKTOP ============ -->
+
+<div class="desktop hidden" id="desktop">
+  <div class="sparkles" id="sparkles"></div>
+
+  <!-- Desktop icons -->
+
+  <div class="icon-grid">
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💾</div>
+      My Computer
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📂</div>
+      pinecrest_summer/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">🐍</div>
+      python.exe
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📔</div>
+      diary/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💬</div>
+      AIM_archives/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📱</div>
+      SMS_dumps/
+    </div>
+  </div>
+
+  <!-- Marquee -->
+
+  <div class="marquee-strip"><span>★ now playing: modest mouse — the world at large ★ AIM status: invisible ★ wren_h :: online (silent) ★ glorfindel_lives :: online ★ archive: fourteen months loaded ★ now playing: modest mouse — the world at large ★</span></div>
+
+  <!-- ============ STORY WINDOWS RENDERED HERE ============ -->
+
+  <div id="storyContainer"></div>
+
+  <!-- ============ BUDDY POPUP ============ -->
+
+  <div class="buddy-popup hidden" id="buddyPopup">
+    <div class="window-titlebar">
+      <span>buddyhelper :: incoming</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
+      </div>
+    </div>
+    <div class="buddy-content">
+      <div class="buddy-name" id="buddyName">tegan_a87</div>
+      <div id="buddyMessage"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASKBAR ============ -->
+
+<div class="taskbar hidden" id="taskbar">
+  <button class="start-btn">Start</button>
+  <span style="font-family: 'Silkscreen', monospace; font-size: 9px;">CHAPTER 6 :: FOURTEEN MONTHS</span>
+  <span class="taskbar-mail" id="mailIndicator">✉ 1 NEW</span>
+  <span class="taskbar-time" id="taskbarTime">11:47 PM</span>
+</div>
+
+<script>
+// ===========================================================================
+// PYODIDE LOADING
+// ===========================================================================
+let pyodide = null;
+let pyodideLoading = false;
+
+async function loadPyodideOnce() {
+  if (pyodide) return pyodide;
+  if (pyodideLoading) {
+    while (!pyodide) await new Promise(r => setTimeout(r, 100));
+    return pyodide;
+  }
+  pyodideLoading = true;
+  pyodide = await loadPyodide();
+  return pyodide;
+}
+
+async function runPython(code) {
+  const py = await loadPyodideOnce();
+  let stdout = '';
+  py.setStdout({ batched: (s) => { stdout += s + '\n'; } });
+  py.setStderr({ batched: (s) => { stdout += s + '\n'; } });
+  try {
+    await py.runPythonAsync(code);
+    return { ok: true, output: stdout };
+  } catch (err) {
+    return { ok: false, output: stdout, error: String(err.message || err) };
+  }
+}
+
+// ===========================================================================
+// SAVE / LOAD STATE (Neocities-friendly: localStorage only)
+// ===========================================================================
+const SAVE_KEY = 'pyforthegirls_save_ch6_v1';
+
+// ===========================================================================
+// IN-GAME FILE CONTENTS — written into Pyodide's virtual FS at task time
+// ===========================================================================
+
+// Hannah's curated chat archive — 292 messages spanning June 2003 to August 14, 2004.
+// Format: [YYYY-MM-DD HH:MM] handle: content
+// Names of accomplices and identifying locations have been redacted by Hannah.
+const HANNAH_ARCHIVE = `[2003-06-15 21:33] glorfindel_lives: are you the tegan from the silmarillion thread
+[2003-06-15 21:34] tegan_a87: yeah why
+[2003-06-15 21:34] glorfindel_lives: the one who said feanor was right about the silmarils
+[2003-06-15 21:35] tegan_a87: i did NOT say he was RIGHT i said he was MORALLY CONSISTENT
+[2003-06-15 21:35] glorfindel_lives: ok glorfindel-balrog-slayer signing on
+[2003-06-15 21:36] tegan_a87: lol your screenname is literally a deep cut
+[2003-06-15 21:36] tegan_a87: most people pick legolas
+[2003-06-15 21:37] glorfindel_lives: most people are wrong about a lot of things
+[2003-06-22 22:48] glorfindel_lives: ok did you take the quiz
+[2003-06-22 22:48] tegan_a87: WHICH quiz there are like four going around
+[2003-06-22 22:49] glorfindel_lives: which silmaril character are you. on quizilla
+[2003-06-22 22:49] tegan_a87: oh ya. i got luthien. obviously incorrect
+[2003-06-22 22:50] glorfindel_lives: i got eowyn
+[2003-06-22 22:50] tegan_a87: eowyn isn't even in the silmarillion??
+[2003-06-22 22:51] glorfindel_lives: i KNOW. the quiz is fake
+[2003-07-01 23:14] tegan_a87: my mom set up a "screen time limit" for the home computer
+[2003-07-01 23:14] tegan_a87: 9 to 11 pm. that's IT
+[2003-07-01 23:15] glorfindel_lives: tegan it's 11:14
+[2003-07-01 23:15] tegan_a87: i KNOW. she's asleep. i'm typing in the dark
+[2003-07-08 23:14] tegan_a87: i'm at camp now btw. didn't tell you
+[2003-07-08 23:14] glorfindel_lives: oh!! where
+[2003-07-08 23:15] tegan_a87: place called pinecrest. alberta. the woods
+[2003-07-08 23:15] tegan_a87: i'm a junior counsellor. it's my first year
+[2003-07-08 23:16] glorfindel_lives: that sounds like the start of a horror movie
+[2003-07-08 23:16] tegan_a87: it's literally just a lake and some buildings
+[2003-07-22 23:14] tegan_a87: capture the flag tonight was rigged
+[2003-07-22 23:14] tegan_a87: tyler's group had like three more people than ours
+[2003-07-22 23:15] tegan_a87: also their flag was hidden somewhere we couldn't even reach without going through pinewood and pinewood is BOY CABIN
+[2003-07-22 23:15] tegan_a87: so basically we lost on a technicality
+[2003-07-22 23:16] glorfindel_lives: that's so unfair
+[2003-07-22 23:16] tegan_a87: anyway briar made me apologize to tyler for "being a sore loser" which i was NOT i was being a fair loser
+[2003-08-19 22:08] tegan_a87: home from camp. it's so quiet here
+[2003-08-19 22:09] glorfindel_lives: you survived
+[2003-08-19 22:09] tegan_a87: barely. i forgot how much i hate my room
+[2003-08-26 21:33] tegan_a87: ok i made you a mix cd
+[2003-08-26 21:33] tegan_a87: i'm going to mail it. give me your address
+[2003-08-26 21:34] glorfindel_lives: tegan i can't tell you how much restraint it took for me to not just send you mine first
+[2003-08-26 21:34] tegan_a87: TRACK ONE IS THE POSTAL SERVICE i won't say more
+[2003-08-26 21:35] glorfindel_lives: SHUT UP
+[2003-09-04 19:41] tegan_a87: school started. french immersion is killing me
+[2003-09-04 19:42] glorfindel_lives: french immersion in alberta is wild btw. like why
+[2003-09-04 19:42] tegan_a87: my mom thought it would "open doors"
+[2003-09-04 19:43] tegan_a87: the doors it opens are french doors. into more french
+[2003-09-15 23:48] tegan_a87: i made a livejournal
+[2003-09-15 23:48] glorfindel_lives: oh god
+[2003-09-15 23:49] tegan_a87: stop. it's locked. nobody from school can find it
+[2003-09-15 23:49] glorfindel_lives: what's the username
+[2003-09-15 23:50] tegan_a87: i'll friend you. then you'll know
+[2003-09-22 22:14] tegan_a87: did you see the latest on theonering. the rotk trailer is out
+[2003-09-22 22:15] glorfindel_lives: i've watched it like nine times. theoden is going to wreck me
+[2003-09-22 22:15] tegan_a87: i CANNOT wait for paths of the dead
+[2003-09-29 21:08] tegan_a87: i posted a fic
+[2003-09-29 21:08] glorfindel_lives: TEGAN
+[2003-09-29 21:09] tegan_a87: it's about glorfindel. it's bad. don't read it
+[2003-09-29 21:09] glorfindel_lives: i'm reading it RIGHT NOW
+[2003-09-29 21:10] tegan_a87: HANNAH
+[2003-10-11 20:22] glorfindel_lives: have you done two towers extended yet
+[2003-10-11 20:23] tegan_a87: THREE TIMES. helms deep is even longer this time
+[2003-10-11 20:23] glorfindel_lives: peak cinema
+[2003-10-19 23:51] tegan_a87: i started prozac nation
+[2003-10-19 23:51] tegan_a87: i don't know if i should be reading this
+[2003-10-19 23:52] glorfindel_lives: probably not while feeling the way you feel
+[2003-10-19 23:52] tegan_a87: too late
+[2003-11-02 22:18] tegan_a87: i had a bad week
+[2003-11-02 22:18] tegan_a87: like. bad bad
+[2003-11-02 22:19] glorfindel_lives: do you want to talk about it
+[2003-11-02 22:19] tegan_a87: not really. just wanted you to know
+[2003-11-02 22:20] glorfindel_lives: ok i'm here. always
+[2003-11-15 23:33] tegan_a87: madeline asked if i wanted to go to the mall on saturday
+[2003-11-15 23:34] glorfindel_lives: madeline being. one of your in person. friends
+[2003-11-15 23:34] tegan_a87: don't say it like that
+[2003-11-15 23:34] glorfindel_lives: i'm just confirming
+[2003-11-15 23:35] tegan_a87: yes. madeline. one of two girls i talk to at school. sometimes
+[2003-11-15 23:35] tegan_a87: i'm going. it'll be fine. we'll go to a&w and then claire's
+[2003-11-15 23:36] glorfindel_lives: that sounds incredible
+[2003-11-15 23:36] tegan_a87: shut UP
+[2003-11-30 21:48] tegan_a87: ok i did the mall thing
+[2003-11-30 21:48] tegan_a87: i bought black nail polish at hot topic and three orange julii
+[2003-11-30 21:49] glorfindel_lives: julii. plural of julius
+[2003-11-30 21:49] tegan_a87: yes. it's latin
+[2003-12-12 23:42] tegan_a87: ROTK comes out in TWO DAYS
+[2003-12-12 23:42] glorfindel_lives: i have my ticket. midnight showing. december 16 at the [REDACTED] theatre
+[2003-12-12 23:43] tegan_a87: i'm going opening day with my mom. she doesn't even like fantasy
+[2003-12-12 23:43] tegan_a87: she's going as a "bonding activity"
+[2003-12-12 23:44] glorfindel_lives: that's actually sweet
+[2003-12-12 23:44] tegan_a87: she's going to ask questions during the movie i KNOW it
+[2003-12-19 01:14] tegan_a87: my mom asked if i had any "real friends" again
+[2003-12-19 01:14] tegan_a87: i didn't say you. she'd be worse about you than about no friends
+[2003-12-19 01:15] glorfindel_lives: i'm her worst nightmare. older. across the country. on the internet
+[2003-12-19 01:15] tegan_a87: ya basically
+[2003-12-25 22:02] tegan_a87: merry christmas hannah
+[2003-12-25 22:02] glorfindel_lives: merry christmas tegan
+[2003-12-25 22:03] tegan_a87: i got socks and a copy of the silmarillion. the silmarillion is from my dad. he doesn't know i already have it
+[2003-12-25 22:03] glorfindel_lives: that's a king move actually. spare silmarillion is a flex
+[2003-12-25 22:04] tegan_a87: i'll keep it pristine. for posterity
+[2004-01-08 23:51] tegan_a87: rotk extended is finally announced. december
+[2004-01-08 23:52] glorfindel_lives: i'm going to cry already
+[2004-01-15 22:14] tegan_a87: did you see britney spears got married for like 55 hours
+[2004-01-15 22:15] glorfindel_lives: i saw it on ontd. it's the funniest thing i've ever read
+[2004-01-15 22:15] tegan_a87: i need to get on ontd more often. french immersion is destroying my pop culture iq
+[2004-01-15 22:16] glorfindel_lives: i'll forward you the good ones
+[2004-01-29 23:08] tegan_a87: kazaa has a virus that's killing my dad's pc
+[2004-01-29 23:08] tegan_a87: he's going to figure out it was me
+[2004-01-29 23:09] glorfindel_lives: switch to limewire it's slightly less infested
+[2004-01-29 23:09] tegan_a87: i need three more death cab albums first
+[2004-02-02 22:18] tegan_a87: did you see the super bowl thing
+[2004-02-02 22:18] glorfindel_lives: the WHOLE INTERNET saw the super bowl thing
+[2004-02-02 22:19] tegan_a87: my mom called it "indecent." i wanted to die
+[2004-02-02 22:19] glorfindel_lives: lmao moms are losing their MINDS over it
+[2004-02-14 22:05] tegan_a87: valentine's day in french immersion is uniquely horrible
+[2004-02-14 22:06] tegan_a87: they made us write valentine's notes. en français
+[2004-02-14 22:06] tegan_a87: i wrote one to my mom. lying
+[2004-02-22 23:44] tegan_a87: have you ever thought about just. leaving
+[2004-02-22 23:45] glorfindel_lives: like leaving where
+[2004-02-22 23:45] tegan_a87: anywhere. just. not being where you are
+[2004-02-22 23:46] glorfindel_lives: i think about it sometimes yeah
+[2004-02-22 23:46] tegan_a87: i think about it constantly
+[2004-03-01 22:38] tegan_a87: my away message tonight is "we looked like giants in the back of my gray subcompact"
+[2004-03-01 22:38] glorfindel_lives: WE LOOKED LIKE GIANTS
+[2004-03-01 22:39] tegan_a87: nobody at school will get it. i don't care
+[2004-03-15 00:32] tegan_a87: i can't be here when i graduate. i can't go to the local college. i can't stay
+[2004-03-15 00:33] glorfindel_lives: where would you go
+[2004-03-15 00:33] tegan_a87: anywhere. east. somewhere big
+[2004-03-15 00:34] glorfindel_lives: you have like a year and a half of high school left
+[2004-03-15 00:34] tegan_a87: i know
+[2004-03-15 00:35] tegan_a87: i don't think i can do a year and a half
+[2004-03-29 22:11] glorfindel_lives: i'm reading the speak sequel
+[2004-03-29 22:11] tegan_a87: there's a SEQUEL???
+[2004-03-29 22:12] glorfindel_lives: catalyst. it's not a direct sequel. same author. similar vibes
+[2004-03-29 22:12] tegan_a87: i need it
+[2004-04-02 22:11] tegan_a87: i've been thinking
+[2004-04-02 22:11] tegan_a87: i don't have to wait for graduation
+[2004-04-02 22:12] glorfindel_lives: tegan
+[2004-04-02 22:12] tegan_a87: i know i know. but hear me out
+[2004-04-02 22:13] tegan_a87: i'd be 18 in january. that's only five months after camp ends
+[2004-04-02 22:13] tegan_a87: if i could just disappear for five months
+[2004-04-19 23:50] tegan_a87: i saw kill bill 2
+[2004-04-19 23:50] glorfindel_lives: AND
+[2004-04-19 23:51] tegan_a87: it's good. better than 1 i think. don't @ me
+[2004-04-19 23:51] glorfindel_lives: that's a take. that is a TAKE
+[2004-05-02 22:14] tegan_a87: mean girls came out yesterday
+[2004-05-02 22:14] tegan_a87: i'm going on saturday with madeline and rachel and i KNOW it's not going to live up to the discourse
+[2004-05-02 22:15] glorfindel_lives: oh you'll love it. i saw it friday
+[2004-05-02 22:15] tegan_a87: NO SPOILERS
+[2004-05-08 00:14] tegan_a87: my mom keeps asking when i'm going to "have friends here"
+[2004-05-08 00:14] tegan_a87: as if the friends i have don't count because they're online
+[2004-05-22 23:33] tegan_a87: i did mean girls. it's perfect. i quoted it in french class accidentally
+[2004-05-22 23:33] glorfindel_lives: en français?
+[2004-05-22 23:34] tegan_a87: no. i broke. i said "she doesn't even go here" in english
+[2004-05-22 23:34] glorfindel_lives: tegan
+[2004-05-22 23:35] tegan_a87: madame henri was NOT amused
+[2004-06-04 21:33] tegan_a87: i talked to my doctor today about how i've been feeling
+[2004-06-04 21:34] tegan_a87: she put me on something. low dose
+[2004-06-04 21:34] glorfindel_lives: tegan that's good
+[2004-06-04 21:34] tegan_a87: i don't know yet. supposed to take a few weeks
+[2004-06-08 22:48] tegan_a87: school's almost done. i have one final left and then it's over
+[2004-06-08 22:49] glorfindel_lives: which one
+[2004-06-08 22:49] tegan_a87: chemistry. i'm going to fail it spectacularly. i don't even care anymore
+[2004-06-12 00:08] tegan_a87: ok i'm doing it
+[2004-06-12 00:08] glorfindel_lives: you are doing what
+[2004-06-12 00:09] tegan_a87: i'm leaving. after camp. i'm just going
+[2004-06-12 00:09] glorfindel_lives: oh my god
+[2004-06-12 00:10] tegan_a87: i need your help. i need someone who knows
+[2004-06-12 00:10] glorfindel_lives: i'm in. obviously i'm in
+[2004-06-15 23:42] tegan_a87: did you finish the new sufjan
+[2004-06-15 23:42] glorfindel_lives: TEGAN it's been out for a month. yes
+[2004-06-15 23:43] tegan_a87: i KNOW i'm slow. ok track 8 is the best one. no debate
+[2004-06-15 23:43] glorfindel_lives: that's correct actually
+[2004-06-18 23:42] glorfindel_lives: i talked to [REDACTED] today
+[2004-06-18 23:42] glorfindel_lives: she has a place. cheap. she'll let you stay until you figure out a job
+[2004-06-18 23:43] tegan_a87: oh my god really
+[2004-06-18 23:43] glorfindel_lives: yeah. she's been through it. she gets it
+[2004-06-22 21:18] tegan_a87: rachel asked if i'm going to grad next year
+[2004-06-22 21:19] glorfindel_lives: what'd you say
+[2004-06-22 21:19] tegan_a87: i said yes. obviously i said yes. what was i going to say
+[2004-06-22 21:20] glorfindel_lives: yeah
+[2004-06-22 21:20] tegan_a87: it's so weird lying about a future i'm not going to have
+[2004-06-25 22:14] tegan_a87: camp starts in two weeks. i'm packing tonight
+[2004-06-25 22:14] tegan_a87: i'm packing TWO bags. one i bring back. one i leave with
+[2004-06-25 22:15] glorfindel_lives: where are you going to keep the leaving bag
+[2004-06-25 22:15] tegan_a87: under the dock. there's a storage box that's been broken since 2002. nobody checks it
+[2004-06-30 23:08] tegan_a87: ok i finished the silmarillion AGAIN
+[2004-06-30 23:08] tegan_a87: feanor is still right
+[2004-06-30 23:09] glorfindel_lives: feanor is still WRONG
+[2004-06-30 23:09] tegan_a87: AGREE TO DISAGREE GLORFINDEL
+[2004-07-04 22:48] tegan_a87: i'm at camp. i made it through orientation
+[2004-07-04 22:49] tegan_a87: wren is here. she's a cabin counsellor this year not a JC
+[2004-07-04 22:49] glorfindel_lives: oh. wren wren? from last summer?
+[2004-07-04 22:50] tegan_a87: yeah. wren. wren halloway
+[2004-07-04 22:50] tegan_a87: she looked at me at lunch and i forgot how to use my hands
+[2004-07-08 23:55] tegan_a87: it's so weird being here knowing i'm not coming back
+[2004-07-08 23:55] glorfindel_lives: are you ok
+[2004-07-08 23:56] tegan_a87: yeah. just. the lake looks different when you know it's the last time
+[2004-07-11 23:03] glorfindel_lives: [REDACTED] said she can pick you up at the boathouse. she has a [REDACTED] her cousin lent her
+[2004-07-11 23:04] tegan_a87: oh my god
+[2004-07-11 23:04] glorfindel_lives: she's good. i know her from the [REDACTED] message board. she's been planning trips like this for years
+[2004-07-11 23:05] tegan_a87: i'll never be able to thank her
+[2004-07-11 23:05] glorfindel_lives: she doesn't want to be thanked. she wants you to be safe
+[2004-07-15 22:38] tegan_a87: hattie cried at the staff meeting today
+[2004-07-15 22:38] glorfindel_lives: who's hattie
+[2004-07-15 22:39] tegan_a87: my co-JC for pinewood. she's nice. she's just very 16
+[2004-07-15 22:39] tegan_a87: marcia made some comment about her schedule and she just. went
+[2004-07-19 21:48] tegan_a87: ok so today's drama
+[2004-07-19 21:49] tegan_a87: briar made everyone do a TRUST FALL
+[2004-07-19 21:49] tegan_a87: at staff orientation. for trust building. between counsellors
+[2004-07-19 21:50] glorfindel_lives: lmaoooo
+[2004-07-19 21:50] tegan_a87: i fell into wren's arms which was great
+[2004-07-19 21:51] tegan_a87: also fell into a bunch of other people's arms which was less great
+[2004-07-19 21:51] tegan_a87: anyway tyler is back as a JC. apparently this is his second summer
+[2004-07-19 21:52] glorfindel_lives: oh that name's familiar
+[2004-07-19 21:52] tegan_a87: he was at camp last year. did capture the flag. won unfairly. you wouldn't remember
+[2004-07-19 21:53] tegan_a87: he asked me if i remembered him. i said vaguely
+[2004-07-19 21:54] tegan_a87: which is a lie i remember EVERYONE from last summer i'm a freak
+[2004-07-25 22:48] tegan_a87: how does the safe house thing work
+[2004-07-25 22:49] glorfindel_lives: you go in, you say [REDACTED] sent you, you get the room. she charges nothing. she'll feed you. you stay as long as you need
+[2004-07-25 22:49] tegan_a87: and after
+[2004-07-25 22:50] glorfindel_lives: after we figure out what after means. one step at a time
+[2004-07-29 23:11] tegan_a87: i love how i'm planning the rest of my life with someone i've never seen in person
+[2004-07-29 23:12] glorfindel_lives: best version of love honestly
+[2004-07-29 23:12] tegan_a87: you'll be the first person i call when i get there
+[2004-07-29 23:13] glorfindel_lives: i'll be on the phone before then. don't worry
+[2004-08-01 23:11] tegan_a87: wren kissed me
+[2004-08-01 23:11] tegan_a87: wren KISSED me
+[2004-08-01 23:11] glorfindel_lives: WHAT
+[2004-08-01 23:12] tegan_a87: at the boathouse. after lights out. she said she's been thinking about me since last summer
+[2004-08-01 23:13] tegan_a87: i know. i KNOW. she's 19. she's a counsellor. i'm a JC. it's bad
+[2004-08-01 23:14] tegan_a87: i don't care
+[2004-08-03 23:48] tegan_a87: she wants to meet again tomorrow night
+[2004-08-03 23:48] tegan_a87: she keeps saying things like "we have time"
+[2004-08-03 23:49] glorfindel_lives: tegan
+[2004-08-03 23:49] tegan_a87: i KNOW. i can't tell her about the plan. i CAN'T
+[2004-08-03 23:50] glorfindel_lives: are you ok
+[2004-08-03 23:50] tegan_a87: i'm fine. i'm just not telling anyone anything ever
+[2004-08-04 00:41] tegan_a87: wren wants to keep meeting at the boathouse
+[2004-08-04 00:41] tegan_a87: she says it's ours
+[2004-08-04 00:42] glorfindel_lives: are you still leaving after camp
+[2004-08-04 00:42] tegan_a87: yes
+[2004-08-04 00:42] tegan_a87: yes. i have to. nothing about wren changes that
+[2004-08-04 00:43] tegan_a87: probably it makes it worse actually. i can't be a girl who has a secret with a 19 year old at camp pinecrest forever
+[2004-08-06 23:18] tegan_a87: bonfire tonight
+[2004-08-06 23:18] tegan_a87: i kissed wren in front of everyone
+[2004-08-06 23:19] glorfindel_lives: WHAT
+[2004-08-06 23:19] tegan_a87: ok hear me out. there's this boy who keeps doing the thing where he sits next to me. so i had this idea
+[2004-08-06 23:20] tegan_a87: i told wren to play along. then at the bonfire i grabbed her face and kissed her like full on. for like five seconds
+[2004-08-06 23:20] tegan_a87: everyone laughed. the boy laughed. like haha look at the girls being silly
+[2004-08-06 23:21] glorfindel_lives: tegan
+[2004-08-06 23:21] tegan_a87: i KNOW. i got to actually kiss her. in front of everyone. and have it not count
+[2004-08-06 23:22] tegan_a87: it was the best thing
+[2004-08-06 23:22] glorfindel_lives: was she into it
+[2004-08-06 23:23] tegan_a87: i mean she kissed me back
+[2004-08-06 23:23] tegan_a87: she didn't really talk to me after though. i'll see her tomorrow
+[2004-08-08 23:15] tegan_a87: i have $640 saved
+[2004-08-08 23:15] tegan_a87: it's not a lot but it's a lot for me
+[2004-08-08 23:16] glorfindel_lives: it's enough for the first month. [REDACTED] won't take rent
+[2004-08-08 23:16] tegan_a87: i'm going to insist
+[2004-08-08 23:17] glorfindel_lives: she'll insist back. you'll lose
+[2004-08-09 22:18] tegan_a87: i had to swap dish duty with tyler tonight because hattie's cabin had a thing
+[2004-08-09 22:19] tegan_a87: he was being weirdly nice about it
+[2004-08-09 22:19] tegan_a87: like talking to me the whole time
+[2004-08-09 22:20] tegan_a87: like sir i just want to wash these plates and leave
+[2004-08-09 22:20] glorfindel_lives: lmao
+[2004-08-09 22:21] tegan_a87: anyway briar wants me to do the morning swim shift tomorrow which is at SIX AM
+[2004-08-09 22:21] tegan_a87: i'd rather die
+[2004-08-10 23:28] tegan_a87: the meds are working i think
+[2004-08-10 23:28] tegan_a87: i don't feel happier exactly but i feel less like the floor is made of broken glass
+[2004-08-10 23:29] glorfindel_lives: that's something
+[2004-08-10 23:29] tegan_a87: ya. it's something
+[2004-08-11 23:42] tegan_a87: wren said she loved me last night
+[2004-08-11 23:42] tegan_a87: i didn't say it back. i just kissed her again
+[2004-08-11 23:43] glorfindel_lives: oh tegan
+[2004-08-11 23:43] tegan_a87: i couldn't say it. if i'd said it i would've had to mean it. and if i'd meant it i couldn't have left
+[2004-08-12 23:54] tegan_a87: two days to go
+[2004-08-12 23:54] tegan_a87: [REDACTED] confirmed for the 14th. 11 PM at the boathouse
+[2004-08-12 23:55] glorfindel_lives: i'll be at the rendezvous. i'll be there the whole time
+[2004-08-12 23:56] tegan_a87: how long do you wait if i don't show up
+[2004-08-12 23:56] glorfindel_lives: i'm not leaving until you're there
+[2004-08-12 23:57] tegan_a87: hannah you can't sit in [REDACTED] for 14 hours
+[2004-08-12 23:57] glorfindel_lives: watch me
+[2004-08-13 22:30] tegan_a87: i wrote the letter today. encrypted it. hid it
+[2004-08-13 22:30] glorfindel_lives: who's it for
+[2004-08-13 22:31] tegan_a87: anyone who cares enough to crack it. mostly i think nobody will
+[2004-08-13 22:31] glorfindel_lives: someone will
+[2004-08-13 23:48] tegan_a87: i'm scared
+[2004-08-13 23:48] glorfindel_lives: you're allowed to be
+[2004-08-13 23:49] tegan_a87: i don't know what i'm doing
+[2004-08-13 23:49] glorfindel_lives: you're going. that's enough. the doing happens after
+[2004-08-13 23:50] tegan_a87: ok
+[2004-08-13 23:50] tegan_a87: hannah
+[2004-08-13 23:51] tegan_a87: thank you
+[2004-08-13 23:51] glorfindel_lives: don't thank me yet
+[2004-08-13 23:52] tegan_a87: thank you anyway
+[2004-08-14 09:47] tegan_a87: see you on the other side`;
+
+// Write Hannah's archive into Pyodide's virtual FS so file ops work.
+async function injectChapter6Files() {
+  const py = await loadPyodideOnce();
+  py.FS.writeFile('hannah_archive.txt', HANNAH_ARCHIVE);
+}
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+
+function writeSave(data) {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+let state = loadSave() || {
+  userName: '',
+  currentBeat: 0,
+  completedBeats: [],
+  charms: 0
+};
+
+// ===========================================================================
+// SPARKLES
+// ===========================================================================
+function makeSparkles() {
+  const container = document.getElementById('sparkles');
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    container.appendChild(s);
+  }
+}
+
+// ===========================================================================
+// INTRO -> DESKTOP
+// ===========================================================================
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('userNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startGame();
+});
+
+function startGame() {
+  const name = document.getElementById('userNameInput').value.trim() || 'guest';
+  state.userName = name;
+  writeSave(state);
+  document.getElementById('introScreen').classList.add('hidden');
+  document.getElementById('desktop').classList.remove('hidden');
+  document.getElementById('taskbar').classList.remove('hidden');
+  makeSparkles();
+  startClock();
+  renderStory();
+}
+
+function startClock() {
+  const start = Date.now();
+  setInterval(() => {
+    // we keep the in-fiction clock at 11:47 PM, ticking up unsettlingly
+    const elapsed = Math.floor((Date.now() - start) / 60000);
+    const hh = 11;
+    const mm = (47 + elapsed) % 60;
+    document.getElementById('taskbarTime').textContent =
+      `${hh}:${String(mm).padStart(2,'0')} PM`;
+  }, 1000);
+}
+
+// ===========================================================================
+// CONTENT — STORY BEATS
+// Each beat is either a 'diary' card (pure narrative) or a 'task' card
+// (story + Python challenge). Player progresses linearly.
+// ===========================================================================
+// CH6 BEATS — 9 beats: hannah's archive, regex, aggregation, search, wrap.
+
+const BEATS = [
+  // ---- BEAT 0: ch6_open — player processing where they are ----
+  {
+    id: 'ch6_open',
+    type: 'diary',
+    title: 'open file: notes/whats_left.txt',
+    meta: 'you typed this an hour ago and haven\'t moved.',
+    body: `tegan's done.
+
+she said what she had to say. she left it for someone who'd work for it. i worked for it. i got the message.
+
+she has nothing else to give me.
+
+so i need other sources. hannah is online. she's the only other person who knew tegan in the way that matters here.
+
+i'm going to ask her for everything she has.`,
+    nextBtn: '\u25b8 open AIM'
+  },
+
+  // ---- BEAT 1: hannah_offers_archive — extended AIM exchange ----
+  {
+    id: 'hannah_offers_archive',
+    type: 'aim_log',
+    title: 'AIM :: glorfindel_lives',
+    meta: 'glorfindel_lives :: online',
+    messages: [
+      { from: 'you', text: 'i need to see what you have' },
+      { from: 'glorfindel_lives', text: 'from when?' },
+      { from: 'you', text: 'everything' },
+      { from: 'glorfindel_lives', text: "that's fourteen months" },
+      { from: 'you', text: 'i know' },
+      { from: 'glorfindel_lives', text: '\u2026' },
+      { from: 'glorfindel_lives', text: "ok. i'm going to be honest with you." },
+      { from: 'glorfindel_lives', text: "there's stuff in here i'm not proud of. i was 19. she was 17." },
+      { from: 'glorfindel_lives', text: 'i was helping a minor disappear from her family.' },
+      { from: 'glorfindel_lives', text: "some of what i'm sending you is operational. names of people who helped. you don't need those names. i'm going to redact them." },
+      { from: 'glorfindel_lives', text: "everything else is real. her words and mine." },
+      { from: 'glorfindel_lives', text: '\u2026' },
+      { from: 'glorfindel_lives', text: "i'm not sending you all of it. there's too much." },
+      { from: 'glorfindel_lives', text: 'i pulled the messages that mention camp people, mention the plan, anything from august.' },
+      { from: 'glorfindel_lives', text: 'almost 300 messages over fourteen months.' },
+      { from: 'glorfindel_lives', text: "the rest is just us being teenagers. talking about books, school, our dumb feelings. i can send those later if you want them." },
+      { from: 'glorfindel_lives', text: 'hannah_archive.txt. sending now.' },
+      { from: 'glorfindel_lives', text: '\u2026' },
+      { from: 'glorfindel_lives', text: 'i loved her. she was my best friend. some of what\'s in here is going to make that obvious in ways that might be uncomfortable.' },
+      { from: 'glorfindel_lives', text: 'ok. opening it up to you now.' }
+    ],
+    nextBtn: '\u25b8 open the archive'
+  },
+
+  // ---- BEAT 2: task_load_archive — open file, count messages ----
+  {
+    id: 'task_load_archive',
+    type: 'task',
+    charms: 2,
+    title: 'python.exe :: load_archive.py',
+    meta: 'open the file. count what you got.',
+    skill: 'FILE I/O REINFORCED :: COUNTING LINES',
+    hint: `<code>print(len(messages))</code>`,
+    storyAbove: `hannah's archive is a single text file. each line is one message in the format <code>[YYYY-MM-DD HH:MM] handle: content</code>. open it, read all lines, and confirm the count.`,
+    instructions: `your task: open <code>hannah_archive.txt</code>, read all lines, store them in a list called <code>messages</code>, and print how many there are.`,
+    starter: `with open("hannah_archive.txt") as f:
+    messages = f.readlines()
+
+# print the count
+`,
+    expectedOutput: `292`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// 292 messages. fourteen months. and these are just the ones hannah thought were important.`
+    }
+  },
+
+  // ---- BEAT 3: task_parse_messages — regex parse with capture groups ----
+  {
+    id: 'task_parse_messages',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: parse_messages.py',
+    meta: 'regex. break each line into date, sender, content.',
+    skill: 'REGEX :: re.match() AND CAPTURE GROUPS',
+    hint: `<code>for line in messages:</code> indented <code>m = re.match(pattern, line.strip())</code> then <code>if m: parsed.append({"date": m.group(1), "sender": m.group(2), "content": m.group(3)})</code>. then <code>print(parsed[0])</code> and <code>print(parsed[-1])</code>.`,
+    storyAbove: `each line looks like <code>[2004-08-12 23:14] tegan_a87: i'm so tired of this</code>. the <code>re</code> module lets you match patterns and pull out the parts you want. <code>re.match(pattern, string)</code> returns a Match object whose <code>.group(n)</code> returns the n-th captured group. parentheses in the pattern create capture groups.`,
+    instructions: `your task: import re. for each line in <code>messages</code>, use the regex pattern (already provided) with three capture groups (date, sender, content) to parse it. store each parsed message as a dict with keys "date", "sender", "content" in a list called <code>parsed</code>. print the first parsed message and the last parsed message.`,
+    starter: `import re
+
+with open("hannah_archive.txt") as f:
+    messages = f.readlines()
+
+# pattern: [date] sender: content
+pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
+parsed = []
+
+# loop through messages, match each line with re.match,
+# build a dict for each match and append to parsed
+
+# print the first and last parsed message
+`,
+    expectedOutput: `{'date': '2003-06-15 21:33', 'sender': 'glorfindel_lives', 'content': 'are you the tegan from the silmarillion thread'}
+{'date': '2004-08-14 09:47', 'sender': 'tegan_a87', 'content': 'see you on the other side'}`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// first message ever: hannah asking if tegan was the one from the silmarillion thread. last message: aug 14 morning. "see you on the other side."`
+    }
+  },
+
+  // ---- BEAT 4: task_count_by_month — aggregation + ASCII bar chart ----
+  {
+    id: 'task_count_by_month',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: count_by_month.py',
+    meta: 'aggregate the messages by month. visualize the friendship.',
+    skill: 'AGGREGATION :: dict-of-counts AND ASCII BAR CHARTS',
+    hint: `<code>for msg in parsed:</code> indented <code>month = msg["date"][:7]</code> then <code>monthly_counts[month] = monthly_counts.get(month, 0) + 1</code>. then <code>for month in sorted(monthly_counts.keys()):</code> indented <code>count = monthly_counts[month]</code> then <code>print(f"{month}: {'\u2588' * count} {count}")</code>.`,
+    storyAbove: `you have parsed messages with structured dates. now ask: how often did tegan and hannah talk over fourteen months? the first 7 characters of each date string (<code>2004-08-12 23:14</code>) gives you <code>2004-08</code>. group messages by year-month, count each group, then print a sorted ASCII bar chart.`,
+    instructions: `your task: build a dict called <code>monthly_counts</code> where keys are year-month strings (<code>"2003-06"</code>, etc) and values are the count of messages in that month. print each month and count in chronological order, with an ASCII bar made of <code>\u2588</code> characters (one per message).`,
+    starter: `import re
+
+with open("hannah_archive.txt") as f:
+    messages = f.readlines()
+pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
+parsed = []
+for line in messages:
+    m = re.match(pattern, line.strip())
+    if m:
+        parsed.append({"date": m.group(1), "sender": m.group(2), "content": m.group(3)})
+
+# build monthly_counts: dict mapping year-month (first 7 chars of date) to count
+monthly_counts = {}
+
+# print each month and bar chart in chronological order
+# use sorted(monthly_counts.keys()) to get months in order
+# bar = "\u2588" * count
+`,
+    expectedOutput: `2003-06: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 15
+2003-07: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 16
+2003-08: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 8
+2003-09: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 17
+2003-10: \u2588\u2588\u2588\u2588\u2588\u2588\u2588 7
+2003-11: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 17
+2003-12: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 15
+2004-01: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 10
+2004-02: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 12
+2004-03: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 13
+2004-04: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 10
+2004-05: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 11
+2004-06: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 34
+2004-07: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 36
+2004-08: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 71`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// most messages were in august 2004. the densest stretch of the friendship was the last three weeks of it.`
+    }
+  },
+
+  // ---- BEAT 5: player_browses_august — narrative archive view ----
+  {
+    id: 'player_browses_august',
+    type: 'archive_view',
+    title: 'archive view: august 2004',
+    meta: 'you scroll. you read.',
+    messages: [
+      { date: '2004-08-01 23:11', sender: 'tegan_a87', content: 'wren kissed me' },
+      { date: '2004-08-01 23:11', sender: 'tegan_a87', content: 'wren KISSED me' },
+      { date: '2004-08-01 23:11', sender: 'glorfindel_lives', content: 'WHAT' },
+      { date: '2004-08-01 23:12', sender: 'tegan_a87', content: 'at the boathouse. after lights out. she said she\'s been thinking about me since last summer' },
+      { date: '2004-08-01 23:13', sender: 'tegan_a87', content: 'i know. i KNOW. she\'s 19. she\'s a counsellor. i\'m a JC. it\'s bad' },
+      { date: '2004-08-01 23:14', sender: 'tegan_a87', content: 'i don\'t care' },
+      { date: '2004-08-04 00:42', sender: 'glorfindel_lives', content: 'are you still leaving after camp' },
+      { date: '2004-08-04 00:42', sender: 'tegan_a87', content: 'yes' },
+      { date: '2004-08-04 00:42', sender: 'tegan_a87', content: 'yes. i have to. nothing about wren changes that' },
+      { date: '2004-08-04 00:43', sender: 'tegan_a87', content: 'probably it makes it worse actually. i can\'t be a girl who has a secret with a 19 year old at camp pinecrest forever' },
+      { date: '2004-08-06 23:18', sender: 'tegan_a87', content: 'bonfire tonight' },
+      { date: '2004-08-06 23:18', sender: 'tegan_a87', content: 'i kissed wren in front of everyone' },
+      { date: '2004-08-06 23:19', sender: 'glorfindel_lives', content: 'WHAT' },
+      { date: '2004-08-06 23:19', sender: 'tegan_a87', content: 'ok hear me out. there\'s this boy who keeps doing the thing where he sits next to me. so i had this idea' },
+      { date: '2004-08-06 23:20', sender: 'tegan_a87', content: 'i told wren to play along. then at the bonfire i grabbed her face and kissed her like full on. for like five seconds' },
+      { date: '2004-08-06 23:20', sender: 'tegan_a87', content: 'everyone laughed. the boy laughed. like haha look at the girls being silly' },
+      { date: '2004-08-06 23:21', sender: 'glorfindel_lives', content: 'tegan' },
+      { date: '2004-08-06 23:21', sender: 'tegan_a87', content: 'i KNOW. i got to actually kiss her. in front of everyone. and have it not count' },
+      { date: '2004-08-06 23:22', sender: 'tegan_a87', content: 'it was the best thing' },
+      { date: '2004-08-06 23:22', sender: 'glorfindel_lives', content: 'was she into it' },
+      { date: '2004-08-06 23:23', sender: 'tegan_a87', content: 'i mean she kissed me back' },
+      { date: '2004-08-06 23:23', sender: 'tegan_a87', content: 'she didn\'t really talk to me after though. i\'ll see her tomorrow' },
+      { date: '2004-08-08 23:15', sender: 'tegan_a87', content: 'i have $640 saved' },
+      { date: '2004-08-08 23:15', sender: 'tegan_a87', content: 'it\'s not a lot but it\'s a lot for me' },
+      { date: '2004-08-08 23:16', sender: 'glorfindel_lives', content: 'it\'s enough for the first month. [REDACTED] won\'t take rent' },
+      { date: '2004-08-12 23:54', sender: 'tegan_a87', content: 'two days to go' },
+      { date: '2004-08-12 23:54', sender: 'tegan_a87', content: '[REDACTED] confirmed for the 14th. 11 PM at the boathouse' },
+      { date: '2004-08-12 23:55', sender: 'glorfindel_lives', content: 'i\'ll be at the rendezvous. i\'ll be there the whole time' },
+      { date: '2004-08-12 23:56', sender: 'tegan_a87', content: 'how long do you wait if i don\'t show up' },
+      { date: '2004-08-12 23:56', sender: 'glorfindel_lives', content: 'i\'m not leaving until you\'re there' },
+      { date: '2004-08-12 23:57', sender: 'tegan_a87', content: 'hannah you can\'t sit in [REDACTED] for 14 hours' },
+      { date: '2004-08-12 23:57', sender: 'glorfindel_lives', content: 'watch me' },
+      { date: '2004-08-13 22:30', sender: 'tegan_a87', content: 'i wrote the letter today. encrypted it. hid it' },
+      { date: '2004-08-13 22:31', sender: 'tegan_a87', content: 'anyone who cares enough to crack it. mostly i think nobody will' },
+      { date: '2004-08-13 22:31', sender: 'glorfindel_lives', content: 'someone will' },
+      { date: '2004-08-13 23:48', sender: 'tegan_a87', content: 'i\'m scared' },
+      { date: '2004-08-13 23:48', sender: 'glorfindel_lives', content: 'you\'re allowed to be' },
+      { date: '2004-08-13 23:51', sender: 'tegan_a87', content: 'thank you' },
+      { date: '2004-08-13 23:51', sender: 'glorfindel_lives', content: 'don\'t thank me yet' },
+      { date: '2004-08-13 23:52', sender: 'tegan_a87', content: 'thank you anyway' },
+      { date: '2004-08-14 09:47', sender: 'tegan_a87', content: 'see you on the other side' }
+    ],
+    nextBtn: '\u25b8 search by name'
+  },
+
+  // ---- BEAT 6: task_search_camp_names — regex alternation + IGNORECASE ----
+  {
+    id: 'task_search_camp_names',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: search_camp_names.py',
+    meta: 'regex. find every camp counsellor by name.',
+    skill: 'REGEX :: ALTERNATION AND IGNORECASE',
+    hint: `<code>for msg in parsed:</code> indented <code>for name in names:</code> double-indented <code>if re.search(name, msg["content"], re.IGNORECASE): counts[name] += 1</code>. then <code>sorted_names = sorted(names, key=lambda n: -counts[n])</code> then <code>for name in sorted_names: print(f"{name}: {counts[name]}")</code>.`,
+    storyAbove: `you have parsed messages. now find which messages mention camp counsellors. <code>re.search()</code> looks for a pattern anywhere in the string (vs <code>re.match()</code> which only looks at the start). add <code>re.IGNORECASE</code> as a flag to match regardless of case.`,
+    instructions: `your task: for each parsed message, search the content for any of these names: wren, briar, camille, hattie, melissa, marcia, tyler. for each name, count how many messages mention it. print each name and its count, sorted by count descending.`,
+    starter: `import re
+import collections
+
+with open("hannah_archive.txt") as f:
+    messages = f.readlines()
+pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
+parsed = []
+for line in messages:
+    m = re.match(pattern, line.strip())
+    if m:
+        parsed.append({"date": m.group(1), "sender": m.group(2), "content": m.group(3)})
+
+counts = collections.Counter()
+names = ["wren", "briar", "camille", "hattie", "melissa", "marcia", "tyler"]
+
+# for each message, check which names appear and count
+
+# print each name and count, sorted by count descending
+`,
+    expectedOutput: `wren: 11
+tyler: 4
+briar: 3
+hattie: 3
+marcia: 1
+camille: 0
+melissa: 0`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// wren is the most-mentioned. that tracks. tegan was obsessed.
+// briar a few times. expected.
+// a lot of names with zero mentions. tegan barely talked about most of camp.`
+    }
+  },
+
+  // ---- BEAT 7: try_message_wren — AIM compose, no response ----
+  {
+    id: 'try_message_wren',
+    type: 'aim_compose',
+    title: 'AIM :: new message to wren_h',
+    meta: 'wren_h :: online (silent for 9 days)',
+    body: `i've been reading her old chats. you're in them a lot. she loved you in her seventeen-year-old way. it wasn't all of what you thought it was, but it was real.
+
+i'm not asking you to write back. i just thought you should know.`,
+    nextBtn: '\u25b8 SEND'
+  },
+
+  // ---- BEAT 8: chapter wrap-up ----
+  {
+    id: 'wrap',
+    type: 'wrap',
+    title: 'chapter 6 :: complete',
+    body: `tegan typed to hannah every night for fourteen months.
+mostly after midnight. mostly alone in her room.
+the densest stretch was august 2004.
+the last message was at 9:47 AM on august 14.
+nothing in fourteen months explains what happened that night.
+so where do you look next.`,
+    skillsLearned: [
+      're module: regex pattern matching on text',
+      're.match() with capture groups: extracting structured data',
+      'raw strings (r"..."): how and why',
+      'regex character classes (\\\\d, \\\\w, .)',
+      'regex quantifiers ({n}, *)',
+      're.search() vs re.match(): anchored vs unanchored',
+      're.IGNORECASE flag',
+      'dict-of-counts: aggregating by key',
+      'ASCII bar charts: visualizing frequency in plain text',
+      'collections.Counter for frequency counting'
+    ],
+    nextBtn: '\u25b8 end of chapter 6'
+  }
+];// ===========================================================================
+// RENDER STORY (linear, append-as-you-go)
+// ===========================================================================
+const storyContainer = document.getElementById('storyContainer');
+
+function renderStory() {
+  storyContainer.innerHTML = '';
+  // render all completed beats, then current beat
+  const upTo = Math.min(state.currentBeat, BEATS.length - 1);
+  for (let i = 0; i <= upTo; i++) {
+    renderBeat(BEATS[i], i === upTo);
+  }
+  // scroll to bottom
+  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+}
+
+function renderBeat(beat, isActive) {
+  if (beat.type === 'diary') return renderDiary(beat, isActive);
+  if (beat.type === 'task') return renderTask(beat, isActive);
+  if (beat.type === 'wrap') return renderWrap(beat, isActive);
+  if (beat.type === 'board') return renderBoard(beat, isActive);
+  if (beat.type === 'h_board') return renderHBoard(beat, isActive);
+  if (beat.type === 'aim_compose') return renderAimCompose(beat, isActive);
+  if (beat.type === 'aim_log') return renderAimLog(beat, isActive);
+  if (beat.type === 'archive_view') return renderArchiveView(beat, isActive);
+}
+
+function renderArchiveView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'archive-window';
+  const linesHtml = beat.messages.map(m => {
+    const senderClass = (m.sender === 'tegan_a87') ? 'archive-sender-tegan' : 'archive-sender-hannah';
+    const contentClass = m.content.includes('[REDACTED]') ? 'archive-content redacted-line' : 'archive-content';
+    return `<div class="archive-line"><span class="archive-timestamp">[${m.date}]</span><span class="${senderClass}">${m.sender}:</span><span class="${contentClass}">${escapeHtml(m.content)}</span></div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="archive-meta">${beat.meta || ''}</div>
+    <div class="archive-body">${linesHtml}</div>
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderAimCompose(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-compose-body">${beat.body}</div>
+    ${isActive ? `<div class="aim-send-bar">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
+    </div>` : `<div class="aim-send-bar" style="text-align: right; color: var(--bg-deep); font-family: 'Silkscreen', monospace; font-size: 9px;">✓ sent</div>`}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderAimLog(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  const messagesHtml = beat.messages.map(m => {
+    if (!m.text || m.text.trim() === '' || m.text === '…') {
+      return `<div class="aim-message-pause">. . .</div>`;
+    }
+    const isPlayer = m.from === 'you';
+    const cls = isPlayer ? 'aim-message aim-message-you' : 'aim-message';
+    return `<div class="${cls}"><span class="aim-message-from">${m.from}:</span>${escapeHtml(m.text)}</div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-log-body">${messagesHtml}</div>
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.fragments.map(f => `
+    <div class="fragment-card ${f.platform.toLowerCase()}">
+      <div class="fragment-id">#${f.id}</div>
+      <div class="fragment-platform">${f.platform}</div>
+      <div class="fragment-time">${f.time}</div>
+      <div class="fragment-from">${f.from} → ${f.to}</div>
+      <div class="fragment-content">${f.content}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="fragment-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderHBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.candidates.map(c => `
+    <div class="hboard-card">
+      <div class="hboard-name">${c.first} ${c.last}</div>
+      <div class="hboard-role">${c.role}, age ${c.age}</div>
+      <div class="hboard-row"><span class="hboard-label">aug 14</span>${c.status}</div>
+      <div class="hboard-row"><span class="hboard-label">alibi</span>${c.alibi}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="hboard-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderDiary(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'window story-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="diary-entry">
+      <div class="diary-meta">${beat.meta}</div>
+${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderTask(beat, isActive) {
+  const completed = state.completedBeats.includes(beat.id);
+  const w = document.createElement('div');
+  w.className = 'window terminal-window';
+
+  // Story above, in a diary-ish small note
+  const storyHtml = beat.storyAbove ? `
+    <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;">
+      ${beat.storyAbove}
+    </div>` : '';
+
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    ${storyHtml}
+    <div style="background: var(--window-bg); padding: 14px 16px;">
+      <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;">
+        ✦ skill unlocking: ${beat.skill}
+      </div>
+      <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;">
+        ${beat.instructions}
+      </div>
+      <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div>
+      <div style="margin-top: 8px;">
+        <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button>
+      </div>
+    </div>
+    <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div>
+    <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea>
+
+```
+<div class="editor-bar">
+  <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button>
+  <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button>
+  <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);">
+    ${completed ? '✓ COMPLETE' : 'NOT YET RUN'}
+  </span>
+</div>
+<div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div>
+${completed && isActive ? `<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
+  <button class="btn" onclick="advanceBeat()">▸ continue</button>
+</div>` : ''}
+```
+
+`;
+storyContainer.appendChild(w);
+}
+
+function renderWrap(beat, isActive) {
+const w = document.createElement(‘div’);
+w.className = ‘window story-window’;
+w.style.maxWidth = ‘640px’;
+w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 7 :: pending<br> > hannah_archive :: read </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
+storyContainer.appendChild(w);
+}
+
+// ===========================================================================
+// TASK EXECUTION
+// ===========================================================================
+async function runTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+const codeEl = document.getElementById(‘code-’ + beatId);
+const outEl = document.getElementById(‘output-’ + beatId);
+const code = codeEl.value;
+
+outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
+
+// Patch input() if needed
+let runCode = code;
+if (beat.fakeInput !== undefined) {
+// monkey-patch input() to return our fake value
+runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
+}
+
+// Inject the chapter’s filesystem if requested
+if (beat.fileInjection) {
+await injectChapter6Files();
+}
+
+const result = await runPython(runCode);
+const actualOutput = (result.output || ‘’).trimEnd();
+
+if (!result.ok) {
+outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+return;
+}
+
+// Check expected output
+let passed = false;
+// Allow expectedOutput to use \n as literal newline escape
+const expectedNormalized = (beat.expectedOutput || ‘’).replace(/\n/g, ‘\n’);
+if (beat.matchType === ‘exact’) {
+passed = actualOutput.trim() === expectedNormalized.trim();
+} else if (beat.matchType === ‘contains’) {
+passed = actualOutput.includes(expectedNormalized);
+}
+
+if (passed) {
+outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
+// mark complete
+if (!state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+state.charms += (beat.charms || 0);
+// store the working code
+beat.completedCode = code;
+writeSave(state);
+}
+// show buddy popup
+if (beat.onComplete?.buddy) {
+showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
+}
+// re-render to show “continue” button
+setTimeout(() => renderStory(), 600);
+} else {
+outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
+}
+}
+
+function resetTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+document.getElementById(‘code-’ + beatId).value = beat.starter;
+document.getElementById(‘output-’ + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
+}
+
+function escapeHtml(s) {
+return String(s).replace(/[&<>]/g, c => ({’&’:’&’,’<’:’<’,’>’:’>’}[c]));
+}
+
+// ===========================================================================
+// BEAT ADVANCE
+// ===========================================================================
+function advanceBeat() {
+// mark diary beats as “completed” implicitly (they only need to be read)
+const beat = BEATS[state.currentBeat];
+if (beat && (beat.type === ‘diary’ || beat.type === ‘board’ || beat.type === ‘h_board’ || beat.type === ‘aim_compose’ || beat.type === ‘aim_log’ || beat.type === ‘archive_view’) && !state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+}
+state.currentBeat = Math.min(state.currentBeat + 1, BEATS.length - 1);
+writeSave(state);
+renderStory();
+}
+
+function resetGame() {
+if (confirm(‘really restart from the beginning? all your progress will be erased.’)) {
+localStorage.removeItem(SAVE_KEY);
+location.reload();
+}
+}
+
+// ===========================================================================
+// BUDDY POPUP
+// ===========================================================================
+function showBuddy(name, msg) {
+document.getElementById(‘buddyName’).textContent = name + ’ :: incoming message’;
+document.getElementById(‘buddyMessage’).innerHTML = msg;
+const popup = document.getElementById(‘buddyPopup’);
+popup.classList.remove(‘hidden’);
+// play a soft chime — emulated as a CSS attention grab
+popup.style.animation = ‘none’;
+setTimeout(() => { popup.style.animation = ‘’; }, 10);
+}
+function closeBuddy() {
+document.getElementById(‘buddyPopup’).classList.add(‘hidden’);
+}
+
+// auto-resume from save
+if (state.userName && state.currentBeat > 0) {
+// skip intro
+document.getElementById(‘userNameInput’).value = state.userName;
+// keep intro visible but offer continue — simpler: go straight in
+setTimeout(() => {
+document.getElementById(‘introScreen’).classList.add(‘hidden’);
+document.getElementById(‘desktop’).classList.remove(‘hidden’);
+document.getElementById(‘taskbar’).classList.remove(‘hidden’);
+makeSparkles();
+startClock();
+renderStory();
+}, 100);
+}
+</script>
+
+</body>
+</html>
