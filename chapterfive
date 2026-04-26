@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pyforthegirls :: chapter 5 :: if you're reading this</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<style>
+  /* ============ Y2K-007 PALETTE ============ */
+  :root {
+    --bg-deep: #1a0628;
+    --bg-mid: #2d0a3d;
+    --pink-hot: #ff66c4;
+    --pink-soft: #ffb3e6;
+    --pink-bubble: #ffd6f0;
+    --lavender: #c8a8e8;
+    --cyan-glow: #66ffff;
+    --lime-acid: #c8ff66;
+    --silver: #d8d8e8;
+    --chrome-1: #b8b8d0;
+    --chrome-2: #f0f0ff;
+    --window-bg: #f4d4f0;
+    --window-border: #ff66c4;
+    --shadow-hard: 4px 4px 0 #1a0628;
+    --shadow-soft: 0 0 24px rgba(255, 102, 196, 0.4);
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+min-height: 100vh;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+color: var(–silver);
+background: var(–bg-deep);
+overflow-x: hidden;
+cursor: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘24’ height=‘24’ viewBox=‘0 0 24 24’%3E%3Cpath fill=’%23ff66c4’ stroke=’%23fff’ stroke-width=‘1’ d=‘M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z’/%3E%3C/svg%3E”) 2 2, auto;
+}
+
+/* ============ ANIMATED BACKGROUND ============ */
+body::before {
+content: ‘’;
+position: fixed; inset: 0; z-index: -2;
+background:
+radial-gradient(ellipse at 20% 30%, rgba(255, 102, 196, 0.18), transparent 50%),
+radial-gradient(ellipse at 80% 70%, rgba(102, 255, 255, 0.12), transparent 50%),
+radial-gradient(ellipse at 50% 100%, rgba(200, 168, 232, 0.15), transparent 60%),
+var(–bg-deep);
+}
+body::after {
+content: ‘’;
+position: fixed; inset: 0; z-index: -1;
+background-image:
+repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
+pointer-events: none;
+}
+
+/* sparkle layer */
+.sparkles {
+position: fixed; inset: 0; pointer-events: none; z-index: 1;
+}
+.sparkle {
+position: absolute;
+width: 6px; height: 6px;
+background: radial-gradient(circle, #fff 0%, var(–pink-hot) 50%, transparent 70%);
+border-radius: 50%;
+animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+0%, 100% { opacity: 0; transform: scale(0); }
+50% { opacity: 1; transform: scale(1); }
+}
+
+/* ============ DESKTOP / TASKBAR ============ */
+.desktop {
+min-height: 100vh;
+padding: 16px 16px 56px 16px;
+position: relative;
+}
+.taskbar {
+position: fixed; bottom: 0; left: 0; right: 0;
+height: 40px;
+background: linear-gradient(180deg, var(–chrome-2) 0%, var(–chrome-1) 100%);
+border-top: 2px solid var(–window-border);
+display: flex;
+align-items: center;
+padding: 0 12px;
+gap: 12px;
+z-index: 100;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+}
+.start-btn {
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+border: 2px solid var(–bg-deep);
+border-right-color: #ff99d6;
+border-bottom-color: #ff99d6;
+padding: 4px 14px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+font-weight: bold;
+box-shadow: 2px 2px 0 var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+.start-btn::before { content: ’✿ ’; }
+.taskbar-time {
+margin-left: auto;
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 10px;
+border: 1px solid var(–bg-deep);
+box-shadow: inset 1px 1px 0 #000;
+font-family: ‘VT323’, monospace;
+font-size: 14px;
+}
+.taskbar-mail {
+background: var(–bg-deep);
+color: var(–cyan-glow);
+padding: 3px 8px;
+border: 1px solid var(–lavender);
+font-size: 11px;
+animation: blink 1.5s steps(2) infinite;
+cursor: pointer;
+}
+@keyframes blink { 50% { opacity: 0.4; } }
+
+/* ============ DESKTOP ICONS ============ */
+.icon-grid {
+display: grid;
+grid-template-columns: 80px;
+gap: 12px;
+margin-bottom: 24px;
+}
+.desktop-icon {
+text-align: center;
+color: var(–silver);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+cursor: pointer;
+padding: 4px;
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
+.desktop-icon-img {
+width: 48px; height: 48px;
+margin: 0 auto 4px;
+display: flex; align-items: center; justify-content: center;
+font-size: 32px;
+filter: drop-shadow(2px 2px 0 var(–bg-deep));
+}
+
+/* ============ WINDOWS ============ */
+.window {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+}
+.window-titlebar {
+background: linear-gradient(90deg, var(–pink-hot) 0%, var(–lavender) 100%);
+color: white;
+padding: 4px 8px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 1px;
+text-transform: uppercase;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 2px solid var(–bg-deep);
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.window-titlebar-buttons {
+display: flex; gap: 4px;
+}
+.titlebar-btn {
+width: 16px; height: 14px;
+background: var(–chrome-2);
+border: 1px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+line-height: 12px;
+text-align: center;
+cursor: pointer;
+}
+.window-content { padding: 16px; }
+
+/* ============ AIM-STYLE BUDDY MESSAGE / STORY POPUP ============ */
+.story-window {
+max-width: 540px;
+margin: 24px auto;
+animation: window-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes window-pop {
+from { transform: scale(0.85); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+.story-window .window-titlebar { background: linear-gradient(90deg, #ff66c4, #c8a8e8); }
+.diary-entry {
+background: #fff8f0;
+background-image:
+repeating-linear-gradient(180deg, transparent 0, transparent 23px, #ffd6e8 23px, #ffd6e8 24px);
+color: #2d0a3d;
+padding: 24px 20px 20px 36px;
+font-family: ‘Nanum Pen Script’, ‘Special Elite’, cursive;
+font-size: 19px;
+line-height: 24px;
+border-left: 8px solid var(–pink-hot);
+position: relative;
+}
+.diary-entry::before {
+content: ‘’;
+position: absolute;
+left: 18px; top: 0; bottom: 0;
+border-left: 1px solid #ff99cc;
+}
+.diary-meta {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #999;
+margin-bottom: 8px;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+/* ============ TERMINAL / CODE EDITOR ============ */
+.terminal-window { max-width: 760px; margin: 24px auto; }
+.terminal-window .window-titlebar {
+background: linear-gradient(90deg, var(–bg-deep), var(–bg-mid));
+color: var(–lime-acid);
+}
+.editor-wrap {
+display: grid;
+grid-template-columns: 1fr;
+gap: 0;
+}
+.file-tab {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 12px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+border-bottom: 1px solid var(–pink-hot);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.file-tab::before { content: ‘▸’; color: var(–pink-hot); }
+.code-area {
+background: #0a0218;
+color: var(–cyan-glow);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 17px;
+line-height: 1.4;
+border: none;
+width: 100%;
+min-height: 140px;
+resize: vertical;
+outline: none;
+tab-size: 4;
+caret-color: var(–pink-hot);
+}
+.code-area:focus { box-shadow: inset 0 0 12px rgba(255, 102, 196, 0.3); }
+.editor-bar {
+background: var(–chrome-1);
+padding: 8px 12px;
+display: flex;
+gap: 8px;
+border-top: 2px solid var(–bg-deep);
+flex-wrap: wrap;
+align-items: center;
+}
+.btn {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+padding: 6px 12px;
+border: 2px solid var(–bg-deep);
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+color: var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+box-shadow: 2px 2px 0 var(–bg-deep);
+transition: transform 0.05s;
+font-weight: bold;
+}
+.btn:hover { background: linear-gradient(180deg, var(–pink-bubble), var(–pink-soft)); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(–bg-deep); }
+.btn.btn-secondary {
+background: linear-gradient(180deg, var(–chrome-2), var(–chrome-1));
+}
+.btn.btn-acid {
+background: linear-gradient(180deg, #e6ff99, var(–lime-acid));
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.output-area {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 16px;
+min-height: 60px;
+border-top: 2px solid var(–pink-hot);
+white-space: pre-wrap;
+word-wrap: break-word;
+line-height: 1.4;
+}
+.output-area .err { color: #ff6688; }
+.output-area .ok { color: var(–lime-acid); }
+.output-area .info { color: var(–cyan-glow); }
+
+/* ============ TASK / OBJECTIVE PANEL ============ */
+.task-panel {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.task-panel .window-titlebar { background: linear-gradient(90deg, var(–lime-acid), #99cc66); color: var(–bg-deep); text-shadow: none; }
+.task-content { padding: 16px; }
+.task-content h3 {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+margin-bottom: 8px;
+color: var(–bg-deep);
+}
+.task-content p, .task-content li {
+font-family: ‘VT323’, monospace;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+margin-bottom: 8px;
+}
+.task-content ul { padding-left: 20px; }
+.task-content code {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 1px 6px;
+font-family: ‘VT323’, monospace;
+border-radius: 2px;
+font-size: 16px;
+}
+.hint-box {
+background: linear-gradient(180deg, #ffe6f5, var(–pink-bubble));
+border: 1px dashed var(–pink-hot);
+padding: 10px 12px;
+margin-top: 12px;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+color: var(–bg-deep);
+}
+.hint-box::before {
+content: ’✿ HINT: ’;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+}
+
+/* ============ MENTOR / BUDDY POPUP ============ */
+.buddy-popup {
+position: fixed;
+bottom: 60px;
+right: 20px;
+width: 280px;
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+z-index: 200;
+animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+font-family: ‘VT323’, monospace;
+}
+.buddy-popup .window-titlebar { background: linear-gradient(90deg, var(–cyan-glow), var(–lavender)); }
+.buddy-content {
+padding: 12px;
+color: var(–bg-deep);
+font-size: 16px;
+line-height: 1.3;
+}
+.buddy-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+margin-bottom: 6px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM COMPOSE / LOG (Ch5) ============ */
+.aim-window {
+border: 2px solid var(–bg-deep);
+background: #f0e8ff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+}
+.aim-window .window-titlebar {
+background: linear-gradient(90deg, #6699ff, #99ccff);
+color: #fff;
+}
+.aim-buddy-strip {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-buddy-strip .online-dot {
+color: var(–lime-acid);
+font-size: 14px;
+vertical-align: middle;
+}
+.aim-compose-body {
+padding: 16px;
+background: #fff;
+color: var(–bg-deep);
+font-size: 18px;
+line-height: 1.5;
+min-height: 120px;
+border: 1px solid var(–bg-deep);
+margin: 12px;
+white-space: pre-wrap;
+}
+.aim-log-body {
+padding: 14px;
+background: #fff;
+margin: 12px;
+border: 1px solid var(–bg-deep);
+max-height: 70vh;
+overflow-y: auto;
+}
+.aim-message {
+margin-bottom: 10px;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+}
+.aim-message-from {
+color: #cc3399;
+font-weight: bold;
+margin-right: 6px;
+}
+.aim-message-pause {
+text-align: center;
+color: #999;
+font-size: 18px;
+margin: 14px 0;
+letter-spacing: 4px;
+}
+.aim-send-bar {
+padding: 10px 12px;
+background: var(–window-bg);
+border-top: 1px solid var(–bg-deep);
+text-align: right;
+}
+.aim-send-btn {
+background: var(–lime-acid);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+padding: 8px 18px;
+cursor: pointer;
+box-shadow: 2px 2px 0 var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-send-btn:hover { background: #ccff66; }
+.aim-send-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+
+/* ============ INTRO SCREEN ============ */
+.intro-screen {
+position: fixed; inset: 0;
+background: var(–bg-deep);
+z-index: 9999;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+flex-direction: column;
+padding: 40px 20px;
+overflow-y: auto;
+}
+.intro-logo {
+font-family: ‘Press Start 2P’, monospace;
+font-size: 28px;
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow), var(–lime-acid), var(–pink-hot));
+background-size: 300% 100%;
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+animation: shimmer 4s linear infinite;
+text-align: center;
+line-height: 1.5;
+margin-bottom: 24px;
+text-shadow: 0 0 30px rgba(255, 102, 196, 0.5);
+}
+@keyframes shimmer {
+0% { background-position: 0% 50%; }
+100% { background-position: 300% 50%; }
+}
+.intro-tag {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–lavender);
+letter-spacing: 3px;
+margin-bottom: 36px;
+text-align: center;
+}
+.intro-prose {
+max-width: 560px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+color: var(–silver);
+line-height: 1.5;
+margin-bottom: 24px;
+text-align: left;
+background: var(–bg-mid);
+padding: 20px;
+border: 2px solid var(–pink-hot);
+box-shadow: var(–shadow-soft);
+}
+.intro-prose p { margin-bottom: 12px; }
+.intro-prose .em { color: var(–pink-hot); font-style: italic; }
+.intro-input {
+background: var(–bg-deep);
+color: var(–lime-acid);
+border: 2px solid var(–pink-hot);
+padding: 8px 12px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+width: 280px;
+text-align: center;
+outline: none;
+margin-bottom: 16px;
+}
+.intro-input:focus { box-shadow: 0 0 12px var(–pink-hot); }
+
+/* ============ FRAGMENT BOARD (Roottrees-style) ============ */
+.fragment-board {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.fragment-board .window-titlebar {
+background: linear-gradient(90deg, #ffaa66, var(–pink-hot));
+}
+.fragment-grid {
+padding: 12px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 10px;
+background:
+repeating-linear-gradient(45deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.fragment-card {
+background: #fff;
+border: 1.5px solid var(–bg-deep);
+padding: 8px;
+font-family: ‘VT323’, monospace;
+font-size: 13px;
+color: var(–bg-deep);
+box-shadow: 2px 2px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-1deg);
+transition: transform 0.15s, box-shadow 0.15s;
+cursor: default;
+word-wrap: break-word;
+overflow: hidden;
+}
+.fragment-card:nth-child(2n) { transform: rotate(1deg); }
+.fragment-card:nth-child(3n) { transform: rotate(-0.5deg); }
+.fragment-card:nth-child(5n) { transform: rotate(0.7deg); }
+.fragment-card:hover {
+transform: rotate(0) scale(1.04);
+box-shadow: 4px 4px 0 var(–pink-hot);
+z-index: 10;
+}
+.fragment-card.sms {
+background: #d4f4d4;
+border-color: #336633;
+}
+.fragment-card.aim {
+background: #d4e4ff;
+border-color: #334466;
+}
+.fragment-platform {
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+background: var(–bg-deep);
+color: var(–pink-hot);
+padding: 1px 4px;
+margin-bottom: 4px;
+display: inline-block;
+letter-spacing: 1px;
+}
+.fragment-card.sms .fragment-platform { color: var(–lime-acid); }
+.fragment-time {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #666;
+margin-bottom: 3px;
+}
+.fragment-from {
+font-weight: bold;
+color: var(–pink-hot);
+font-size: 11px;
+margin-bottom: 2px;
+}
+.fragment-card.aim .fragment-from { color: #336699; }
+.fragment-content {
+font-size: 13px;
+line-height: 1.3;
+}
+.fragment-id {
+position: absolute;
+top: 2px;
+right: 4px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+color: #999;
+}
+
+/* ============ H-BOARD (suspect cards) ============ */
+.hboard-grid {
+padding: 16px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 14px;
+background:
+repeating-linear-gradient(135deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.hboard-card {
+background: #fff8f0;
+border: 2px solid var(–bg-deep);
+padding: 12px;
+font-family: ‘VT323’, monospace;
+color: var(–bg-deep);
+box-shadow: 3px 3px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-0.8deg);
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.hboard-card:nth-child(2n) { transform: rotate(0.6deg); }
+.hboard-card:nth-child(3n) { transform: rotate(-0.4deg); }
+.hboard-card:hover {
+transform: rotate(0) scale(1.03);
+box-shadow: 5px 5px 0 var(–pink-hot);
+z-index: 10;
+}
+.hboard-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+color: var(–pink-hot);
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 4px;
+border-bottom: 1px dashed var(–bg-deep);
+padding-bottom: 4px;
+}
+.hboard-role {
+font-size: 14px;
+font-style: italic;
+color: #666;
+margin-bottom: 8px;
+}
+.hboard-row {
+font-size: 14px;
+line-height: 1.3;
+margin-bottom: 4px;
+}
+.hboard-label {
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+color: var(–bg-deep);
+background: var(–lime-acid);
+padding: 1px 4px;
+letter-spacing: 1px;
+display: inline-block;
+margin-right: 4px;
+}
+
+/* ============ DECORATIVE BITS ============ */
+.marquee-strip {
+background: var(–bg-deep);
+color: var(–pink-hot);
+border-top: 1px solid var(–pink-hot);
+border-bottom: 1px solid var(–pink-hot);
+overflow: hidden;
+padding: 4px 0;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 2px;
+margin: 12px 0;
+}
+.marquee-strip span {
+display: inline-block;
+padding-left: 100%;
+animation: marquee 30s linear infinite;
+white-space: nowrap;
+}
+@keyframes marquee {
+0% { transform: translateX(0); }
+100% { transform: translateX(-100%); }
+}
+
+.progress-bar-outer {
+background: var(–bg-deep);
+border: 1px solid var(–bg-deep);
+height: 12px;
+margin-top: 8px;
+box-shadow: inset 1px 1px 0 #000;
+}
+.progress-bar-inner {
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow));
+height: 100%;
+transition: width 0.5s ease-out;
+background-size: 20px 20px;
+background-image: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+animation: stripe-shift 1s linear infinite;
+}
+@keyframes stripe-shift { to { background-position: 20px 0; } }
+
+.glitter-divider {
+text-align: center;
+color: var(–pink-hot);
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+margin: 16px 0;
+letter-spacing: 8px;
+}
+
+/* hidden by default */
+.hidden { display: none !important; }
+
+/* small mobile adjustments */
+@media (max-width: 600px) {
+.intro-logo { font-size: 18px; }
+.intro-prose { font-size: 16px; padding: 16px; }
+.buddy-popup { width: calc(100% - 40px); right: 20px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ============ INTRO / NAME SCREEN ============ -->
+
+<div class="intro-screen" id="introScreen">
+  <div class="intro-logo">pyforthegirls</div>
+  <div class="intro-tag">★ chapter five ★ if you're reading this ★</div>
+  <div class="intro-prose">
+    <p>Three days since chapter four.</p>
+    <p>You haven't found Melissa Klassen. You searched the white pages and dug through archived yearbooks. Every mention of "klassen" you could pull from Google led nowhere. The trail is fourteen months cold and you're chasing it on a high school graduation photo and a roster line that says hemlock cabin.</p>
+    <p>You came back to the laptop because there's nothing else. You decided to stop opening files Tegan named, and start looking for files she didn't.</p>
+    <p><span class="em">wren_h</span> hasn't been on AIM in two days. Her green dot is gone. You don't know what that means.</p>
+  </div>
+  <input class="intro-input" id="userNameInput" placeholder="enter your name" maxlength="20" autofocus>
+  <button class="btn btn-acid" id="startBtn" style="font-size: 12px; padding: 10px 24px;">▸ KEEP LOOKING</button>
+</div>
+
+<!-- ============ MAIN DESKTOP ============ -->
+
+<div class="desktop hidden" id="desktop">
+  <div class="sparkles" id="sparkles"></div>
+
+  <!-- Desktop icons -->
+
+  <div class="icon-grid">
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💾</div>
+      My Computer
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📂</div>
+      pinecrest_summer/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">🐍</div>
+      python.exe
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📔</div>
+      diary/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💬</div>
+      AIM_archives/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📱</div>
+      SMS_dumps/
+    </div>
+  </div>
+
+  <!-- Marquee -->
+
+  <div class="marquee-strip"><span>★ now playing: my chemical romance — helena ★ AIM status: invisible ★ wren_h :: offline (2 days) ★ glorfindel_lives :: online ★ time zone: this is now ★ now playing: my chemical romance — helena ★</span></div>
+
+  <!-- ============ STORY WINDOWS RENDERED HERE ============ -->
+
+  <div id="storyContainer"></div>
+
+  <!-- ============ BUDDY POPUP ============ -->
+
+  <div class="buddy-popup hidden" id="buddyPopup">
+    <div class="window-titlebar">
+      <span>buddyhelper :: incoming</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
+      </div>
+    </div>
+    <div class="buddy-content">
+      <div class="buddy-name" id="buddyName">tegan_a87</div>
+      <div id="buddyMessage"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASKBAR ============ -->
+
+<div class="taskbar hidden" id="taskbar">
+  <button class="start-btn">Start</button>
+  <span style="font-family: 'Silkscreen', monospace; font-size: 9px;">CHAPTER 5 :: IF YOU'RE READING THIS</span>
+  <span class="taskbar-mail" id="mailIndicator">✉ 1 NEW</span>
+  <span class="taskbar-time" id="taskbarTime">11:47 PM</span>
+</div>
+
+<script>
+// ===========================================================================
+// PYODIDE LOADING
+// ===========================================================================
+let pyodide = null;
+let pyodideLoading = false;
+
+async function loadPyodideOnce() {
+  if (pyodide) return pyodide;
+  if (pyodideLoading) {
+    while (!pyodide) await new Promise(r => setTimeout(r, 100));
+    return pyodide;
+  }
+  pyodideLoading = true;
+  pyodide = await loadPyodide();
+  return pyodide;
+}
+
+async function runPython(code) {
+  const py = await loadPyodideOnce();
+  let stdout = '';
+  py.setStdout({ batched: (s) => { stdout += s + '\n'; } });
+  py.setStderr({ batched: (s) => { stdout += s + '\n'; } });
+  try {
+    await py.runPythonAsync(code);
+    return { ok: true, output: stdout };
+  } catch (err) {
+    return { ok: false, output: stdout, error: String(err.message || err) };
+  }
+}
+
+// ===========================================================================
+// SAVE / LOAD STATE (Neocities-friendly: localStorage only)
+// ===========================================================================
+const SAVE_KEY = 'pyforthegirls_save_ch5_v1';
+
+// ===========================================================================
+// IN-GAME FILE CONTENTS — written into Pyodide's virtual FS at task time
+// ===========================================================================
+
+// Tegan's diary folder lists 14 entries; she hid a 15th folder via dot-prefix.
+const DIARY_FILES = [
+  '01_first_day.txt', '02_why_im_typing.txt', '03_wren.txt',
+  '04_camille.txt', '05_lake_morning.txt', '06_briar_textbook.txt',
+  '07_boathouse.txt', '08_my_mom.txt', '09_dont_publish.txt',
+  '10_basement.txt', '11_song_lyrics_i_like.txt', '12_she_knows.txt',
+  '13_a_friend.txt', '14_LAST.txt'
+];
+
+// The encrypted letter — encoded with keyword cipher, key="glorfindel".
+const ENCRYPTED_LETTER = `ei yku'qf qfgrejn tdes, e'h jkt rfgr.
+
+e dgr tk nk gjr e okucrj't tfcc yku. e wgs 17 gjr tdfqf wgs
+jk rkkq e okucr cfngccy wgcb tdqkund. skhfkjf dfcmfr hf iejr kjf.
+
+dfq soqffjjghf es ej tdes ikcrfq. yku'vf sffj et lfikqf. iejr dfq.
+tfcc dfq glkut tdf skjn e wgs duhhejn kj tdf rkob. "suod nqfgt
+dfendts." sdf'cc bjkw et's hf yku'qf ckkbejn ikq.
+
+e ogj't tfcc yku wdfqf e wfjt. e rkj't bjkw yft. tkjendt g iqefjr
+ki dfqs es meobejn hf um gt tdf lkgtdkusf gjr rqevejn hf tk g lus
+stkm. gitfq tdgt e'cc ienuqf et kut.
+
+mcfgsf rkj't tfcc hy hkh kq gjykjf gt oghm yft. fsmfoegccy wqfj.
+sdf wkj't tgbf et wfcc.
+
+e'h skqqy e okucrj't sgy nkkrlyf. e wgs 17 gjr e dgr tk nk.
+
+ckvf,
+tfngj`;
+
+// Write Tegan's filesystem layout into Pyodide's virtual FS so file ops work.
+async function injectChapter5Files() {
+  const py = await loadPyodideOnce();
+  try { py.FS.mkdir('diary'); } catch (e) { /* exists */ }
+  for (const fname of DIARY_FILES) {
+    try { py.FS.writeFile('diary/' + fname, ''); } catch (e) { /* exists */ }
+  }
+  try { py.FS.mkdir('diary/.hidden'); } catch (e) { /* exists */ }
+  py.FS.writeFile('diary/.hidden/letter.txt', ENCRYPTED_LETTER);
+}
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+
+function writeSave(data) {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+let state = loadSave() || {
+  userName: '',
+  currentBeat: 0,
+  completedBeats: [],
+  charms: 0
+};
+
+// ===========================================================================
+// SPARKLES
+// ===========================================================================
+function makeSparkles() {
+  const container = document.getElementById('sparkles');
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    container.appendChild(s);
+  }
+}
+
+// ===========================================================================
+// INTRO -> DESKTOP
+// ===========================================================================
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('userNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startGame();
+});
+
+function startGame() {
+  const name = document.getElementById('userNameInput').value.trim() || 'guest';
+  state.userName = name;
+  writeSave(state);
+  document.getElementById('introScreen').classList.add('hidden');
+  document.getElementById('desktop').classList.remove('hidden');
+  document.getElementById('taskbar').classList.remove('hidden');
+  makeSparkles();
+  startClock();
+  renderStory();
+}
+
+function startClock() {
+  const start = Date.now();
+  setInterval(() => {
+    // we keep the in-fiction clock at 11:47 PM, ticking up unsettlingly
+    const elapsed = Math.floor((Date.now() - start) / 60000);
+    const hh = 11;
+    const mm = (47 + elapsed) % 60;
+    document.getElementById('taskbarTime').textContent =
+      `${hh}:${String(mm).padStart(2,'0')} PM`;
+  }, 1000);
+}
+
+// ===========================================================================
+// CONTENT — STORY BEATS
+// Each beat is either a 'diary' card (pure narrative) or a 'task' card
+// (story + Python challenge). Player progresses linearly.
+// ===========================================================================
+// CH5 BEATS — 10 beats: discovery, cipher work, letter, AIM exchange, wrap.
+
+const BEATS = [
+  // ---- BEAT 0: ch5_open — player frustrated, decides to look harder ----
+  {
+    id: 'ch5_open',
+    type: 'diary',
+    title: 'open file: notes/where_else.txt',
+    meta: 'you typed this twenty minutes ago.',
+    body: `melissa is gone. or never existed in any record google can find. or both.
+
+i need to look at tegan's laptop the way she did when she was hiding things. she had a folder structure. python scripts she wrote and named. nothing in those files explains where melissa went.
+
+so maybe the answer isn't in a file with a name.
+it's somewhere she didn't want anyone to see.`,
+    nextBtn: '\u25b8 search the disk'
+  },
+
+  // ---- BEAT 1: task_walk_filesystem — find the hidden folder via os.listdir ----
+  {
+    id: 'task_walk_filesystem',
+    type: 'task',
+    charms: 2,
+    title: 'python.exe :: list_everything.py',
+    meta: 'find files tegan didn\'t show you.',
+    skill: 'os MODULE :: LISTING DIRECTORIES',
+    hint: `<code>import os</code> at the top. then <code>entries = os.listdir("diary")</code>. then <code>for entry in sorted(entries):</code> indented <code>print(entry)</code>.`,
+    storyAbove: `the os module lets python interact with the file system. <code>os.listdir(path)</code> returns every entry in a directory. by default, the file browser hides folders that start with a dot (.), but <code>os.listdir</code> doesn\u2019t.`,
+    instructions: `your task: import os. list everything in tegan\u2019s <code>diary/</code> folder. print each entry on its own line, sorted alphabetically. look for anything you don\u2019t recognize.`,
+    starter: `import os
+
+# list everything in tegan's diary folder
+entries = os.listdir("diary")
+
+# print each entry on its own line, sorted
+`,
+    expectedOutput: `.hidden
+01_first_day.txt
+02_why_im_typing.txt
+03_wren.txt
+04_camille.txt
+05_lake_morning.txt
+06_briar_textbook.txt
+07_boathouse.txt
+08_my_mom.txt
+09_dont_publish.txt
+10_basement.txt
+11_song_lyrics_i_like.txt
+12_she_knows.txt
+13_a_friend.txt
+14_LAST.txt`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// 14 diary entries i already knew about. plus a folder called .hidden. she put a dot in front so it wouldn't show up in any file browser. tegan was hiding things.`
+    }
+  },
+
+  // ---- BEAT 2: find_letter_and_decoder — narrative open ----
+  {
+    id: 'find_letter_and_decoder',
+    type: 'diary',
+    title: 'open folder: diary/.hidden/',
+    meta: 'two files. that\'s it.',
+    body: `inside the .hidden folder are two files:
+
+  letter.txt    (encrypted text. unreadable.)
+  decoder.py    (python script. instructions.)
+
+you open letter.txt first. it starts:
+
+  ei yku'qf qfgrejn tdes, e'h jkt rfgr.
+
+eight letters in, you stop reading. it's encrypted.
+
+you open decoder.py. tegan left a template with comments.
+she's telling you how to read what she wrote.`,
+    nextBtn: '\u25b8 build the decoder'
+  },
+
+  // ---- BEAT 3: task_build_decoder — build cipher_alpha and decode_map ----
+  {
+    id: 'task_build_decoder',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: decoder.py (build the table)',
+    meta: 'tegan\'s template. you fill in the gaps.',
+    skill: 'DICT CONSTRUCTION :: PARALLEL ITERATION',
+    hint: `first loop: <code>for c in key.lower():</code> then <code>if c.isalpha() and c not in seen: cipher_alpha += c; seen.add(c)</code>. second loop: <code>for c in "abcdefghijklmnopqrstuvwxyz":</code> then <code>if c not in seen: cipher_alpha += c</code>. third: <code>for plain, cipher in zip("abcdefghijklmnopqrstuvwxyz", cipher_alpha):</code> then <code>decode_map[cipher] = plain</code>.`,
+    storyAbove: `decoder.py builds a substitution table from a key. given a key string, it takes the unique letters of the key (in order, no duplicates) and appends every other letter of the alphabet to make a 26-letter cipher alphabet. then it pairs that against the regular alphabet to build a decoding dictionary.`,
+    instructions: `your task: given <code>key = "test"</code>, build <code>cipher_alpha</code> (26 letters: deduplicated key letters first, then unused alphabet letters in order). then build <code>decode_map</code>, a dict mapping each <code>cipher_alpha</code> letter to its corresponding regular alphabet letter. print <code>cipher_alpha</code> and <code>decode_map['t']</code>.`,
+    starter: `key = "test"
+
+# build cipher_alpha: unique key letters in order, then remaining alphabet
+seen = set()
+cipher_alpha = ""
+
+# loop through key.lower() — for each letter, if it's a letter and we haven't seen it, add it
+
+# loop through "abcdefghijklmnopqrstuvwxyz" — for each letter not in seen, add it to cipher_alpha
+
+# build decode_map: dict mapping cipher_alpha letter -> regular alphabet letter at same index
+decode_map = {}
+
+print(cipher_alpha)
+print(decode_map['t'])
+`,
+    expectedOutput: `testabcdfghijklmnopqruvwxyz
+a`,
+    matchType: 'exact',
+    onComplete: {
+      diary: `// table built. for key 'test', t maps back to a. that's the inverse i need.`
+    }
+  },
+
+  // ---- BEAT 4: the_key_question — narrative pivot ----
+  {
+    id: 'the_key_question',
+    type: 'diary',
+    title: 'open file: notes/the_key.txt',
+    meta: 'you typed this and stared at it.',
+    body: `the decoder works on test data. now i need the actual key.
+
+tegan's comment said:
+  # the key is the screenname of the person i was about to meet.
+
+she was meeting someone the night she disappeared. that person never came forward. their only existence in tegan's life is a screenname. the same screenname tegan was texting when she typed "h."
+
+i think i know who.`,
+    nextBtn: '\u25b8 try the key'
+  },
+
+  // ---- BEAT 5: task_decode_letter — apply decode_map with key="glorfindel" ----
+  {
+    id: 'task_decode_letter',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: decode_letter.py',
+    meta: 'apply the table to the encrypted letter. read what tegan wrote.',
+    skill: 'STRING ITERATION :: CHARACTER MAPPING',
+    hint: `<code>for c in encoded:</code> indented <code>if c.isalpha():</code> then <code>decoded_char = decode_map[c.lower()]</code> then <code>if c.isupper(): decoded_char = decoded_char.upper()</code> then <code>decoded += decoded_char</code> else <code>decoded += c</code>.`,
+    storyAbove: `you've built the decode_map. now apply it: read the encrypted letter, walk through it character by character, look up each letter in the map, build the decoded output. preserve case (uppercase letters stay uppercase). preserve everything that isn't a letter (spaces, punctuation, newlines).`,
+    instructions: `your task: open <code>diary/.hidden/letter.txt</code>. for each character: if it's a letter, look it up in <code>decode_map</code> (lowercase) and preserve the original case. otherwise leave it as-is. print the decoded text. use <code>key = "glorfindel"</code>.`,
+    starter: `key = "glorfindel"
+
+# build cipher_alpha and decode_map (same as before)
+seen = set()
+cipher_alpha = ""
+for c in key.lower():
+    if c.isalpha() and c not in seen:
+        cipher_alpha += c
+        seen.add(c)
+for c in "abcdefghijklmnopqrstuvwxyz":
+    if c not in seen:
+        cipher_alpha += c
+decode_map = {}
+for plain, cipher in zip("abcdefghijklmnopqrstuvwxyz", cipher_alpha):
+    decode_map[cipher] = plain
+
+# read the encoded letter
+with open("diary/.hidden/letter.txt") as f:
+    encoded = f.read()
+
+# decode it
+decoded = ""
+
+print(decoded)
+`,
+    expectedOutput: `if you're reading this, i'm not dead.
+
+i had to go and i couldn't tell you. i was 17 and there was
+no door i could legally walk through. someone helped me find one.
+
+her screenname is in this folder. you've seen it before. find her.
+tell her about the song i was humming on the dock. "such great
+heights." she'll know it's me you're looking for.
+
+i can't tell you where i went. i don't know yet. tonight a friend
+of hers is picking me up at the boathouse and driving me to a bus
+stop. after that i'll figure it out.
+
+please don't tell my mom or anyone at camp yet. especially wren.
+she won't take it well.
+
+i'm sorry i couldn't say goodbye. i was 17 and i had to go.
+
+love,
+tegan`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// the letter is on screen. i'm reading it three times.`
+    }
+  },
+
+  // ---- BEAT 6: the_letter — Tegan's letter as its own beat ----
+  {
+    id: 'the_letter',
+    type: 'diary',
+    title: 'diary/.hidden/letter.txt :: DECODED',
+    meta: 'tegan wrote this on aug 14, 2004. hours before she disappeared.',
+    body: `if you're reading this, i'm not dead.
+
+i had to go and i couldn't tell you. i was 17 and there was
+no door i could legally walk through. someone helped me find one.
+
+her screenname is in this folder. you've seen it before. find her.
+tell her about the song i was humming on the dock. "such great
+heights." she'll know it's me you're looking for.
+
+i can't tell you where i went. i don't know yet. tonight a friend
+of hers is picking me up at the boathouse and driving me to a bus
+stop. after that i'll figure it out.
+
+please don't tell my mom or anyone at camp yet. especially wren.
+she won't take it well.
+
+i'm sorry i couldn't say goodbye. i was 17 and i had to go.
+
+love,
+tegan`,
+    nextBtn: '\u25b8 message glorfindel_lives'
+  },
+
+  // ---- BEAT 7: compose_to_hannah — styled AIM compose window ----
+  {
+    id: 'compose_to_hannah',
+    type: 'aim_compose',
+    title: 'AIM :: new message to glorfindel_lives',
+    meta: 'glorfindel_lives :: online',
+    body: `i'm not tegan. someone she knew. i found a letter she
+left for whoever cared enough to crack it. she said to
+message you and tell you about the song she was humming
+on the dock that night. "such great heights."
+
+she said you'd know it's me you're looking for.`,
+    nextBtn: '\u25b8 SEND'
+  },
+
+  // ---- BEAT 8: hannah_responds — Hannah's reply, second bombshell ----
+  {
+    id: 'hannah_responds',
+    type: 'aim_log',
+    title: 'AIM :: glorfindel_lives',
+    meta: 'glorfindel_lives is typing\u2026',
+    messages: [
+      { from: 'glorfindel_lives', text: 'oh my god' },
+      { from: 'glorfindel_lives', text: 'oh my god you are real' },
+      { from: 'glorfindel_lives', text: "i don't know who you are but you cracked it. she actually built it." },
+      { from: 'glorfindel_lives', text: "my name is hannah. she told you the song. i can't believe she told you the song." },
+      { from: 'glorfindel_lives', text: 'who are you? family?' },
+      { from: 'glorfindel_lives', text: '\u2026' },
+      { from: 'glorfindel_lives', text: 'i need to tell you something before you say anything else.' },
+      { from: 'glorfindel_lives', text: 'tegan never made it.' },
+      { from: 'glorfindel_lives', text: 'i waited at the rendezvous point. i waited eight hours.' },
+      { from: 'glorfindel_lives', text: 'the last text i got from her was "h"' },
+      { from: 'glorfindel_lives', text: 'i thought she got cold feet. then i thought she got caught. when they said she drowned i thought i should have come and gotten her myself.' },
+      { from: 'glorfindel_lives', text: '\u2026' },
+      { from: 'glorfindel_lives', text: "i don't know what happened to her between the boathouse and the bus stop." },
+      { from: 'glorfindel_lives', text: "nobody does. i'm the only one who even knew there was a bus stop." },
+      { from: 'glorfindel_lives', text: 'until you.' }
+    ],
+    nextBtn: '\u25b8 chapter 5 :: complete'
+  },
+
+  // ---- BEAT 9: chapter wrap-up ----
+  {
+    id: 'wrap',
+    type: 'wrap',
+    title: 'chapter 5 :: complete',
+    body: `tegan was running.
+she made it to the boathouse.
+she didn't make it to the bus.
+hannah is the only other person who knew the plan.
+something happened in those minutes.`,
+    skillsLearned: [
+      'os.listdir(): listing directory contents',
+      'hidden files and the dot-prefix Unix convention',
+      'dict construction with zip() and parallel iteration',
+      'substitution ciphers as dictionary lookups',
+      'string iteration with character-by-character mapping',
+      'case preservation: .isupper(), .lower(), .upper()'
+    ],
+    nextBtn: '\u25b8 end of chapter 5'
+  }
+];// ===========================================================================
+// RENDER STORY (linear, append-as-you-go)
+// ===========================================================================
+const storyContainer = document.getElementById('storyContainer');
+
+function renderStory() {
+  storyContainer.innerHTML = '';
+  // render all completed beats, then current beat
+  const upTo = Math.min(state.currentBeat, BEATS.length - 1);
+  for (let i = 0; i <= upTo; i++) {
+    renderBeat(BEATS[i], i === upTo);
+  }
+  // scroll to bottom
+  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+}
+
+function renderBeat(beat, isActive) {
+  if (beat.type === 'diary') return renderDiary(beat, isActive);
+  if (beat.type === 'task') return renderTask(beat, isActive);
+  if (beat.type === 'wrap') return renderWrap(beat, isActive);
+  if (beat.type === 'board') return renderBoard(beat, isActive);
+  if (beat.type === 'h_board') return renderHBoard(beat, isActive);
+  if (beat.type === 'aim_compose') return renderAimCompose(beat, isActive);
+  if (beat.type === 'aim_log') return renderAimLog(beat, isActive);
+}
+
+function renderAimCompose(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-compose-body">${beat.body}</div>
+    ${isActive ? `<div class="aim-send-bar">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
+    </div>` : `<div class="aim-send-bar" style="text-align: right; color: var(--bg-deep); font-family: 'Silkscreen', monospace; font-size: 9px;">✓ sent</div>`}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderAimLog(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  const messagesHtml = beat.messages.map(m => {
+    if (!m.text || m.text.trim() === '' || m.text === '…') {
+      return `<div class="aim-message-pause">. . .</div>`;
+    }
+    return `<div class="aim-message"><span class="aim-message-from">${m.from}:</span>${escapeHtml(m.text)}</div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-log-body">${messagesHtml}</div>
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.fragments.map(f => `
+    <div class="fragment-card ${f.platform.toLowerCase()}">
+      <div class="fragment-id">#${f.id}</div>
+      <div class="fragment-platform">${f.platform}</div>
+      <div class="fragment-time">${f.time}</div>
+      <div class="fragment-from">${f.from} → ${f.to}</div>
+      <div class="fragment-content">${f.content}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="fragment-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderHBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.candidates.map(c => `
+    <div class="hboard-card">
+      <div class="hboard-name">${c.first} ${c.last}</div>
+      <div class="hboard-role">${c.role}, age ${c.age}</div>
+      <div class="hboard-row"><span class="hboard-label">aug 14</span>${c.status}</div>
+      <div class="hboard-row"><span class="hboard-label">alibi</span>${c.alibi}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="hboard-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderDiary(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'window story-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="diary-entry">
+      <div class="diary-meta">${beat.meta}</div>
+${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderTask(beat, isActive) {
+  const completed = state.completedBeats.includes(beat.id);
+  const w = document.createElement('div');
+  w.className = 'window terminal-window';
+
+  // Story above, in a diary-ish small note
+  const storyHtml = beat.storyAbove ? `
+    <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;">
+      ${beat.storyAbove}
+    </div>` : '';
+
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    ${storyHtml}
+    <div style="background: var(--window-bg); padding: 14px 16px;">
+      <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;">
+        ✦ skill unlocking: ${beat.skill}
+      </div>
+      <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;">
+        ${beat.instructions}
+      </div>
+      <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div>
+      <div style="margin-top: 8px;">
+        <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button>
+      </div>
+    </div>
+    <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div>
+    <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea>
+
+```
+<div class="editor-bar">
+  <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button>
+  <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button>
+  <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);">
+    ${completed ? '✓ COMPLETE' : 'NOT YET RUN'}
+  </span>
+</div>
+<div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div>
+${completed && isActive ? `<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
+  <button class="btn" onclick="advanceBeat()">▸ continue</button>
+</div>` : ''}
+```
+
+`;
+storyContainer.appendChild(w);
+}
+
+function renderWrap(beat, isActive) {
+const w = document.createElement(‘div’);
+w.className = ‘window story-window’;
+w.style.maxWidth = ‘640px’;
+w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 6 :: pending<br> > hannah :: online, waiting </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
+storyContainer.appendChild(w);
+}
+
+// ===========================================================================
+// TASK EXECUTION
+// ===========================================================================
+async function runTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+const codeEl = document.getElementById(‘code-’ + beatId);
+const outEl = document.getElementById(‘output-’ + beatId);
+const code = codeEl.value;
+
+outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
+
+// Patch input() if needed
+let runCode = code;
+if (beat.fakeInput !== undefined) {
+// monkey-patch input() to return our fake value
+runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
+}
+
+// Inject the chapter’s filesystem if requested
+if (beat.fileInjection) {
+await injectChapter5Files();
+}
+
+const result = await runPython(runCode);
+const actualOutput = (result.output || ‘’).trimEnd();
+
+if (!result.ok) {
+outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+return;
+}
+
+// Check expected output
+let passed = false;
+// Allow expectedOutput to use \n as literal newline escape
+const expectedNormalized = (beat.expectedOutput || ‘’).replace(/\n/g, ‘\n’);
+if (beat.matchType === ‘exact’) {
+passed = actualOutput.trim() === expectedNormalized.trim();
+} else if (beat.matchType === ‘contains’) {
+passed = actualOutput.includes(expectedNormalized);
+}
+
+if (passed) {
+outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
+// mark complete
+if (!state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+state.charms += (beat.charms || 0);
+// store the working code
+beat.completedCode = code;
+writeSave(state);
+}
+// show buddy popup
+if (beat.onComplete?.buddy) {
+showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
+}
+// re-render to show “continue” button
+setTimeout(() => renderStory(), 600);
+} else {
+outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
+}
+}
+
+function resetTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+document.getElementById(‘code-’ + beatId).value = beat.starter;
+document.getElementById(‘output-’ + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
+}
+
+function escapeHtml(s) {
+return String(s).replace(/[&<>]/g, c => ({’&’:’&’,’<’:’<’,’>’:’>’}[c]));
+}
+
+// ===========================================================================
+// BEAT ADVANCE
+// ===========================================================================
+function advanceBeat() {
+// mark diary beats as “completed” implicitly (they only need to be read)
+const beat = BEATS[state.currentBeat];
+if (beat && (beat.type === ‘diary’ || beat.type === ‘board’ || beat.type === ‘h_board’ || beat.type === ‘aim_compose’ || beat.type === ‘aim_log’) && !state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+}
+state.currentBeat = Math.min(state.currentBeat + 1, BEATS.length - 1);
+writeSave(state);
+renderStory();
+}
+
+function resetGame() {
+if (confirm(‘really restart from the beginning? all your progress will be erased.’)) {
+localStorage.removeItem(SAVE_KEY);
+location.reload();
+}
+}
+
+// ===========================================================================
+// BUDDY POPUP
+// ===========================================================================
+function showBuddy(name, msg) {
+document.getElementById(‘buddyName’).textContent = name + ’ :: incoming message’;
+document.getElementById(‘buddyMessage’).innerHTML = msg;
+const popup = document.getElementById(‘buddyPopup’);
+popup.classList.remove(‘hidden’);
+// play a soft chime — emulated as a CSS attention grab
+popup.style.animation = ‘none’;
+setTimeout(() => { popup.style.animation = ‘’; }, 10);
+}
+function closeBuddy() {
+document.getElementById(‘buddyPopup’).classList.add(‘hidden’);
+}
+
+// auto-resume from save
+if (state.userName && state.currentBeat > 0) {
+// skip intro
+document.getElementById(‘userNameInput’).value = state.userName;
+// keep intro visible but offer continue — simpler: go straight in
+setTimeout(() => {
+document.getElementById(‘introScreen’).classList.add(‘hidden’);
+document.getElementById(‘desktop’).classList.remove(‘hidden’);
+document.getElementById(‘taskbar’).classList.remove(‘hidden’);
+makeSparkles();
+startClock();
+renderStory();
+}, 100);
+}
+</script>
+
+</body>
+</html>
