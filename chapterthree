@@ -838,7 +838,7 @@ she'd brought it to camp like a brick. wren wasn't looking at
 the camera. wren was looking at her.
 
 both threads now sit on your desktop, sorted by time.
-eleven messages total, spanning 9:30 PM aug 14 to 7:22 AM aug 15.
+ten messages total, spanning 9:30 PM aug 14 to 7:22 AM aug 15.
 
 it's time to read them in order.`,
     nextBtn: '▸ pin the messages to the board'
@@ -849,7 +849,7 @@ it's time to read them in order.`,
     id: 'fragment_board',
     type: 'board',
     title: 'investigation board :: aug 14 timeline',
-    intro: `here are all eleven messages from the night of, pinned in order. green cards are SMS (tegan ↔ glorfindel). blue cards are AIM (wren ↔ briar). study them. you\'ll be cross-referencing them in code.`,
+    intro: `here are all ten messages from the night of, pinned in order. green cards are SMS (tegan ↔ glorfindel). blue cards are AIM (wren ↔ briar). study them. you\'ll be cross-referencing them in code.`,
     fragments: [
       {id: 1, time: "21:30", from: "wren_h", to: "briar_v", platform: "AIM", content: "covering for me tonight right? i'm in the cabin. you saw me in the cabin."},
       {id: 2, time: "22:15", from: "tegan_a87", to: "glorfindel_lives", platform: "SMS", content: "she wants me to meet her at the boathouse at 11. i think i'm gonna do it :/"},
@@ -888,7 +888,7 @@ it's time to read them in order.`,
 # 2. the sender of fragments[0]
 # 3. the sender of fragments[-1]
 `,
-    expectedOutput: '11\nwren_h\nwren_h',
+    expectedOutput: '10\nwren_h\nwren_h',
     matchType: 'exact',
     hint: `three lines: <code>print(len(fragments))</code>, <code>print(fragments[0]["from"])</code>, <code>print(fragments[-1]["from"])</code>. the brackets after the dict get the value at that key.`,
     fragmentInjection: true,
@@ -960,7 +960,7 @@ storyAbove: `the message you keep coming back to is the single character <code>h
 skill: 'DICTIONARY KEY ACCESS',
 instructions: `<p>a dictionary stores values under keys. you access them with square brackets:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">person = {"name": "tegan", "age": 17} print(person["name"])   # → tegan print(person["age"])    # → 17</pre> <p><strong>your task:</strong> the variable <code>last_msg</code> is set to the "h" message. print three fields, each on its own line, in this order: <code>time</code>, <code>from</code>, <code>content</code>.</p>`,
 starter: `last_msg = {
-"id": 9,
+"id": 8,
 "time": "23:46",
 "from": "tegan_a87",
 "to": "glorfindel_lives",
@@ -1046,7 +1046,7 @@ matches = []
 
 # then print(matches)
 
-`, expectedOutput: '[1, 3, 11]', matchType: 'exact', hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 11. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
+`, expectedOutput: '[1, 3, 10]', matchType: 'exact', hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
 buddy: { name: 'wren_h', msg: "whatever you think you're piecing together, you're wrong. ask briar. ask anyone. i was in my cabin." }
 },
 charms: 3
@@ -1078,10 +1078,9 @@ wren_msgs =
 
 # then print(len(wren_msgs))
 
-`, expectedOutput: '5', matchType: 'exact', hint: `<code>wren_msgs = [f for f in fragments if f["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 5 messages. five times wren reached out to briar that night.
+`, expectedOutput: '4', matchType: 'exact', hint: `<code>wren_msgs = [f for f in fragments if f["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 4 messages. four times wren reached out to briar that night.
 // 9:30: set up alibi.
 // 10:42: refine alibi.
-// 11:08: a memory. then back to logistics.
 // 12:08: thank briar (for what?)
 // 7:22: confirm alibi after the body wasn't found.
 // briar said yes, every time.`,
@@ -1275,7 +1274,7 @@ document.getElementById('output-' + beatId).innerHTML = `<span class="info">// a
 }
 
 function escapeHtml(s) {
-return String(s).replace(/[&<>]/g, c => ({'&':'&','<':'<','>':'>'}[c]));
+return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 }
 
 // ===========================================================================

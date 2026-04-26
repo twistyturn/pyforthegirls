@@ -1149,7 +1149,7 @@ document.getElementById('output-' + beatId).innerHTML = `<span class="info">// a
 }
 
 function escapeHtml(s) {
-return String(s).replace(/[&<>]/g, c => ({'&':'&','<':'<','>':'>'}[c]));
+return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 }
 
 // ===========================================================================
