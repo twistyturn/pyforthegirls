@@ -29,29 +29,29 @@
     --shadow-soft: 0 0 24px rgba(255, 102, 196, 0.4);
   }
 
-- { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
 min-height: 100vh;
-font-family: ‘VT323’, ‘Courier New’, monospace;
-color: var(–silver);
-background: var(–bg-deep);
+font-family: 'VT323', 'Courier New', monospace;
+color: var(--silver);
+background: var(--bg-deep);
 overflow-x: hidden;
-cursor: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘24’ height=‘24’ viewBox=‘0 0 24 24’%3E%3Cpath fill=’%23ff66c4’ stroke=’%23fff’ stroke-width=‘1’ d=‘M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z’/%3E%3C/svg%3E”) 2 2, auto;
+cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff66c4' stroke='%23fff' stroke-width='1' d='M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z'/%3E%3C/svg%3E") 2 2, auto;
 }
 
 /* ============ ANIMATED BACKGROUND ============ */
 body::before {
-content: ‘’;
+content: '';
 position: fixed; inset: 0; z-index: -2;
 background:
 radial-gradient(ellipse at 20% 30%, rgba(255, 102, 196, 0.18), transparent 50%),
 radial-gradient(ellipse at 80% 70%, rgba(102, 255, 255, 0.12), transparent 50%),
 radial-gradient(ellipse at 50% 100%, rgba(200, 168, 232, 0.15), transparent 60%),
-var(–bg-deep);
+var(--bg-deep);
 }
 body::after {
-content: ‘’;
+content: '';
 position: fixed; inset: 0; z-index: -1;
 background-image:
 repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
@@ -65,7 +65,7 @@ position: fixed; inset: 0; pointer-events: none; z-index: 1;
 .sparkle {
 position: absolute;
 width: 6px; height: 6px;
-background: radial-gradient(circle, #fff 0%, var(–pink-hot) 50%, transparent 70%);
+background: radial-gradient(circle, #fff 0%, var(--pink-hot) 50%, transparent 70%);
 border-radius: 50%;
 animation: twinkle 3s ease-in-out infinite;
 }
@@ -83,48 +83,48 @@ position: relative;
 .taskbar {
 position: fixed; bottom: 0; left: 0; right: 0;
 height: 40px;
-background: linear-gradient(180deg, var(–chrome-2) 0%, var(–chrome-1) 100%);
-border-top: 2px solid var(–window-border);
+background: linear-gradient(180deg, var(--chrome-2) 0%, var(--chrome-1) 100%);
+border-top: 2px solid var(--window-border);
 display: flex;
 align-items: center;
 padding: 0 12px;
 gap: 12px;
 z-index: 100;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 11px;
-color: var(–bg-deep);
+color: var(--bg-deep);
 }
 .start-btn {
-background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
-border: 2px solid var(–bg-deep);
+background: linear-gradient(180deg, var(--pink-soft), var(--pink-hot));
+border: 2px solid var(--bg-deep);
 border-right-color: #ff99d6;
 border-bottom-color: #ff99d6;
 padding: 4px 14px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 11px;
-color: var(–bg-deep);
+color: var(--bg-deep);
 font-weight: bold;
-box-shadow: 2px 2px 0 var(–bg-deep);
+box-shadow: 2px 2px 0 var(--bg-deep);
 cursor: pointer;
 text-transform: uppercase;
 letter-spacing: 1px;
 }
-.start-btn::before { content: ’✿ ’; }
+.start-btn::before { content: '✿ '; }
 .taskbar-time {
 margin-left: auto;
-background: var(–bg-deep);
-color: var(–lime-acid);
+background: var(--bg-deep);
+color: var(--lime-acid);
 padding: 4px 10px;
-border: 1px solid var(–bg-deep);
+border: 1px solid var(--bg-deep);
 box-shadow: inset 1px 1px 0 #000;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 14px;
 }
 .taskbar-mail {
-background: var(–bg-deep);
-color: var(–cyan-glow);
+background: var(--bg-deep);
+color: var(--cyan-glow);
 padding: 3px 8px;
-border: 1px solid var(–lavender);
+border: 1px solid var(--lavender);
 font-size: 11px;
 animation: blink 1.5s steps(2) infinite;
 cursor: pointer;
@@ -140,12 +140,12 @@ margin-bottom: 24px;
 }
 .desktop-icon {
 text-align: center;
-color: var(–silver);
-font-family: ‘Silkscreen’, monospace;
+color: var(--silver);
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 cursor: pointer;
 padding: 4px;
-text-shadow: 1px 1px 0 var(–bg-deep);
+text-shadow: 1px 1px 0 var(--bg-deep);
 }
 .desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
 .desktop-icon-img {
@@ -153,42 +153,42 @@ width: 48px; height: 48px;
 margin: 0 auto 4px;
 display: flex; align-items: center; justify-content: center;
 font-size: 32px;
-filter: drop-shadow(2px 2px 0 var(–bg-deep));
+filter: drop-shadow(2px 2px 0 var(--bg-deep));
 }
 
 /* ============ WINDOWS ============ */
 .window {
-background: var(–window-bg);
-border: 2px solid var(–bg-deep);
-color: var(–bg-deep);
-box-shadow: var(–shadow-hard), var(–shadow-soft);
+background: var(--window-bg);
+border: 2px solid var(--bg-deep);
+color: var(--bg-deep);
+box-shadow: var(--shadow-hard), var(--shadow-soft);
 margin: 16px 0;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 16px;
 }
 .window-titlebar {
-background: linear-gradient(90deg, var(–pink-hot) 0%, var(–lavender) 100%);
+background: linear-gradient(90deg, var(--pink-hot) 0%, var(--lavender) 100%);
 color: white;
 padding: 4px 8px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 letter-spacing: 1px;
 text-transform: uppercase;
 display: flex;
 align-items: center;
 justify-content: space-between;
-border-bottom: 2px solid var(–bg-deep);
-text-shadow: 1px 1px 0 var(–bg-deep);
+border-bottom: 2px solid var(--bg-deep);
+text-shadow: 1px 1px 0 var(--bg-deep);
 }
 .window-titlebar-buttons {
 display: flex; gap: 4px;
 }
 .titlebar-btn {
 width: 16px; height: 14px;
-background: var(–chrome-2);
-border: 1px solid var(–bg-deep);
-color: var(–bg-deep);
-font-family: ‘Silkscreen’, monospace;
+background: var(--chrome-2);
+border: 1px solid var(--bg-deep);
+color: var(--bg-deep);
+font-family: 'Silkscreen', monospace;
 font-size: 8px;
 line-height: 12px;
 text-align: center;
@@ -213,20 +213,20 @@ background-image:
 repeating-linear-gradient(180deg, transparent 0, transparent 23px, #ffd6e8 23px, #ffd6e8 24px);
 color: #2d0a3d;
 padding: 24px 20px 20px 36px;
-font-family: ‘Nanum Pen Script’, ‘Special Elite’, cursive;
+font-family: 'Nanum Pen Script', 'Special Elite', cursive;
 font-size: 19px;
 line-height: 24px;
-border-left: 8px solid var(–pink-hot);
+border-left: 8px solid var(--pink-hot);
 position: relative;
 }
 .diary-entry::before {
-content: ‘’;
+content: '';
 position: absolute;
 left: 18px; top: 0; bottom: 0;
 border-left: 1px solid #ff99cc;
 }
 .diary-meta {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 color: #999;
 margin-bottom: 8px;
@@ -237,8 +237,8 @@ letter-spacing: 1px;
 /* ============ TERMINAL / CODE EDITOR ============ */
 .terminal-window { max-width: 760px; margin: 24px auto; }
 .terminal-window .window-titlebar {
-background: linear-gradient(90deg, var(–bg-deep), var(–bg-mid));
-color: var(–lime-acid);
+background: linear-gradient(90deg, var(--bg-deep), var(--bg-mid));
+color: var(--lime-acid);
 }
 .editor-wrap {
 display: grid;
@@ -246,22 +246,22 @@ grid-template-columns: 1fr;
 gap: 0;
 }
 .file-tab {
-background: var(–bg-deep);
-color: var(–lime-acid);
+background: var(--bg-deep);
+color: var(--lime-acid);
 padding: 4px 12px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
-border-bottom: 1px solid var(–pink-hot);
+border-bottom: 1px solid var(--pink-hot);
 display: flex;
 align-items: center;
 gap: 8px;
 }
-.file-tab::before { content: ‘▸’; color: var(–pink-hot); }
+.file-tab::before { content: '▸'; color: var(--pink-hot); }
 .code-area {
 background: #0a0218;
-color: var(–cyan-glow);
+color: var(--cyan-glow);
 padding: 12px;
-font-family: ‘VT323’, ‘Courier New’, monospace;
+font-family: 'VT323', 'Courier New', monospace;
 font-size: 17px;
 line-height: 1.4;
 border: none;
@@ -270,103 +270,103 @@ min-height: 140px;
 resize: vertical;
 outline: none;
 tab-size: 4;
-caret-color: var(–pink-hot);
+caret-color: var(--pink-hot);
 }
 .code-area:focus { box-shadow: inset 0 0 12px rgba(255, 102, 196, 0.3); }
 .editor-bar {
-background: var(–chrome-1);
+background: var(--chrome-1);
 padding: 8px 12px;
 display: flex;
 gap: 8px;
-border-top: 2px solid var(–bg-deep);
+border-top: 2px solid var(--bg-deep);
 flex-wrap: wrap;
 align-items: center;
 }
 .btn {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 padding: 6px 12px;
-border: 2px solid var(–bg-deep);
-background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
-color: var(–bg-deep);
+border: 2px solid var(--bg-deep);
+background: linear-gradient(180deg, var(--pink-soft), var(--pink-hot));
+color: var(--bg-deep);
 cursor: pointer;
 text-transform: uppercase;
 letter-spacing: 1px;
-box-shadow: 2px 2px 0 var(–bg-deep);
+box-shadow: 2px 2px 0 var(--bg-deep);
 transition: transform 0.05s;
 font-weight: bold;
 }
-.btn:hover { background: linear-gradient(180deg, var(–pink-bubble), var(–pink-soft)); }
-.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(–bg-deep); }
+.btn:hover { background: linear-gradient(180deg, var(--pink-bubble), var(--pink-soft)); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--bg-deep); }
 .btn.btn-secondary {
-background: linear-gradient(180deg, var(–chrome-2), var(–chrome-1));
+background: linear-gradient(180deg, var(--chrome-2), var(--chrome-1));
 }
 .btn.btn-acid {
-background: linear-gradient(180deg, #e6ff99, var(–lime-acid));
+background: linear-gradient(180deg, #e6ff99, var(--lime-acid));
 }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .output-area {
-background: var(–bg-deep);
-color: var(–lime-acid);
+background: var(--bg-deep);
+color: var(--lime-acid);
 padding: 12px;
-font-family: ‘VT323’, ‘Courier New’, monospace;
+font-family: 'VT323', 'Courier New', monospace;
 font-size: 16px;
 min-height: 60px;
-border-top: 2px solid var(–pink-hot);
+border-top: 2px solid var(--pink-hot);
 white-space: pre-wrap;
 word-wrap: break-word;
 line-height: 1.4;
 }
 .output-area .err { color: #ff6688; }
-.output-area .ok { color: var(–lime-acid); }
-.output-area .info { color: var(–cyan-glow); }
+.output-area .ok { color: var(--lime-acid); }
+.output-area .info { color: var(--cyan-glow); }
 
 /* ============ TASK / OBJECTIVE PANEL ============ */
 .task-panel {
-background: var(–window-bg);
-border: 2px solid var(–bg-deep);
+background: var(--window-bg);
+border: 2px solid var(--bg-deep);
 margin: 16px auto;
 max-width: 760px;
-box-shadow: var(–shadow-hard);
+box-shadow: var(--shadow-hard);
 }
-.task-panel .window-titlebar { background: linear-gradient(90deg, var(–lime-acid), #99cc66); color: var(–bg-deep); text-shadow: none; }
+.task-panel .window-titlebar { background: linear-gradient(90deg, var(--lime-acid), #99cc66); color: var(--bg-deep); text-shadow: none; }
 .task-content { padding: 16px; }
 .task-content h3 {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 14px;
 margin-bottom: 8px;
-color: var(–bg-deep);
+color: var(--bg-deep);
 }
 .task-content p, .task-content li {
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 17px;
 line-height: 1.4;
-color: var(–bg-deep);
+color: var(--bg-deep);
 margin-bottom: 8px;
 }
 .task-content ul { padding-left: 20px; }
 .task-content code {
-background: var(–bg-deep);
-color: var(–lime-acid);
+background: var(--bg-deep);
+color: var(--lime-acid);
 padding: 1px 6px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 border-radius: 2px;
 font-size: 16px;
 }
 .hint-box {
-background: linear-gradient(180deg, #ffe6f5, var(–pink-bubble));
-border: 1px dashed var(–pink-hot);
+background: linear-gradient(180deg, #ffe6f5, var(--pink-bubble));
+border: 1px dashed var(--pink-hot);
 padding: 10px 12px;
 margin-top: 12px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 16px;
-color: var(–bg-deep);
+color: var(--bg-deep);
 }
 .hint-box::before {
-content: ’✿ HINT: ’;
-font-family: ‘Silkscreen’, monospace;
+content: '✿ HINT: ';
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
-color: var(–pink-hot);
+color: var(--pink-hot);
 }
 
 /* ============ MENTOR / BUDDY POPUP ============ */
@@ -375,24 +375,24 @@ position: fixed;
 bottom: 60px;
 right: 20px;
 width: 280px;
-background: var(–window-bg);
-border: 2px solid var(–bg-deep);
-box-shadow: var(–shadow-hard), var(–shadow-soft);
+background: var(--window-bg);
+border: 2px solid var(--bg-deep);
+box-shadow: var(--shadow-hard), var(--shadow-soft);
 z-index: 200;
 animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 }
-.buddy-popup .window-titlebar { background: linear-gradient(90deg, var(–cyan-glow), var(–lavender)); }
+.buddy-popup .window-titlebar { background: linear-gradient(90deg, var(--cyan-glow), var(--lavender)); }
 .buddy-content {
 padding: 12px;
-color: var(–bg-deep);
+color: var(--bg-deep);
 font-size: 16px;
 line-height: 1.3;
 }
 .buddy-name {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
-color: var(–pink-hot);
+color: var(--pink-hot);
 margin-bottom: 6px;
 letter-spacing: 1px;
 }
@@ -400,7 +400,7 @@ letter-spacing: 1px;
 /* ============ INTRO SCREEN ============ */
 .intro-screen {
 position: fixed; inset: 0;
-background: var(–bg-deep);
+background: var(--bg-deep);
 z-index: 9999;
 display: flex;
 align-items: center;
@@ -410,9 +410,9 @@ padding: 40px 20px;
 overflow-y: auto;
 }
 .intro-logo {
-font-family: ‘Press Start 2P’, monospace;
+font-family: 'Press Start 2P', monospace;
 font-size: 28px;
-background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow), var(–lime-acid), var(–pink-hot));
+background: linear-gradient(90deg, var(--pink-hot), var(--cyan-glow), var(--lime-acid), var(--pink-hot));
 background-size: 300% 100%;
 -webkit-background-clip: text;
 background-clip: text;
@@ -428,52 +428,52 @@ text-shadow: 0 0 30px rgba(255, 102, 196, 0.5);
 100% { background-position: 300% 50%; }
 }
 .intro-tag {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
-color: var(–lavender);
+color: var(--lavender);
 letter-spacing: 3px;
 margin-bottom: 36px;
 text-align: center;
 }
 .intro-prose {
 max-width: 560px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 18px;
-color: var(–silver);
+color: var(--silver);
 line-height: 1.5;
 margin-bottom: 24px;
 text-align: left;
-background: var(–bg-mid);
+background: var(--bg-mid);
 padding: 20px;
-border: 2px solid var(–pink-hot);
-box-shadow: var(–shadow-soft);
+border: 2px solid var(--pink-hot);
+box-shadow: var(--shadow-soft);
 }
 .intro-prose p { margin-bottom: 12px; }
-.intro-prose .em { color: var(–pink-hot); font-style: italic; }
+.intro-prose .em { color: var(--pink-hot); font-style: italic; }
 .intro-input {
-background: var(–bg-deep);
-color: var(–lime-acid);
-border: 2px solid var(–pink-hot);
+background: var(--bg-deep);
+color: var(--lime-acid);
+border: 2px solid var(--pink-hot);
 padding: 8px 12px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 18px;
 width: 280px;
 text-align: center;
 outline: none;
 margin-bottom: 16px;
 }
-.intro-input:focus { box-shadow: 0 0 12px var(–pink-hot); }
+.intro-input:focus { box-shadow: 0 0 12px var(--pink-hot); }
 
 /* ============ FRAGMENT BOARD (Roottrees-style) ============ */
 .fragment-board {
-background: var(–window-bg);
-border: 2px solid var(–bg-deep);
+background: var(--window-bg);
+border: 2px solid var(--bg-deep);
 margin: 16px auto;
 max-width: 760px;
-box-shadow: var(–shadow-hard);
+box-shadow: var(--shadow-hard);
 }
 .fragment-board .window-titlebar {
-background: linear-gradient(90deg, #ffaa66, var(–pink-hot));
+background: linear-gradient(90deg, #ffaa66, var(--pink-hot));
 }
 .fragment-grid {
 padding: 12px;
@@ -481,16 +481,16 @@ display: grid;
 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 gap: 10px;
 background:
-repeating-linear-gradient(45deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+repeating-linear-gradient(45deg, var(--pink-bubble) 0, var(--pink-bubble) 8px, var(--window-bg) 8px, var(--window-bg) 16px);
 }
 .fragment-card {
 background: #fff;
-border: 1.5px solid var(–bg-deep);
+border: 1.5px solid var(--bg-deep);
 padding: 8px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 13px;
-color: var(–bg-deep);
-box-shadow: 2px 2px 0 var(–bg-deep);
+color: var(--bg-deep);
+box-shadow: 2px 2px 0 var(--bg-deep);
 position: relative;
 transform: rotate(-1deg);
 transition: transform 0.15s, box-shadow 0.15s;
@@ -503,7 +503,7 @@ overflow: hidden;
 .fragment-card:nth-child(5n) { transform: rotate(0.7deg); }
 .fragment-card:hover {
 transform: rotate(0) scale(1.04);
-box-shadow: 4px 4px 0 var(–pink-hot);
+box-shadow: 4px 4px 0 var(--pink-hot);
 z-index: 10;
 }
 .fragment-card.sms {
@@ -515,25 +515,25 @@ background: #d4e4ff;
 border-color: #334466;
 }
 .fragment-platform {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 7px;
-background: var(–bg-deep);
-color: var(–pink-hot);
+background: var(--bg-deep);
+color: var(--pink-hot);
 padding: 1px 4px;
 margin-bottom: 4px;
 display: inline-block;
 letter-spacing: 1px;
 }
-.fragment-card.sms .fragment-platform { color: var(–lime-acid); }
+.fragment-card.sms .fragment-platform { color: var(--lime-acid); }
 .fragment-time {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 color: #666;
 margin-bottom: 3px;
 }
 .fragment-from {
 font-weight: bold;
-color: var(–pink-hot);
+color: var(--pink-hot);
 font-size: 11px;
 margin-bottom: 2px;
 }
@@ -546,7 +546,7 @@ line-height: 1.3;
 position: absolute;
 top: 2px;
 right: 4px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 7px;
 color: #999;
 }
@@ -558,15 +558,15 @@ display: grid;
 grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 gap: 14px;
 background:
-repeating-linear-gradient(135deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+repeating-linear-gradient(135deg, var(--pink-bubble) 0, var(--pink-bubble) 8px, var(--window-bg) 8px, var(--window-bg) 16px);
 }
 .hboard-card {
 background: #fff8f0;
-border: 2px solid var(–bg-deep);
+border: 2px solid var(--bg-deep);
 padding: 12px;
-font-family: ‘VT323’, monospace;
-color: var(–bg-deep);
-box-shadow: 3px 3px 0 var(–bg-deep);
+font-family: 'VT323', monospace;
+color: var(--bg-deep);
+box-shadow: 3px 3px 0 var(--bg-deep);
 position: relative;
 transform: rotate(-0.8deg);
 transition: transform 0.15s, box-shadow 0.15s;
@@ -575,17 +575,17 @@ transition: transform 0.15s, box-shadow 0.15s;
 .hboard-card:nth-child(3n) { transform: rotate(-0.4deg); }
 .hboard-card:hover {
 transform: rotate(0) scale(1.03);
-box-shadow: 5px 5px 0 var(–pink-hot);
+box-shadow: 5px 5px 0 var(--pink-hot);
 z-index: 10;
 }
 .hboard-name {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 14px;
-color: var(–pink-hot);
+color: var(--pink-hot);
 text-transform: uppercase;
 letter-spacing: 1px;
 margin-bottom: 4px;
-border-bottom: 1px dashed var(–bg-deep);
+border-bottom: 1px dashed var(--bg-deep);
 padding-bottom: 4px;
 }
 .hboard-role {
@@ -600,10 +600,10 @@ line-height: 1.3;
 margin-bottom: 4px;
 }
 .hboard-label {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 8px;
-color: var(–bg-deep);
-background: var(–lime-acid);
+color: var(--bg-deep);
+background: var(--lime-acid);
 padding: 1px 4px;
 letter-spacing: 1px;
 display: inline-block;
@@ -612,13 +612,13 @@ margin-right: 4px;
 
 /* ============ DECORATIVE BITS ============ */
 .marquee-strip {
-background: var(–bg-deep);
-color: var(–pink-hot);
-border-top: 1px solid var(–pink-hot);
-border-bottom: 1px solid var(–pink-hot);
+background: var(--bg-deep);
+color: var(--pink-hot);
+border-top: 1px solid var(--pink-hot);
+border-bottom: 1px solid var(--pink-hot);
 overflow: hidden;
 padding: 4px 0;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 letter-spacing: 2px;
 margin: 12px 0;
@@ -635,14 +635,14 @@ white-space: nowrap;
 }
 
 .progress-bar-outer {
-background: var(–bg-deep);
-border: 1px solid var(–bg-deep);
+background: var(--bg-deep);
+border: 1px solid var(--bg-deep);
 height: 12px;
 margin-top: 8px;
 box-shadow: inset 1px 1px 0 #000;
 }
 .progress-bar-inner {
-background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow));
+background: linear-gradient(90deg, var(--pink-hot), var(--cyan-glow));
 height: 100%;
 transition: width 0.5s ease-out;
 background-size: 20px 20px;
@@ -653,8 +653,8 @@ animation: stripe-shift 1s linear infinite;
 
 .glitter-divider {
 text-align: center;
-color: var(–pink-hot);
-font-family: ‘VT323’, monospace;
+color: var(--pink-hot);
+font-family: 'VT323', monospace;
 font-size: 18px;
 margin: 16px 0;
 letter-spacing: 8px;
@@ -979,25 +979,25 @@ Looking forward to seeing you on the 21st.
 <pre>with open("filename.txt") as f:
     lines = f.readlines()</pre>
 
-your task: open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. each line ends with a newline character (\n) so use <code>.strip()</code> on each line to avoid double-spacing.`, starter: `with open(“outlook/inbox/attachments/roster_2004.txt”) as f:
+your task: open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. each line ends with a newline character (\n) so use <code>.strip()</code> on each line to avoid double-spacing.`, starter: `with open("outlook/inbox/attachments/roster_2004.txt") as f:
 lines = f.readlines()
 
 # print lines[0], lines[1], lines[2] using .strip()
 
 `, expectedOutput: `ROLE|FIRST|LAST|CABIN|STATUS_AUG_14
 director|Marcia|Renton|admin|on-site
-head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// 16 lines loaded. one for the header, fifteen staff including tegan.`, buddy: { name: 'tegan_a87', msg: `ashby comes before halloway and vance. that’s how i learned to alphabetize a name.` }
+head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// 16 lines loaded. one for the header, fifteen staff including tegan.`, buddy: { name: 'tegan_a87', msg: `ashby comes before halloway and vance. that's how i learned to alphabetize a name.` }
 }
 },
 
 // –– BEAT 2: task_string_parse — split, strip, build dicts ––
 {
-id: ‘task_string_parse’,
-type: ‘task’,
+id: 'task_string_parse',
+type: 'task',
 charms: 2,
-title: ‘python.exe :: parse_roster.py’,
-meta: ‘turn each line into structured data.’,
-skill: ‘STRING PARSING :: .split() AND .strip()’,
+title: 'python.exe :: parse_roster.py',
+meta: 'turn each line into structured data.',
+skill: 'STRING PARSING :: .split() AND .strip()',
 hint: `<code>for line in lines[1:]:</code> indented <code>parts = [p.strip() for p in line.split("|")]</code> then <code>staff.append({"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]})</code>. then unindented <code>print(len(staff))</code>.`,
 storyAbove: `each line is fields separated by pipes (<code>|</code>). to get structured data, you split each line on the pipe character and strip whitespace from each piece. then you can build a list of dictionaries, one per staffer, where each dict has keys like <code>first</code>, <code>last</code>, <code>role</code>, <code>cabin</code>, <code>status</code>.`,
 instructions: `string method <code>.split(separator)</code> breaks a string into a list:
@@ -1005,12 +1005,12 @@ instructions: `string method <code>.split(separator)</code> breaks a string into
 <pre>"a|b|c".split("|") returns ["a", "b", "c"]</pre>
 
 combine with <code>.strip()</code> to clean each piece. skip the header (line 0). for each remaining line, split on <code>|</code>, strip each piece, and build a dict with keys: role, first, last, cabin, status. append each dict to a list called <code>staff</code>. then print <code>len(staff)</code>.`, starter: `staff = []
-with open(“outlook/inbox/attachments/roster_2004.txt”) as f:
+with open("outlook/inbox/attachments/roster_2004.txt") as f:
 lines = f.readlines()
 
 # skip header (lines[0]). for each line in lines[1:]:
 
-# - split on “|”
+# - split on "|"
 
 # - strip each piece
 
@@ -1026,12 +1026,12 @@ lines = f.readlines()
 
 // –– BEAT 3: task_h_filter — find the H candidates ––
 {
-id: ‘task_h_filter’,
-type: ‘task’,
+id: 'task_h_filter',
+type: 'task',
 charms: 2,
-title: ‘python.exe :: h_filter.py’,
-meta: ‘who at camp had a first name starting with H?’,
-skill: ‘STRING METHODS :: .startswith() AND .lower()’,
+title: 'python.exe :: h_filter.py',
+meta: 'who at camp had a first name starting with H?',
+skill: 'STRING METHODS :: .startswith() AND .lower()',
 hint: `<code>for m in staff:</code> indented <code>if m["first"].lower().startswith("h"):</code> double-indented <code>print(f"{m[\'first\']} {m[\'last\']} ({m[\'role\']})")</code>.`,
 storyAbove: `you've already learned list comprehensions. now you use them on the roster. you want every staff member whose first name starts with the letter <code>h</code> (case-insensitive). pull out their full name and role for review.`,
 instructions: `string method <code>.startswith(prefix)</code> checks if a string begins with a given prefix:
@@ -1039,69 +1039,69 @@ instructions: `string method <code>.startswith(prefix)</code> checks if a string
 <pre>"Hattie".startswith("H") returns True
 "hattie".lower().startswith("h") returns True (safer)</pre>
 
-your task: filter <code>staff</code> for any member whose first name (lowercased) starts with <code>“h”</code>. for each match, print <code>“first last (role)”</code>.`, starter: `# staff is loaded for you (same dicts as before)
+your task: filter <code>staff</code> for any member whose first name (lowercased) starts with <code>"h"</code>. for each match, print <code>"first last (role)"</code>.`, starter: `# staff is loaded for you (same dicts as before)
 
-# for each member in staff, check if first.lower() starts with “h”
+# for each member in staff, check if first.lower() starts with "h"
 
-# print “first last (role)” for each match
+# print "first last (role)" for each match
 
 `, expectedOutput: `Helen Sokol (head cook)
 Hank Tobias (maintenance)
 Henry Pham (lifeguard)
-Hattie Whitlock (junior counsellor)`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// 4 candidates. somebody on this list came up the boathouse path at 11:44 PM and tegan started typing their name.`, buddy: { name: 'tegan_a87', msg: `i knew all four of them. hank fixed my window screen the second week and didn’t even tell me i’d been opening it wrong.` }
+Hattie Whitlock (junior counsellor)`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// 4 candidates. somebody on this list came up the boathouse path at 11:44 PM and tegan started typing their name.`, buddy: { name: 'tegan_a87', msg: `i knew all four of them. hank fixed my window screen the second week and didn't even tell me i'd been opening it wrong.` }
 }
 },
 
 // –– BEAT 4: investigation_board — visual cards ––
 {
-id: ‘investigation_board’,
-type: ‘h_board’,
-title: ‘investigation board :: H-suspects’,
+id: 'investigation_board',
+type: 'h_board',
+title: 'investigation board :: H-suspects',
 intro: `four people whose names start with H. start eliminating.`,
 candidates: [
-{ role: ‘head cook’, first: ‘Helen’, last: ‘Sokol’, age: 51, status: ‘off-site aug 14, drove home aug 13’, alibi: ‘home in town. husband can confirm.’ },
-{ role: ‘maintenance’, first: ‘Hank’, last: ‘Tobias’, age: 64, status: ‘on-site, night shift kitchen area’, alibi: ‘with greg the asst cook in the mess hall until ~1 AM. fixing a freezer compressor.’ },
-{ role: ‘lifeguard’, first: ‘Henry’, last: ‘Pham’, age: 19, status: ‘boys' overnight, lac la biche’, alibi: ‘8 boys + 1 co-counsellor. 3 hours from camp. signed permit on file.’ },
-{ role: ‘junior counsellor’, first: ‘Hattie’, last: ‘Whitlock’, age: 17, status: ‘on-site, left aug 16’, alibi: ‘in pinewood cabin with 8 campers. no adult witness.’ }
+{ role: 'head cook', first: 'Helen', last: 'Sokol', age: 51, status: 'off-site aug 14, drove home aug 13', alibi: 'home in town. husband can confirm.' },
+{ role: 'maintenance', first: 'Hank', last: 'Tobias', age: 64, status: 'on-site, night shift kitchen area', alibi: 'with greg the asst cook in the mess hall until ~1 AM. fixing a freezer compressor.' },
+{ role: 'lifeguard', first: 'Henry', last: 'Pham', age: 19, status: "boys' overnight, lac la biche", alibi: '8 boys + 1 co-counsellor. 3 hours from camp. signed permit on file.' },
+{ role: 'junior counsellor', first: 'Hattie', last: 'Whitlock', age: 17, status: 'on-site, left aug 16', alibi: 'in pinewood cabin with 8 campers. no adult witness.' }
 ],
-nextBtn: ‘▸ run the alibi filter’
+nextBtn: '▸ run the alibi filter'
 },
 
 // –– BEAT 5: task_alibis — eliminate three of four with substring filter ––
 {
-id: ‘task_alibis’,
-type: ‘task’,
+id: 'task_alibis',
+type: 'task',
 charms: 3,
-title: ‘python.exe :: alibis.py’,
-meta: ‘three of these four were demonstrably not at the boathouse.’,
-skill: ‘COMPOUND FILTERING :: any() AND SUBSTRING in’,
+title: 'python.exe :: alibis.py',
+meta: 'three of these four were demonstrably not at the boathouse.',
+skill: 'COMPOUND FILTERING :: any() AND SUBSTRING in',
 hint: `<code>for m in staff:</code> indented: <code>if not m["first"].lower().startswith("h"): continue</code>. then <code>if any(term in m["status"] for term in exclude_terms): continue</code>. then <code>print(f"{m[\'first\']} {m[\'last\']}")</code>.`,
 storyAbove: `the roster's status field tells you where each person was on aug 14. helen drove home aug 13. hank was in the kitchen area with the asst cook. henry was on a multi-day overnight at lac la biche, three hours from camp. that leaves hattie. write a filter that returns only H-staff who could plausibly have been at the boathouse. exclude anyone whose status mentions a disqualifying location.`,
-instructions: `string substring check: <code>“lac la biche” in member[“status”]</code> returns <code>True</code> if the substring appears anywhere in the status field. you can also use <code>any()</code> across a list of terms:
+instructions: `string substring check: <code>"lac la biche" in member["status"]</code> returns <code>True</code> if the substring appears anywhere in the status field. you can also use <code>any()</code> across a list of terms:
 
 <pre>any(term in text for term in ["a", "b", "c"])</pre>
 
-your task: filter the four h-candidates down to those whose status does NOT mention any of <code>“off-site”</code>, <code>“lac la biche”</code>, or <code>“kitchen”</code>. print <code>“first last”</code> for each remaining match.`, starter: `# staff is loaded
-exclude_terms = [“off-site”, “lac la biche”, “kitchen”]
+your task: filter the four h-candidates down to those whose status does NOT mention any of <code>"off-site"</code>, <code>"lac la biche"</code>, or <code>"kitchen"</code>. print <code>"first last"</code> for each remaining match.`, starter: `# staff is loaded
+exclude_terms = ["off-site", "lac la biche", "kitchen"]
 
 # for each member in staff:
 
-# - skip unless first name starts with “h”
+# - skip unless first name starts with "h"
 
-# - skip if any exclude_term is in member[“status”]
+# - skip if any exclude_term is in member["status"]
 
-# - otherwise, print “first last”
+# - otherwise, print "first last"
 
-`, expectedOutput: `Hattie Whitlock`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// helen was home in town. henry was three hours out at lac la biche with eight boys and another counsellor. hank was in the kitchen at 11:44 PM, greg can confirm. only hattie was on-site, no alibi anyone has confirmed yet. she left two days later. it has to be her.`, buddy: { name: 'wren_h', msg: `i saw the account log on. i thought it was you. it’s never you. i don’t know who you are. i don’t actually want to know.` }
+`, expectedOutput: `Hattie Whitlock`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// helen was home in town. henry was three hours out at lac la biche with eight boys and another counsellor. hank was in the kitchen at 11:44 PM, greg can confirm. only hattie was on-site, no alibi anyone has confirmed yet. she left two days later. it has to be her.`, buddy: { name: 'wren_h', msg: `i saw the account log on. i thought it was you. it's never you. i don't know who you are. i don't actually want to know.` }
 }
 },
 
-// –– BEAT 6: hattie_dive — Marcia’s all-staff email ––
+// –– BEAT 6: hattie_dive — Marcia's all-staff email ––
 {
-id: ‘hattie_dive’,
-type: ‘diary’,
-title: ‘open file: outlook/inbox/2004-08-17_marcia_all_staff.eml’,
-meta: ‘from: m.renton@pinecrest.ab.ca :: to: all_staff@pinecrest.ab.ca :: aug 17 2004 — 8:42 am’,
+id: 'hattie_dive',
+type: 'diary',
+title: 'open file: outlook/inbox/2004-08-17_marcia_all_staff.eml',
+meta: 'from: m.renton@pinecrest.ab.ca :: to: all_staff@pinecrest.ab.ca :: aug 17 2004 — 8:42 am',
 body: `subject: Hattie Whitlock departure
 
 Team,
@@ -1115,67 +1115,67 @@ Hattie home.
 I drove Hattie to the bus stop in Whitecourt at 11:15 yesterday.
 She was holding it together but barely. She asked me to tell the
 Pinewood girls she was sorry and that she would write. She did.
-Two letters arrived today, one for each cabin she’d counselled.
-They’re on the cabin doors.
+Two letters arrived today, one for each cabin she'd counselled.
+They're on the cabin doors.
 
 I know this is a lot on top of last week. Please be gentle with
-each other. If anyone needs to talk, I’m in my office or at the
+each other. If anyone needs to talk, I'm in my office or at the
 mess hall. The chaplain in Whitecourt has office hours on
 Thursdays and his number is on the bulletin board.
 
 — Marcia`,
-nextBtn: ‘▸ sit with this’
+nextBtn: '▸ sit with this'
 },
 
 // –– BEAT 7: hattie_realization — player accepts hattie is clear ––
 {
-id: ‘hattie_realization’,
-type: ‘diary’,
-title: ‘open file: notes/it_wasnt_hattie.txt’,
-meta: ‘you typed this and then sat with it for a while.’,
-body: `hattie’s sister got hit by a car. the call came at dawn aug 16. she was on a bus by 11. but the night before, the night tegan disappeared, she was awake in the pinewood cabin trying to keep eight little girls calm while wondering if their other counsellor was dead.
+id: 'hattie_realization',
+type: 'diary',
+title: 'open file: notes/it_wasnt_hattie.txt',
+meta: 'you typed this and then sat with it for a while.',
+body: `hattie's sister got hit by a car. the call came at dawn aug 16. she was on a bus by 11. but the night before, the night tegan disappeared, she was awake in the pinewood cabin trying to keep eight little girls calm while wondering if their other counsellor was dead.
 
-i wanted hattie to be the answer. she wasn’t. she was 17 and scared. the world was ending around her in two different ways at once.
+i wanted hattie to be the answer. she wasn't. she was 17 and scared. the world was ending around her in two different ways at once.
 
 the H lead is dead. nobody on the 2004 roster came up the path.`,
-nextBtn: ‘▸ try the 2003 roster’
+nextBtn: '▸ try the 2003 roster'
 },
 
 // –– BEAT 8: task_load_2003_roster — apply file I/O to second file ––
 {
-id: ‘task_load_2003_roster’,
-type: ‘task’,
+id: 'task_load_2003_roster',
+type: 'task',
 charms: 3,
-title: ‘python.exe :: roster_2003.py’,
-meta: ‘tegan kept last year's roster too. she was at this camp before.’,
-skill: ‘FILE I/O REINFORCED :: SECOND FILE’,
+title: 'python.exe :: roster_2003.py',
+meta: "tegan kept last year's roster too. she was at this camp before.",
+skill: 'FILE I/O REINFORCED :: SECOND FILE',
 hint: `same pattern as parsing roster_2004 but with the 2003 filename. use a list called <code>staff_2003</code>. then loop and filter: <code>if m["first"].lower().startswith("h"): print(f"{m[\'first\']} {m[\'last\']}")</code>.`,
 storyAbove: `the H wasn't on the 2004 roster. you scroll up in tegan's inbox to summer 2003. there's a near-identical welcome email from marcia, dated jun 12 2003. same attachment format. tegan was at pinecrest last year too. maybe whoever came up the path was on staff in 2003 and didn't come back this year.`,
 instructions: `your task: open <code>outlook/inbox/attachments/roster_2003.txt</code>, parse it the same way you parsed the 2004 file (skip header, split on <code>|</code>, build dicts), and put the results in a list called <code>staff_2003</code>. then filter for first names starting with <code>"h"</code> and print <code>"first last"</code> for each match.`,
 starter: `staff_2003 = []
-with open(“outlook/inbox/attachments/roster_2003.txt”) as f:
+with open("outlook/inbox/attachments/roster_2003.txt") as f:
 lines = f.readlines()
 
 # parse just like before
 
 # (note: the 2003 file has a NOTES column instead of STATUS_AUG_14, but the parsing is identical)
 
-# then filter for h-names, print “first last”
+# then filter for h-names, print "first last"
 
 `, expectedOutput: `Helen Sokol
 Hank Tobias
-Henry Pham`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// same three. helen, hank, henry. all returning. no new H. the thread is dead.`, buddy: { name: 'tegan_a87', msg: `my first summer here. tyler was a JC for the boys’ cabin. melissa worked hemlock. i barely knew either of them. counsellors mostly stayed in their own buildings.` }
+Henry Pham`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// same three. helen, hank, henry. all returning. no new H. the thread is dead.`, buddy: { name: 'tegan_a87', msg: `my first summer here. tyler was a JC for the boys' cabin. melissa worked hemlock. i barely knew either of them. counsellors mostly stayed in their own buildings.` }
 }
 },
 
 // –– BEAT 9: task_set_difference — find who quit ––
 {
-id: ‘task_set_difference’,
-type: ‘task’,
+id: 'task_set_difference',
+type: 'task',
 charms: 4,
-title: ‘python.exe :: who_didnt_return.py’,
-meta: ‘four people from 2003 aren't in 2004. who?’,
-skill: ‘SETS :: set() AND SET DIFFERENCE’,
+title: 'python.exe :: who_didnt_return.py',
+meta: "four people from 2003 aren't in 2004. who?",
+skill: 'SETS :: set() AND SET DIFFERENCE',
 hint: `<code>set_2003 = {(s["first"], s["last"]) for s in staff_2003}</code>. <code>set_2004 = {(s["first"], s["last"]) for s in staff}</code>. <code>didnt_return = set_2003 - set_2004</code>. then <code>for first, last in sorted(didnt_return): print(f"{first} {last}")</code>.`,
 storyAbove: `if H wasn't a counsellor with a first name starting H in either year, maybe the answer isn't an H at all. maybe somebody quit between 2003 and 2004 for a reason. python sets let you compute differences between two collections quickly.`,
 instructions: `<code>set()</code> turns a list into a set (unordered, no duplicates):
@@ -1184,11 +1184,11 @@ instructions: `<code>set()</code> turns a list into a set (unordered, no duplica
 b = set([2, 3, 4])
 a - b  # gives {1}: items in a but not in b</pre>
 
-build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who’s in 2003 but not in 2004? for each person, print <code>“first last”</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded
+build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who's in 2003 but not in 2004? for each person, print <code>"first last"</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded
 
 # build sets of (first, last) tuples for each
 
-# compute 2003 - 2004 to find people who didn’t return
+# compute 2003 - 2004 to find people who didn't return
 
 # for first, last in sorted(didnt_return):
 
@@ -1197,112 +1197,112 @@ build a set of <code>(first, last)</code> tuples for each roster. compute the se
 `, expectedOutput: `Caitlin Yeo
 Daniel Chow
 Melissa Klassen
-Tara Friesen`, matchType: 'exact', bothStaffPreload: true, onComplete: { diary: `// four people from 2003 who didn’t come back. caitlin yeo. daniel chow. melissa klassen. tara friesen. one of those names matters.`, buddy: { name: 'camille.j.89', msg: `i tracked which counsellors didn’t come back. melissa was the biggest mystery of last year. i wondered all summer. nobody mentioned her this year.` }
+Tara Friesen`, matchType: 'exact', bothStaffPreload: true, onComplete: { diary: `// four people from 2003 who didn't come back. caitlin yeo. daniel chow. melissa klassen. tara friesen. one of those names matters.`, buddy: { name: 'camille.j.89', msg: `i tracked which counsellors didn't come back. melissa was the biggest mystery of last year. i wondered all summer. nobody mentioned her this year.` }
 }
 },
 
 // –– BEAT 10: melissa_landing — the pivot ––
 {
-id: ‘melissa_landing’,
-type: ‘diary’,
-title: ‘open file: notes/melissa.txt’,
-meta: ‘you typed this slowly.’,
-body: `she’s not in the 2004 roster.
+id: 'melissa_landing',
+type: 'diary',
+title: 'open file: notes/melissa.txt',
+meta: 'you typed this slowly.',
+body: `she's not in the 2004 roster.
 
-she was a junior counsellor at hemlock in 2003. she didn’t come back this year. that’s not unusual. four people didn’t come back, most for ordinary reasons.
+she was a junior counsellor at hemlock in 2003. she didn't come back this year. that's not unusual. four people didn't come back, most for ordinary reasons.
 
-but in wren’s email two days before tegan disappeared: “remind her how things went for melissa last summer.”
+but in wren's email two days before tegan disappeared: "remind her how things went for melissa last summer."
 
 the only melissa on this disk is melissa klassen.`,
-nextBtn: ‘▸ chapter 4 :: complete’
+nextBtn: '▸ chapter 4 :: complete'
 },
 
 // –– BEAT 11: chapter wrap-up ––
 {
-id: ‘wrap’,
-type: ‘wrap’,
-title: ‘chapter 4 :: complete’,
+id: 'wrap',
+type: 'wrap',
+title: 'chapter 4 :: complete',
 body: `you hunted H for three nights and found nobody.
-the path is still open in your head. someone walked up it. it wasn’t anyone whose name starts with H.
+the path is still open in your head. someone walked up it. it wasn't anyone whose name starts with H.
 
-but there’s another name now. melissa klassen. at pinecrest in 2003, gone the next year.
+but there's another name now. melissa klassen. at pinecrest in 2003, gone the next year.
 
 wren mentioned her two days before tegan disappeared.
 
 you need to find melissa.`,
 skillsLearned: [
-‘open() and with blocks: reading files in python’,
-‘.readlines(): get every line of a file as a list’,
-‘.split(separator) and .strip(): turning text into structured data’,
-‘building lists of dicts from parsed file data’,
-‘.startswith(): prefix checks on strings’,
-‘multi-condition filtering with any() and substring checks’,
-‘set() and set differences: finding what's in one collection but not another’,
-‘tuples as set members: hashable composite values’,
-‘sorted(): deterministic output for unordered collections’
+'open() and with blocks: reading files in python',
+'.readlines(): get every line of a file as a list',
+'.split(separator) and .strip(): turning text into structured data',
+'building lists of dicts from parsed file data',
+'.startswith(): prefix checks on strings',
+'multi-condition filtering with any() and substring checks',
+"set() and set differences: finding what's in one collection but not another",
+'tuples as set members: hashable composite values',
+'sorted(): deterministic output for unordered collections'
 ],
-nextBtn: ‘▸ end of chapter 4’
+nextBtn: '▸ end of chapter 4'
 }
 ];// ===========================================================================
 // RENDER STORY (linear, append-as-you-go)
 // ===========================================================================
-const storyContainer = document.getElementById(‘storyContainer’);
+const storyContainer = document.getElementById('storyContainer');
 
 function renderStory() {
-storyContainer.innerHTML = ‘’;
+storyContainer.innerHTML = '';
 // render all completed beats, then current beat
 const upTo = Math.min(state.currentBeat, BEATS.length - 1);
 for (let i = 0; i <= upTo; i++) {
 renderBeat(BEATS[i], i === upTo);
 }
 // scroll to bottom
-setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: ‘smooth’ }), 100);
+setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
 }
 
 function renderBeat(beat, isActive) {
-if (beat.type === ‘diary’) return renderDiary(beat, isActive);
-if (beat.type === ‘task’) return renderTask(beat, isActive);
-if (beat.type === ‘wrap’) return renderWrap(beat, isActive);
-if (beat.type === ‘board’) return renderBoard(beat, isActive);
-if (beat.type === ‘h_board’) return renderHBoard(beat, isActive);
+if (beat.type === 'diary') return renderDiary(beat, isActive);
+if (beat.type === 'task') return renderTask(beat, isActive);
+if (beat.type === 'wrap') return renderWrap(beat, isActive);
+if (beat.type === 'board') return renderBoard(beat, isActive);
+if (beat.type === 'h_board') return renderHBoard(beat, isActive);
 }
 
 function renderBoard(beat, isActive) {
-const w = document.createElement(‘div’);
-w.className = ‘fragment-board’;
-const cardsHtml = beat.fragments.map(f => `<div class="fragment-card ${f.platform.toLowerCase()}"> <div class="fragment-id">#${f.id}</div> <div class="fragment-platform">${f.platform}</div> <div class="fragment-time">${f.time}</div> <div class="fragment-from">${f.from} → ${f.to}</div> <div class="fragment-content">${f.content}</div> </div>`).join(’’);
+const w = document.createElement('div');
+w.className = 'fragment-board';
+const cardsHtml = beat.fragments.map(f => `<div class="fragment-card ${f.platform.toLowerCase()}"> <div class="fragment-id">#${f.id}</div> <div class="fragment-platform">${f.platform}</div> <div class="fragment-time">${f.time}</div> <div class="fragment-from">${f.from} → ${f.to}</div> <div class="fragment-content">${f.content}</div> </div>`).join('');
 w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);"> ${beat.intro} </div> <div class="fragment-grid"> ${cardsHtml} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
-<button class="btn" onclick="advanceBeat()">${beat.nextBtn || ‘continue ▸’}</button>
+<button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
 </div>`: ''}`;
 storyContainer.appendChild(w);
 }
 
 function renderHBoard(beat, isActive) {
-const w = document.createElement(‘div’);
-w.className = ‘fragment-board’;
-const cardsHtml = beat.candidates.map(c => `<div class="hboard-card"> <div class="hboard-name">${c.first} ${c.last}</div> <div class="hboard-role">${c.role}, age ${c.age}</div> <div class="hboard-row"><span class="hboard-label">aug 14</span>${c.status}</div> <div class="hboard-row"><span class="hboard-label">alibi</span>${c.alibi}</div> </div>`).join(’’);
+const w = document.createElement('div');
+w.className = 'fragment-board';
+const cardsHtml = beat.candidates.map(c => `<div class="hboard-card"> <div class="hboard-name">${c.first} ${c.last}</div> <div class="hboard-role">${c.role}, age ${c.age}</div> <div class="hboard-row"><span class="hboard-label">aug 14</span>${c.status}</div> <div class="hboard-row"><span class="hboard-label">alibi</span>${c.alibi}</div> </div>`).join('');
 w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);"> ${beat.intro} </div> <div class="hboard-grid"> ${cardsHtml} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
-<button class="btn" onclick="advanceBeat()">${beat.nextBtn || ‘continue ▸’}</button>
+<button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
 </div>`: ''}`;
 storyContainer.appendChild(w);
 }
 
 function renderDiary(beat, isActive) {
-const w = document.createElement(‘div’);
-w.className = ‘window story-window’;
+const w = document.createElement('div');
+w.className = 'window story-window';
 w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div class="diary-entry"> <div class="diary-meta">${beat.meta}</div> ${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
-<button class="btn" onclick="advanceBeat()">${beat.nextBtn || ‘continue ▸’}</button>
+<button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
 </div>`: ''}`;
 storyContainer.appendChild(w);
 }
 
 function renderTask(beat, isActive) {
 const completed = state.completedBeats.includes(beat.id);
-const w = document.createElement(‘div’);
-w.className = ‘window terminal-window’;
+const w = document.createElement('div');
+w.className = 'window terminal-window';
 
 // Story above, in a diary-ish small note
-const storyHtml = beat.storyAbove ? ` <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;"> ${beat.storyAbove} </div>` : ‘’;
+const storyHtml = beat.storyAbove ? ` <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;"> ${beat.storyAbove} </div>` : '';
 
 w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> ${storyHtml} <div style="background: var(--window-bg); padding: 14px 16px;"> <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;"> ✦ skill unlocking: ${beat.skill} </div> <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;"> ${beat.instructions} </div> <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div> <div style="margin-top: 8px;"> <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button> </div> </div> <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div> <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea> <div class="editor-bar"> <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button> <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button> <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);"> ${completed ? '✓ COMPLETE' : 'NOT YET RUN'} </span> </div> <div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div> ${completed && isActive ?`<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
 <button class="btn" onclick="advanceBeat()">▸ continue</button>
@@ -1311,9 +1311,9 @@ storyContainer.appendChild(w);
 }
 
 function renderWrap(beat, isActive) {
-const w = document.createElement(‘div’);
-w.className = ‘window story-window’;
-w.style.maxWidth = ‘640px’;
+const w = document.createElement('div');
+w.className = 'window story-window';
+w.style.maxWidth = '640px';
 w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 5 :: pending<br> > melissa klassen :: location unknown </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
 storyContainer.appendChild(w);
 }
@@ -1323,8 +1323,8 @@ storyContainer.appendChild(w);
 // ===========================================================================
 async function runTask(beatId) {
 const beat = BEATS.find(b => b.id === beatId);
-const codeEl = document.getElementById(‘code-’ + beatId);
-const outEl = document.getElementById(‘output-’ + beatId);
+const codeEl = document.getElementById('code-' + beatId);
+const outEl = document.getElementById('output-' + beatId);
 const code = codeEl.value;
 
 outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
@@ -1336,7 +1336,7 @@ if (beat.fakeInput !== undefined) {
 runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
 }
 
-// Inject roster files into Pyodide’s virtual FS if requested
+// Inject roster files into Pyodide's virtual FS if requested
 if (beat.fileInjection) {
 await injectRosterFiles();
 }
@@ -1352,7 +1352,7 @@ runCode = STAFF_PRELOAD_PY + STAFF_2003_PRELOAD_PY + runCode;
 }
 
 const result = await runPython(runCode);
-const actualOutput = (result.output || ‘’).trimEnd();
+const actualOutput = (result.output || '').trimEnd();
 
 if (!result.ok) {
 outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
@@ -1362,10 +1362,10 @@ return;
 // Check expected output
 let passed = false;
 // Allow expectedOutput to use \n as literal newline escape
-const expectedNormalized = (beat.expectedOutput || ‘’).replace(/\n/g, ‘\n’);
-if (beat.matchType === ‘exact’) {
+const expectedNormalized = (beat.expectedOutput || '').replace(/\n/g, '\n');
+if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
-} else if (beat.matchType === ‘contains’) {
+} else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
 }
 
@@ -1383,7 +1383,7 @@ writeSave(state);
 if (beat.onComplete?.buddy) {
 showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 }
-// re-render to show “continue” button
+// re-render to show "continue" button
 setTimeout(() => renderStory(), 600);
 } else {
 outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
@@ -1392,21 +1392,21 @@ outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)
 
 function resetTask(beatId) {
 const beat = BEATS.find(b => b.id === beatId);
-document.getElementById(‘code-’ + beatId).value = beat.starter;
-document.getElementById(‘output-’ + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
+document.getElementById('code-' + beatId).value = beat.starter;
+document.getElementById('output-' + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
 }
 
 function escapeHtml(s) {
-return String(s).replace(/[&<>]/g, c => ({’&’:’&’,’<’:’<’,’>’:’>’}[c]));
+return String(s).replace(/[&<>]/g, c => ({'&':'&','<':'<','>':'>'}[c]));
 }
 
 // ===========================================================================
 // BEAT ADVANCE
 // ===========================================================================
 function advanceBeat() {
-// mark diary beats as “completed” implicitly (they only need to be read)
+// mark diary beats as "completed" implicitly (they only need to be read)
 const beat = BEATS[state.currentBeat];
-if (beat && (beat.type === ‘diary’ || beat.type === ‘board’ || beat.type === ‘h_board’) && !state.completedBeats.includes(beat.id)) {
+if (beat && (beat.type === 'diary' || beat.type === 'board' || beat.type === 'h_board') && !state.completedBeats.includes(beat.id)) {
 state.completedBeats.push(beat.id);
 }
 state.currentBeat = Math.min(state.currentBeat + 1, BEATS.length - 1);
@@ -1415,7 +1415,7 @@ renderStory();
 }
 
 function resetGame() {
-if (confirm(‘really restart from the beginning? all your progress will be erased.’)) {
+if (confirm('really restart from the beginning? all your progress will be erased.')) {
 localStorage.removeItem(SAVE_KEY);
 location.reload();
 }
@@ -1425,27 +1425,27 @@ location.reload();
 // BUDDY POPUP
 // ===========================================================================
 function showBuddy(name, msg) {
-document.getElementById(‘buddyName’).textContent = name + ’ :: incoming message’;
-document.getElementById(‘buddyMessage’).innerHTML = msg;
-const popup = document.getElementById(‘buddyPopup’);
-popup.classList.remove(‘hidden’);
+document.getElementById('buddyName').textContent = name + ' :: incoming message';
+document.getElementById('buddyMessage').innerHTML = msg;
+const popup = document.getElementById('buddyPopup');
+popup.classList.remove('hidden');
 // play a soft chime — emulated as a CSS attention grab
-popup.style.animation = ‘none’;
-setTimeout(() => { popup.style.animation = ‘’; }, 10);
+popup.style.animation = 'none';
+setTimeout(() => { popup.style.animation = ''; }, 10);
 }
 function closeBuddy() {
-document.getElementById(‘buddyPopup’).classList.add(‘hidden’);
+document.getElementById('buddyPopup').classList.add('hidden');
 }
 
 // auto-resume from save
 if (state.userName && state.currentBeat > 0) {
 // skip intro
-document.getElementById(‘userNameInput’).value = state.userName;
+document.getElementById('userNameInput').value = state.userName;
 // keep intro visible but offer continue — simpler: go straight in
 setTimeout(() => {
-document.getElementById(‘introScreen’).classList.add(‘hidden’);
-document.getElementById(‘desktop’).classList.remove(‘hidden’);
-document.getElementById(‘taskbar’).classList.remove(‘hidden’);
+document.getElementById('introScreen').classList.add('hidden');
+document.getElementById('desktop').classList.remove('hidden');
+document.getElementById('taskbar').classList.remove('hidden');
 makeSparkles();
 startClock();
 renderStory();
