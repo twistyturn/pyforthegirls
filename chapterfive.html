@@ -940,6 +940,12 @@ let state = loadSave() || {
   charms: 0
 };
 
+// Shared across chapters so the player only enters their name once.
+const SHARED_USER_KEY = 'pyforthegirls_user';
+if (!state.userName) {
+  try { state.userName = localStorage.getItem(SHARED_USER_KEY) || ''; } catch(e) {}
+}
+
 // ===========================================================================
 // SPARKLES
 // ===========================================================================
@@ -968,6 +974,7 @@ function startGame() {
   const name = document.getElementById('userNameInput').value.trim() || 'guest';
   state.userName = name;
   writeSave(state);
+  try { localStorage.setItem(SHARED_USER_KEY, name); } catch(e) {}
   document.getElementById('introScreen').classList.add('hidden');
   document.getElementById('desktop').classList.remove('hidden');
   document.getElementById('taskbar').classList.remove('hidden');
@@ -1502,7 +1509,7 @@ function renderWrap(beat, isActive) {
 const w = document.createElement('div');
 w.className = 'window story-window';
 w.style.maxWidth = '640px';
-w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 6 :: pending<br> > hannah :: online, waiting </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
+w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 6 :: pending<br> > hannah :: online, waiting </div> <div style="margin-top: 16px; text-align: center;"> <a href="chaptersix.html" class="btn btn-acid" style="margin-right: 8px; text-decoration: none; display: inline-block;">▸ continue to chapter 6</a> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
 storyContainer.appendChild(w);
 }
 
@@ -1625,8 +1632,8 @@ function closeBuddy() {
 document.getElementById('buddyPopup').classList.add('hidden');
 }
 
-// auto-resume from save
-if (state.userName && state.currentBeat > 0) {
+// auto-resume from save (or skip intro if name already known from another chapter)
+if (state.userName) {
 // skip intro
 document.getElementById('userNameInput').value = state.userName;
 // keep intro visible but offer continue — simpler: go straight in
