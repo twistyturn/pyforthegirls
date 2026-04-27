@@ -535,13 +535,73 @@
       {
         id: 'camille',
         text: 'camille?\nsaw something at boathouse?\nwho is this',
-        pos: { x: 28, y: 74 },
+        pos: { x: 30, y: 74 },
         color: 'yellow', style: 'clean',
         chapter_added: 1, chapter_modified: 1
       }
     ],
     strings: [],
     marginalia: []
+  };
+
+  // ---------------------------------------------------------------------------
+  // ch2 — wren grows from placeholder; password and tyler placeholder pinned.
+  // First red string. First marker scrawl.
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[2] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan, 17\n(still missing)',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 2
+      },
+      {
+        id: 'wren',
+        text: 'WREN HALLOWAY\ncounsellor. 19.\ntegan’s "friend"\nSUSPICIOUS',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 2
+      },
+      {
+        id: 'camille',
+        text: 'camille?\nsaw something at boathouse?\nwho is this',
+        pos: { x: 30, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 1
+      },
+      {
+        id: 'password',
+        text: 'password worked\nbirchwoodcounsellor1985\nshe SET THIS UP',
+        pos: { x: 80, y: 68 },
+        color: 'blue', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'tyler_placeholder',
+        text: 'tyler?\na "boy" tegan kissed wren\nin front of?\nwho',
+        pos: { x: 14, y: 54 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      }
+    ],
+    strings: [
+      {
+        from: 'wren', to: 'tegan_main',
+        color: 'red', thickness: 'thin',
+        label: 'something HAPPENED',
+        chapter_added: 2
+      }
+    ],
+    marginalia: [
+      {
+        text: 'she was leaving???',
+        pos: { x: 52, y: 60 }, angle: -14,
+        color: 'red', size: 'medium',
+        chapter_added: 2
+      }
+    ]
   };
 
   // public API attached to window.Caseboard
