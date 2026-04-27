@@ -1,0 +1,2312 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pyforthegirls :: chapter 7 :: ten hours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<style>
+  /* ============ Y2K-007 PALETTE ============ */
+  :root {
+    --bg-deep: #1a0628;
+    --bg-mid: #2d0a3d;
+    --pink-hot: #ff66c4;
+    --pink-soft: #ffb3e6;
+    --pink-bubble: #ffd6f0;
+    --lavender: #c8a8e8;
+    --cyan-glow: #66ffff;
+    --lime-acid: #c8ff66;
+    --silver: #d8d8e8;
+    --chrome-1: #b8b8d0;
+    --chrome-2: #f0f0ff;
+    --window-bg: #f4d4f0;
+    --window-border: #ff66c4;
+    --shadow-hard: 4px 4px 0 #1a0628;
+    --shadow-soft: 0 0 24px rgba(255, 102, 196, 0.4);
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+min-height: 100vh;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+color: var(–silver);
+background: var(–bg-deep);
+overflow-x: hidden;
+cursor: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘24’ height=‘24’ viewBox=‘0 0 24 24’%3E%3Cpath fill=’%23ff66c4’ stroke=’%23fff’ stroke-width=‘1’ d=‘M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z’/%3E%3C/svg%3E”) 2 2, auto;
+}
+
+/* ============ ANIMATED BACKGROUND ============ */
+body::before {
+content: ‘’;
+position: fixed; inset: 0; z-index: -2;
+background:
+radial-gradient(ellipse at 20% 30%, rgba(255, 102, 196, 0.18), transparent 50%),
+radial-gradient(ellipse at 80% 70%, rgba(102, 255, 255, 0.12), transparent 50%),
+radial-gradient(ellipse at 50% 100%, rgba(200, 168, 232, 0.15), transparent 60%),
+var(–bg-deep);
+}
+body::after {
+content: ‘’;
+position: fixed; inset: 0; z-index: -1;
+background-image:
+repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
+pointer-events: none;
+}
+
+/* sparkle layer */
+.sparkles {
+position: fixed; inset: 0; pointer-events: none; z-index: 1;
+}
+.sparkle {
+position: absolute;
+width: 6px; height: 6px;
+background: radial-gradient(circle, #fff 0%, var(–pink-hot) 50%, transparent 70%);
+border-radius: 50%;
+animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+0%, 100% { opacity: 0; transform: scale(0); }
+50% { opacity: 1; transform: scale(1); }
+}
+
+/* ============ DESKTOP / TASKBAR ============ */
+.desktop {
+min-height: 100vh;
+padding: 16px 16px 56px 16px;
+position: relative;
+}
+.taskbar {
+position: fixed; bottom: 0; left: 0; right: 0;
+height: 40px;
+background: linear-gradient(180deg, var(–chrome-2) 0%, var(–chrome-1) 100%);
+border-top: 2px solid var(–window-border);
+display: flex;
+align-items: center;
+padding: 0 12px;
+gap: 12px;
+z-index: 100;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+}
+.start-btn {
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+border: 2px solid var(–bg-deep);
+border-right-color: #ff99d6;
+border-bottom-color: #ff99d6;
+padding: 4px 14px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+font-weight: bold;
+box-shadow: 2px 2px 0 var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+.start-btn::before { content: ’✿ ’; }
+.taskbar-time {
+margin-left: auto;
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 10px;
+border: 1px solid var(–bg-deep);
+box-shadow: inset 1px 1px 0 #000;
+font-family: ‘VT323’, monospace;
+font-size: 14px;
+}
+.taskbar-mail {
+background: var(–bg-deep);
+color: var(–cyan-glow);
+padding: 3px 8px;
+border: 1px solid var(–lavender);
+font-size: 11px;
+animation: blink 1.5s steps(2) infinite;
+cursor: pointer;
+}
+@keyframes blink { 50% { opacity: 0.4; } }
+
+/* ============ DESKTOP ICONS ============ */
+.icon-grid {
+display: grid;
+grid-template-columns: 80px;
+gap: 12px;
+margin-bottom: 24px;
+}
+.desktop-icon {
+text-align: center;
+color: var(–silver);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+cursor: pointer;
+padding: 4px;
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
+.desktop-icon-img {
+width: 48px; height: 48px;
+margin: 0 auto 4px;
+display: flex; align-items: center; justify-content: center;
+font-size: 32px;
+filter: drop-shadow(2px 2px 0 var(–bg-deep));
+}
+
+/* ============ WINDOWS ============ */
+.window {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+}
+.window-titlebar {
+background: linear-gradient(90deg, var(–pink-hot) 0%, var(–lavender) 100%);
+color: white;
+padding: 4px 8px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 1px;
+text-transform: uppercase;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 2px solid var(–bg-deep);
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.window-titlebar-buttons {
+display: flex; gap: 4px;
+}
+.titlebar-btn {
+width: 16px; height: 14px;
+background: var(–chrome-2);
+border: 1px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+line-height: 12px;
+text-align: center;
+cursor: pointer;
+}
+.window-content { padding: 16px; }
+
+/* ============ AIM-STYLE BUDDY MESSAGE / STORY POPUP ============ */
+.story-window {
+max-width: 540px;
+margin: 24px auto;
+animation: window-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes window-pop {
+from { transform: scale(0.85); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+.story-window .window-titlebar { background: linear-gradient(90deg, #ff66c4, #c8a8e8); }
+.diary-entry {
+background: #fff8f0;
+background-image:
+repeating-linear-gradient(180deg, transparent 0, transparent 23px, #ffd6e8 23px, #ffd6e8 24px);
+color: #2d0a3d;
+padding: 24px 20px 20px 36px;
+font-family: ‘Nanum Pen Script’, ‘Special Elite’, cursive;
+font-size: 19px;
+line-height: 24px;
+border-left: 8px solid var(–pink-hot);
+position: relative;
+}
+.diary-entry::before {
+content: ‘’;
+position: absolute;
+left: 18px; top: 0; bottom: 0;
+border-left: 1px solid #ff99cc;
+}
+.diary-meta {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #999;
+margin-bottom: 8px;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+/* ============ TERMINAL / CODE EDITOR ============ */
+.terminal-window { max-width: 760px; margin: 24px auto; }
+.terminal-window .window-titlebar {
+background: linear-gradient(90deg, var(–bg-deep), var(–bg-mid));
+color: var(–lime-acid);
+}
+.editor-wrap {
+display: grid;
+grid-template-columns: 1fr;
+gap: 0;
+}
+.file-tab {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 12px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+border-bottom: 1px solid var(–pink-hot);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.file-tab::before { content: ‘▸’; color: var(–pink-hot); }
+.code-area {
+background: #0a0218;
+color: var(–cyan-glow);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 17px;
+line-height: 1.4;
+border: none;
+width: 100%;
+min-height: 140px;
+resize: vertical;
+outline: none;
+tab-size: 4;
+caret-color: var(–pink-hot);
+}
+.code-area:focus { box-shadow: inset 0 0 12px rgba(255, 102, 196, 0.3); }
+.editor-bar {
+background: var(–chrome-1);
+padding: 8px 12px;
+display: flex;
+gap: 8px;
+border-top: 2px solid var(–bg-deep);
+flex-wrap: wrap;
+align-items: center;
+}
+.btn {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+padding: 6px 12px;
+border: 2px solid var(–bg-deep);
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+color: var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+box-shadow: 2px 2px 0 var(–bg-deep);
+transition: transform 0.05s;
+font-weight: bold;
+}
+.btn:hover { background: linear-gradient(180deg, var(–pink-bubble), var(–pink-soft)); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(–bg-deep); }
+.btn.btn-secondary {
+background: linear-gradient(180deg, var(–chrome-2), var(–chrome-1));
+}
+.btn.btn-acid {
+background: linear-gradient(180deg, #e6ff99, var(–lime-acid));
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.output-area {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 16px;
+min-height: 60px;
+border-top: 2px solid var(–pink-hot);
+white-space: pre-wrap;
+word-wrap: break-word;
+line-height: 1.4;
+}
+.output-area .err { color: #ff6688; }
+.output-area .ok { color: var(–lime-acid); }
+.output-area .info { color: var(–cyan-glow); }
+
+/* ============ TASK / OBJECTIVE PANEL ============ */
+.task-panel {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.task-panel .window-titlebar { background: linear-gradient(90deg, var(–lime-acid), #99cc66); color: var(–bg-deep); text-shadow: none; }
+.task-content { padding: 16px; }
+.task-content h3 {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+margin-bottom: 8px;
+color: var(–bg-deep);
+}
+.task-content p, .task-content li {
+font-family: ‘VT323’, monospace;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+margin-bottom: 8px;
+}
+.task-content ul { padding-left: 20px; }
+.task-content code {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 1px 6px;
+font-family: ‘VT323’, monospace;
+border-radius: 2px;
+font-size: 16px;
+}
+.hint-box {
+background: linear-gradient(180deg, #ffe6f5, var(–pink-bubble));
+border: 1px dashed var(–pink-hot);
+padding: 10px 12px;
+margin-top: 12px;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+color: var(–bg-deep);
+}
+.hint-box::before {
+content: ’✿ HINT: ’;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+}
+
+/* ============ MENTOR / BUDDY POPUP ============ */
+.buddy-popup {
+position: fixed;
+bottom: 60px;
+right: 20px;
+width: 280px;
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+z-index: 200;
+animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+font-family: ‘VT323’, monospace;
+}
+.buddy-popup .window-titlebar { background: linear-gradient(90deg, var(–cyan-glow), var(–lavender)); }
+.buddy-content {
+padding: 12px;
+color: var(–bg-deep);
+font-size: 16px;
+line-height: 1.3;
+}
+.buddy-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+margin-bottom: 6px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM COMPOSE / LOG (Ch5) ============ */
+.aim-window {
+border: 2px solid var(–bg-deep);
+background: #f0e8ff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+}
+.aim-window .window-titlebar {
+background: linear-gradient(90deg, #6699ff, #99ccff);
+color: #fff;
+}
+.aim-buddy-strip {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-buddy-strip .online-dot {
+color: var(–lime-acid);
+font-size: 14px;
+vertical-align: middle;
+}
+.aim-compose-body {
+padding: 16px;
+background: #fff;
+color: var(–bg-deep);
+font-size: 18px;
+line-height: 1.5;
+min-height: 120px;
+border: 1px solid var(–bg-deep);
+margin: 12px;
+white-space: pre-wrap;
+}
+.aim-log-body {
+padding: 14px;
+background: #fff;
+margin: 12px;
+border: 1px solid var(–bg-deep);
+max-height: 70vh;
+overflow-y: auto;
+}
+.aim-message {
+margin-bottom: 10px;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+}
+.aim-message-from {
+color: #cc3399;
+font-weight: bold;
+margin-right: 6px;
+}
+.aim-message-player .aim-message-from {
+color: #336699;
+}
+.aim-message-player {
+padding-left: 24px;
+border-left: 3px solid #336699;
+}
+.aim-message-pause {
+text-align: center;
+color: #999;
+font-size: 18px;
+margin: 14px 0;
+letter-spacing: 4px;
+}
+.aim-send-bar {
+padding: 10px 12px;
+background: var(–window-bg);
+border-top: 1px solid var(–bg-deep);
+text-align: right;
+}
+.aim-send-btn {
+background: var(–lime-acid);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+padding: 8px 18px;
+cursor: pointer;
+box-shadow: 2px 2px 0 var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-send-btn:hover { background: #ccff66; }
+.aim-send-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+
+/* ============ ARCHIVE VIEW (Ch6) ============ */
+.archive-window {
+border: 2px solid var(–bg-deep);
+background: #f0f4ff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+}
+.archive-window .window-titlebar {
+background: linear-gradient(90deg, #6699ff, #99ccff);
+color: #fff;
+}
+.archive-meta {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: var(–bg-deep);
+letter-spacing: 1px;
+}
+.archive-body {
+padding: 14px;
+background: #fff;
+margin: 12px;
+border: 1px solid var(–bg-deep);
+max-height: 60vh;
+overflow-y: auto;
+font-family: ‘VT323’, monospace;
+font-size: 15px;
+line-height: 1.5;
+color: var(–bg-deep);
+}
+.archive-line {
+margin-bottom: 4px;
+white-space: pre-wrap;
+}
+.archive-sender {
+color: #cc3399;
+font-weight: bold;
+}
+
+/* ============ EMAIL VIEW (Ch7 — Outlook Express vibe) ============ */
+.email-window {
+border: 2px solid var(–bg-deep);
+background: #ffffff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘Tahoma’, ‘Geneva’, sans-serif;
+}
+.email-titlebar {
+background: linear-gradient(180deg, #4477cc 0%, #3366aa 100%) !important;
+color: #fff !important;
+text-shadow: none !important;
+font-family: ‘Tahoma’, sans-serif;
+font-size: 11px;
+}
+.email-headers {
+padding: 10px 14px;
+background: #f0f0e8;
+border-bottom: 1px solid #aaa;
+font-family: ‘Tahoma’, sans-serif;
+font-size: 13px;
+color: var(–bg-deep);
+}
+.email-header-row {
+margin-bottom: 4px;
+line-height: 1.3;
+}
+.email-header-label {
+display: inline-block;
+width: 60px;
+color: #555;
+font-weight: bold;
+}
+.email-header-value {
+color: #000;
+}
+.email-subject {
+font-weight: bold;
+}
+.email-body {
+padding: 16px;
+background: #ffffff;
+color: #000;
+font-family: ‘Courier New’, ‘Consolas’, monospace;
+font-size: 14px;
+line-height: 1.55;
+white-space: pre-wrap;
+border-bottom: 1px solid #ccc;
+}
+.email-diary-below {
+padding: 14px 16px;
+background: var(–bg-deep);
+color: var(–lime-acid);
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+line-height: 1.5;
+border-top: 2px solid var(–lime-acid);
+}
+
+/* ============ SERP VIEW (Ch7 — period Google) ============ */
+.serp-window {
+border: 2px solid var(–bg-deep);
+background: #fff;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+font-family: ‘Arial’, ‘Helvetica’, sans-serif;
+}
+.serp-preamble {
+padding: 16px 18px;
+background: var(–bg-deep);
+color: var(–lime-acid);
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+line-height: 1.5;
+border-bottom: 2px solid var(–lime-acid);
+}
+.serp-window .window-titlebar {
+background: linear-gradient(90deg, #ffffff, #eeeeee) !important;
+color: var(–bg-deep) !important;
+text-shadow: none !important;
+font-size: 11px;
+border-bottom: 1px solid #aaa;
+}
+.serp-header {
+padding: 18px 24px 12px;
+background: #fff;
+border-bottom: 1px solid #ccc;
+display: flex;
+align-items: center;
+gap: 18px;
+flex-wrap: wrap;
+}
+.serp-logo {
+font-family: ‘Times New Roman’, serif;
+font-size: 36px;
+font-weight: bold;
+color: #3366cc;
+letter-spacing: -1px;
+line-height: 1;
+}
+.serp-search-bar {
+display: flex;
+gap: 6px;
+align-items: center;
+flex: 1;
+min-width: 240px;
+}
+.serp-search-input {
+flex: 1;
+padding: 4px 6px;
+border: 1px solid #888;
+font-family: ‘Arial’, sans-serif;
+font-size: 13px;
+background: #fff;
+color: #000;
+}
+.serp-search-btn {
+padding: 4px 10px;
+border: 1px solid #888;
+background: linear-gradient(180deg, #fff, #ddd);
+font-family: ‘Arial’, sans-serif;
+font-size: 11px;
+color: #000;
+cursor: default;
+}
+.serp-result-count {
+padding: 8px 24px;
+background: #e5ecf9;
+color: #000;
+font-family: ‘Arial’, sans-serif;
+font-size: 11px;
+border-bottom: 1px solid #ccc;
+}
+.serp-results {
+padding: 14px 24px;
+background: #fff;
+}
+.serp-result {
+margin-bottom: 14px;
+}
+.serp-result-title {
+color: #0000cc;
+font-family: ‘Arial’, sans-serif;
+font-size: 14px;
+text-decoration: underline;
+font-weight: normal;
+cursor: default;
+}
+.serp-result-snippet {
+color: #000;
+font-family: ‘Arial’, sans-serif;
+font-size: 12px;
+line-height: 1.4;
+margin-top: 2px;
+}
+.serp-result-url {
+color: #008000;
+font-family: ‘Arial’, sans-serif;
+font-size: 11px;
+margin-top: 1px;
+}
+
+/* ============ MULTIPLATFORM ARCHIVE (Ch7 — Tyler dossier) ============ */
+.multiplatform-window {
+border: 2px solid var(–bg-deep);
+background: #1a1a2e;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+}
+.multiplatform-window .window-titlebar {
+background: linear-gradient(90deg, #882244, #cc3399) !important;
+color: #fff !important;
+text-shadow: none !important;
+}
+.multiplatform-body {
+padding: 14px 16px;
+background: #1a1a2e;
+max-height: 70vh;
+overflow-y: auto;
+}
+.mp-post {
+margin-bottom: 14px;
+padding: 10px 12px;
+border-left: 4px solid #888;
+background: #f0f0e8;
+color: #1a1a2e;
+font-family: ‘Tahoma’, sans-serif;
+font-size: 13px;
+line-height: 1.45;
+}
+.mp-post-header {
+font-weight: bold;
+margin-bottom: 6px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 1px;
+}
+.mp-platform-tag {
+display: inline-block;
+padding: 1px 5px;
+margin-right: 4px;
+color: #fff;
+border-radius: 2px;
+}
+.mp-xanga {
+border-left-color: #99cc66;
+background: #f5f5dc;
+}
+.mp-xanga .mp-platform-tag {
+background: #99cc66;
+}
+.mp-myspace {
+border-left-color: #6699ff;
+background: #e8eef8;
+}
+.mp-myspace .mp-platform-tag {
+background: #3366cc;
+}
+.mp-forum {
+border-left-color: #cc6633;
+background: #f0e8e0;
+}
+.mp-forum .mp-platform-tag {
+background: #883311;
+}
+.mp-mood, .mp-music {
+font-style: italic;
+color: #555;
+font-size: 12px;
+margin-bottom: 2px;
+}
+.mp-content {
+margin-top: 6px;
+color: #1a1a2e;
+font-family: ‘VT323’, monospace;
+font-size: 15px;
+line-height: 1.45;
+}
+.mp-comments {
+color: #888;
+font-size: 11px;
+margin-top: 6px;
+border-top: 1px dashed #aaa;
+padding-top: 4px;
+}
+.mp-photo {
+padding: 14px;
+margin: 6px 0;
+background: #d0d0c0;
+color: #555;
+font-family: ‘Courier New’, monospace;
+font-size: 12px;
+border: 1px solid #888;
+font-style: italic;
+}
+.mp-caption {
+margin-top: 4px;
+font-size: 13px;
+}
+.mp-top-friends {
+margin-top: 4px;
+font-size: 11px;
+color: #555;
+border-top: 1px dashed #aaa;
+padding-top: 4px;
+}
+.mp-status {
+font-size: 14px;
+color: #1a1a2e;
+}
+.mp-thread {
+color: #555;
+font-size: 11px;
+margin-bottom: 4px;
+font-style: italic;
+}
+.mp-gap {
+margin: 18px 14px;
+padding: 12px;
+background: #2a2a3e;
+color: #ff66c4;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+text-align: center;
+letter-spacing: 1px;
+border: 1px dashed #ff66c4;
+}
+
+/* ============ INTRO SCREEN ============ */
+.intro-screen {
+position: fixed; inset: 0;
+background: var(–bg-deep);
+z-index: 9999;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+flex-direction: column;
+padding: 40px 20px;
+overflow-y: auto;
+}
+.intro-logo {
+font-family: ‘Press Start 2P’, monospace;
+font-size: 28px;
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow), var(–lime-acid), var(–pink-hot));
+background-size: 300% 100%;
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+animation: shimmer 4s linear infinite;
+text-align: center;
+line-height: 1.5;
+margin-bottom: 24px;
+text-shadow: 0 0 30px rgba(255, 102, 196, 0.5);
+}
+@keyframes shimmer {
+0% { background-position: 0% 50%; }
+100% { background-position: 300% 50%; }
+}
+.intro-tag {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–lavender);
+letter-spacing: 3px;
+margin-bottom: 36px;
+text-align: center;
+}
+.intro-prose {
+max-width: 560px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+color: var(–silver);
+line-height: 1.5;
+margin-bottom: 24px;
+text-align: left;
+background: var(–bg-mid);
+padding: 20px;
+border: 2px solid var(–pink-hot);
+box-shadow: var(–shadow-soft);
+}
+.intro-prose p { margin-bottom: 12px; }
+.intro-prose .em { color: var(–pink-hot); font-style: italic; }
+.intro-input {
+background: var(–bg-deep);
+color: var(–lime-acid);
+border: 2px solid var(–pink-hot);
+padding: 8px 12px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+width: 280px;
+text-align: center;
+outline: none;
+margin-bottom: 16px;
+}
+.intro-input:focus { box-shadow: 0 0 12px var(–pink-hot); }
+
+/* ============ FRAGMENT BOARD (Roottrees-style) ============ */
+.fragment-board {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.fragment-board .window-titlebar {
+background: linear-gradient(90deg, #ffaa66, var(–pink-hot));
+}
+.fragment-grid {
+padding: 12px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 10px;
+background:
+repeating-linear-gradient(45deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.fragment-card {
+background: #fff;
+border: 1.5px solid var(–bg-deep);
+padding: 8px;
+font-family: ‘VT323’, monospace;
+font-size: 13px;
+color: var(–bg-deep);
+box-shadow: 2px 2px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-1deg);
+transition: transform 0.15s, box-shadow 0.15s;
+cursor: default;
+word-wrap: break-word;
+overflow: hidden;
+}
+.fragment-card:nth-child(2n) { transform: rotate(1deg); }
+.fragment-card:nth-child(3n) { transform: rotate(-0.5deg); }
+.fragment-card:nth-child(5n) { transform: rotate(0.7deg); }
+.fragment-card:hover {
+transform: rotate(0) scale(1.04);
+box-shadow: 4px 4px 0 var(–pink-hot);
+z-index: 10;
+}
+.fragment-card.sms {
+background: #d4f4d4;
+border-color: #336633;
+}
+.fragment-card.aim {
+background: #d4e4ff;
+border-color: #334466;
+}
+.fragment-platform {
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+background: var(–bg-deep);
+color: var(–pink-hot);
+padding: 1px 4px;
+margin-bottom: 4px;
+display: inline-block;
+letter-spacing: 1px;
+}
+.fragment-card.sms .fragment-platform { color: var(–lime-acid); }
+.fragment-time {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #666;
+margin-bottom: 3px;
+}
+.fragment-from {
+font-weight: bold;
+color: var(–pink-hot);
+font-size: 11px;
+margin-bottom: 2px;
+}
+.fragment-card.aim .fragment-from { color: #336699; }
+.fragment-content {
+font-size: 13px;
+line-height: 1.3;
+}
+.fragment-id {
+position: absolute;
+top: 2px;
+right: 4px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+color: #999;
+}
+
+/* ============ H-BOARD (suspect cards) ============ */
+.hboard-grid {
+padding: 16px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 14px;
+background:
+repeating-linear-gradient(135deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.hboard-card {
+background: #fff8f0;
+border: 2px solid var(–bg-deep);
+padding: 12px;
+font-family: ‘VT323’, monospace;
+color: var(–bg-deep);
+box-shadow: 3px 3px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-0.8deg);
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.hboard-card:nth-child(2n) { transform: rotate(0.6deg); }
+.hboard-card:nth-child(3n) { transform: rotate(-0.4deg); }
+.hboard-card:hover {
+transform: rotate(0) scale(1.03);
+box-shadow: 5px 5px 0 var(–pink-hot);
+z-index: 10;
+}
+.hboard-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+color: var(–pink-hot);
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 4px;
+border-bottom: 1px dashed var(–bg-deep);
+padding-bottom: 4px;
+}
+.hboard-role {
+font-size: 14px;
+font-style: italic;
+color: #666;
+margin-bottom: 8px;
+}
+.hboard-row {
+font-size: 14px;
+line-height: 1.3;
+margin-bottom: 4px;
+}
+.hboard-label {
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+color: var(–bg-deep);
+background: var(–lime-acid);
+padding: 1px 4px;
+letter-spacing: 1px;
+display: inline-block;
+margin-right: 4px;
+}
+
+/* ============ DECORATIVE BITS ============ */
+.marquee-strip {
+background: var(–bg-deep);
+color: var(–pink-hot);
+border-top: 1px solid var(–pink-hot);
+border-bottom: 1px solid var(–pink-hot);
+overflow: hidden;
+padding: 4px 0;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 2px;
+margin: 12px 0;
+}
+.marquee-strip span {
+display: inline-block;
+padding-left: 100%;
+animation: marquee 30s linear infinite;
+white-space: nowrap;
+}
+@keyframes marquee {
+0% { transform: translateX(0); }
+100% { transform: translateX(-100%); }
+}
+
+.progress-bar-outer {
+background: var(–bg-deep);
+border: 1px solid var(–bg-deep);
+height: 12px;
+margin-top: 8px;
+box-shadow: inset 1px 1px 0 #000;
+}
+.progress-bar-inner {
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow));
+height: 100%;
+transition: width 0.5s ease-out;
+background-size: 20px 20px;
+background-image: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+animation: stripe-shift 1s linear infinite;
+}
+@keyframes stripe-shift { to { background-position: 20px 0; } }
+
+.glitter-divider {
+text-align: center;
+color: var(–pink-hot);
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+margin: 16px 0;
+letter-spacing: 8px;
+}
+
+/* hidden by default */
+.hidden { display: none !important; }
+
+/* small mobile adjustments */
+@media (max-width: 600px) {
+.intro-logo { font-size: 18px; }
+.intro-prose { font-size: 16px; padding: 16px; }
+.buddy-popup { width: calc(100% - 40px); right: 20px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ============ INTRO / NAME SCREEN ============ -->
+
+<div class="intro-screen" id="introScreen">
+  <div class="intro-logo">pyforthegirls</div>
+  <div class="intro-tag">★ chapter seven ★ ten hours ★</div>
+  <div class="intro-prose">
+    <p>Ten days since you finished reading Hannah's archive.</p>
+    <p>You haven't done much. You've been sitting with what you don't know. <span class="em">wren_h</span> hasn't messaged in two and a half weeks. <span class="em">glorfindel_lives</span> is online and not pushing.</p>
+    <p>Yesterday you went back to the camp's website. Just to look at it again. Today you're going to look at it differently.</p>
+  </div>
+  <input class="intro-input" id="userNameInput" placeholder="enter your name" maxlength="20" autofocus>
+  <button class="btn btn-acid" id="startBtn" style="font-size: 12px; padding: 10px 24px;">▸ KEEP DIGGING</button>
+</div>
+
+<!-- ============ MAIN DESKTOP ============ -->
+
+<div class="desktop hidden" id="desktop">
+  <div class="sparkles" id="sparkles"></div>
+
+  <!-- Desktop icons -->
+
+  <div class="icon-grid">
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💾</div>
+      My Computer
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📂</div>
+      pinecrest_summer/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">🐍</div>
+      python.exe
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📔</div>
+      diary/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💬</div>
+      AIM_archives/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📱</div>
+      SMS_dumps/
+    </div>
+  </div>
+
+  <!-- Marquee -->
+
+  <div class="marquee-strip"><span>★ now playing: interpol — slow hands ★ AIM status: invisible ★ hannah :: online (waiting) ★ wren_h :: still silent ★ camppinecrest.ca :: indexed ★ now playing: interpol — slow hands ★</span></div>
+
+  <!-- ============ STORY WINDOWS RENDERED HERE ============ -->
+
+  <div id="storyContainer"></div>
+
+  <!-- ============ BUDDY POPUP ============ -->
+
+  <div class="buddy-popup hidden" id="buddyPopup">
+    <div class="window-titlebar">
+      <span>buddyhelper :: incoming</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
+      </div>
+    </div>
+    <div class="buddy-content">
+      <div class="buddy-name" id="buddyName">tegan_a87</div>
+      <div id="buddyMessage"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASKBAR ============ -->
+
+<div class="taskbar hidden" id="taskbar">
+  <button class="start-btn">Start</button>
+  <span style="font-family: 'Silkscreen', monospace; font-size: 9px;">CHAPTER 7 :: TEN HOURS</span>
+  <span class="taskbar-mail" id="mailIndicator">✉ 1 NEW</span>
+  <span class="taskbar-time" id="taskbarTime">11:47 PM</span>
+</div>
+
+<script>
+// ===========================================================================
+// PYODIDE LOADING
+// ===========================================================================
+let pyodide = null;
+let pyodideLoading = false;
+
+async function loadPyodideOnce() {
+  if (pyodide) return pyodide;
+  if (pyodideLoading) {
+    while (!pyodide) await new Promise(r => setTimeout(r, 100));
+    return pyodide;
+  }
+  pyodideLoading = true;
+  pyodide = await loadPyodide();
+  return pyodide;
+}
+
+async function runPython(code) {
+  const py = await loadPyodideOnce();
+  let stdout = '';
+  py.setStdout({ batched: (s) => { stdout += s + '\n'; } });
+  py.setStderr({ batched: (s) => { stdout += s + '\n'; } });
+  try {
+    await py.runPythonAsync(code);
+    return { ok: true, output: stdout };
+  } catch (err) {
+    return { ok: false, output: stdout, error: String(err.message || err) };
+  }
+}
+
+// ===========================================================================
+// SAVE / LOAD STATE (Neocities-friendly: localStorage only)
+// ===========================================================================
+const SAVE_KEY = 'pyforthegirls_save_ch7_v1';
+
+// ===========================================================================
+// IN-GAME FILE CONTENTS — written into Pyodide's virtual FS at task time
+// ===========================================================================
+
+// Mock directory listing returned when player calls urllib.request.urlopen
+const STAFF_DIR_LISTING = `<html><head><title>Index of /staff</title></head>
+<body>
+<h1>Index of /staff</h1>
+<ul>
+<li><a href="../">Parent Directory</a></li>
+<li><a href="schedule_2005.xls">schedule_2005.xls</a></li>
+<li><a href="2003_archive.zip">2003_archive.zip</a></li>
+<li><a href="2004_archive.zip">2004_archive.zip</a></li>
+<li><a href="2005_session1.pdf">2005_session1.pdf</a></li>
+<li><a href="2005_session2.pdf">2005_session2.pdf</a></li>
+<li><a href="2005_session3.pdf">2005_session3.pdf</a></li>
+<li><a href="staff_handbook_2005.doc">staff_handbook_2005.doc</a></li>
+<li><a href="contact_list.csv">contact_list.csv</a></li>
+<li><a href="form_template.doc">form_template.doc</a></li>
+<li><a href="medical_protocols.pdf">medical_protocols.pdf</a></li>
+</ul>
+</body></html>`;
+
+// 149 emails representing the 2004 camp staff archive — Jan 2 through Aug 16.
+// Heavy texture in the Aug 13-16 window (22 emails). Most others are stubs.
+const EMAIL_CORPUS_JSON = `[{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Fri, 02 Jan 2004 08:05:00 -0600","subject":"Re: lifeguard rotation update","body":"(Routine staff communication regarding lifeguard rotation update.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Fri, 02 Jan 2004 18:14:00 -0600","subject":"JC training materials","body":"(Routine staff communication regarding jc training materials.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Sat, 03 Jan 2004 14:06:00 -0600","subject":"Re: archery range","body":"(Routine staff communication regarding archery range.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Thu, 08 Jan 2004 11:08:00 -0600","subject":"Re: snack budget for week 2","body":"(Routine staff communication regarding snack budget for week 2.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Thu, 08 Jan 2004 15:37:00 -0600","subject":"kitchen supply order \u2014 week 3","body":"(Routine staff communication regarding kitchen supply order \u2014 week 3.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Fri, 09 Jan 2004 10:13:00 -0600","subject":"archery range maintenance","body":"(Routine staff communication regarding archery range maintenance.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Fri, 09 Jan 2004 15:40:00 -0600","subject":"cabin assignment changes","body":"(Routine staff communication regarding cabin assignment changes.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Mon, 12 Jan 2004 09:14:00 -0700","subject":"Re: 2004 session dates locked","body":"Briar,\nFinal: Session 1 July 4-31, Session 2 Aug 1-14. Closing weekend Aug 14-15.\nGet the website updated.\n\u2014 M\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sat, 17 Jan 2004 17:01:00 -0600","subject":"parent inquiry \u2014 Davies family","body":"(Routine staff communication regarding parent inquiry \u2014 davies family.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sun, 18 Jan 2004 09:59:00 -0600","subject":"Re: first aid kit restock","body":"(Routine staff communication regarding first aid kit restock.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Sun, 18 Jan 2004 12:53:00 -0600","subject":"parent newsletter draft","body":"(Routine staff communication regarding parent newsletter draft.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Tue, 20 Jan 2004 12:51:00 -0600","subject":"first aid kit restock","body":"(Routine staff communication regarding first aid kit restock.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Wed, 21 Jan 2004 09:01:00 -0600","subject":"Re: snack budget for week 1","body":"(Routine staff communication regarding snack budget for week 1.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Thu, 22 Jan 2004 14:08:00 -0700","subject":"JC applications coming in","body":"14 JC applications so far. We have 6 spots. Tyler Hughes confirmed returning. Tegan Ashby called and is enthusiastic.\n\u2014 B\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Thu, 22 Jan 2004 16:05:00 -0600","subject":"Re: snack budget for week 4","body":"(Routine staff communication regarding snack budget for week 4.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Fri, 23 Jan 2004 18:44:00 -0600","subject":"Re: parent inquiry \u2014 Davies","body":"(Routine staff communication regarding parent inquiry \u2014 davies.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Sun, 25 Jan 2004 10:44:00 -0600","subject":"Re: kitchen supply","body":"(Routine staff communication regarding kitchen supply.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Wed, 28 Jan 2004 11:55:00 -0600","subject":"Re: JC training materials","body":"(Routine staff communication regarding jc training materials.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Thu, 29 Jan 2004 13:36:00 -0600","subject":"Re: parent newsletter","body":"(Routine staff communication regarding parent newsletter.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Thu, 05 Feb 2004 12:08:00 -0600","subject":"Re: staff orientation","body":"(Routine staff communication regarding staff orientation.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Thu, 05 Feb 2004 18:10:00 -0600","subject":"Re: bus rentals confirmed","body":"(Routine staff communication regarding bus rentals confirmed.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Fri, 06 Feb 2004 15:24:00 -0600","subject":"allergy disclosure forms","body":"(Routine staff communication regarding allergy disclosure forms.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Sat, 07 Feb 2004 18:31:00 -0600","subject":"staff orientation logistics","body":"(Routine staff communication regarding staff orientation logistics.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Sun, 08 Feb 2004 18:20:00 -0600","subject":"Re: allergy disclosure forms","body":"(Routine staff communication regarding allergy disclosure forms.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Mon, 09 Feb 2004 09:13:00 -0600","subject":"Re: parent pickup change","body":"(Routine staff communication regarding parent pickup change.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Thu, 12 Feb 2004 13:13:00 -0600","subject":"Re: cabin assignment changes","body":"(Routine staff communication regarding cabin assignment changes.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sun, 15 Feb 2004 16:16:00 -0600","subject":"Re: water test results","body":"(Routine staff communication regarding water test results.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Tue, 17 Feb 2004 15:05:00 -0600","subject":"transportation \u2014 bus rentals","body":"(Routine staff communication regarding transportation \u2014 bus rentals.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Wed, 18 Feb 2004 11:33:00 -0700","subject":"Re: snack budget for week 3","body":"Approved as drafted. Reduce sugar items where possible.\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Wed, 18 Feb 2004 12:47:00 -0600","subject":"fire safety inspection","body":"(Routine staff communication regarding fire safety inspection.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Thu, 19 Feb 2004 14:23:00 -0600","subject":"Re: fire safety inspection","body":"(Routine staff communication regarding fire safety inspection.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Fri, 20 Feb 2004 09:24:00 -0600","subject":"water test results \u2014 lake","body":"(Routine staff communication regarding water test results \u2014 lake.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sat, 21 Feb 2004 10:34:00 -0600","subject":"Re: pool inspection","body":"(Routine staff communication regarding pool inspection.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Sun, 22 Feb 2004 09:43:00 -0600","subject":"rifle range certification","body":"(Routine staff communication regarding rifle range certification.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Mon, 23 Feb 2004 18:41:00 -0600","subject":"pool inspection scheduled","body":"(Routine staff communication regarding pool inspection scheduled.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Wed, 25 Feb 2004 18:21:00 -0600","subject":"Re: rifle range cert","body":"(Routine staff communication regarding rifle range cert.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Fri, 27 Feb 2004 08:51:00 -0600","subject":"parent pickup change \u2014 Hodge family","body":"(Routine staff communication regarding parent pickup change \u2014 hodge family.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Wed, 03 Mar 2004 18:03:00 -0600","subject":"parent FAQ doc draft","body":"(Routine staff communication regarding parent faq doc draft.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Fri, 05 Mar 2004 13:48:00 -0600","subject":"Re: session 1 closing","body":"(Routine staff communication regarding session 1 closing.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Fri, 05 Mar 2004 18:30:00 -0600","subject":"Re: photographs","body":"(Routine staff communication regarding photographs.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Mon, 08 Mar 2004 09:21:00 -0600","subject":"staff handbook update","body":"(Routine staff communication regarding staff handbook update.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Tue, 09 Mar 2004 16:55:00 -0600","subject":"evac drill scheduling","body":"(Routine staff communication regarding evac drill scheduling.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Thu, 11 Mar 2004 15:01:00 -0600","subject":"Re: turnover day","body":"(Routine staff communication regarding turnover day.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Sun, 14 Mar 2004 10:29:00 -0600","subject":"mid-session check-in","body":"(Routine staff communication regarding mid-session check-in.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Mon, 15 Mar 2004 16:28:00 -0600","subject":"Re: first aid supplies","body":"(Routine staff communication regarding first aid supplies.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Wed, 17 Mar 2004 10:32:00 -0600","subject":"Re: mid-session check-in","body":"(Routine staff communication regarding mid-session check-in.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Thu, 18 Mar 2004 11:37:00 -0600","subject":"Re: staff handbook","body":"(Routine staff communication regarding staff handbook.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Tue, 23 Mar 2004 12:25:00 -0600","subject":"first aid supplies inventory","body":"(Routine staff communication regarding first aid supplies inventory.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sat, 27 Mar 2004 09:48:00 -0600","subject":"photographs for new website","body":"(Routine staff communication regarding photographs for new website.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sat, 27 Mar 2004 10:18:00 -0700","subject":"allergy disclosure forms \u2014 coming in","body":"Forms for session 2 starting to arrive. Casey Donaldson has a tree-nut allergy noted. Will update master list weekly.\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sat, 27 Mar 2004 18:32:00 -0600","subject":"session 1 closing day notes","body":"(Routine staff communication regarding session 1 closing day notes.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Mon, 29 Mar 2004 12:15:00 -0600","subject":"session 2 arrivals","body":"(Routine staff communication regarding session 2 arrivals.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Mon, 29 Mar 2004 17:05:00 -0600","subject":"Re: session 2 arrivals","body":"(Routine staff communication regarding session 2 arrivals.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 31 Mar 2004 11:59:00 -0600","subject":"Re: evac drill","body":"(Routine staff communication regarding evac drill.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Wed, 31 Mar 2004 16:58:00 -0600","subject":"turnover day prep","body":"(Routine staff communication regarding turnover day prep.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Fri, 02 Apr 2004 18:34:00 -0600","subject":"Re: snack budget for week 1","body":"(Routine staff communication regarding snack budget for week 1.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Tue, 06 Apr 2004 14:00:00 -0600","subject":"Re: lifeguard rotation update","body":"(Routine staff communication regarding lifeguard rotation update.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Wed, 07 Apr 2004 09:06:00 -0600","subject":"Re: cabin cleaning","body":"(Routine staff communication regarding cabin cleaning.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 07 Apr 2004 11:34:00 -0600","subject":"Re: transportation","body":"(Routine staff communication regarding transportation.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Wed, 07 Apr 2004 16:08:00 -0600","subject":"Re: menu finalization","body":"(Routine staff communication regarding menu finalization.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Mon, 12 Apr 2004 14:26:00 -0600","subject":"campers per session \u2014 final headcount","body":"(Routine staff communication regarding campers per session \u2014 final headcount.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Tue, 13 Apr 2004 13:51:00 -0600","subject":"transportation \u2014 final pickup times","body":"(Routine staff communication regarding transportation \u2014 final pickup times.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 14 Apr 2004 10:17:00 -0600","subject":"archery range setup","body":"(Routine staff communication regarding archery range setup.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Fri, 16 Apr 2004 11:55:00 -0600","subject":"Re: snack budget for week 4","body":"(Routine staff communication regarding snack budget for week 4.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Sat, 17 Apr 2004 11:17:00 -0600","subject":"menu finalization","body":"(Routine staff communication regarding menu finalization.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Mon, 19 Apr 2004 15:15:00 -0600","subject":"cabin cleaning rota","body":"(Routine staff communication regarding cabin cleaning rota.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Mon, 19 Apr 2004 16:42:00 -0700","subject":"Re: JC final assignments","body":"Pinewood (boys): Tyler Hughes, Brendan, Jon. Birch: Hattie. Hemlock: Wren as senior, Camille returning, Melissa new, Tegan as JC. Approved?\n\u2014 B\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Mon, 19 Apr 2004 17:08:00 -0700","subject":"Re: JC final assignments","body":"Approved.\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Thu, 22 Apr 2004 15:09:00 -0600","subject":"Re: parent inquiry \u2014 Davies","body":"(Routine staff communication regarding parent inquiry \u2014 davies.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Thu, 22 Apr 2004 18:41:00 -0600","subject":"Re: campers per session","body":"(Routine staff communication regarding campers per session.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Wed, 28 Apr 2004 09:28:00 -0600","subject":"Re: archery range setup","body":"(Routine staff communication regarding archery range setup.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Thu, 29 Apr 2004 08:55:00 -0600","subject":"Re: parent FAQ","body":"(Routine staff communication regarding parent faq.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Fri, 30 Apr 2004 11:10:00 -0600","subject":"Re: snack budget for week 2","body":"(Routine staff communication regarding snack budget for week 2.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Fri, 30 Apr 2004 15:18:00 -0600","subject":"parent inquiry \u2014 Davies family","body":"(Routine staff communication regarding parent inquiry \u2014 davies family.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Sun, 02 May 2004 13:03:00 -0600","subject":"Re: kitchen supply","body":"(Routine staff communication regarding kitchen supply.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sun, 02 May 2004 16:05:00 -0600","subject":"Re: archery range","body":"(Routine staff communication regarding archery range.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Sun, 02 May 2004 17:05:00 -0600","subject":"parent newsletter draft","body":"(Routine staff communication regarding parent newsletter draft.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Tue, 04 May 2004 17:15:00 -0600","subject":"Re: first aid kit restock","body":"(Routine staff communication regarding first aid kit restock.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Wed, 05 May 2004 18:41:00 -0600","subject":"Re: JC training materials","body":"(Routine staff communication regarding jc training materials.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Fri, 07 May 2004 08:37:00 -0600","subject":"kitchen supply order \u2014 week 3","body":"(Routine staff communication regarding kitchen supply order \u2014 week 3.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Mon, 10 May 2004 18:06:00 -0600","subject":"parent pickup change \u2014 Hodge family","body":"(Routine staff communication regarding parent pickup change \u2014 hodge family.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Tue, 11 May 2004 09:00:00 -0600","subject":"cabin assignment changes","body":"(Routine staff communication regarding cabin assignment changes.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Sat, 15 May 2004 16:45:00 -0600","subject":"allergy disclosure forms","body":"(Routine staff communication regarding allergy disclosure forms.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sun, 16 May 2004 16:58:00 -0600","subject":"archery range maintenance","body":"(Routine staff communication regarding archery range maintenance.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Mon, 17 May 2004 12:08:00 -0600","subject":"pool inspection scheduled","body":"(Routine staff communication regarding pool inspection scheduled.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 19 May 2004 09:04:00 -0600","subject":"Re: cabin assignment changes","body":"(Routine staff communication regarding cabin assignment changes.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 19 May 2004 16:20:00 -0600","subject":"Re: parent newsletter","body":"(Routine staff communication regarding parent newsletter.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Thu, 20 May 2004 09:43:00 -0600","subject":"first aid kit restock","body":"(Routine staff communication regarding first aid kit restock.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Sat, 22 May 2004 13:15:00 -0600","subject":"JC training materials","body":"(Routine staff communication regarding jc training materials.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Wed, 26 May 2004 18:33:00 -0600","subject":"Re: allergy disclosure forms","body":"(Routine staff communication regarding allergy disclosure forms.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sat, 29 May 2004 11:23:00 -0600","subject":"Re: pool inspection","body":"(Routine staff communication regarding pool inspection.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Tue, 01 Jun 2004 13:49:00 -0600","subject":"transportation \u2014 bus rentals","body":"(Routine staff communication regarding transportation \u2014 bus rentals.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Fri, 04 Jun 2004 09:47:00 -0600","subject":"Re: parent pickup change","body":"(Routine staff communication regarding parent pickup change.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sun, 06 Jun 2004 13:50:00 -0600","subject":"turnover day prep","body":"(Routine staff communication regarding turnover day prep.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Sun, 06 Jun 2004 15:35:00 -0600","subject":"Re: bus rentals confirmed","body":"(Routine staff communication regarding bus rentals confirmed.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Mon, 07 Jun 2004 18:15:00 -0600","subject":"mid-session check-in","body":"(Routine staff communication regarding mid-session check-in.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Mon, 07 Jun 2004 18:40:00 -0600","subject":"Re: staff orientation","body":"(Routine staff communication regarding staff orientation.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Wed, 09 Jun 2004 10:50:00 -0600","subject":"Re: turnover day","body":"(Routine staff communication regarding turnover day.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Wed, 09 Jun 2004 12:38:00 -0600","subject":"staff orientation logistics","body":"(Routine staff communication regarding staff orientation logistics.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Thu, 10 Jun 2004 13:57:00 -0600","subject":"Re: rifle range cert","body":"(Routine staff communication regarding rifle range cert.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Sat, 12 Jun 2004 16:56:00 -0600","subject":"Re: mid-session check-in","body":"(Routine staff communication regarding mid-session check-in.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 16 Jun 2004 12:57:00 -0600","subject":"fire safety inspection","body":"(Routine staff communication regarding fire safety inspection.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Fri, 18 Jun 2004 08:07:00 -0600","subject":"water test results \u2014 lake","body":"(Routine staff communication regarding water test results \u2014 lake.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Fri, 18 Jun 2004 08:53:00 -0600","subject":"Re: water test results","body":"(Routine staff communication regarding water test results.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Fri, 18 Jun 2004 10:27:00 -0600","subject":"rifle range certification","body":"(Routine staff communication regarding rifle range certification.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Mon, 21 Jun 2004 14:53:00 -0600","subject":"Re: fire safety inspection","body":"(Routine staff communication regarding fire safety inspection.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Tue, 22 Jun 2004 13:51:00 -0700","subject":"staff orientation weekend recap","body":"Weekend went well. Trust fall ran long. Briar wants to do it again next year. Cabin checks all clear.\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Thu, 24 Jun 2004 10:59:00 -0600","subject":"session 1 closing day notes","body":"(Routine staff communication regarding session 1 closing day notes.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sat, 26 Jun 2004 10:56:00 -0600","subject":"Re: session 1 closing","body":"(Routine staff communication regarding session 1 closing.)\n"},{"from":"Maintenance <maintenance@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Thu, 01 Jul 2004 16:59:00 -0600","subject":"parent FAQ doc draft","body":"(Routine staff communication regarding parent faq doc draft.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Wed, 07 Jul 2004 12:02:00 -0600","subject":"Re: staff handbook","body":"(Routine staff communication regarding staff handbook.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 07 Jul 2004 15:22:00 -0600","subject":"Re: session 2 arrivals","body":"(Routine staff communication regarding session 2 arrivals.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Thu, 08 Jul 2004 08:42:00 -0600","subject":"photographs for new website","body":"(Routine staff communication regarding photographs for new website.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sun, 11 Jul 2004 08:07:00 -0600","subject":"Re: evac drill","body":"(Routine staff communication regarding evac drill.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Sun, 11 Jul 2004 12:55:00 -0600","subject":"Re: photographs","body":"(Routine staff communication regarding photographs.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Mon, 12 Jul 2004 14:04:00 -0600","subject":"Re: parent FAQ","body":"(Routine staff communication regarding parent faq.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Mon, 12 Jul 2004 18:32:00 -0600","subject":"evac drill scheduling","body":"(Routine staff communication regarding evac drill scheduling.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Tue, 13 Jul 2004 08:54:00 -0600","subject":"session 2 arrivals","body":"(Routine staff communication regarding session 2 arrivals.)\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Tue, 13 Jul 2004 12:35:00 -0600","subject":"cabin cleaning rota","body":"(Routine staff communication regarding cabin cleaning rota.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Maintenance <maintenance@camppinecrest.ca>","date":"Wed, 14 Jul 2004 13:46:00 -0600","subject":"Re: first aid supplies","body":"(Routine staff communication regarding first aid supplies.)\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Wed, 14 Jul 2004 18:24:00 -0600","subject":"Re: cabin cleaning","body":"(Routine staff communication regarding cabin cleaning.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Sat, 17 Jul 2004 12:42:00 -0600","subject":"Re: menu finalization","body":"(Routine staff communication regarding menu finalization.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Mon, 19 Jul 2004 12:02:00 -0600","subject":"first aid supplies inventory","body":"(Routine staff communication regarding first aid supplies inventory.)\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"Kitchen Office <kitchen@camppinecrest.ca>","date":"Tue, 20 Jul 2004 13:42:00 -0600","subject":"menu finalization","body":"(Routine staff communication regarding menu finalization.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Tue, 20 Jul 2004 16:07:00 -0600","subject":"staff handbook update","body":"(Routine staff communication regarding staff handbook update.)\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Wren Halloway <wren.halloway@camppinecrest.ca>","date":"Tue, 20 Jul 2004 17:19:00 -0600","subject":"campers per session \u2014 final headcount","body":"(Routine staff communication regarding campers per session \u2014 final headcount.)\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sat, 31 Jul 2004 18:22:00 -0700","subject":"session 2 prep \u2014 turnover day","body":"All session 1 campers picked up by 16:00. Cabins cleared and reset. Session 2 arrivals confirmed for tomorrow.\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Fri, 13 Aug 2004 14:08:00 -0600","subject":"Re: parent pickup change for Saturday","body":"Donaldson family pushed pickup to 11 AM Saturday. Updated the list.\n"},{"from":"Kitchen Office <kitchen@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Fri, 13 Aug 2004 16:33:00 -0600","subject":"supplies for closing bonfire","body":"Marshmallows, graham crackers, and chocolate ordered. Delivery tomorrow morning. We're short on roasting sticks \u2014 sending Reuben to whittle more.\n"},{"from":"P. Henley, RN <nurse_pinecrest@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Fri, 13 Aug 2004 19:51:00 -0600","subject":"Re: Casey's nut allergy update","body":"Cathy called. Casey had a mild reaction this afternoon \u2014 believed cross-contact in the kitchen. Treated with antihistamine, no epi needed. Notifying you per protocol. Will write up incident report Monday.\n\u2014 P. Henley, RN\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sat, 14 Aug 2004 08:14:00 -0600","subject":"morning roster \u2014 pinewood and birch","body":"All counsellors and JCs accounted for. Tyler running pinewood breakfast shift. Hattie has birch.\n\u2014 B\n"},{"from":"Wren Halloway <wren.halloway@camppinecrest.ca>","to":"Briar Whelan <briar.whelan@camppinecrest.ca>","date":"Sat, 14 Aug 2004 11:33:00 -0600","subject":"Re: lifeguard rotation friday","body":"Confirmed I have the 2-4 PM shift. Camille covering 4-6.\n\u2014 W\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Sat, 14 Aug 2004 14:22:00 -0600","subject":"reminder: closing bonfire 8pm","body":"All staff and JCs expected at the closing bonfire tonight, 8 PM. Counsellors do bedchecks at 11 PM as usual. Closing weekend ceremony Sunday morning, 10 AM.\n\u2014 Marcia\n"},{"from":"P. Henley, RN <nurse_pinecrest@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sat, 14 Aug 2004 16:08:00 -0600","subject":"sunscreen restock \u2014 Marcia please review","body":"Sunscreen supply is low. Had at least one mild burn injury this week from the prolonged sun on the canoe trip \u2014 could have been worse. Restocking from town Monday \u2014 please approve the expense.\n\u2014 P. Henley\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sat, 14 Aug 2004 21:14:00 -0600","subject":"last bonfire feels tonight","body":"Bonfire was a good one. Closing ceremony tomorrow, then we're done. Eight summers in a row this is the last bonfire for me \u2014 going to grad school in September. Going to miss it.\n\u2014 B\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Sun, 15 Aug 2004 02:44:00 -0600","subject":"FORWARDED: emergency dispatch \u2014 search and rescue","body":"----- FORWARDED MESSAGE -----\nFrom: RCMP Whitecourt Dispatch\nUnit dispatched to Camp Pinecrest for missing-persons report. Female JC, 17, last seen at closing bonfire approximately 23:00. Cabin check at 23:30 noted absence. Search initiated lakeside. Expect units on site by 03:30.\n----- END FORWARD -----\nMarcia\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Sun, 15 Aug 2004 04:18:00 -0600","subject":"all staff briefing 0500","body":"All non-essential staff to the dining hall at 0500. Counsellors with cabin duty stay with your campers. Briar will coordinate. Do not speak to media. Do not contact families directly.\n\u2014 Marcia\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Sun, 15 Aug 2004 05:33:00 -0600","subject":"FORWARDED: RCMP coordination","body":"----- FORWARDED MESSAGE -----\nFrom: RCMP Whitecourt\nDive team requested for daylight. Lake search begins 06:30. Staff cooperation requested for interviews throughout the day. Nobody leaves the property without checking out with us.\n----- END FORWARD -----\nMarcia\n"},{"from":"Camp Office <office@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sun, 15 Aug 2004 06:50:00 -0600","subject":"Re: parent contact list \u2014 Ashby family","body":"Cathy and Bill Ashby on their way. ETA approximately 09:30. Flagged as priority arrivals at the gate.\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Sun, 15 Aug 2004 08:02:00 -0600","subject":"press inquiry \u2014 please redirect to me","body":"Edmonton Journal has called twice already. All press inquiries to me directly. Do not give statements. Do not confirm details. Refer to RCMP for anything operational.\n\u2014 Marcia\n"},{"from":"P. Henley, RN <nurse_pinecrest@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sun, 15 Aug 2004 09:14:22 -0600","subject":"incident report \u2014 JC pinewood cabin","body":"Marcia,\n\nTyler Hughes came in just after breakfast with abrasions on both palms and a torn fingernail on his right index. He said he fell on the trail in the dark last night going to the bathroom. Cleaned and bandaged, no follow-up needed.\n\nLogging per protocol since the search is ongoing and you asked us to flag anything from staff this weekend.\n\n\u2014 P. Henley, RN\n"},{"from":"Briar Whelan <briar.whelan@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sun, 15 Aug 2004 10:18:00 -0600","subject":"Re: counsellor schedule changes","body":"Wren is in pieces. Camille is functional. Hattie is shaken but holding up. Reassigning hemlock to Camille for the day \u2014 Wren can't handle camper-facing work right now. Will update for tomorrow.\n\u2014 B\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Sun, 15 Aug 2004 14:50:00 -0600","subject":"update: search continuing","body":"Dive team has covered the inlet near the boathouse. Nothing yet. Search expanding to the north shore at 16:00. Helicopter requested from Edmonton.\n\u2014 Marcia\n"},{"from":"P. Henley, RN <nurse_pinecrest@camppinecrest.ca>","to":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","date":"Sun, 15 Aug 2004 19:33:00 -0600","subject":"Re: emotional support for staff","body":"Highly recommend bringing in counsellors (the actual kind) for the staff this week. A few of them have known Tegan since she was 13. Wren especially is not okay.\n\u2014 P. Henley\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Mon, 16 Aug 2004 06:11:00 -0600","subject":"Re: search update overnight","body":"Overnight search yielded nothing. Helicopter resumes at first light. RCMP commencing formal interviews at 09:00 \u2014 all staff and JCs expected to be available throughout the day.\n\u2014 Marcia\n"},{"from":"Dave McCleod <d.mccleod@shaw.ca>","to":"Camp Office <office@camppinecrest.ca>","date":"Mon, 16 Aug 2004 09:08:00 -0600","subject":"Re: Camille McCleod requests early pickup","body":"Heading down to get her now. She's asked to come home. We're three hours out. Will be there by noon.\n\u2014 Dave\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Mon, 16 Aug 2004 10:42:00 -0600","subject":"media protocol reminder","body":"Reminder: NO statements to media. No social media posts about the situation. No conversations with families other than your own about details. Refer everything to me or to RCMP.\n\u2014 Marcia\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Mon, 16 Aug 2004 11:22:00 -0600","subject":"Re: missing camper update \u2014 please see attached","body":"RCMP statement attached. Search continues. Family has been at the camp since Sunday morning. Please give them space and respect.\n[ATTACHMENT: rcmp_statement_aug16.pdf]\n\u2014 Marcia\n"},{"from":"Marcia Deveraux <marcia.deveraux@camppinecrest.ca>","to":"all-staff@camppinecrest.ca","date":"Mon, 16 Aug 2004 17:31:00 -0600","subject":"Re: closing ceremony postponed","body":"Closing ceremony postponed indefinitely. Campers picked up tomorrow as scheduled. We'll figure out a memorial gathering once the family is ready.\n\u2014 Marcia\n"}]`;
+
+// Write Ch7's filesystem layout into Pyodide's virtual FS.
+async function injectChapter7Files() {
+  const py = await loadPyodideOnce();
+
+  // Monkey-patch urllib.request.urlopen to return our mock directory listing
+  // for any URL containing 'camppinecrest.ca/staff'. Real network calls aren't
+  // possible from in-browser Pyodide anyway, so this gives the player something
+  // realistic to work with.
+  await py.runPythonAsync(`
+import urllib.request
+import io
+
+_real_urlopen = urllib.request.urlopen
+
+class _MockResponse:
+    def __init__(self, body):
+        self._body = body.encode('utf-8') if isinstance(body, str) else body
+    def read(self):
+        return self._body
+    def __enter__(self):
+        return self
+    def __exit__(self, *a):
+        pass
+
+_DIR_LISTING = """<html><head><title>Index of /staff</title></head>
+<body>
+<h1>Index of /staff</h1>
+<ul>
+<li><a href="../">Parent Directory</a></li>
+<li><a href="schedule_2005.xls">schedule_2005.xls</a></li>
+<li><a href="2003_archive.zip">2003_archive.zip</a></li>
+<li><a href="2004_archive.zip">2004_archive.zip</a></li>
+<li><a href="2005_session1.pdf">2005_session1.pdf</a></li>
+<li><a href="staff_handbook_2005.doc">staff_handbook_2005.doc</a></li>
+</ul>
+</body></html>"""
+
+def _patched_urlopen(url, *args, **kwargs):
+    u = url if isinstance(url, str) else url.full_url
+    if 'camppinecrest.ca/staff' in u:
+        return _MockResponse(_DIR_LISTING)
+    # otherwise behave as the real urlopen would (will fail in browser)
+    return _real_urlopen(url, *args, **kwargs)
+
+urllib.request.urlopen = _patched_urlopen
+`);
+
+  // Write the 149 emails as .eml files under 2004_archive/
+  const emails = JSON.parse(EMAIL_CORPUS_JSON);
+  try { py.FS.mkdir('2004_archive'); } catch (e) { /* exists */ }
+  emails.forEach((em, idx) => {
+    const padIdx = String(idx).padStart(4, '0');
+    // Construct an RFC822-ish .eml file
+    const eml = `From: ${em.from}\nTo: ${em.to}\nDate: ${em.date}\nSubject: ${em.subject}\n\n${em.body}`;
+    try {
+      py.FS.writeFile(`2004_archive/email_${padIdx}.eml`, eml);
+    } catch (e) { /* exists or err */ }
+  });
+}
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+
+function writeSave(data) {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+let state = loadSave() || {
+  userName: '',
+  currentBeat: 0,
+  completedBeats: [],
+  charms: 0
+};
+
+// ===========================================================================
+// SPARKLES
+// ===========================================================================
+function makeSparkles() {
+  const container = document.getElementById('sparkles');
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    container.appendChild(s);
+  }
+}
+
+// ===========================================================================
+// INTRO -> DESKTOP
+// ===========================================================================
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('userNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startGame();
+});
+
+function startGame() {
+  const name = document.getElementById('userNameInput').value.trim() || 'guest';
+  state.userName = name;
+  writeSave(state);
+  document.getElementById('introScreen').classList.add('hidden');
+  document.getElementById('desktop').classList.remove('hidden');
+  document.getElementById('taskbar').classList.remove('hidden');
+  makeSparkles();
+  startClock();
+  renderStory();
+}
+
+function startClock() {
+  const start = Date.now();
+  setInterval(() => {
+    // we keep the in-fiction clock at 11:47 PM, ticking up unsettlingly
+    const elapsed = Math.floor((Date.now() - start) / 60000);
+    const hh = 11;
+    const mm = (47 + elapsed) % 60;
+    document.getElementById('taskbarTime').textContent =
+      `${hh}:${String(mm).padStart(2,'0')} PM`;
+  }, 1000);
+}
+
+// ===========================================================================
+// CONTENT — STORY BEATS
+// Each beat is either a 'diary' card (pure narrative) or a 'task' card
+// (story + Python challenge). Player progresses linearly.
+// ===========================================================================
+// CH5 BEATS — 10 beats: discovery, cipher work, letter, AIM exchange, wrap.
+
+const BEATS = [
+  // ---- BEAT 0: ch7_open — back to basics ----
+  {
+    id: 'ch7_open',
+    type: 'diary',
+    title: 'open file: notes/back_to_basics.txt',
+    meta: 'ten days. you\'ve been thinking.',
+    body: `i went back to the camp's website yesterday. just to look at it again.
+
+i'd been there before. the first week. when i was reading every public thing i could find about her. the camp's site is mostly photos of the lake and a list of session dates and a contact form. there's nothing on it.
+
+but i was looking at it differently this time. websites in 2004 were usually just files in a folder somewhere on a server. if you knew where to look you could see things they meant to keep private. they didn't think anyone would look.
+
+i'm going to look.`,
+    nextBtn: '\u25b8 python.exe'
+  },
+
+  // ---- BEAT 1: task_probe_site — urllib basics ----
+  {
+    id: 'task_probe_site',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: probe_site.py',
+    meta: 'urllib. fetch a page. see what\'s there.',
+    skill: 'HTTP REQUESTS :: urllib.request AND READING RESPONSES',
+    hint: `<code>response = urllib.request.urlopen(url)</code> then <code>content = response.read().decode("utf-8")</code> then <code>print(content[:500])</code>.`,
+    storyAbove: `the camp's URL is <code>camppinecrest.ca</code>. the public site is at the root. but websites are just folders of files on a server. some folders are linked from the home page; some folders are sitting there unmentioned. you can ask the server for a folder by name and see what comes back. if the server is set up to allow it, asking for a folder shows you a list of every file inside. this is called a "directory listing." it shouldn't be exposed but in 2004 it often was, because people forgot to turn it off.`,
+    instructions: `your task: import urllib.request. fetch <code>https://camppinecrest.ca/staff/</code>. read the response. print the first 500 characters.`,
+    starter: `import urllib.request
+
+url = "https://camppinecrest.ca/staff/"
+
+# fetch the URL and read the response
+# print the first 500 characters of the response text
+`,
+    expectedOutput: `<html><head><title>Index of /staff</title></head>
+<body>
+<h1>Index of /staff</h1>
+<ul>
+<li><a href="../">Parent Directory</a></li>
+<li><a href="schedule_2005.xls">schedule_2005.xls</a></li>
+<li><a href="2003_archive.zip">2003_archive.zip</a></li>
+<li><a href="2004_archive.zip">2004_archive.zip</a></li>
+<li><a href="2005_session1.pdf">2005_session1.pdf</a></li>
+<li><a href="2005_session2.pdf">2005_session2.pdf</a></li>
+<li><a href="2005_session3.pdf">2005_session3.pdf</a></li>
+<li><a href="staff_`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// a directory listing. apache default. nobody turned it off.
+// 2004_archive.zip. just sitting there.`
+    }
+  },
+
+  // ---- BEAT 2: task_load_emails — email module ----
+  {
+    id: 'task_load_emails',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: load_archive_emails.py',
+    meta: 'the zip is a folder of .eml files. parse them.',
+    skill: 'EMAIL PARSING :: THE email MODULE AND DICT-OF-DICTS',
+    hint: `<code>folder = "2004_archive"</code>. <code>for fname in sorted(os.listdir(folder)):</code> indented <code>with open(os.path.join(folder, fname)) as f: msg = email.message_from_file(f)</code>. then build a dict with msg["From"], msg["To"], msg["Date"], msg["Subject"], msg.get_payload(). append to emails. print len and emails[0]["subject"].`,
+    storyAbove: `the zip extracts to a folder called <code>2004_archive/</code>. inside are 149 individual email files in <code>.eml</code> format. <code>.eml</code> is just plain text with a header section (From, To, Date, Subject) and a body. python has a built-in <code>email</code> module that parses these files into structured objects.`,
+    instructions: `your task: import os and email. for each .eml file in <code>2004_archive/</code>, parse it and pull out From, To, Date, Subject, and the body. store each as a dict in a list called <code>emails</code>. print the count and the subject of the first email.`,
+    starter: `import os
+import email
+
+emails = []
+
+# loop over files in 2004_archive/
+# for each file, open it and parse with email.message_from_file
+# pull headers into a dict; append to emails
+
+# print the total count and emails[0]["subject"]
+`,
+    expectedOutput: `149 emails loaded.
+Re: lifeguard rotation update`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// 149 emails. seven and a half months of camp staff communications. schedules, parent inquiries, food orders.
+// somewhere in here is whatever they wrote that week.`
+    }
+  },
+
+  // ---- BEAT 3: task_filter_by_date — datetime + comprehension ----
+  {
+    id: 'task_filter_by_date',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: filter_aug_dates.py',
+    meta: 'narrow the corpus. four days.',
+    skill: 'DATETIME PARSING :: email.utils.parsedate_to_datetime',
+    hint: `<code>for em in emails:</code> indented <code>dt = parsedate_to_datetime(em["date"])</code> then <code>if start <= dt < end: aug_emails.append(em)</code>. then print count, then loop again printing <code>f"[{dt.strftime('%b %d, %H:%M')}] {em['subject']}"</code>.`,
+    storyAbove: `the date headers in emails are formatted like <code>Sun, 15 Aug 2004 09:14:22 -0600</code>. python's <code>email.utils.parsedate_to_datetime</code> parses these into datetime objects. once you have datetimes, you can compare them with <code>&lt;</code>, <code>&gt;=</code>, etc. you want emails from August 13 through August 16, 2004.`,
+    instructions: `your task: import datetime and email.utils. for each email, parse its date header into a datetime. filter to those between Aug 13, 2004 and Aug 17, 2004 (start inclusive, end exclusive) using a UTC-6 timezone. store in <code>aug_emails</code>. print the count and the subject + abbreviated date of each one.`,
+    starter: `import datetime
+from email.utils import parsedate_to_datetime
+
+tz = datetime.timezone(datetime.timedelta(hours=-6))
+start = datetime.datetime(2004, 8, 13, tzinfo=tz)
+end   = datetime.datetime(2004, 8, 17, tzinfo=tz)
+
+aug_emails = []
+
+# loop emails. parse each "date". if start <= dt < end, append.
+
+# print the count, then loop printing each as
+# [<abbrev date>] <subject>
+`,
+    expectedOutput: `22 emails between Aug 13 and Aug 16.
+[Aug 13, 14:08] Re: parent pickup change for Saturday
+[Aug 13, 16:33] supplies for closing bonfire
+[Aug 13, 19:51] Re: Casey's nut allergy update
+[Aug 14, 08:14] morning roster \u2014 pinewood and birch
+[Aug 14, 11:33] Re: lifeguard rotation friday
+[Aug 14, 14:22] reminder: closing bonfire 8pm
+[Aug 14, 16:08] sunscreen restock \u2014 Marcia please review
+[Aug 14, 21:14] last bonfire feels tonight
+[Aug 15, 02:44] FORWARDED: emergency dispatch \u2014 search and rescue
+[Aug 15, 04:18] all staff briefing 0500
+[Aug 15, 05:33] FORWARDED: RCMP coordination
+[Aug 15, 06:50] Re: parent contact list \u2014 Ashby family
+[Aug 15, 08:02] press inquiry \u2014 please redirect to me
+[Aug 15, 09:14] incident report \u2014 JC pinewood cabin
+[Aug 15, 10:18] Re: counsellor schedule changes
+[Aug 15, 14:50] update: search continuing
+[Aug 15, 19:33] Re: emotional support for staff
+[Aug 16, 06:11] Re: search update overnight
+[Aug 16, 09:08] Re: Camille McCleod requests early pickup
+[Aug 16, 10:42] media protocol reminder
+[Aug 16, 11:22] Re: missing camper update \u2014 please see attached
+[Aug 16, 17:31] Re: closing ceremony postponed`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// friday afternoon: bonfire snacks. saturday morning: emergency dispatch.`
+    }
+  },
+
+  // ---- BEAT 4: task_search_emails — substring + any() ----
+  {
+    id: 'task_search_emails',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: search_emails.py',
+    meta: 'search content. find the unusual.',
+    skill: 'STRING SEARCH :: any() AND LIST COMPREHENSIONS',
+    hint: `<code>for em in aug_emails:</code> indented <code>text = (em["subject"] + " " + em["body"]).lower()</code> then <code>if any(k.lower() in text for k in keywords):</code> double-indented <code>dt = parsedate_to_datetime(em["date"])</code> then <code>print(f"[{dt.strftime('%b %d, %H:%M')}] {em['subject']}")</code>.`,
+    storyAbove: `twenty-two emails is too many to read carefully. you can narrow further by looking for keywords. the search-and-rescue stuff is going to be loud. you want anything that's <em>not</em> search-and-rescue but <em>also</em> weird \u2014 an injury, an incident, something staff would have flagged that's not directly about the missing camper.`,
+    instructions: `your task: search aug_emails for any whose subject OR body contains any of these keywords (case-insensitive): "incident", "infirmary", "nurse", "injury". print the date and subject of each match.`,
+    starter: `keywords = ["incident", "infirmary", "nurse", "injury"]
+
+# for each email in aug_emails:
+#   combine subject + body, lowercased
+#   if any keyword (lowercased) is in the combined text:
+#     print [date abbreviated] subject
+`,
+    expectedOutput: `[Aug 13, 19:51] Re: Casey's nut allergy update
+[Aug 14, 16:08] sunscreen restock \u2014 Marcia please review
+[Aug 15, 09:14] incident report \u2014 JC pinewood cabin`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// one i wasn't expecting. nine AM the morning after.`
+    }
+  },
+
+  // ---- BEAT 5: display_email — rendered email view (NEW BEAT TYPE) ----
+  {
+    id: 'display_email',
+    type: 'email_view',
+    title: 'outlook express :: 2004-08-15-incident.eml',
+    meta: 'From: nurse_pinecrest@camppinecrest.ca',
+    email: {
+      from: 'P. Henley, RN <nurse_pinecrest@camppinecrest.ca>',
+      to: 'Marcia Deveraux <marcia.deveraux@camppinecrest.ca>',
+      date: 'Sun, 15 Aug 2004 09:14:22 -0600',
+      subject: 'incident report \u2014 JC pinewood cabin',
+      body: `Marcia,
+
+Tyler Hughes came in just after breakfast with abrasions on
+both palms and a torn fingernail on his right index. He said he
+fell on the trail in the dark last night going to the bathroom.
+Cleaned and bandaged, no follow-up needed.
+
+Logging per protocol since the search is ongoing and you asked us
+to flag anything from staff this weekend.
+
+\u2014 P. Henley, RN`
+    },
+    diaryAfter: `tyler hughes.
+
+i had to think for a minute about who that was. he was a JC. pinewood cabin. boys' side.
+
+hannah's archive: tyler shows up four times. capture-the-flag the summer before. trust fall at staff orientation. dish duty august 9. the search after.
+
+and now this.
+
+"fell on the trail in the dark." which trail.
+
+i have a lot to find out about tyler hughes.`,
+    nextBtn: '\u25b8 AIM'
+  },
+
+  // ---- BEAT 6: hannah_check_in — brief AIM exchange ----
+  {
+    id: 'hannah_check_in',
+    type: 'aim_log',
+    title: 'AIM :: glorfindel_lives',
+    meta: 'glorfindel_lives :: online',
+    messages: [
+      { from: 'glorfindel_lives', text: 'are you ok' },
+      { from: 'glorfindel_lives', text: "sorry. you've been quiet for a few days. i'm not pushing" },
+      { from: 'you', text: 'i found something' },
+      { from: 'you', text: "i'm not ready to talk about it yet" },
+      { from: 'glorfindel_lives', text: 'ok' },
+      { from: 'glorfindel_lives', text: "i'm here when you are" }
+    ],
+    nextBtn: '\u25b8 python.exe'
+  },
+
+  // ---- BEAT 7: task_compute_gap — timedelta ----
+  {
+    id: 'task_compute_gap',
+    type: 'task',
+    charms: 2,
+    title: 'python.exe :: time_between.py',
+    meta: 'datetime arithmetic. how long.',
+    skill: 'TIMEDELTAS :: SUBTRACTING DATETIMES',
+    hint: `<code>gap = infirmary - boathouse</code>. then <code>total_seconds = int(gap.total_seconds())</code>, <code>hours = total_seconds // 3600</code>, <code>minutes = (total_seconds % 3600) // 60</code>. <code>print(f"{hours} hours, {minutes} minutes")</code>.`,
+    storyAbove: `hannah told you tegan was meeting her ride at the boathouse at 11 PM. tyler showed up at the infirmary at 9:14 AM the next morning. how long is between them.`,
+    instructions: `your task: build two datetime objects \u2014 one for Aug 14 23:00:00 (when tegan was meeting her ride at the boathouse), one for Aug 15 09:14:22 (the timestamp on tyler's nurse visit). subtract them. print the result formatted as hours and minutes.`,
+    starter: `import datetime
+
+boathouse  = datetime.datetime(2004, 8, 14, 23, 0, 0)
+infirmary  = datetime.datetime(2004, 8, 15, 9, 14, 22)
+
+gap = infirmary - boathouse
+
+# convert gap to hours and minutes
+# print like "10 hours, 14 minutes"
+`,
+    expectedOutput: `10 hours, 14 minutes`,
+    matchType: 'exact',
+    fileInjection: false,
+    onComplete: {
+      diary: `// i still don't know who killed her. i know who got hurt that night and lied about how.`
+    }
+  },
+
+  // ---- BEAT 8: search_for_tyler — narrative SERP, NEW BEAT TYPE ----
+  {
+    id: 'search_for_tyler',
+    type: 'search_results',
+    title: 'Google :: "tyler hughes" alberta hockey',
+    meta: 'you type. you click search.',
+    preamble: `i don't have a database of him. i have a name. i'll start where anyone starts.
+
+"tyler hughes" alberta camp counsellor. nothing useful. too generic.
+
+"tyler hughes" alberta hockey. there it is.`,
+    query: 'tyler hughes alberta hockey',
+    resultsCount: '1-10 of about 423',
+    results: [
+      {
+        title: 'Red Deer Junior B Hockey - Roster 2005-06',
+        url: 'www.reddeerjuniorb.ca/roster.html',
+        snippet: '... Tyler Hughes #14, RW, 5\'10", born 1986 ... Statistics for the 2005-06 season available below ...'
+      },
+      {
+        title: 'tyler.hughes - MySpace',
+        url: 'www.myspace.com/tylerh_AB',
+        snippet: 'Tyler / 19 / Whitecourt, Alberta / "AB junior leagues let\'s go" Last login: 6 days ago. View profile to add as friend.'
+      },
+      {
+        title: "hughesie14's Profile - Alberta Hockey Forums",
+        url: 'www.albertajuniorhockey.proboards.com/user/hughesie14',
+        snippet: 'Member since 2002. 1,847 posts. Last seen yesterday.'
+      },
+      {
+        title: 'Whitecourt Star - High school sports recap, March 2003',
+        url: 'www.whitecourtstar.com/sports/2003-03-14',
+        snippet: '... goal by Tyler Hughes, son of RCMP Sgt. David Hughes, assisted by Brendan Mackenzie ...'
+      },
+      {
+        title: 'hughesie14 \u2014 Xanga',
+        url: 'www.xanga.com/hughesie14',
+        snippet: '"mood: ready / music: linkin park - faint" Last update: October 2005'
+      },
+      {
+        title: 'Camp Pinecrest 2003 staff photo',
+        url: 'www.camppinecrest.ca/gallery/2003.html',
+        snippet: '... back row: Briar Whelan, Tyler Hughes, Marcia Deveraux ...'
+      },
+      {
+        title: 'Whitecourt Star - Community policing feature, 2002',
+        url: 'www.whitecourtstar.com/community/2002-09-04',
+        snippet: '... Sgt. David Hughes has been with K Division for fourteen years and serves the Whitecourt detachment. He and his wife Linda have one son, Tyler ...'
+      }
+    ],
+    diaryAfter: `his dad is a mountie. whitecourt detachment.
+
+i sat with that for a while.
+
+the RCMP units that responded the night she went missing came from whitecourt detachment.
+
+i'm going to read every page he ever made.`,
+    nextBtn: '\u25b8 open the dossier'
+  },
+
+  // ---- BEAT 9: browse_tyler_dossier — multiplatform archive view ----
+  {
+    id: 'browse_tyler_dossier',
+    type: 'multiplatform_archive',
+    title: 'archive view: tyler hughes, 2004-2005',
+    meta: 'you opened every link. you saved every page.',
+    posts: [
+      {
+        platform: 'XANGA',
+        handle: 'hughesie14',
+        date: '2004-06-18',
+        mood: 'chillin',
+        music: 'hoobastank - the reason',
+        body: `graduated grade 11. one more year of this place. heading to camp pinecrest in two weeks. last summer was tight. some of the JCs are coming back. should be a good summer.`,
+        comments: '0 comments'
+      },
+      {
+        platform: 'MYSPACE',
+        handle: 'tyler.hughes',
+        date: '2004-06-29',
+        photoCaption: 'AB junior leagues let\'s go',
+        photoDescription: '[photo: Tyler in a hockey jersey, garage background, throwing a fake gang sign at the camera]',
+        top8: ['BRENDON', 'MIKE', 'KYLER', 'JON', 'ASHLEY', 'MEGAN', 'COUSIN MATT', 'RYAN']
+      },
+      {
+        platform: 'HOCKEY FORUM',
+        handle: 'hughesie14',
+        date: '2004-07-02',
+        thread: 'AB Junior Hockey 2004-05 season talk',
+        postNumber: '#847',
+        body: 'heading off to camp tomorrow. won\'t be on for like 7 weeks\nhold the team together for me boys'
+      },
+      {
+        platform: 'GAP',
+        body: 'NO POSTS FROM hughesie14 OR tyler.hughes BETWEEN JULY 2 AND AUGUST 31, 2004.'
+      },
+      {
+        platform: 'HOCKEY FORUM',
+        handle: 'hughesie14',
+        date: '2004-09-01',
+        thread: 'AB Junior Hockey 2004-05 season talk',
+        postNumber: '#848',
+        body: 'back from camp. when are tryouts this year'
+      },
+      {
+        platform: 'XANGA',
+        handle: 'hughesie14',
+        date: '2004-09-08',
+        mood: 'ready',
+        music: 'linkin park - faint',
+        body: 'school starts tomorrow. last year. then juniors full time if i make the team. tryouts saturday',
+        comments: '0 comments'
+      },
+      {
+        platform: 'MYSPACE',
+        handle: 'tyler.hughes',
+        date: '2004-10-14',
+        photoCaption: 'cousin matt\'s wedding. mom looks good',
+        photoDescription: '[photo: Tyler in a suit at his cousin\'s wedding, smiling, arm around an older woman]'
+      },
+      {
+        platform: 'HOCKEY FORUM',
+        handle: 'hughesie14',
+        date: '2004-11-22',
+        thread: 'anyone watching tonight',
+        postNumber: '#911',
+        body: 'yeah leafs are getting destroyed lol'
+      },
+      {
+        platform: 'XANGA',
+        handle: 'hughesie14',
+        date: '2005-01-01',
+        mood: 'ready',
+        music: 'not listening to anything',
+        body: 'new year. team\'s doing well. on track for playoffs. made the AB junior B selects. parents are stoked\n2005 is gonna be the year',
+        comments: '0 comments'
+      },
+      {
+        platform: 'MYSPACE',
+        handle: 'tyler.hughes',
+        date: '2005-06-30',
+        statusUpdate: 'pinecrest year three baby. last summer'
+      },
+      {
+        platform: 'HOCKEY FORUM',
+        handle: 'hughesie14',
+        date: '2005-09-04',
+        thread: 'AB Junior Hockey 2005-06 season talk',
+        postNumber: '#1,402',
+        body: 'tryouts this saturday. who\'s in.'
+      }
+    ],
+    diaryAfter: `before camp: hockey, his cousin's wedding, school.
+
+during camp: nothing. he didn't have a device.
+
+after camp: he came home and went back to hockey.
+
+he went back to camp again the summer after. he's been back twice now.`,
+    nextBtn: '\u25b8 wrap'
+  },
+
+  // ---- BEAT 10: wrap ----
+  {
+    id: 'wrap',
+    type: 'wrap',
+    title: 'chapter 7 :: complete',
+    body: `i know who killed her. i can't prove i know.`,
+    skillsLearned: [
+      'urllib.request: fetching URLs and reading responses',
+      'HTML directory listings: how the early web exposed files',
+      'email module: parsing .eml files into structured data',
+      'email.utils.parsedate_to_datetime: handling email date headers',
+      'datetime filtering: comparing datetimes with < and >=',
+      'list comprehensions for filtering',
+      'substring search with in and any()',
+      'timedelta arithmetic: subtracting datetimes',
+      'formatting durations from total_seconds()'
+    ],
+    nextBtn: '\u25b8 end of chapter 7'
+  }
+];// ===========================================================================
+// RENDER STORY (linear, append-as-you-go)
+// ===========================================================================
+const storyContainer = document.getElementById('storyContainer');
+
+function renderStory() {
+  storyContainer.innerHTML = '';
+  // render all completed beats, then current beat
+  const upTo = Math.min(state.currentBeat, BEATS.length - 1);
+  for (let i = 0; i <= upTo; i++) {
+    renderBeat(BEATS[i], i === upTo);
+  }
+  // scroll to bottom
+  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+}
+
+function renderBeat(beat, isActive) {
+  if (beat.type === 'diary') return renderDiary(beat, isActive);
+  if (beat.type === 'task') return renderTask(beat, isActive);
+  if (beat.type === 'wrap') return renderWrap(beat, isActive);
+  if (beat.type === 'board') return renderBoard(beat, isActive);
+  if (beat.type === 'h_board') return renderHBoard(beat, isActive);
+  if (beat.type === 'aim_compose') return renderAimCompose(beat, isActive);
+  if (beat.type === 'aim_log') return renderAimLog(beat, isActive);
+  if (beat.type === 'archive_view') return renderArchiveView(beat, isActive);
+  if (beat.type === 'email_view') return renderEmailView(beat, isActive);
+  if (beat.type === 'search_results') return renderSearchResults(beat, isActive);
+  if (beat.type === 'multiplatform_archive') return renderMultiplatformArchive(beat, isActive);
+}
+
+function renderEmailView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'email-window';
+  const email = beat.email;
+  w.innerHTML = `
+    <div class="window-titlebar email-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="email-headers">
+      <div class="email-header-row"><span class="email-header-label">From:</span> ${escapeHtml(email.from)}</div>
+      <div class="email-header-row"><span class="email-header-label">To:</span> ${escapeHtml(email.to)}</div>
+      <div class="email-header-row"><span class="email-header-label">Date:</span> ${escapeHtml(email.date)}</div>
+      <div class="email-header-row"><span class="email-header-label">Subject:</span> ${escapeHtml(email.subject)}</div>
+    </div>
+    <div class="email-body">${escapeHtml(email.body)}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderSearchResults(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'serp-window';
+  const resultsHtml = beat.results.map(r => `
+    <div class="serp-result">
+      <div class="serp-result-title">${escapeHtml(r.title)}</div>
+      <div class="serp-result-url">${escapeHtml(r.url)}</div>
+      <div class="serp-result-snippet">${escapeHtml(r.snippet)}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    ${beat.preamble ? `<div class="serp-preamble">${escapeHtml(beat.preamble).replace(/\n/g, '<br>')}</div>` : ''}
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="serp-header">
+      <span class="serp-logo">G<span style="color:#dd4b39">o</span><span style="color:#f4b400">o</span>g<span style="color:#0f9d58">l</span>e</span>
+      <div class="serp-search-bar">
+        <input class="serp-search-input" value="${escapeHtml(beat.query || '')}" readonly>
+        <button class="serp-search-btn">Google Search</button>
+      </div>
+    </div>
+    <div class="serp-result-count">Web Results 1-10 of about ${escapeHtml(beat.resultsCount || '???')}.</div>
+    <div class="serp-results">${resultsHtml}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderMultiplatformArchive(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'multiplatform-window';
+  const postsHtml = beat.posts.map(p => {
+    if (p.platform === 'GAP') {
+      return `<div class="mp-gap">${escapeHtml(p.body)}</div>`;
+    }
+    if (p.platform === 'XANGA') {
+      return `<div class="mp-post mp-xanga">
+        <div class="mp-post-header"><span class="mp-platform-tag">XANGA</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
+        ${p.mood ? `<div class="mp-mood">mood: ${escapeHtml(p.mood)}</div><div class="mp-music">music: ${escapeHtml(p.music)}</div>` : ''}
+        <div class="mp-content">${escapeHtml(p.body).replace(/\n/g, '<br>')}</div>
+        ${p.comments ? `<div class="mp-comments">${escapeHtml(p.comments)}</div>` : ''}
+      </div>`;
+    }
+    if (p.platform === 'MYSPACE') {
+      return `<div class="mp-post mp-myspace">
+        <div class="mp-post-header"><span class="mp-platform-tag">MYSPACE</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
+        ${p.photoDescription ? `<div class="mp-photo">${escapeHtml(p.photoDescription)}</div>` : ''}
+        ${p.photoCaption ? `<div class="mp-caption">caption: ${escapeHtml(p.photoCaption)}</div>` : ''}
+        ${p.statusUpdate ? `<div class="mp-status">status: ${escapeHtml(p.statusUpdate)}</div>` : ''}
+        ${p.top8 ? `<div class="mp-top-friends">top 8 friends: ${p.top8.map(f => escapeHtml(f)).join(', ')}</div>` : ''}
+      </div>`;
+    }
+    if (p.platform === 'HOCKEY FORUM') {
+      return `<div class="mp-post mp-forum">
+        <div class="mp-post-header"><span class="mp-platform-tag">FORUM</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
+        <div class="mp-thread">post ${escapeHtml(p.postNumber)} in thread "${escapeHtml(p.thread)}"</div>
+        <div class="mp-content">${escapeHtml(p.body).replace(/\n/g, '<br>')}</div>
+      </div>`;
+    }
+    return '';
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="archive-meta">${beat.meta || ''}</div>
+    <div class="multiplatform-body">${postsHtml}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderAimCompose(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-compose-body">${beat.body}</div>
+    ${isActive ? `<div class="aim-send-bar">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
+    </div>` : `<div class="aim-send-bar" style="text-align: right; color: var(--bg-deep); font-family: 'Silkscreen', monospace; font-size: 9px;">✓ sent</div>`}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderAimLog(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  const messagesHtml = beat.messages.map(m => {
+    if (!m.text || m.text.trim() === '' || m.text === '…') {
+      return `<div class="aim-message-pause">. . .</div>`;
+    }
+    const isPlayer = m.from === 'you';
+    const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
+    return `<div class="${cls}"><span class="aim-message-from">${m.from}:</span>${escapeHtml(m.text)}</div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-log-body">${messagesHtml}</div>
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderArchiveView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'archive-window';
+  const messagesHtml = beat.messages.map(m => {
+    return `<div class="archive-line">[${m.date}] <span class="archive-sender">${m.sender}:</span> ${escapeHtml(m.content)}</div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="archive-meta">${beat.meta || ''}</div>
+    <div class="archive-body">${messagesHtml}</div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.fragments.map(f => `
+    <div class="fragment-card ${f.platform.toLowerCase()}">
+      <div class="fragment-id">#${f.id}</div>
+      <div class="fragment-platform">${f.platform}</div>
+      <div class="fragment-time">${f.time}</div>
+      <div class="fragment-from">${f.from} → ${f.to}</div>
+      <div class="fragment-content">${f.content}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="fragment-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderHBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.candidates.map(c => `
+    <div class="hboard-card">
+      <div class="hboard-name">${c.first} ${c.last}</div>
+      <div class="hboard-role">${c.role}, age ${c.age}</div>
+      <div class="hboard-row"><span class="hboard-label">aug 14</span>${c.status}</div>
+      <div class="hboard-row"><span class="hboard-label">alibi</span>${c.alibi}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="hboard-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderDiary(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'window story-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="diary-entry">
+      <div class="diary-meta">${beat.meta}</div>
+${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderTask(beat, isActive) {
+  const completed = state.completedBeats.includes(beat.id);
+  const w = document.createElement('div');
+  w.className = 'window terminal-window';
+
+  // Story above, in a diary-ish small note
+  const storyHtml = beat.storyAbove ? `
+    <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;">
+      ${beat.storyAbove}
+    </div>` : '';
+
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    ${storyHtml}
+    <div style="background: var(--window-bg); padding: 14px 16px;">
+      <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;">
+        ✦ skill unlocking: ${beat.skill}
+      </div>
+      <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;">
+        ${beat.instructions}
+      </div>
+      <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div>
+      <div style="margin-top: 8px;">
+        <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button>
+      </div>
+    </div>
+    <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div>
+    <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea>
+
+```
+<div class="editor-bar">
+  <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button>
+  <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button>
+  <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);">
+    ${completed ? '✓ COMPLETE' : 'NOT YET RUN'}
+  </span>
+</div>
+<div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div>
+${completed && isActive ? `<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
+  <button class="btn" onclick="advanceBeat()">▸ continue</button>
+</div>` : ''}
+```
+
+`;
+storyContainer.appendChild(w);
+}
+
+function renderWrap(beat, isActive) {
+const w = document.createElement(‘div’);
+w.className = ‘window story-window’;
+w.style.maxWidth = ‘640px’;
+w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 8 :: pending<br> > tyler_hughes :: located, age 19, red deer junior B hockey<br> > sgt_d_hughes :: rcmp whitecourt, k division<br> > wren_h :: still silent </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
+storyContainer.appendChild(w);
+}
+
+// ===========================================================================
+// TASK EXECUTION
+// ===========================================================================
+async function runTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+const codeEl = document.getElementById(‘code-’ + beatId);
+const outEl = document.getElementById(‘output-’ + beatId);
+const code = codeEl.value;
+
+outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
+
+// Patch input() if needed
+let runCode = code;
+if (beat.fakeInput !== undefined) {
+// monkey-patch input() to return our fake value
+runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
+}
+
+// Inject the chapter’s filesystem if requested
+if (beat.fileInjection) {
+await injectChapter7Files();
+}
+
+const result = await runPython(runCode);
+const actualOutput = (result.output || ‘’).trimEnd();
+
+if (!result.ok) {
+outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+return;
+}
+
+// Check expected output
+let passed = false;
+// Allow expectedOutput to use \n as literal newline escape
+const expectedNormalized = (beat.expectedOutput || ‘’).replace(/\n/g, ‘\n’);
+if (beat.matchType === ‘exact’) {
+passed = actualOutput.trim() === expectedNormalized.trim();
+} else if (beat.matchType === ‘contains’) {
+passed = actualOutput.includes(expectedNormalized);
+}
+
+if (passed) {
+outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
+// mark complete
+if (!state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+state.charms += (beat.charms || 0);
+// store the working code
+beat.completedCode = code;
+writeSave(state);
+}
+// show buddy popup
+if (beat.onComplete?.buddy) {
+showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
+}
+// re-render to show “continue” button
+setTimeout(() => renderStory(), 600);
+} else {
+outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
+}
+}
+
+function resetTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+document.getElementById(‘code-’ + beatId).value = beat.starter;
+document.getElementById(‘output-’ + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
+}
+
+function escapeHtml(s) {
+return String(s).replace(/[&<>]/g, c => ({’&’:’&’,’<’:’<’,’>’:’>’}[c]));
+}
+
+// ===========================================================================
+// BEAT ADVANCE
+// ===========================================================================
+function advanceBeat() {
+// mark diary beats as “completed” implicitly (they only need to be read)
+const beat = BEATS[state.currentBeat];
+if (beat && (beat.type === ‘diary’ || beat.type === ‘board’ || beat.type === ‘h_board’ || beat.type === ‘aim_compose’ || beat.type === ‘aim_log’ || beat.type === ‘archive_view’ || beat.type === ‘email_view’ || beat.type === ‘search_results’ || beat.type === ‘multiplatform_archive’) && !state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+}
+state.currentBeat = Math.min(state.currentBeat + 1, BEATS.length - 1);
+writeSave(state);
+renderStory();
+}
+
+function resetGame() {
+if (confirm(‘really restart from the beginning? all your progress will be erased.’)) {
+localStorage.removeItem(SAVE_KEY);
+location.reload();
+}
+}
+
+// ===========================================================================
+// BUDDY POPUP
+// ===========================================================================
+function showBuddy(name, msg) {
+document.getElementById(‘buddyName’).textContent = name + ’ :: incoming message’;
+document.getElementById(‘buddyMessage’).innerHTML = msg;
+const popup = document.getElementById(‘buddyPopup’);
+popup.classList.remove(‘hidden’);
+// play a soft chime — emulated as a CSS attention grab
+popup.style.animation = ‘none’;
+setTimeout(() => { popup.style.animation = ‘’; }, 10);
+}
+function closeBuddy() {
+document.getElementById(‘buddyPopup’).classList.add(‘hidden’);
+}
+
+// auto-resume from save
+if (state.userName && state.currentBeat > 0) {
+// skip intro
+document.getElementById(‘userNameInput’).value = state.userName;
+// keep intro visible but offer continue — simpler: go straight in
+setTimeout(() => {
+document.getElementById(‘introScreen’).classList.add(‘hidden’);
+document.getElementById(‘desktop’).classList.remove(‘hidden’);
+document.getElementById(‘taskbar’).classList.remove(‘hidden’);
+makeSparkles();
+startClock();
+renderStory();
+}, 100);
+}
+</script>
+
+</body>
+</html>
