@@ -353,6 +353,101 @@
     return el;
   }
 
+  // ---------------------------------------------------------------------------
+  // strings (SVG)
+  //   colour: 'red' | 'pink'
+  //   thickness: 'thin' | 'thick' | 'triple' | 'loose'
+  //   loose strings render dashed and slack — for connections the cousin
+  //   has questioned but not removed
+  // ---------------------------------------------------------------------------
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  function renderStrings(board, snap) {
+    const strings = snap.strings || [];
+    if (!strings.length) return;
+    const positions = {};
+    (snap.cards || []).forEach(function(c) { positions[c.id] = c.pos; });
+
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('class', 'cb-svg-strings');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    board.appendChild(svg);
+
+    strings.forEach(function(s) {
+      const a = positions[s.from];
+      const b = positions[s.to];
+      if (!a || !b) return;
+      drawString(svg, a, b, s, board);
+    });
+  }
+
+  function drawString(svg, a, b, str, board) {
+    const color = str.color === 'pink' ? '#ff8fcd' : '#c0002a';
+    const thickness = str.thickness || 'thin';
+    const mx = (a.x + b.x) / 2;
+    const my = (a.y + b.y) / 2;
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const px = -dy / dist;
+    const py = dx / dist;
+    const sag = thickness === 'loose' ? 5 : 2;
+    const cx = mx + px * sag;
+    const cy = my + py * sag;
+    const d = 'M ' + a.x + ' ' + a.y + ' Q ' + cx + ' ' + cy + ' ' + b.x + ' ' + b.y;
+
+    function makePath(extraOff, opacity, dash) {
+      const p = document.createElementNS(SVG_NS, 'path');
+      const cx2 = mx + px * (sag + extraOff);
+      const cy2 = my + py * (sag + extraOff);
+      p.setAttribute('d', 'M ' + a.x + ' ' + a.y + ' Q ' + cx2 + ' ' + cy2 + ' ' + b.x + ' ' + b.y);
+      p.setAttribute('fill', 'none');
+      p.setAttribute('stroke', thickness === 'loose' ? '#8b0e2e' : color);
+      p.setAttribute('stroke-linecap', 'round');
+      p.setAttribute('vector-effect', 'non-scaling-stroke');
+      let sw = 2;
+      if (thickness === 'thick') sw = 4;
+      else if (thickness === 'triple') sw = 3;
+      else if (thickness === 'loose') sw = 1.5;
+      p.setAttribute('stroke-width', String(sw));
+      if (opacity != null) p.setAttribute('opacity', String(opacity));
+      if (dash) {
+        p.setAttribute('stroke-dasharray', dash);
+        p.setAttribute('pathLength', '100');
+      }
+      return p;
+    }
+
+    if (thickness === 'triple') {
+      svg.appendChild(makePath(-1.6, 0.85));
+      svg.appendChild(makePath(0, 1));
+      svg.appendChild(makePath(1.6, 0.85));
+    } else if (thickness === 'loose') {
+      svg.appendChild(makePath(0, 0.55, '3 2'));
+    } else {
+      svg.appendChild(makePath(0, 1));
+    }
+
+    // optional label on the string, rendered as DOM (so it picks up real fonts)
+    if (str.label) {
+      const lab = document.createElement('div');
+      lab.style.position = 'absolute';
+      lab.style.left = mx + '%';
+      lab.style.top = (my + sag * 1.4) + '%';
+      lab.style.transform = 'translate(-50%, -50%) rotate(' + ((Math.atan2(dy, dx) * 180 / Math.PI) | 0) + 'deg)';
+      lab.style.fontFamily = "'Nanum Pen Script', cursive";
+      lab.style.fontSize = '14px';
+      lab.style.color = thickness === 'loose' ? '#8b0e2e' : color;
+      lab.style.pointerEvents = 'none';
+      lab.style.whiteSpace = 'nowrap';
+      lab.style.zIndex = '6';
+      lab.style.textShadow = '1px 1px 0 rgba(255,248,214,0.7)';
+      lab.textContent = str.label;
+      board.appendChild(lab);
+    }
+  }
+
   function renderBoard() {
     const board = document.getElementById('cb-board');
     if (!board) return;
@@ -362,10 +457,11 @@
       return;
     }
     board.innerHTML = '';
+    renderStrings(board, snap);
     (snap.cards || []).forEach(function(c) {
       board.appendChild(renderCard(c, currentView));
     });
-    // strings + marginalia render in subsequent chunks
+    // marginalia renders in the next chunk
   }
 
   Caseboard.open = function() {
