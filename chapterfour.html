@@ -799,36 +799,36 @@ const ROSTER_2004 = `ROLE|FIRST|LAST|CABIN|STATUS_AUG_14
 director|Marcia|Deveraux|admin|on-site
 head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)
 asst cook|Greg|Iverson|kitchen|on-site (mess hall all evening)
-nurse|Patricia|Wong|med|on-site
+nurse|Patricia|Kowalchuk|med|on-site
 maintenance|Hank|Tobias|grounds|on-site (night shift, kitchen area)
 lifeguard|Henry|Pham|lake/boys|on-site (boys overnight at lac la biche)
 lifeguard|Roxie|Tremblay|lake/girls|on-site
 senior counsellor|Wren|Halloway|birchwood|on-site (cabin all night)
 senior counsellor|Briar|Vance|cedarwood|on-site (with wren in cabin)
-senior counsellor|Mei|Park|maplewood|on-site
+senior counsellor|Jasleen|Brar|maplewood|on-site
 junior counsellor|Tegan|Ashby|rosewood|missing
 junior counsellor|Hattie|Whitlock|pinewood|on-site (left aug 16)
-junior counsellor|Maddy|Chen|maplewood|on-site
+junior counsellor|Maddy|Yeoh|maplewood|on-site
 junior counsellor|Tyler|Hughes|pinewood-boys|on-site (mess hall, then own cabin)
-junior counsellor|Sarah|Begay|hemlock|on-site
+junior counsellor|Sarah|Cardinal|hemlock|on-site
 `;
 
 const ROSTER_2003 = `ROLE|FIRST|LAST|CABIN|NOTES
 director|Marcia|Deveraux|admin|returning
 head cook|Helen|Sokol|kitchen|returning
 asst cook|Greg|Iverson|kitchen|returning
-nurse|Patricia|Wong|med|returning
+nurse|Patricia|Kowalchuk|med|returning
 maintenance|Hank|Tobias|grounds|returning
 lifeguard|Henry|Pham|lake/boys|returning
-lifeguard|Caitlin|Yeo|lake/girls|did not return
+lifeguard|Caitlin|Wiebe|lake/girls|did not return
 senior counsellor|Wren|Halloway|birchwood|returning (3rd summer)
 senior counsellor|Briar|Vance|cedarwood|returning
 senior counsellor|Tara|Friesen|maplewood|did not return (graduated)
 junior counsellor|Tegan|Ashby|rosewood|returning (1st summer 2003)
 junior counsellor|Melissa|Klassen|hemlock|did not return
-junior counsellor|Maddy|Chen|maplewood|returning
+junior counsellor|Maddy|Yeoh|maplewood|returning
 junior counsellor|Tyler|Hughes|pinewood-boys|returning (1st summer 2003)
-junior counsellor|Daniel|Chow|pinewood-boys|did not return
+junior counsellor|Daniel|Sinclair|pinewood-boys|did not return
 `;
 
 // Python preamble that builds `staff` from ROSTER_2004 (for beats that need pre-parsed data)
@@ -1191,20 +1191,21 @@ instructions: `<code>set()</code> turns a list into a set (unordered, no duplica
 b = set([2, 3, 4])
 a - b  # gives {1}: items in a but not in b</pre>
 
-build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who's in 2003 but not in 2004? for each person, print <code>"first last"</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded
+build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who's in 2003 but not in 2004? for each person, print <code>"first last"</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded.
+# sets are like lists but unordered, no duplicates, and you can
+# subtract them. set_a - set_b is "everything in a that isn't in b."
+# i kept needing this for "who was here last year but not this year"
+# kinds of questions, so finally bothered to learn it.
 
 # build sets of (first, last) tuples for each
-
 # compute 2003 - 2004 to find people who didn't return
-
 # for first, last in sorted(didnt_return):
+#     print(...)
 
-# print(…)
-
-`, expectedOutput: `Caitlin Yeo
-Daniel Chow
+`, expectedOutput: `Caitlin Wiebe
+Daniel Sinclair
 Melissa Klassen
-Tara Friesen`, matchType: 'exact', bothStaffPreload: true, onComplete: { diary: `// four people from 2003 who didn't come back. caitlin yeo. daniel chow. melissa klassen. tara friesen. one of those names matters.`, buddy: { name: 'camille.j.89', msg: `i tracked which counsellors didn't come back. melissa was the biggest mystery of last year. i wondered all summer. nobody mentioned her this year.` }
+Tara Friesen`, matchType: 'exact', bothStaffPreload: true, onComplete: { diary: `// four people from 2003 who didn't come back. caitlin wiebe. daniel sinclair. melissa klassen. tara friesen. one of those names matters.`, buddy: { name: 'camille.j.89', msg: `i tracked which counsellors didn't come back. melissa was the biggest mystery of last year. i wondered all summer. nobody mentioned her this year.` }
 }
 },
 
