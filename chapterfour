@@ -796,7 +796,7 @@ const SAVE_KEY = 'pyforthegirls_save_ch4_v1';
 // IN-GAME FILE CONTENTS — written into Pyodide's virtual FS at task time
 // ===========================================================================
 const ROSTER_2004 = `ROLE|FIRST|LAST|CABIN|STATUS_AUG_14
-director|Marcia|Renton|admin|on-site
+director|Marcia|Deveraux|admin|on-site
 head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)
 asst cook|Greg|Iverson|kitchen|on-site (mess hall all evening)
 nurse|Patricia|Wong|med|on-site
@@ -814,7 +814,7 @@ junior counsellor|Sarah|Begay|hemlock|on-site
 `;
 
 const ROSTER_2003 = `ROLE|FIRST|LAST|CABIN|NOTES
-director|Marcia|Renton|admin|returning
+director|Marcia|Deveraux|admin|returning
 head cook|Helen|Sokol|kitchen|returning
 asst cook|Greg|Iverson|kitchen|returning
 nurse|Patricia|Wong|med|returning
@@ -941,7 +941,7 @@ const BEATS = [
     id: 'ch4_open',
     type: 'diary',
     title: 'open file: outlook/inbox/2004-06-14_pinecrest_welcome.eml',
-    meta: 'from: m.renton@pinecrest.ab.ca :: to: tegan_a87@hotmail.com :: jun 14 2004 — 6:42 pm',
+    meta: 'from: m.deveraux@camppinecrest.ca :: to: tegan_a87@hotmail.com :: jun 14 2004 — 6:42 pm',
     body: `subject: Welcome to Pinecrest 2004 — orientation packet attached
 
 Tegan,
@@ -985,7 +985,7 @@ your task: open <code>outlook/inbox/attachments/roster_2004.txt</code> and print
 # print lines[0], lines[1], lines[2] using .strip()
 
 `, expectedOutput: `ROLE|FIRST|LAST|CABIN|STATUS_AUG_14
-director|Marcia|Renton|admin|on-site
+director|Marcia|Deveraux|admin|on-site
 head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// 16 lines loaded. one for the header, fifteen staff including tegan.`, buddy: { name: 'tegan_a87', msg: `ashby comes before halloway and vance. that's how i learned to alphabetize a name.` }
 }
 },
@@ -1101,7 +1101,7 @@ exclude_terms = ["off-site", "lac la biche", "kitchen"]
 id: 'hattie_dive',
 type: 'diary',
 title: 'open file: outlook/inbox/2004-08-17_marcia_all_staff.eml',
-meta: 'from: m.renton@pinecrest.ab.ca :: to: all_staff@pinecrest.ab.ca :: aug 17 2004 — 8:42 am',
+meta: 'from: m.deveraux@camppinecrest.ca :: to: all_staff@camppinecrest.ca :: aug 17 2004 — 8:42 am',
 body: `subject: Hattie Whitlock departure
 
 Team,
