@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pyforthegirls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #1a0628;
+    --bg-mid: #2d0a3d;
+    --pink-hot: #ff66c4;
+    --pink-soft: #ffb3e6;
+    --pink-bubble: #ffd6f0;
+    --lavender: #c8a8e8;
+    --cyan-glow: #66ffff;
+    --lime-acid: #c8ff66;
+    --silver: #d8d8e8;
+    --chrome-1: #b8b8d0;
+    --chrome-2: #f0f0ff;
+    --window-bg: #f4d4f0;
+    --window-border: #ff66c4;
+    --shadow-hard: 4px 4px 0 #1a0628;
+    --shadow-soft: 0 0 24px rgba(255, 102, 196, 0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    min-height: 100vh;
+    font-family: 'VT323', 'Courier New', monospace;
+    color: var(--silver);
+    background: var(--bg-deep);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -2;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(255, 102, 196, 0.18), transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(102, 255, 255, 0.12), transparent 50%),
+      radial-gradient(ellipse at 50% 100%, rgba(200, 168, 232, 0.15), transparent 60%),
+      var(--bg-deep);
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0; z-index: -1;
+    background-image: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
+    pointer-events: none;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .logo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 36px;
+    color: var(--pink-hot);
+    text-align: center;
+    text-shadow: 3px 3px 0 var(--bg-deep), 0 0 24px rgba(255, 102, 196, 0.6);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .tag {
+    text-align: center;
+    font-family: 'Silkscreen', monospace;
+    font-size: 11px;
+    color: var(--cyan-glow);
+    margin-bottom: 32px;
+  }
+
+  .panel {
+    background: var(--window-bg);
+    color: var(--bg-deep);
+    border: 2px solid var(--window-border);
+    box-shadow: var(--shadow-hard);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .panel h2 {
+    font-family: 'Silkscreen', monospace;
+    font-size: 13px;
+    color: var(--pink-hot);
+    margin-bottom: 12px;
+  }
+
+  .panel p {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+
+  .name-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .name-input {
+    flex: 1;
+    min-width: 180px;
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    padding: 8px 12px;
+    background: #fff;
+    color: var(--bg-deep);
+    border: 2px solid var(--bg-deep);
+  }
+
+  .btn {
+    font-family: 'Silkscreen', monospace;
+    font-size: 11px;
+    padding: 10px 20px;
+    border: 2px solid var(--bg-deep);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: var(--shadow-hard);
+    transition: transform 0.05s;
+  }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--bg-deep); }
+  .btn-acid { background: linear-gradient(180deg, var(--lime-acid), #a8e040); color: var(--bg-deep); }
+  .btn-pink { background: linear-gradient(180deg, var(--pink-soft), var(--pink-hot)); color: var(--bg-deep); }
+  .btn-secondary { background: var(--chrome-2); color: var(--bg-deep); }
+
+  .greeting {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 22px;
+    color: var(--bg-deep);
+    margin-bottom: 8px;
+  }
+
+  .chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .chapter-card {
+    background: var(--bg-mid);
+    border: 2px solid var(--pink-hot);
+    box-shadow: var(--shadow-hard);
+    padding: 16px;
+    text-decoration: none;
+    color: var(--silver);
+    display: block;
+    transition: transform 0.05s;
+  }
+  .chapter-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--bg-deep); }
+  .chapter-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--bg-deep); }
+
+  .chapter-num {
+    font-family: 'Silkscreen', monospace;
+    font-size: 10px;
+    color: var(--cyan-glow);
+    margin-bottom: 4px;
+  }
+  .chapter-title {
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    color: var(--pink-soft);
+    margin-bottom: 6px;
+  }
+  .chapter-status {
+    font-family: 'VT323', monospace;
+    font-size: 14px;
+    color: var(--lime-acid);
+  }
+  .chapter-status.locked { color: var(--lavender); opacity: 0.7; }
+
+  .footer {
+    text-align: center;
+    font-family: 'Silkscreen', monospace;
+    font-size: 9px;
+    color: var(--lavender);
+    margin-top: 32px;
+    line-height: 1.6;
+  }
+
+  .footer a { color: var(--pink-hot); }
+
+  .danger {
+    background: transparent;
+    color: var(--pink-soft);
+    border: 1px dashed var(--pink-hot);
+    box-shadow: none;
+    font-family: 'Silkscreen', monospace;
+    font-size: 9px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">pyforthegirls</div>
+  <div class="tag">★ a y2k python mystery in 8 chapters ★</div>
+
+  <div class="panel" id="introPanel">
+    <h2>★ START HERE ★</h2>
+    <p>This is the seafoam Dell laptop you found in your aunt's basement. It still boots. Tegan's desktop is exactly as she left it the night she disappeared.</p>
+    <p>Each chapter teaches you a piece of Python. The code is the puzzle. The puzzle is what happened to her.</p>
+    <p>Pick a name to play under. (You can use whatever you want. It only lives on this device.)</p>
+    <div class="name-row">
+      <input class="name-input" id="userNameInput" placeholder="enter your name" maxlength="20" autofocus>
+      <button class="btn btn-acid" id="saveNameBtn">▸ save</button>
+    </div>
+  </div>
+
+  <div class="panel hidden" id="welcomePanel">
+    <h2>★ welcome back ★</h2>
+    <p class="greeting">hi <span id="greetName"></span>. her laptop is right where you left it.</p>
+    <div class="name-row">
+      <button class="btn btn-secondary" id="changeNameBtn">change name</button>
+      <button class="danger" id="clearAllBtn">clear all saved progress</button>
+    </div>
+  </div>
+
+  <div class="chapter-grid" id="chapterGrid"></div>
+
+  <div class="footer">
+    runs entirely in your browser via pyodide. no accounts. no tracking.<br>
+    saves are stored on this device only.
+  </div>
+</div>
+
+<script>
+  const SHARED_USER_KEY = 'pyforthegirls_user';
+
+  const CHAPTERS = [
+    { num: 1, file: 'chapterone.html',   title: 'pinecrest_summer.zip',     saveKey: 'pyforthegirls_save_v1' },
+    { num: 2, file: 'chaptertwo.html',   title: 'cracking the lock',        saveKey: 'pyforthegirls_save_ch2_v1' },
+    { num: 3, file: 'chapterthree.html', title: 'the night of',             saveKey: 'pyforthegirls_save_ch3_v1' },
+    { num: 4, file: 'chapterfour.html',  title: 'the names that start with h', saveKey: 'pyforthegirls_save_ch4_v1' },
+    { num: 5, file: 'chapterfive.html',  title: "if you're reading this",   saveKey: 'pyforthegirls_save_ch5_v1' },
+    { num: 6, file: 'chaptersix.html',   title: 'fourteen months',          saveKey: 'pyforthegirls_save_ch6_v1' },
+    { num: 7, file: 'chapterseven.html', title: 'ten hours',                saveKey: 'pyforthegirls_save_ch7_v1' },
+    { num: 8, file: 'chaptereight.html', title: 'next summer',              saveKey: 'pyforthegirls_save_ch8_v1' },
+  ];
+
+  const introPanel = document.getElementById('introPanel');
+  const welcomePanel = document.getElementById('welcomePanel');
+  const greetName = document.getElementById('greetName');
+  const userNameInput = document.getElementById('userNameInput');
+
+  function readUser() {
+    try { return localStorage.getItem(SHARED_USER_KEY) || ''; } catch(e) { return ''; }
+  }
+  function writeUser(name) {
+    try { localStorage.setItem(SHARED_USER_KEY, name); } catch(e) {}
+  }
+
+  function chapterStatus(saveKey) {
+    try {
+      const raw = localStorage.getItem(saveKey);
+      if (!raw) return { state: 'fresh', label: 'not started' };
+      const s = JSON.parse(raw);
+      const beats = (s && s.completedBeats && s.completedBeats.length) || 0;
+      const charms = (s && s.charms) || 0;
+      if (beats > 0) return { state: 'progress', label: `in progress :: ${charms} ✿` };
+      return { state: 'fresh', label: 'not started' };
+    } catch(e) {
+      return { state: 'fresh', label: 'not started' };
+    }
+  }
+
+  function renderChapters() {
+    const grid = document.getElementById('chapterGrid');
+    grid.innerHTML = '';
+    CHAPTERS.forEach(ch => {
+      const status = chapterStatus(ch.saveKey);
+      const card = document.createElement('a');
+      card.className = 'chapter-card';
+      card.href = ch.file;
+      card.innerHTML = `
+        <div class="chapter-num">CHAPTER ${String(ch.num).padStart(2, '0')}</div>
+        <div class="chapter-title">${ch.title}</div>
+        <div class="chapter-status ${status.state === 'fresh' ? 'locked' : ''}">${status.label}</div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function showFor(name) {
+    if (name) {
+      introPanel.classList.add('hidden');
+      welcomePanel.classList.remove('hidden');
+      greetName.textContent = name;
+    } else {
+      introPanel.classList.remove('hidden');
+      welcomePanel.classList.add('hidden');
+      userNameInput.value = '';
+      userNameInput.focus();
+    }
+  }
+
+  document.getElementById('saveNameBtn').addEventListener('click', () => {
+    const name = userNameInput.value.trim() || 'guest';
+    writeUser(name);
+    showFor(name);
+  });
+  userNameInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('saveNameBtn').click();
+  });
+
+  document.getElementById('changeNameBtn').addEventListener('click', () => {
+    try { localStorage.removeItem(SHARED_USER_KEY); } catch(e) {}
+    showFor('');
+  });
+
+  document.getElementById('clearAllBtn').addEventListener('click', () => {
+    if (!confirm('clear all saved progress for every chapter? your name will be kept.')) return;
+    CHAPTERS.forEach(ch => {
+      try { localStorage.removeItem(ch.saveKey); } catch(e) {}
+    });
+    renderChapters();
+  });
+
+  showFor(readUser());
+  renderChapters();
+</script>
+</body>
+</html>

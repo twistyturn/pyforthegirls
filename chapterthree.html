@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>pyforthegirls :: chapter 4 :: the names that start with h</title>
+<title>pyforthegirls :: chapter 3 :: the night of</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
@@ -551,65 +551,6 @@ font-size: 7px;
 color: #999;
 }
 
-/* ============ H-BOARD (suspect cards) ============ */
-.hboard-grid {
-padding: 16px;
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-gap: 14px;
-background:
-repeating-linear-gradient(135deg, var(--pink-bubble) 0, var(--pink-bubble) 8px, var(--window-bg) 8px, var(--window-bg) 16px);
-}
-.hboard-card {
-background: #fff8f0;
-border: 2px solid var(--bg-deep);
-padding: 12px;
-font-family: 'VT323', monospace;
-color: var(--bg-deep);
-box-shadow: 3px 3px 0 var(--bg-deep);
-position: relative;
-transform: rotate(-0.8deg);
-transition: transform 0.15s, box-shadow 0.15s;
-}
-.hboard-card:nth-child(2n) { transform: rotate(0.6deg); }
-.hboard-card:nth-child(3n) { transform: rotate(-0.4deg); }
-.hboard-card:hover {
-transform: rotate(0) scale(1.03);
-box-shadow: 5px 5px 0 var(--pink-hot);
-z-index: 10;
-}
-.hboard-name {
-font-family: 'Silkscreen', monospace;
-font-size: 14px;
-color: var(--pink-hot);
-text-transform: uppercase;
-letter-spacing: 1px;
-margin-bottom: 4px;
-border-bottom: 1px dashed var(--bg-deep);
-padding-bottom: 4px;
-}
-.hboard-role {
-font-size: 14px;
-font-style: italic;
-color: #666;
-margin-bottom: 8px;
-}
-.hboard-row {
-font-size: 14px;
-line-height: 1.3;
-margin-bottom: 4px;
-}
-.hboard-label {
-font-family: 'Silkscreen', monospace;
-font-size: 8px;
-color: var(--bg-deep);
-background: var(--lime-acid);
-padding: 1px 4px;
-letter-spacing: 1px;
-display: inline-block;
-margin-right: 4px;
-}
-
 /* ============ DECORATIVE BITS ============ */
 .marquee-strip {
 background: var(--bg-deep);
@@ -678,15 +619,18 @@ letter-spacing: 8px;
 
 <div class="intro-screen" id="introScreen">
   <div class="intro-logo">pyforthegirls</div>
-  <div class="intro-tag">★ chapter four ★ the names that start with h ★</div>
+  <div class="intro-tag">★ chapter three ★ the night of ★</div>
   <div class="intro-prose">
-    <p>Three nights since you read the messages.</p>
-    <p>You've been printing the camp roster from memory on the back of a flyer at the diner near your apartment. There were fifteen staff at Camp Pinecrest in 2004. You wrote down every name you could find. You wrote them in the order you found them, not alphabetical, because your brain was racing. You crossed out the ones who couldn't have been at the boathouse on August 14. There aren't many crosses yet.</p>
-    <p>You came back to the laptop because you have to. The H is on it somewhere. Tegan saved every email attachment camp ever sent her, including the staff rosters they handed out at orientation. You're going to read all of them.</p>
-    <p>It's late. <span class="em">wren_h</span> has been online for nine hours. You can see her green dot. She hasn't messaged you in days. You don't know if she's waiting for you or if she's just always like this.</p>
+    <p>You closed the AIM window without responding.</p>
+    <p>Wren is still online. The little green dot next to <span class="em">wren_h</span> in your buddy list hasn't moved in forty minutes. She's waiting. You're not going to give her anything.</p>
+    <p>Instead you opened the chat archive folder and started reading. Fifty-three logs. You didn't sleep.</p>
+    <p>What you found: Tegan didn't only chat from her laptop. There are <span class="em">SMS dumps</span> in the archive too. Text messages from a flip phone she bought herself that summer. Counsellors weren't supposed to have phones, but everyone did. The SMS folder is short. Tegan only used it for one person.</p>
+    <p>A user called <span class="em">glorfindel_lives</span>. Someone she met on TheOneRing.net forums in summer 2003. They never met in person. They lived two time zones apart. They talked nightly for fourteen months.</p>
+    <p>The texts on the night of August 14 are the last messages Tegan ever sent.</p>
+    <p>You're going to figure out, second by second, what actually happened.</p>
   </div>
   <input class="intro-input" id="userNameInput" placeholder="enter your name" maxlength="20" autofocus>
-  <button class="btn btn-acid" id="startBtn" style="font-size: 12px; padding: 10px 24px;">▸ START INVESTIGATING</button>
+  <button class="btn btn-acid" id="startBtn" style="font-size: 12px; padding: 10px 24px;">▸ OPEN THE ARCHIVE</button>
 </div>
 
 <!-- ============ MAIN DESKTOP ============ -->
@@ -725,7 +669,7 @@ letter-spacing: 8px;
 
   <!-- Marquee -->
 
-  <div class="marquee-strip"><span>★ now playing: death cab — title and registration ★ AIM status: invisible ★ wren_h has been online for 9 hours ★ camp_archive: 2 rosters available ★ time zone: still your problem ★ now playing: death cab — title and registration ★</span></div>
+  <div class="marquee-strip"><span>★ now playing: postal service — such great heights ★ AIM status: invisible ★ wren_h has been online for 47 minutes ★ archive expanded: 53 logs + 12 sms dumps ★ time zone: you don't know anymore ★ now playing: postal service — such great heights ★</span></div>
 
   <!-- ============ STORY WINDOWS RENDERED HERE ============ -->
 
@@ -751,7 +695,7 @@ letter-spacing: 8px;
 
 <div class="taskbar hidden" id="taskbar">
   <button class="start-btn">Start</button>
-  <span style="font-family: 'Silkscreen', monospace; font-size: 9px;">CHAPTER 4 :: THE NAMES THAT START WITH H</span>
+  <span style="font-family: 'Silkscreen', monospace; font-size: 9px;">CHAPTER 3 :: THE NIGHT OF</span>
   <span class="taskbar-mail" id="mailIndicator">✉ 1 NEW</span>
   <span class="taskbar-time" id="taskbarTime">11:47 PM</span>
 </div>
@@ -790,76 +734,7 @@ async function runPython(code) {
 // ===========================================================================
 // SAVE / LOAD STATE (Neocities-friendly: localStorage only)
 // ===========================================================================
-const SAVE_KEY = 'pyforthegirls_save_ch4_v1';
-
-// ===========================================================================
-// IN-GAME FILE CONTENTS — written into Pyodide's virtual FS at task time
-// ===========================================================================
-const ROSTER_2004 = `ROLE|FIRST|LAST|CABIN|STATUS_AUG_14
-director|Marcia|Deveraux|admin|on-site
-head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)
-asst cook|Greg|Iverson|kitchen|on-site (mess hall all evening)
-nurse|Patricia|Wong|med|on-site
-maintenance|Hank|Tobias|grounds|on-site (night shift, kitchen area)
-lifeguard|Henry|Pham|lake/boys|on-site (boys overnight at lac la biche)
-lifeguard|Roxie|Tremblay|lake/girls|on-site
-senior counsellor|Wren|Halloway|birchwood|on-site (cabin all night)
-senior counsellor|Briar|Vance|cedarwood|on-site (with wren in cabin)
-senior counsellor|Mei|Park|maplewood|on-site
-junior counsellor|Tegan|Ashby|rosewood|missing
-junior counsellor|Hattie|Whitlock|pinewood|on-site (left aug 16)
-junior counsellor|Maddy|Chen|maplewood|on-site
-junior counsellor|Tyler|Hughes|pinewood-boys|on-site (mess hall, then own cabin)
-junior counsellor|Sarah|Begay|hemlock|on-site
-`;
-
-const ROSTER_2003 = `ROLE|FIRST|LAST|CABIN|NOTES
-director|Marcia|Deveraux|admin|returning
-head cook|Helen|Sokol|kitchen|returning
-asst cook|Greg|Iverson|kitchen|returning
-nurse|Patricia|Wong|med|returning
-maintenance|Hank|Tobias|grounds|returning
-lifeguard|Henry|Pham|lake/boys|returning
-lifeguard|Caitlin|Yeo|lake/girls|did not return
-senior counsellor|Wren|Halloway|birchwood|returning (3rd summer)
-senior counsellor|Briar|Vance|cedarwood|returning
-senior counsellor|Tara|Friesen|maplewood|did not return (graduated)
-junior counsellor|Tegan|Ashby|rosewood|returning (1st summer 2003)
-junior counsellor|Melissa|Klassen|hemlock|did not return
-junior counsellor|Maddy|Chen|maplewood|returning
-junior counsellor|Tyler|Hughes|pinewood-boys|returning (1st summer 2003)
-junior counsellor|Daniel|Chow|pinewood-boys|did not return
-`;
-
-// Python preamble that builds `staff` from ROSTER_2004 (for beats that need pre-parsed data)
-const STAFF_PRELOAD_PY = `_lines_2004 = ${JSON.stringify(ROSTER_2004)}.split("\\n")
-staff = []
-for _line in _lines_2004[1:]:
-    if not _line.strip():
-        continue
-    _parts = [_p.strip() for _p in _line.split("|")]
-    staff.append({"role": _parts[0], "first": _parts[1], "last": _parts[2], "cabin": _parts[3], "status": _parts[4]})
-`;
-
-// Python preamble that builds `staff_2003` from ROSTER_2003
-const STAFF_2003_PRELOAD_PY = `_lines_2003 = ${JSON.stringify(ROSTER_2003)}.split("\\n")
-staff_2003 = []
-for _line in _lines_2003[1:]:
-    if not _line.strip():
-        continue
-    _parts = [_p.strip() for _p in _line.split("|")]
-    staff_2003.append({"role": _parts[0], "first": _parts[1], "last": _parts[2], "cabin": _parts[3], "status": _parts[4]})
-`;
-
-// Write the roster files into Pyodide's virtual FS so `with open(...)` works
-async function injectRosterFiles() {
-  const py = await loadPyodideOnce();
-  try {
-    py.FS.mkdirTree('outlook/inbox/attachments');
-  } catch (e) { /* directory may already exist */ }
-  py.FS.writeFile('outlook/inbox/attachments/roster_2004.txt', ROSTER_2004);
-  py.FS.writeFile('outlook/inbox/attachments/roster_2003.txt', ROSTER_2003);
-}
+const SAVE_KEY = 'pyforthegirls_save_ch3_v1';
 
 function loadSave() {
   try {
@@ -879,6 +754,12 @@ let state = loadSave() || {
   completedBeats: [],
   charms: 0
 };
+
+// Shared across chapters so the player only enters their name once.
+const SHARED_USER_KEY = 'pyforthegirls_user';
+if (!state.userName) {
+  try { state.userName = localStorage.getItem(SHARED_USER_KEY) || ''; } catch(e) {}
+}
 
 // ===========================================================================
 // SPARKLES
@@ -908,6 +789,7 @@ function startGame() {
   const name = document.getElementById('userNameInput').value.trim() || 'guest';
   state.userName = name;
   writeSave(state);
+  try { localStorage.setItem(SHARED_USER_KEY, name); } catch(e) {}
   document.getElementById('introScreen').classList.add('hidden');
   document.getElementById('desktop').classList.remove('hidden');
   document.getElementById('taskbar').classList.remove('hidden');
@@ -933,315 +815,337 @@ function startClock() {
 // Each beat is either a 'diary' card (pure narrative) or a 'task' card
 // (story + Python challenge). Player progresses linearly.
 // ===========================================================================
-// CH4 BEATS — generated. drop into chapter4.html replacing existing BEATS.
-
 const BEATS = [
-  // ---- BEAT 0: ch4_open — Marcia's welcome email with roster attached ----
+
+  // ---- BEAT 0: opening — what you've found in the SMS dump ----
   {
-    id: 'ch4_open',
+    id: 'ch3_open',
     type: 'diary',
-    title: 'open file: outlook/inbox/2004-06-14_pinecrest_welcome.eml',
-    meta: 'from: m.deveraux@camppinecrest.ca :: to: tegan_a87@hotmail.com :: jun 14 2004 — 6:42 pm',
-    body: `subject: Welcome to Pinecrest 2004 — orientation packet attached
+    title: 'open file: SMS_dumps/2004-08-14.txt',
+    meta: 'pulled from tegan\'s hotmail. her phone was forwarding outgoing texts to her own email.',
+    body: `you ran a script across her email archive and found something:
+tegan had her phone set up to BCC every outgoing SMS to her own
+hotmail address. counsellors weren't supposed to have phones; she
+was being careful. either way, the texts survived. the phone itself
+was never recovered.
 
-Tegan,
+the only person she ever texted from this number is a contact
+saved as "G♡". full name on the SIM: glorfindel_lives.
 
-Welcome back for your second summer at Camp Pinecrest. Attached is the
-2004 staff roster. Please review it before orientation week so you know
-who you'll be working with this season.
+you ran the same script on the AIM logs from aug 14.
+two threads. tegan_a87 ↔ wren_h (empty for the night).
+wren_h ↔ briar_v (active throughout the night).
 
-A few notes for returning counsellors:
-  - Hattie Whitlock is new. She's joining you as the other Pinewood JC.
-    Please show her around.
-  - Wren is moving up to senior counsellor at Birchwood. She'll be your
-    cabin neighbour, not your supervisor.
-  - Mess hall hours are unchanged. All staff eat together at 7, 12, and 6.
+briar vance. you've been searching the rest of the disk for hours
+trying to learn anything about her. she was nineteen, like wren, and on her third summer at pinecrest. the name doesn't appear in any of tegan's diaries. not once. they ran in
+different cabins and apparently in different worlds. but in a buried camp
+photo from july, you found her: a girl with dark blonde curls, sitting
+behind wren on the dock, reading an introductory psych textbook from u of a.
+she'd brought it to camp like a brick. wren wasn't looking at
+the camera. wren was looking at her.
 
-Looking forward to seeing you on the 21st.
+both threads now sit on your desktop, sorted by time.
+ten messages total, spanning 9:30 PM aug 14 to 7:22 AM aug 15.
 
-— Marcia
-
-[attachment: roster_2004.txt]`,
-    nextBtn: '▸ open the attachment'
+it's time to read them in order.`,
+    nextBtn: '▸ pin the messages to the board'
   },
 
-  // ---- BEAT 1: task_open_file — first python file I/O ----
+  // ---- BEAT 1: THE FRAGMENT BOARD itself ----
   {
-    id: 'task_open_file',
+    id: 'fragment_board',
+    type: 'board',
+    title: 'investigation board :: aug 14 timeline',
+    intro: `here are all ten messages from the night of, pinned in order. green cards are SMS (tegan ↔ glorfindel). blue cards are AIM (wren ↔ briar). study them. you\'ll be cross-referencing them in code.`,
+    fragments: [
+      {id: 1, time: "21:30", from: "wren_h", to: "briar_v", platform: "AIM", content: "covering for me tonight right? i'm in the cabin. you saw me in the cabin."},
+      {id: 2, time: "22:15", from: "tegan_a87", to: "glorfindel_lives", platform: "SMS", content: "she wants me to meet her at the boathouse at 11. i think i'm gonna do it :/"},
+      {id: 3, time: "22:42", from: "wren_h", to: "briar_v", platform: "AIM", content: "if anyone asks: i was in my cabin all night. you were in yours. study session if they push."},
+      {id: 4, time: "23:03", from: "tegan_a87", to: "glorfindel_lives", platform: "SMS", content: "left rosewood. heading down."},
+      {id: 5, time: "23:18", from: "tegan_a87", to: "glorfindel_lives", platform: "SMS", content: "she's not here yet"},
+      {id: 6, time: "23:31", from: "tegan_a87", to: "glorfindel_lives", platform: "SMS", content: "she's STILL not here"},
+      {id: 7, time: "23:44", from: "tegan_a87", to: "glorfindel_lives", platform: "SMS", content: "wait. someone's coming up the path. it's not her."},
+      {id: 8, time: "23:46", from: "tegan_a87", to: "glorfindel_lives", platform: "SMS", content: "h"},
+      {id: 9, time: "00:08", from: "wren_h", to: "briar_v", platform: "AIM", content: "thanks. you're a real one."},
+      {id: 10, time: "07:22", from: "wren_h", to: "briar_v", platform: "AIM", content: "i was in the cabin all night. you saw me. right?"}
+    ],
+    nextBtn: '▸ load it into python'
+  },
+
+  // ---- BEAT 2: list basics — len(), indexing ----
+  {
+    id: 'task_list_basics',
     type: 'task',
-    charms: 2,
-    title: 'python.exe :: read_roster.py',
-    meta: 'tegan saved every email attachment camp ever sent her.',
-    skill: 'FILE I/O :: open() AND .readlines()',
-    hint: `<code>with open("outlook/inbox/attachments/roster_2004.txt") as f:</code> indented <code>lines = f.readlines()</code>. then three lines: <code>print(lines[0].strip())</code>, <code>print(lines[1].strip())</code>, <code>print(lines[2].strip())</code>.`,
-    storyAbove: `at orientation, pinecrest emailed every staffer a roster as a text attachment. tegan saved hers. you need to learn how to make python read a file. <code>open()</code> opens it. <code>.readlines()</code> gets every line as a list of strings. <code>with</code> blocks make sure the file gets closed properly when you're done.`,
-    instructions: `the <code>with</code> block opens a file, gives you a handle, and closes it for you when you exit the block:
-<pre>with open("filename.txt") as f:
-    lines = f.readlines()</pre>
+    title: 'python.exe :: load_fragments.py',
+    meta: 'first script of the night.',
+    storyAbove: `you load all ten fragments into a python list called <code>fragments</code>. each fragment is a dictionary. a labeled box with keys like <code>"time"</code>, <code>"from"</code>, <code>"content"</code>. the variable is set up for you. now you need to confirm you can access individual messages.`,
+    skill: 'LISTS :: LENGTH & INDEXING',
+    instructions: `<p>a <strong>list</strong> is an ordered collection. you've seen them already in the loops chapter, but now they hold dictionaries instead of strings.</p>
+                   <p><code>len(my_list)</code> tells you how many items are in it. <code>my_list[0]</code> is the first item; <code>my_list[-1]</code> is the last.</p>
+                   <p>each fragment is a dictionary. <code>fragment["from"]</code> gives you the sender.</p>
+                   <p><strong>your task:</strong> print three things, each on its own line:</p>
+                   <ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 22px;">
+                     <li>how many fragments there are total</li>
+                     <li>who sent the very first message (use <code>fragments[0]</code>)</li>
+                     <li>who sent the very last message (use <code>fragments[-1]</code>)</li>
+                   </ol>`,
+    starter: `# fragments is already loaded for you (10 messages)
+# print three things on three lines:
+# 1. the count of fragments
+# 2. the sender of fragments[0]
+# 3. the sender of fragments[-1]
+`,
+    expectedOutput: '10\nwren_h\nwren_h',
+    matchType: 'exact',
+    hint: `three lines: <code>print(len(fragments))</code>, <code>print(fragments[0]["from"])</code>, <code>print(fragments[-1]["from"])</code>. the brackets after the dict get the value at that key.`,
+    fragmentInjection: true,
+    onComplete: {
+      diary: `// 10 fragments loaded. wren bookends the night. tegan never gets the last word.`,
+      buddy: { name: 'glorfindel_lives', msg: 'is this tegan? this number isn\'t in service anymore :( it just rang and rang. i kept your last text. i couldn\'t do anything from here.' }
+    },
+    charms: 2
+  },
 
-your task: open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. each line ends with a newline character (\n) so use <code>.strip()</code> on each line to avoid double-spacing.`, starter: `with open("outlook/inbox/attachments/roster_2004.txt") as f:
-    lines = f.readlines()
+  // ---- BEAT 3: a glorfindel-side reflection ----
+  {
+    id: 'glorfindel_pov',
+    type: 'diary',
+    title: 'open file: outside_email_archive/glorfindel_to_tegan.txt',
+    meta: 'a forwarded email. glorfindel sent this to a different address tegan once gave them. arrived aug 16, 2004.',
+    body: `to: tegan_a87@hotmail.com
+from: glorfindel_lives@hotmail.com
+subject: are you ok??
 
-# print lines[0], lines[1], lines[2] using .strip()
+teegs i have been calling all day :( it just rings.
+your last text was a single h. that was 30+ hours ago.
+i tried to call the camp. they said you couldn't come to the phone.
+the lady on the phone got weird when i pushed. camp pinecrest is on kettle lake somewhere in alberta. i googled. that\'s all i know.
+i'm in halifax. i don't know where camp pinecrest even IS exactly.
+i don't even know your real last name.
 
-`, expectedOutput: `ROLE|FIRST|LAST|CABIN|STATUS_AUG_14
-director|Marcia|Deveraux|admin|on-site
-head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// 16 lines loaded. one for the header, fifteen staff including tegan.`, buddy: { name: 'tegan_a87', msg: `ashby comes before halloway and vance. that's how i learned to alphabetize a name.` }
-}
+if you get this please please please write back :( :(
+i don't know who else to tell. nobody in your real life knows about me.
+
+i'm so scared :(
+— g`,
+    nextBtn: '▸ keep going'
+  },
+
+  // ---- BEAT 4: 'in' operator on lists ----
+  {
+    id: 'task_in_operator',
+    type: 'task',
+    title: 'python.exe :: who_was_talking.py',
+    meta: 'verifying the participant roster.',
+    storyAbove: `you want to confirm something fast: was glorfindel actually a participant in any of the AIM logs? or were they only ever on the SMS side? <code>in</code> checks membership.`,
+    skill: 'THE in OPERATOR (membership tests)',
+    instructions: `<p>the <code>in</code> keyword checks if something is part of a collection:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "wren_h" in people:
+    print("found")</pre>
+
+               <p>it works on lists AND on strings (where it checks for substrings).</p>
+               <p><strong>your task:</strong> the variable <code>aim_people</code> contains everyone who appears in any AIM log. check whether <code>"glorfindel_lives"</code> is among them. print <code>"on AIM"</code> if yes, <code>"only SMS"</code> if no.</p>`,
+starter: `aim_people = ["wren_h", "briar_v", "tegan_a87", "camille.j.89"]
+
+target = "glorfindel_lives"
+
+# fill in the if/else:
+
+`, expectedOutput: 'only SMS', matchType: 'exact', hint: `<code>if target in aim_people:</code> then <code>print("on AIM")</code>. otherwise <code>print("only SMS")</code>.`, onComplete: { diary: `// confirmed: glorfindel never had AIM access. only SMS. only the night-of fragments. they are tegan's only outside witness.`,
+buddy: { name: 'glorfindel_lives', msg: "i never knew her last name. i never met her family. i couldn't go to the funeral. i didn't even know there was one :(" }
+},
+charms: 2
 },
 
-// –– BEAT 2: task_string_parse — split, strip, build dicts ––
+// –– BEAT 5: dictionary access ––
 {
-id: 'task_string_parse',
+id: 'task_dict_access',
 type: 'task',
-charms: 2,
-title: 'python.exe :: parse_roster.py',
-meta: 'turn each line into structured data.',
-skill: 'STRING PARSING :: .split() AND .strip()',
-hint: `<code>for line in lines[1:]:</code> indented <code>parts = [p.strip() for p in line.split("|")]</code> then <code>staff.append({"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]})</code>. then unindented <code>print(len(staff))</code>.`,
-storyAbove: `each line is fields separated by pipes (<code>|</code>). to get structured data, you split each line on the pipe character and strip whitespace from each piece. then you can build a list of dictionaries, one per staffer, where each dict has keys like <code>first</code>, <code>last</code>, <code>role</code>, <code>cabin</code>, <code>status</code>.`,
-instructions: `string method <code>.split(separator)</code> breaks a string into a list:
-
-<pre>"a|b|c".split("|") returns ["a", "b", "c"]</pre>
-
-combine with <code>.strip()</code> to clean each piece. skip the header (line 0). for each remaining line, split on <code>|</code>, strip each piece, and build a dict with keys: role, first, last, cabin, status. append each dict to a list called <code>staff</code>. then print <code>len(staff)</code>.`, starter: `staff = []
-with open("outlook/inbox/attachments/roster_2004.txt") as f:
-    lines = f.readlines()
-
-# skip header (lines[0]). for each line in lines[1:]:
-
-# - split on "|"
-
-# - strip each piece
-
-# - build a dict with keys: role, first, last, cabin, status
-
-# - append to staff
-
-# then print len(staff)
-
-`, expectedOutput: `15`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// 15 staffers parsed. fourteen of them are not tegan. now i can filter.`, buddy: { name: 'camille.j.89', msg: `i used to read that roster like it was the social hierarchy. wren at the top. tegan near the bottom because of the alphabet, even though everyone knew where she really was.` }
+title: 'python.exe :: zoom_in_on_h.py',
+meta: "pulling tegan's last message into focus.",
+storyAbove: `the message you keep coming back to is the single character <code>h</code> at 23:46. you want to print every field of that one fragment cleanly so you can stare at it.`,
+skill: 'DICTIONARY KEY ACCESS',
+instructions: `<p>a dictionary stores values under keys. you access them with square brackets:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">person = {"name": "tegan", "age": 17} print(person["name"])   # → tegan print(person["age"])    # → 17</pre> <p><strong>your task:</strong> the variable <code>last_msg</code> is set to the "h" message. print three fields, each on its own line, in this order: <code>time</code>, <code>from</code>, <code>content</code>.</p>`,
+starter: `last_msg = {
+"id": 8,
+"time": "23:46",
+"from": "tegan_a87",
+"to": "glorfindel_lives",
+"platform": "SMS",
+"content": "h"
 }
+
+# print last_msg["time"], then last_msg["from"], then last_msg["content"]
+
+`, expectedOutput: '23:46\ntegan_a87\nh', matchType: 'exact', hint: `three lines: <code>print(last_msg["time"])</code>, <code>print(last_msg["from"])</code>, <code>print(last_msg["content"])</code>. the quotes inside the brackets are the key names.`, onComplete: { diary: `// 23:46. tegan_a87. h.
+// the next message in the SMS thread is from glorfindel: "?? are you okay??" eighteen minutes later. tegan never replies.`,
+buddy: { name: 'tegan_a87', msg: "i don't remember typing that. but my thumb was on the keyboard so it must have been me." }
+},
+charms: 2
 },
 
-// –– BEAT 3: task_h_filter — find the H candidates ––
+// –– BEAT 6: realization — the gap ––
 {
-id: 'task_h_filter',
-type: 'task',
-charms: 2,
-title: 'python.exe :: h_filter.py',
-meta: 'who at camp had a first name starting with H?',
-skill: 'STRING METHODS :: .startswith() AND .lower()',
-hint: `<code>for m in staff:</code> indented <code>if m["first"].lower().startswith("h"):</code> double-indented <code>print(f"{m[\'first\']} {m[\'last\']} ({m[\'role\']})")</code>.`,
-storyAbove: `you've already learned list comprehensions. now you use them on the roster. you want every staff member whose first name starts with the letter <code>h</code> (case-insensitive). pull out their full name and role for review.`,
-instructions: `string method <code>.startswith(prefix)</code> checks if a string begins with a given prefix:
-
-<pre>"Hattie".startswith("H") returns True
-"hattie".lower().startswith("h") returns True (safer)</pre>
-
-your task: filter <code>staff</code> for any member whose first name (lowercased) starts with <code>"h"</code>. for each match, print <code>"first last (role)"</code>.`, starter: `# staff is loaded for you (same dicts as before)
-
-# for each member in staff, check if first.lower() starts with "h"
-
-# print "first last (role)" for each match
-
-`, expectedOutput: `Helen Sokol (head cook)
-Hank Tobias (maintenance)
-Henry Pham (lifeguard)
-Hattie Whitlock (junior counsellor)`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// 4 candidates. somebody on this list came up the boathouse path at 11:44 PM and tegan started typing their name.`, buddy: { name: 'tegan_a87', msg: `i knew all four of them. hank fixed my window screen the second week and didn't even tell me i'd been opening it wrong.` }
-}
-},
-
-// –– BEAT 4: investigation_board — visual cards ––
-{
-id: 'investigation_board',
-type: 'h_board',
-title: 'investigation board :: H-suspects',
-intro: `four people whose names start with H. start eliminating.`,
-candidates: [
-{ role: 'head cook', first: 'Helen', last: 'Sokol', age: 51, status: 'off-site aug 14, drove home aug 13', alibi: 'home in town. husband can confirm.' },
-{ role: 'maintenance', first: 'Hank', last: 'Tobias', age: 64, status: 'on-site, night shift kitchen area', alibi: 'with greg the asst cook in the mess hall until ~1 AM. fixing a freezer compressor.' },
-{ role: 'lifeguard', first: 'Henry', last: 'Pham', age: 19, status: "boys' overnight, lac la biche", alibi: '8 boys + 1 co-counsellor. 3 hours from camp. signed permit on file.' },
-{ role: 'junior counsellor', first: 'Hattie', last: 'Whitlock', age: 17, status: 'on-site, left aug 16', alibi: 'in pinewood cabin with 8 campers. no adult witness.' }
-],
-nextBtn: '▸ run the alibi filter'
-},
-
-// –– BEAT 5: task_alibis — eliminate three of four with substring filter ––
-{
-id: 'task_alibis',
-type: 'task',
-charms: 3,
-title: 'python.exe :: alibis.py',
-meta: 'three of these four were demonstrably not at the boathouse.',
-skill: 'COMPOUND FILTERING :: any() AND SUBSTRING in',
-hint: `<code>for m in staff:</code> indented: <code>if not m["first"].lower().startswith("h"): continue</code>. then <code>if any(term in m["status"] for term in exclude_terms): continue</code>. then <code>print(f"{m[\'first\']} {m[\'last\']}")</code>.`,
-storyAbove: `the roster's status field tells you where each person was on aug 14. helen drove home aug 13. hank was in the kitchen area with the asst cook. henry was on a multi-day overnight at lac la biche, three hours from camp. that leaves hattie. write a filter that returns only H-staff who could plausibly have been at the boathouse. exclude anyone whose status mentions a disqualifying location.`,
-instructions: `string substring check: <code>"lac la biche" in member["status"]</code> returns <code>True</code> if the substring appears anywhere in the status field. you can also use <code>any()</code> across a list of terms:
-
-<pre>any(term in text for term in ["a", "b", "c"])</pre>
-
-your task: filter the four h-candidates down to those whose status does NOT mention any of <code>"off-site"</code>, <code>"lac la biche"</code>, or <code>"kitchen"</code>. print <code>"first last"</code> for each remaining match.`, starter: `# staff is loaded
-exclude_terms = ["off-site", "lac la biche", "kitchen"]
-
-# for each member in staff:
-
-# - skip unless first name starts with "h"
-
-# - skip if any exclude_term is in member["status"]
-
-# - otherwise, print "first last"
-
-`, expectedOutput: `Hattie Whitlock`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// helen was home in town. henry was three hours out at lac la biche with eight boys and another counsellor. hank was in the kitchen at 11:44 PM, greg can confirm. only hattie was on-site, no alibi anyone has confirmed yet. she left two days later. it has to be her.`, buddy: { name: 'wren_h', msg: `i saw the account log on. i thought it was you. it's never you. i don't know who you are. i don't actually want to know.` }
-}
-},
-
-// –– BEAT 6: hattie_dive — Marcia's all-staff email ––
-{
-id: 'hattie_dive',
+id: 'gap_realization',
 type: 'diary',
-title: 'open file: outlook/inbox/2004-08-17_marcia_all_staff.eml',
-meta: 'from: m.deveraux@camppinecrest.ca :: to: all_staff@camppinecrest.ca :: aug 17 2004 — 8:42 am',
-body: `subject: Hattie Whitlock departure
+title: 'open file: notes/the_gap.txt',
+meta: 'something you typed yourself, just now.',
+body: `tegan got to the boathouse at 11:18.
+she texted glorfindel for 26 minutes WAITING.
+"she's not here yet."
+"she's STILL not here."
+nobody came until 11:44, and the person who came was, in tegan's
+own words, NOT WREN.
 
-Team,
+at the same time, wren was on AIM with briar from her cabin.
+"i'm in the cabin." "you saw me in the cabin."
+wren wasn't at the boathouse.
+someone else was.
 
-I wanted to let everyone know that Hattie Whitlock had to leave
-camp yesterday morning. Her older sister was in a serious car
-accident on Highway 40 outside Grande Prairie on the 15th. She is
-expected to recover. The road back is long and the family wanted
-Hattie home.
-
-I drove Hattie to the bus stop in Whitecourt at 11:15 yesterday.
-She was holding it together but barely. She asked me to tell the
-Pinewood girls she was sorry and that she would write. She did.
-Two letters arrived today, one for each cabin she'd counselled.
-They're on the cabin doors.
-
-I know this is a lot on top of last week. Please be gentle with
-each other. If anyone needs to talk, I'm in my office or at the
-mess hall. The chaplain in Whitecourt has office hours on
-Thursdays and his number is on the bulletin board.
-
-— Marcia`,
-nextBtn: '▸ sit with this'
+i need to look at every message wren sent that night
+and confirm she was building an alibi.
+i need a script that filters fragments by content.
+specifically: every wren message that mentions "cabin."`,
+nextBtn: '▸ open python'
 },
 
-// –– BEAT 7: hattie_realization — player accepts hattie is clear ––
+// –– BEAT 7: dict.items() iteration ––
 {
-id: 'hattie_realization',
-type: 'diary',
-title: 'open file: notes/it_wasnt_hattie.txt',
-meta: 'you typed this and then sat with it for a while.',
-body: `hattie's sister got hit by a car. the call came at dawn aug 16. she was on a bus by 11. but the night before, the night tegan disappeared, she was awake in the pinewood cabin trying to keep eight little girls calm while wondering if their other counsellor was dead.
-
-i wanted hattie to be the answer. she wasn't. she was 17 and scared. the world was ending around her in two different ways at once.
-
-the H lead is dead. nobody on the 2004 roster came up the path.`,
-nextBtn: '▸ try the 2003 roster'
-},
-
-// –– BEAT 8: task_load_2003_roster — apply file I/O to second file ––
-{
-id: 'task_load_2003_roster',
+id: 'task_dict_items',
 type: 'task',
-charms: 3,
-title: 'python.exe :: roster_2003.py',
-meta: "tegan kept last year's roster too. she was at this camp before.",
-skill: 'FILE I/O REINFORCED :: SECOND FILE',
-hint: `same pattern as parsing roster_2004 but with the 2003 filename. use a list called <code>staff_2003</code>. then loop and filter: <code>if m["first"].lower().startswith("h"): print(f"{m[\'first\']} {m[\'last\']}")</code>.`,
-storyAbove: `the H wasn't on the 2004 roster. you scroll up in tegan's inbox to summer 2003. there's a near-identical welcome email from marcia, dated jun 12 2003. same attachment format. tegan was at pinecrest last year too. maybe whoever came up the path was on staff in 2003 and didn't come back this year.`,
-instructions: `your task: open <code>outlook/inbox/attachments/roster_2003.txt</code>, parse it the same way you parsed the 2004 file (skip header, split on <code>|</code>, build dicts), and put the results in a list called <code>staff_2003</code>. then filter for first names starting with <code>"h"</code> and print <code>"first last"</code> for each match.`,
-starter: `staff_2003 = []
-with open("outlook/inbox/attachments/roster_2003.txt") as f:
-    lines = f.readlines()
-
-# parse just like before
-
-# (note: the 2003 file has a NOTES column instead of STATUS_AUG_14, but the parsing is identical)
-
-# then filter for h-names, print "first last"
-
-`, expectedOutput: `Helen Sokol
-Hank Tobias
-Henry Pham`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// same three. helen, hank, henry. all returning. no new H. the thread is dead.`, buddy: { name: 'tegan_a87', msg: `my first summer here. tyler was a JC for the boys' cabin. melissa worked hemlock. i barely knew either of them. counsellors mostly stayed in their own buildings.` }
+title: 'python.exe :: full_metadata.py',
+meta: 'before filtering, you want to see one fragment in full.',
+storyAbove: `before you filter the whole list, take one full fragment apart so you can see exactly what fields exist. <code>.items()</code> walks every key-value pair in a dict.`,
+skill: 'DICT.ITEMS() :: ITERATING KEY-VALUE PAIRS',
+instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">for key, value in person.items(): print(f"{key}: {value}")</pre> <p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
+starter: `fragment_one = {
+"id": 1,
+"time": "21:30",
+"from": "wren_h",
+"to": "briar_v",
+"platform": "AIM",
+"content": "covering for me tonight right? i'm in the cabin. you saw me in the cabin."
 }
+
+# loop through fragment_one.items() and print each as "key: value"
+
+`, expectedOutput: "id: 1\ntime: 21:30\nfrom: wren_h\nto: briar_v\nplatform: AIM\ncontent: covering for me tonight right? i'm in the cabin. you saw me in the cabin.", matchType: 'exact', hint: `<code>for key, value in fragment_one.items():</code> then indented <code>print(f"{key}: {value}")</code>. the f-string drops the variable values into the string.`, onComplete: { diary: `// every key visible. now i know exactly what i can filter on.`,
+buddy: { name: 'briar_v', msg: "i don't know who you are but you should stop. i mean it. you're going to ruin my life. she didn't even DO anything that night, okay? she was with me." }
+},
+charms: 3
 },
 
-// –– BEAT 9: task_set_difference — find who quit ––
+// –– BEAT 8: string methods + substring 'in' ––
 {
-id: 'task_set_difference',
+id: 'task_string_methods',
 type: 'task',
-charms: 4,
-title: 'python.exe :: who_didnt_return.py',
-meta: "four people from 2003 aren't in 2004. who?",
-skill: 'SETS :: set() AND SET DIFFERENCE',
-hint: `<code>set_2003 = {(s["first"], s["last"]) for s in staff_2003}</code>. <code>set_2004 = {(s["first"], s["last"]) for s in staff}</code>. <code>didnt_return = set_2003 - set_2004</code>. then <code>for first, last in sorted(didnt_return): print(f"{first} {last}")</code>.`,
-storyAbove: `if H wasn't a counsellor with a first name starting H in either year, maybe the answer isn't an H at all. maybe somebody quit between 2003 and 2004 for a reason. python sets let you compute differences between two collections quickly.`,
-instructions: `<code>set()</code> turns a list into a set (unordered, no duplicates):
+title: 'python.exe :: alibi_filter.py',
+meta: 'find every message that mentions "cabin".',
+storyAbove: `wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains that word. use <code>.lower()</code> to make the search case-insensitive (in case wren ever capitalized it). collect the IDs of matching fragments into a list called <code>matches</code> and print it.`,
+skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
+instructions: `<p>strings have <strong>methods</strong>. built-in tools you call with a dot:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"HELLO".lower()       # → "hello" "i love python".split()  # → ["i", "love", "python"] "  hi  ".strip()      # → "hi"</pre> <p>you can also check substrings with <code>in</code>:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "cabin" in some_text.lower(): print("match")</pre> <p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. collect matching <code>id</code> values into a list called <code>matches</code> and print it.</p>`,
+starter: `# fragments is already loaded for you
+matches = []
 
-<pre>a = set([1, 2, 3])
-b = set([2, 3, 4])
-a - b  # gives {1}: items in a but not in b</pre>
+# for each fragment, check if "cabin" is in its lowercased content
 
-build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who's in 2003 but not in 2004? for each person, print <code>"first last"</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded
+# if yes, append the fragment's id to matches
 
-# build sets of (first, last) tuples for each
+# then print(matches)
 
-# compute 2003 - 2004 to find people who didn't return
-
-# for first, last in sorted(didnt_return):
-
-# print(…)
-
-`, expectedOutput: `Caitlin Yeo
-Daniel Chow
-Melissa Klassen
-Tara Friesen`, matchType: 'exact', bothStaffPreload: true, onComplete: { diary: `// four people from 2003 who didn't come back. caitlin yeo. daniel chow. melissa klassen. tara friesen. one of those names matters.`, buddy: { name: 'camille.j.89', msg: `i tracked which counsellors didn't come back. melissa was the biggest mystery of last year. i wondered all summer. nobody mentioned her this year.` }
-}
+`, expectedOutput: '[1, 3, 10]', matchType: 'exact', hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
+buddy: { name: 'wren_h', msg: "whatever you think you're piecing together, you're wrong. ask briar. ask anyone. i was in my cabin." }
+},
+charms: 3
 },
 
-// –– BEAT 10: melissa_landing — the pivot ––
+// –– BEAT 9: list comprehension - the graduation moment ––
 {
-id: 'melissa_landing',
-type: 'diary',
-title: 'open file: notes/melissa.txt',
-meta: 'you typed this slowly.',
-body: `she's not in the 2004 roster.
+id: 'task_list_comp',
+type: 'task',
+title: 'python.exe :: wren_messages.py',
+meta: "pulling wren's entire night into one list.",
+storyAbove: `the cleanest way to get every message from a specific sender, in python, is a <strong>list comprehension</strong>. it does in one line what a <code>for</code> loop with an <code>if</code> takes four lines to do. it\'s the move that separates someone who learned python last week from someone who knows it.`,
+skill: 'LIST COMPREHENSIONS',
+instructions: `<p>a <strong>list comprehension</strong> builds a new list by filtering or transforming an existing one, in a single expression:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">numbers = [1, 2, 3, 4, 5]
+big = [n for n in numbers if n > 2]
 
-she was a junior counsellor at hemlock in 2003. she didn't come back this year. that's not unusual. four people didn't come back, most for ordinary reasons.
+# big is now [3, 4, 5]</pre>
 
-but in wren's email two days before tegan disappeared: "remind her how things went for melissa last summer."
+               <p>read it like english: "<em>n for each n in numbers, if n is greater than 2.</em>"</p>
+               <p>it works on dicts inside lists too:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">tegans = [f for f in fragments if f["from"] == "tegan_a87"]</pre>
+               <p><strong>your task:</strong> build a list called <code>wren_msgs</code> containing every fragment where the <code>"from"</code> field equals <code>"wren_h"</code>. then print just the count: <code>len(wren_msgs)</code>.</p>`,
+starter: `# fragments is already loaded
 
-the only melissa on this disk is melissa klassen.`,
-nextBtn: '▸ chapter 4 :: complete'
+# build wren_msgs as a list comprehension filtering by from == "wren_h"
+
+wren_msgs =
+
+# then print(len(wren_msgs))
+
+`, expectedOutput: '4', matchType: 'exact', hint: `<code>wren_msgs = [f for f in fragments if f["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 4 messages. four times wren reached out to briar that night.
+// 9:30: set up alibi.
+// 10:42: refine alibi.
+// 12:08: thank briar (for what?)
+// 7:22: confirm alibi after the body wasn't found.
+// briar said yes, every time.`,
+buddy: { name: 'tegan_a87', msg: "briar lied for her. she didn't have to. she chose to. that's what i want you to understand." }
+},
+charms: 4
 },
 
-// –– BEAT 11: chapter wrap-up ––
+// –– BEAT 10: the pivot ––
+{
+id: 'pivot',
+type: 'diary',
+title: 'open file: notes/it_wasnt_her.txt',
+meta: 'you typed this in caps lock and then deleted the caps lock.',
+body: `wren wasn't at the boathouse.
+i can prove it. the evidence is on this disk and now it's in
+your filtered lists. she was in her cabin. she had an alibi.
+briar gave it to her.
+
+but tegan WAS at the boathouse and she was alone there for 26 minutes.
+and then someone came.
+
+"someone's coming up the path. it's not her."
+"h"
+
+i don't know who came up the path. it wasn't wren.
+i don't even know if wren knew it was happening.
+
+but tegan saw them, knew them well enough to start typing
+their name, and never finished the second letter.
+
+if it had been a stranger she would have run.
+if it had been wren she would have written wren.
+
+it was someone whose name starts with H.
+
+i need to find every counsellor at camp pinecrest in 2004
+whose name starts with H.
+
+that's next.`,
+nextBtn: '▸ end of chapter 3'
+},
+
+// –– BEAT 11: chapter wrap ––
 {
 id: 'wrap',
 type: 'wrap',
-title: 'chapter 4 :: complete',
-body: `you hunted H for three nights and found nobody.
-the path is still open in your head. someone walked up it. it wasn't anyone whose name starts with H.
-
-but there's another name now. melissa klassen. at pinecrest in 2003, gone the next year.
-
-wren mentioned her two days before tegan disappeared.
-
-you need to find melissa.`,
+title: 'chapter 3 :: complete',
+body: `you reconstructed the night. wren wasn't at the boathouse. someone whose name starts with h was. tegan knew them. that's the next thread.`,
 skillsLearned: [
-'open() and with blocks: reading files in python',
-'.readlines(): get every line of a file as a list',
-'.split(separator) and .strip(): turning text into structured data',
-'building lists of dicts from parsed file data',
-'.startswith(): prefix checks on strings',
-'multi-condition filtering with any() and substring checks',
-"set() and set differences: finding what's in one collection but not another",
-'tuples as set members: hashable composite values',
-'sorted(): deterministic output for unordered collections'
+'lists of dictionaries: the workhorse of intermediate Python',
+'len() and indexing (forward and negative)',
+'the in operator (membership and substring)',
+'dictionary key access with brackets',
+'dict.items(): iterating key-value pairs',
+'string methods: .lower(), .split(), .strip()',
+'list comprehensions: filtering in one line'
 ],
-nextBtn: '▸ end of chapter 4'
 }
 ];// ===========================================================================
 // RENDER STORY (linear, append-as-you-go)
@@ -1264,7 +1168,6 @@ if (beat.type === 'diary') return renderDiary(beat, isActive);
 if (beat.type === 'task') return renderTask(beat, isActive);
 if (beat.type === 'wrap') return renderWrap(beat, isActive);
 if (beat.type === 'board') return renderBoard(beat, isActive);
-if (beat.type === 'h_board') return renderHBoard(beat, isActive);
 }
 
 function renderBoard(beat, isActive) {
@@ -1272,16 +1175,6 @@ const w = document.createElement('div');
 w.className = 'fragment-board';
 const cardsHtml = beat.fragments.map(f => `<div class="fragment-card ${f.platform.toLowerCase()}"> <div class="fragment-id">#${f.id}</div> <div class="fragment-platform">${f.platform}</div> <div class="fragment-time">${f.time}</div> <div class="fragment-from">${f.from} → ${f.to}</div> <div class="fragment-content">${f.content}</div> </div>`).join('');
 w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);"> ${beat.intro} </div> <div class="fragment-grid"> ${cardsHtml} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
-<button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
-</div>`: ''}`;
-storyContainer.appendChild(w);
-}
-
-function renderHBoard(beat, isActive) {
-const w = document.createElement('div');
-w.className = 'fragment-board';
-const cardsHtml = beat.candidates.map(c => `<div class="hboard-card"> <div class="hboard-name">${c.first} ${c.last}</div> <div class="hboard-role">${c.role}, age ${c.age}</div> <div class="hboard-row"><span class="hboard-label">aug 14</span>${c.status}</div> <div class="hboard-row"><span class="hboard-label">alibi</span>${c.alibi}</div> </div>`).join('');
-w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);"> ${beat.intro} </div> <div class="hboard-grid"> ${cardsHtml} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
 <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
 </div>`: ''}`;
 storyContainer.appendChild(w);
@@ -1314,7 +1207,7 @@ function renderWrap(beat, isActive) {
 const w = document.createElement('div');
 w.className = 'window story-window';
 w.style.maxWidth = '640px';
-w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 5 :: pending<br> > melissa klassen :: location unknown </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
+w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 4 :: pending<br> > 53 chat logs await reading, ${state.userName}. </div> <div style="margin-top: 16px; text-align: center;"> <a href="chapterfour.html" class="btn btn-acid" style="margin-right: 8px; text-decoration: none; display: inline-block;">▸ continue to chapter 4</a> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
 storyContainer.appendChild(w);
 }
 
@@ -1346,19 +1239,10 @@ builtins.input = __patched_input
 ` + code;
 }
 
-// Inject roster files into Pyodide's virtual FS if requested
-if (beat.fileInjection) {
-await injectRosterFiles();
-}
-
-// Inject pre-parsed staff list if requested
-if (beat.staffPreload) {
-runCode = STAFF_PRELOAD_PY + runCode;
-}
-
-// Inject both pre-parsed staff lists (for set-difference task)
-if (beat.bothStaffPreload) {
-runCode = STAFF_PRELOAD_PY + STAFF_2003_PRELOAD_PY + runCode;
+// Inject fragments list if requested
+if (beat.fragmentInjection) {
+const FRAGMENTS_PY = `fragments = [ {"id": 1, "time": "21:30", "from": "wren_h", "to": "briar_v", "platform": "AIM", "content": "covering for me tonight right? i'm in the cabin. you saw me in the cabin."}, {"id": 2, "time": "22:15", "from": "tegan_a87", "to": "glorfindel_lives", "platform": "SMS", "content": "she wants me to meet her at the boathouse at 11. i think i'm gonna do it :/"}, {"id": 3, "time": "22:42", "from": "wren_h", "to": "briar_v", "platform": "AIM", "content": "if anyone asks: i was in my cabin all night. you were in yours. study session if they push."}, {"id": 4, "time": "23:03", "from": "tegan_a87", "to": "glorfindel_lives", "platform": "SMS", "content": "left rosewood. heading down."}, {"id": 5, "time": "23:18", "from": "tegan_a87", "to": "glorfindel_lives", "platform": "SMS", "content": "she's not here yet"}, {"id": 6, "time": "23:31", "from": "tegan_a87", "to": "glorfindel_lives", "platform": "SMS", "content": "she's STILL not here"}, {"id": 7, "time": "23:44", "from": "tegan_a87", "to": "glorfindel_lives", "platform": "SMS", "content": "wait. someone's coming up the path. it's not her."}, {"id": 8, "time": "23:46", "from": "tegan_a87", "to": "glorfindel_lives", "platform": "SMS", "content": "h"}, {"id": 9, "time": "00:08", "from": "wren_h", "to": "briar_v", "platform": "AIM", "content": "thanks. you're a real one."}, {"id": 10, "time": "07:22", "from": "wren_h", "to": "briar_v", "platform": "AIM", "content": "i was in the cabin all night. you saw me. right?"}, ] `;
+runCode = FRAGMENTS_PY + runCode;
 }
 
 const result = await runPython(runCode);
@@ -1416,7 +1300,7 @@ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])
 function advanceBeat() {
 // mark diary beats as "completed" implicitly (they only need to be read)
 const beat = BEATS[state.currentBeat];
-if (beat && (beat.type === 'diary' || beat.type === 'board' || beat.type === 'h_board') && !state.completedBeats.includes(beat.id)) {
+if (beat && (beat.type === 'diary' || beat.type === 'board') && !state.completedBeats.includes(beat.id)) {
 state.completedBeats.push(beat.id);
 }
 state.currentBeat = Math.min(state.currentBeat + 1, BEATS.length - 1);
@@ -1447,8 +1331,8 @@ function closeBuddy() {
 document.getElementById('buddyPopup').classList.add('hidden');
 }
 
-// auto-resume from save
-if (state.userName && state.currentBeat > 0) {
+// auto-resume from save (or skip intro if name already known from another chapter)
+if (state.userName) {
 // skip intro
 document.getElementById('userNameInput').value = state.userName;
 // keep intro visible but offer continue — simpler: go straight in

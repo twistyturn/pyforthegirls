@@ -1673,6 +1673,12 @@ let state = loadSave() || {
   camilleLog: null
 };
 
+// Shared across chapters so the player only enters their name once.
+const SHARED_USER_KEY = 'pyforthegirls_user';
+if (!state.userName) {
+  try { state.userName = localStorage.getItem(SHARED_USER_KEY) || ''; } catch(e) {}
+}
+
 // ===========================================================================
 // SPARKLES
 // ===========================================================================
@@ -1701,6 +1707,7 @@ function startGame() {
   const name = document.getElementById('userNameInput').value.trim() || 'guest';
   state.userName = name;
   writeSave(state);
+  try { localStorage.setItem(SHARED_USER_KEY, name); } catch(e) {}
   document.getElementById('introScreen').classList.add('hidden');
   document.getElementById('desktop').classList.remove('hidden');
   document.getElementById('taskbar').classList.remove('hidden');
@@ -3155,8 +3162,8 @@ function closeBuddy() {
 document.getElementById('buddyPopup').classList.add('hidden');
 }
 
-// auto-resume from save
-if (state.userName && state.currentBeat > 0) {
+// auto-resume from save (or skip intro if name already known from another chapter)
+if (state.userName) {
 // skip intro
 document.getElementById('userNameInput').value = state.userName;
 // keep intro visible but offer continue — simpler: go straight in
