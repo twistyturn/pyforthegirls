@@ -505,8 +505,44 @@
     renderBoard();
   };
 
-  // populated in subsequent chunks
+  // ===========================================================================
+  // SNAPSHOTS
+  //   Each key is the chapter whose end-state this represents (1..8). Cards
+  //   carry stable ids so that growth, crossouts, and string attachments
+  //   continue to refer to the same card across chapters.
+  // ===========================================================================
   const SNAPSHOTS = {};
+
+  // ---------------------------------------------------------------------------
+  // ch1 — sparse and stunned. password decoded; camille's name surfaced.
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[1] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan\n17\nMISSING aug 14 2004',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 1
+      },
+      {
+        id: 'wren',
+        text: 'wren halloway?\n(decoded from her keyword)\nwho is this',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 1
+      },
+      {
+        id: 'camille',
+        text: 'camille?\nsaw something at boathouse?\nwho is this',
+        pos: { x: 28, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 1
+      }
+    ],
+    strings: [],
+    marginalia: []
+  };
 
   // public API attached to window.Caseboard
   const Caseboard = {
