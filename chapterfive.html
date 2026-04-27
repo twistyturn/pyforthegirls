@@ -1126,10 +1126,13 @@ the comments are her, talking herself through it.`,
     instructions: `your task: import the two helpers from <code>decoder</code>. call <code>build_cipher_alpha(key)</code> with the given key and store the result in <code>cipher_alpha</code>. call <code>build_decode_map(cipher_alpha)</code> and store the result in <code>decode_map</code>. print <code>cipher_alpha</code> and <code>len(decode_map)</code>.`,
     starter: `from decoder import build_cipher_alpha, build_decode_map
 
+# functions take inputs in the parens and give you back a value.
+# you can store that value in a variable and use it later, like any other.
+# the output of build_cipher_alpha goes into build_decode_map — that's why
+# i wrote them as two separate steps.
+
 key = "birchwoodcounsellor1985"
-# call build_cipher_alpha to get the 26-letter cipher alphabet
 cipher_alpha = ___
-# call build_decode_map to get the decode dictionary
 decode_map = ___
 print(cipher_alpha)
 print(len(decode_map))
@@ -1181,7 +1184,11 @@ decode_map = build_decode_map(cipher_alpha)
 with open("diary/.hidden/letter.txt") as f:
     encoded = f.read()
 
-# decode it
+# now walk thru it character by character.
+# if it's a letter, look it up in decode_map (lowercase the lookup,
+# bc the map keys are lowercase). then if the original was uppercase,
+# uppercase the result.
+# if it's not a letter (space, punctuation, newline) leave it alone.
 decoded = ""
 
 print(decoded)

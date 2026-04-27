@@ -1448,6 +1448,12 @@ url = "https://camppinecrest.ca/staff/"
     starter: `import os
 import email
 
+# the email module knows how to parse .eml files for you, so you
+# don't have to deal with the raw text. message_from_file(f) gives you
+# back an object where you can do msg["From"], msg["Subject"], etc.
+# the body is msg.get_payload() bc it's stored separately.
+# i fought with this for an hour before finding the module. don't be me.
+
 emails = []
 
 # loop over files in 2004_archive/
@@ -1615,6 +1621,10 @@ i have a lot to find out about tyler hughes.`,
     storyAbove: `hannah told you tegan was meeting her ride at the boathouse at 11 PM. tyler showed up at the infirmary at 9:14 AM the next morning. how long is between them.`,
     instructions: `your task: build two datetime objects \u2014 one for Aug 14 23:00:00 (when tegan was meeting her ride at the boathouse), one for Aug 15 09:14:22 (the timestamp on tyler's nurse visit). subtract them. print the result formatted as hours and minutes.`,
     starter: `import datetime
+
+# subtracting two datetimes gives you a timedelta, not a number.
+# .total_seconds() gives you the whole gap as seconds.
+# then // 3600 gets hours, and (% 3600) // 60 gets the leftover minutes.
 
 boathouse  = datetime.datetime(2004, 8, 14, 23, 0, 0)
 infirmary  = datetime.datetime(2004, 8, 15, 9, 14, 22)

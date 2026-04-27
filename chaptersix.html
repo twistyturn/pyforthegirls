@@ -1421,7 +1421,11 @@ i'm going to ask her for everything she has.`,
 with open("hannah_archive.txt") as f:
     messages = f.readlines()
 
-# pattern: [date] sender: content
+# regex looks scary but it's just a pattern that matches text.
+# the parens () are "capture groups" — pieces i want pulled out.
+# this pattern has three: the date, the sender, the content.
+# re.match returns a match object; .group(1), .group(2), .group(3)
+# give you the captured pieces.
 pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
 parsed = []
 

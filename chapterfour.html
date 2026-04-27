@@ -1191,15 +1191,16 @@ instructions: `<code>set()</code> turns a list into a set (unordered, no duplica
 b = set([2, 3, 4])
 a - b  # gives {1}: items in a but not in b</pre>
 
-build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who's in 2003 but not in 2004? for each person, print <code>"first last"</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded
+build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who's in 2003 but not in 2004? for each person, print <code>"first last"</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded.
+# sets are like lists but unordered, no duplicates, and you can
+# subtract them. set_a - set_b is "everything in a that isn't in b."
+# i kept needing this for "who was here last year but not this year"
+# kinds of questions, so finally bothered to learn it.
 
 # build sets of (first, last) tuples for each
-
 # compute 2003 - 2004 to find people who didn't return
-
 # for first, last in sorted(didnt_return):
-
-# print(…)
+#     print(...)
 
 `, expectedOutput: `Caitlin Yeo
 Daniel Chow
