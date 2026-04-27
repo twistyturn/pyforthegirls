@@ -1540,6 +1540,10 @@ letter-spacing: 8px;
       <div class="desktop-icon-img">📱</div>
       SMS_dumps/
     </div>
+    <div class="desktop-icon" id="icon-caseboard" onclick="if(window.Caseboard)Caseboard.open()">
+      <div class="desktop-icon-img">📌</div>
+      caseboard
+    </div>
   </div>
 
   <!-- Marquee -->
@@ -3036,6 +3040,7 @@ storyContainer.appendChild(w);
 }
 
 function renderWrap(beat, isActive) {
+if (window.Caseboard) Caseboard.recordWrap(8);
 const w = document.createElement('div');
 w.className = 'window story-window';
 w.style.maxWidth = '640px';
@@ -3178,5 +3183,6 @@ renderStory();
 }
 </script>
 
+<script src="caseboard.js"></script>
 </body>
 </html>

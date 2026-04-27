@@ -577,6 +577,10 @@ letter-spacing: 8px;
       <div class="desktop-icon-img">💬</div>
       AIM_archives/
     </div>
+    <div class="desktop-icon" id="icon-caseboard" onclick="if(window.Caseboard)Caseboard.open()">
+      <div class="desktop-icon-img">📌</div>
+      caseboard
+    </div>
   </div>
 
   <!-- Marquee -->
@@ -1210,6 +1214,7 @@ function renderTask(beat, isActive) {
 }
 
 function renderWrap(beat, isActive) {
+  if (window.Caseboard) Caseboard.recordWrap(2);
   const w = document.createElement('div');
   w.className = 'window story-window';
   w.style.maxWidth = '640px';
@@ -1381,5 +1386,6 @@ if (state.userName) {
   }, 100);
 }
 </script>
+<script src="caseboard.js"></script>
 </body>
 </html>
