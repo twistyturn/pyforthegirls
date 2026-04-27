@@ -1915,7 +1915,7 @@ def find_person(name, region):
     "region": "edmonton",
     "nexopia": ["camille_m"],
     "livejournals": [],
-    "school_papers": ["uofaeditorial.com/news/2005-09-12"]
+    "school_papers": []
 }
 
 def summarize_person(result_dict):
@@ -1924,7 +1924,7 @@ def summarize_person(result_dict):
 
 summarize_person(example)
 `,
-    expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 1 school papers`,
+    expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 0 school papers`,
     matchType: 'exact',
     fileInjection: false,
     onComplete: {
