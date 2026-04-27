@@ -33,16 +33,16 @@
 
 html, body {
 min-height: 100vh;
-font-family: ‘VT323’, ‘Courier New’, monospace;
+font-family: 'VT323', 'Courier New', monospace;
 color: var(–silver);
 background: var(–bg-deep);
 overflow-x: hidden;
-cursor: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘24’ height=‘24’ viewBox=‘0 0 24 24’%3E%3Cpath fill=’%23ff66c4’ stroke=’%23fff’ stroke-width=‘1’ d=‘M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z’/%3E%3C/svg%3E”) 2 2, auto;
+cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff66c4' stroke='%23fff' stroke-width='1' d='M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z'/%3E%3C/svg%3E") 2 2, auto;
 }
 
 /* ============ ANIMATED BACKGROUND ============ */
 body::before {
-content: ‘’;
+content: '';
 position: fixed; inset: 0; z-index: -2;
 background:
 radial-gradient(ellipse at 20% 30%, rgba(255, 102, 196, 0.18), transparent 50%),
@@ -51,7 +51,7 @@ radial-gradient(ellipse at 50% 100%, rgba(200, 168, 232, 0.15), transparent 60%)
 var(–bg-deep);
 }
 body::after {
-content: ‘’;
+content: '';
 position: fixed; inset: 0; z-index: -1;
 background-image:
 repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
@@ -90,7 +90,7 @@ align-items: center;
 padding: 0 12px;
 gap: 12px;
 z-index: 100;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 11px;
 color: var(–bg-deep);
 }
@@ -100,7 +100,7 @@ border: 2px solid var(–bg-deep);
 border-right-color: #ff99d6;
 border-bottom-color: #ff99d6;
 padding: 4px 14px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 11px;
 color: var(–bg-deep);
 font-weight: bold;
@@ -109,7 +109,7 @@ cursor: pointer;
 text-transform: uppercase;
 letter-spacing: 1px;
 }
-.start-btn::before { content: ’✿ ’; }
+.start-btn::before { content: '✿ '; }
 .taskbar-time {
 margin-left: auto;
 background: var(–bg-deep);
@@ -117,7 +117,7 @@ color: var(–lime-acid);
 padding: 4px 10px;
 border: 1px solid var(–bg-deep);
 box-shadow: inset 1px 1px 0 #000;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 14px;
 }
 .taskbar-mail {
@@ -141,7 +141,7 @@ margin-bottom: 24px;
 .desktop-icon {
 text-align: center;
 color: var(–silver);
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 cursor: pointer;
 padding: 4px;
@@ -163,14 +163,14 @@ border: 2px solid var(–bg-deep);
 color: var(–bg-deep);
 box-shadow: var(–shadow-hard), var(–shadow-soft);
 margin: 16px 0;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 16px;
 }
 .window-titlebar {
 background: linear-gradient(90deg, var(–pink-hot) 0%, var(–lavender) 100%);
 color: white;
 padding: 4px 8px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 letter-spacing: 1px;
 text-transform: uppercase;
@@ -188,7 +188,7 @@ width: 16px; height: 14px;
 background: var(–chrome-2);
 border: 1px solid var(–bg-deep);
 color: var(–bg-deep);
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 8px;
 line-height: 12px;
 text-align: center;
@@ -213,20 +213,20 @@ background-image:
 repeating-linear-gradient(180deg, transparent 0, transparent 23px, #ffd6e8 23px, #ffd6e8 24px);
 color: #2d0a3d;
 padding: 24px 20px 20px 36px;
-font-family: ‘Nanum Pen Script’, ‘Special Elite’, cursive;
+font-family: 'Nanum Pen Script', 'Special Elite', cursive;
 font-size: 19px;
 line-height: 24px;
 border-left: 8px solid var(–pink-hot);
 position: relative;
 }
 .diary-entry::before {
-content: ‘’;
+content: '';
 position: absolute;
 left: 18px; top: 0; bottom: 0;
 border-left: 1px solid #ff99cc;
 }
 .diary-meta {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 color: #999;
 margin-bottom: 8px;
@@ -249,19 +249,19 @@ gap: 0;
 background: var(–bg-deep);
 color: var(–lime-acid);
 padding: 4px 12px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 border-bottom: 1px solid var(–pink-hot);
 display: flex;
 align-items: center;
 gap: 8px;
 }
-.file-tab::before { content: ‘▸’; color: var(–pink-hot); }
+.file-tab::before { content: '▸'; color: var(–pink-hot); }
 .code-area {
 background: #0a0218;
 color: var(–cyan-glow);
 padding: 12px;
-font-family: ‘VT323’, ‘Courier New’, monospace;
+font-family: 'VT323', 'Courier New', monospace;
 font-size: 17px;
 line-height: 1.4;
 border: none;
@@ -283,7 +283,7 @@ flex-wrap: wrap;
 align-items: center;
 }
 .btn {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 padding: 6px 12px;
 border: 2px solid var(–bg-deep);
@@ -309,7 +309,7 @@ background: linear-gradient(180deg, #e6ff99, var(–lime-acid));
 background: var(–bg-deep);
 color: var(–lime-acid);
 padding: 12px;
-font-family: ‘VT323’, ‘Courier New’, monospace;
+font-family: 'VT323', 'Courier New', monospace;
 font-size: 16px;
 min-height: 60px;
 border-top: 2px solid var(–pink-hot);
@@ -332,13 +332,13 @@ box-shadow: var(–shadow-hard);
 .task-panel .window-titlebar { background: linear-gradient(90deg, var(–lime-acid), #99cc66); color: var(–bg-deep); text-shadow: none; }
 .task-content { padding: 16px; }
 .task-content h3 {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 14px;
 margin-bottom: 8px;
 color: var(–bg-deep);
 }
 .task-content p, .task-content li {
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 17px;
 line-height: 1.4;
 color: var(–bg-deep);
@@ -349,7 +349,7 @@ margin-bottom: 8px;
 background: var(–bg-deep);
 color: var(–lime-acid);
 padding: 1px 6px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 border-radius: 2px;
 font-size: 16px;
 }
@@ -358,13 +358,13 @@ background: linear-gradient(180deg, #ffe6f5, var(–pink-bubble));
 border: 1px dashed var(–pink-hot);
 padding: 10px 12px;
 margin-top: 12px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 16px;
 color: var(–bg-deep);
 }
 .hint-box::before {
-content: ’✿ HINT: ’;
-font-family: ‘Silkscreen’, monospace;
+content: '✿ HINT: ';
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 color: var(–pink-hot);
 }
@@ -380,7 +380,7 @@ border: 2px solid var(–bg-deep);
 box-shadow: var(–shadow-hard), var(–shadow-soft);
 z-index: 200;
 animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 }
 .buddy-popup .window-titlebar { background: linear-gradient(90deg, var(–cyan-glow), var(–lavender)); }
 .buddy-content {
@@ -390,7 +390,7 @@ font-size: 16px;
 line-height: 1.3;
 }
 .buddy-name {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 color: var(–pink-hot);
 margin-bottom: 6px;
@@ -403,7 +403,7 @@ border: 2px solid var(–bg-deep);
 background: #f0e8ff;
 box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
 margin: 16px 0;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 }
 .aim-window .window-titlebar {
 background: linear-gradient(90deg, #6699ff, #99ccff);
@@ -413,7 +413,7 @@ color: #fff;
 padding: 8px 12px;
 background: #ffe8f5;
 border-bottom: 1px solid var(–bg-deep);
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 color: var(–bg-deep);
 letter-spacing: 1px;
@@ -477,7 +477,7 @@ text-align: right;
 background: var(–lime-acid);
 border: 2px solid var(–bg-deep);
 color: var(–bg-deep);
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 11px;
 padding: 8px 18px;
 cursor: pointer;
@@ -493,7 +493,7 @@ border: 2px solid var(–bg-deep);
 background: #f0f4ff;
 box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
 margin: 16px 0;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 }
 .archive-window .window-titlebar {
 background: linear-gradient(90deg, #6699ff, #99ccff);
@@ -503,7 +503,7 @@ color: #fff;
 padding: 8px 12px;
 background: #ffe8f5;
 border-bottom: 1px solid var(–bg-deep);
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 color: var(–bg-deep);
 letter-spacing: 1px;
@@ -515,7 +515,7 @@ margin: 12px;
 border: 1px solid var(–bg-deep);
 max-height: 60vh;
 overflow-y: auto;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 15px;
 line-height: 1.5;
 color: var(–bg-deep);
@@ -535,20 +535,20 @@ border: 2px solid var(–bg-deep);
 background: #ffffff;
 box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
 margin: 16px 0;
-font-family: ‘Tahoma’, ‘Geneva’, sans-serif;
+font-family: 'Tahoma', 'Geneva', sans-serif;
 }
 .email-titlebar {
 background: linear-gradient(180deg, #4477cc 0%, #3366aa 100%) !important;
 color: #fff !important;
 text-shadow: none !important;
-font-family: ‘Tahoma’, sans-serif;
+font-family: 'Tahoma', sans-serif;
 font-size: 11px;
 }
 .email-headers {
 padding: 10px 14px;
 background: #f0f0e8;
 border-bottom: 1px solid #aaa;
-font-family: ‘Tahoma’, sans-serif;
+font-family: 'Tahoma', sans-serif;
 font-size: 13px;
 color: var(–bg-deep);
 }
@@ -572,7 +572,7 @@ font-weight: bold;
 padding: 16px;
 background: #ffffff;
 color: #000;
-font-family: ‘Courier New’, ‘Consolas’, monospace;
+font-family: 'Courier New', 'Consolas', monospace;
 font-size: 14px;
 line-height: 1.55;
 white-space: pre-wrap;
@@ -582,7 +582,7 @@ border-bottom: 1px solid #ccc;
 padding: 14px 16px;
 background: var(–bg-deep);
 color: var(–lime-acid);
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 16px;
 line-height: 1.5;
 border-top: 2px solid var(–lime-acid);
@@ -594,13 +594,13 @@ border: 2px solid var(–bg-deep);
 background: #fff;
 box-shadow: 4px 4px 0 var(–bg-deep);
 margin: 16px 0;
-font-family: ‘Arial’, ‘Helvetica’, sans-serif;
+font-family: 'Arial', 'Helvetica', sans-serif;
 }
 .serp-preamble {
 padding: 16px 18px;
 background: var(–bg-deep);
 color: var(–lime-acid);
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 16px;
 line-height: 1.5;
 border-bottom: 2px solid var(–lime-acid);
@@ -622,7 +622,7 @@ gap: 18px;
 flex-wrap: wrap;
 }
 .serp-logo {
-font-family: ‘Times New Roman’, serif;
+font-family: 'Times New Roman', serif;
 font-size: 36px;
 font-weight: bold;
 color: #3366cc;
@@ -640,7 +640,7 @@ min-width: 240px;
 flex: 1;
 padding: 4px 6px;
 border: 1px solid #888;
-font-family: ‘Arial’, sans-serif;
+font-family: 'Arial', sans-serif;
 font-size: 13px;
 background: #fff;
 color: #000;
@@ -649,7 +649,7 @@ color: #000;
 padding: 4px 10px;
 border: 1px solid #888;
 background: linear-gradient(180deg, #fff, #ddd);
-font-family: ‘Arial’, sans-serif;
+font-family: 'Arial', sans-serif;
 font-size: 11px;
 color: #000;
 cursor: default;
@@ -658,7 +658,7 @@ cursor: default;
 padding: 8px 24px;
 background: #e5ecf9;
 color: #000;
-font-family: ‘Arial’, sans-serif;
+font-family: 'Arial', sans-serif;
 font-size: 11px;
 border-bottom: 1px solid #ccc;
 }
@@ -671,7 +671,7 @@ margin-bottom: 14px;
 }
 .serp-result-title {
 color: #0000cc;
-font-family: ‘Arial’, sans-serif;
+font-family: 'Arial', sans-serif;
 font-size: 14px;
 text-decoration: underline;
 font-weight: normal;
@@ -679,14 +679,14 @@ cursor: default;
 }
 .serp-result-snippet {
 color: #000;
-font-family: ‘Arial’, sans-serif;
+font-family: 'Arial', sans-serif;
 font-size: 12px;
 line-height: 1.4;
 margin-top: 2px;
 }
 .serp-result-url {
 color: #008000;
-font-family: ‘Arial’, sans-serif;
+font-family: 'Arial', sans-serif;
 font-size: 11px;
 margin-top: 1px;
 }
@@ -715,14 +715,14 @@ padding: 10px 12px;
 border-left: 4px solid #888;
 background: #f0f0e8;
 color: #1a1a2e;
-font-family: ‘Tahoma’, sans-serif;
+font-family: 'Tahoma', sans-serif;
 font-size: 13px;
 line-height: 1.45;
 }
 .mp-post-header {
 font-weight: bold;
 margin-bottom: 6px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 letter-spacing: 1px;
 }
@@ -763,7 +763,7 @@ margin-bottom: 2px;
 .mp-content {
 margin-top: 6px;
 color: #1a1a2e;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 15px;
 line-height: 1.45;
 }
@@ -779,7 +779,7 @@ padding: 14px;
 margin: 6px 0;
 background: #d0d0c0;
 color: #555;
-font-family: ‘Courier New’, monospace;
+font-family: 'Courier New', monospace;
 font-size: 12px;
 border: 1px solid #888;
 font-style: italic;
@@ -810,7 +810,7 @@ margin: 18px 14px;
 padding: 12px;
 background: #2a2a3e;
 color: #ff66c4;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 text-align: center;
 letter-spacing: 1px;
@@ -830,7 +830,7 @@ padding: 40px 20px;
 overflow-y: auto;
 }
 .intro-logo {
-font-family: ‘Press Start 2P’, monospace;
+font-family: 'Press Start 2P', monospace;
 font-size: 28px;
 background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow), var(–lime-acid), var(–pink-hot));
 background-size: 300% 100%;
@@ -848,7 +848,7 @@ text-shadow: 0 0 30px rgba(255, 102, 196, 0.5);
 100% { background-position: 300% 50%; }
 }
 .intro-tag {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 color: var(–lavender);
 letter-spacing: 3px;
@@ -857,7 +857,7 @@ text-align: center;
 }
 .intro-prose {
 max-width: 560px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 18px;
 color: var(–silver);
 line-height: 1.5;
@@ -875,7 +875,7 @@ background: var(–bg-deep);
 color: var(–lime-acid);
 border: 2px solid var(–pink-hot);
 padding: 8px 12px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 18px;
 width: 280px;
 text-align: center;
@@ -907,7 +907,7 @@ repeating-linear-gradient(45deg, var(–pink-bubble) 0, var(–pink-bubble) 8px,
 background: #fff;
 border: 1.5px solid var(–bg-deep);
 padding: 8px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 13px;
 color: var(–bg-deep);
 box-shadow: 2px 2px 0 var(–bg-deep);
@@ -935,7 +935,7 @@ background: #d4e4ff;
 border-color: #334466;
 }
 .fragment-platform {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 7px;
 background: var(–bg-deep);
 color: var(–pink-hot);
@@ -946,7 +946,7 @@ letter-spacing: 1px;
 }
 .fragment-card.sms .fragment-platform { color: var(–lime-acid); }
 .fragment-time {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 9px;
 color: #666;
 margin-bottom: 3px;
@@ -966,7 +966,7 @@ line-height: 1.3;
 position: absolute;
 top: 2px;
 right: 4px;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 7px;
 color: #999;
 }
@@ -984,7 +984,7 @@ repeating-linear-gradient(135deg, var(–pink-bubble) 0, var(–pink-bubble) 8px
 background: #fff8f0;
 border: 2px solid var(–bg-deep);
 padding: 12px;
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 color: var(–bg-deep);
 box-shadow: 3px 3px 0 var(–bg-deep);
 position: relative;
@@ -999,7 +999,7 @@ box-shadow: 5px 5px 0 var(–pink-hot);
 z-index: 10;
 }
 .hboard-name {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 14px;
 color: var(–pink-hot);
 text-transform: uppercase;
@@ -1020,7 +1020,7 @@ line-height: 1.3;
 margin-bottom: 4px;
 }
 .hboard-label {
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 8px;
 color: var(–bg-deep);
 background: var(–lime-acid);
@@ -1038,7 +1038,7 @@ border-top: 1px solid var(–pink-hot);
 border-bottom: 1px solid var(–pink-hot);
 overflow: hidden;
 padding: 4px 0;
-font-family: ‘Silkscreen’, monospace;
+font-family: 'Silkscreen', monospace;
 font-size: 10px;
 letter-spacing: 2px;
 margin: 12px 0;
@@ -1074,7 +1074,7 @@ animation: stripe-shift 1s linear infinite;
 .glitter-divider {
 text-align: center;
 color: var(–pink-hot);
-font-family: ‘VT323’, monospace;
+font-family: 'VT323', monospace;
 font-size: 18px;
 margin: 16px 0;
 letter-spacing: 8px;
@@ -2157,7 +2157,6 @@ function renderTask(beat, isActive) {
     <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div>
     <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea>
 
-```
 <div class="editor-bar">
   <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button>
   <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button>
@@ -2169,16 +2168,15 @@ function renderTask(beat, isActive) {
 ${completed && isActive ? `<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
   <button class="btn" onclick="advanceBeat()">▸ continue</button>
 </div>` : ''}
-```
 
 `;
 storyContainer.appendChild(w);
 }
 
 function renderWrap(beat, isActive) {
-const w = document.createElement(‘div’);
-w.className = ‘window story-window’;
-w.style.maxWidth = ‘640px’;
+const w = document.createElement('div');
+w.className = 'window story-window';
+w.style.maxWidth = '640px';
 w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 8 :: pending<br> > tyler_hughes :: located, age 19, red deer junior B hockey<br> > sgt_d_hughes :: rcmp whitecourt, k division<br> > wren_h :: still silent </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
 storyContainer.appendChild(w);
 }
@@ -2188,8 +2186,8 @@ storyContainer.appendChild(w);
 // ===========================================================================
 async function runTask(beatId) {
 const beat = BEATS.find(b => b.id === beatId);
-const codeEl = document.getElementById(‘code-’ + beatId);
-const outEl = document.getElementById(‘output-’ + beatId);
+const codeEl = document.getElementById('code-' + beatId);
+const outEl = document.getElementById('output-' + beatId);
 const code = codeEl.value;
 
 outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
@@ -2201,13 +2199,13 @@ if (beat.fakeInput !== undefined) {
 runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
 }
 
-// Inject the chapter’s filesystem if requested
+// Inject the chapter's filesystem if requested
 if (beat.fileInjection) {
 await injectChapter7Files();
 }
 
 const result = await runPython(runCode);
-const actualOutput = (result.output || ‘’).trimEnd();
+const actualOutput = (result.output || '').trimEnd();
 
 if (!result.ok) {
 outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
@@ -2217,10 +2215,10 @@ return;
 // Check expected output
 let passed = false;
 // Allow expectedOutput to use \n as literal newline escape
-const expectedNormalized = (beat.expectedOutput || ‘’).replace(/\n/g, ‘\n’);
-if (beat.matchType === ‘exact’) {
+const expectedNormalized = (beat.expectedOutput || '').replace(/\n/g, '\n');
+if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
-} else if (beat.matchType === ‘contains’) {
+} else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
 }
 
@@ -2238,7 +2236,7 @@ writeSave(state);
 if (beat.onComplete?.buddy) {
 showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 }
-// re-render to show “continue” button
+// re-render to show "continue" button
 setTimeout(() => renderStory(), 600);
 } else {
 outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
@@ -2247,21 +2245,21 @@ outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)
 
 function resetTask(beatId) {
 const beat = BEATS.find(b => b.id === beatId);
-document.getElementById(‘code-’ + beatId).value = beat.starter;
-document.getElementById(‘output-’ + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
+document.getElementById('code-' + beatId).value = beat.starter;
+document.getElementById('output-' + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
 }
 
 function escapeHtml(s) {
-return String(s).replace(/[&<>]/g, c => ({’&’:’&’,’<’:’<’,’>’:’>’}[c]));
+return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 }
 
 // ===========================================================================
 // BEAT ADVANCE
 // ===========================================================================
 function advanceBeat() {
-// mark diary beats as “completed” implicitly (they only need to be read)
+// mark diary beats as "completed" implicitly (they only need to be read)
 const beat = BEATS[state.currentBeat];
-if (beat && (beat.type === ‘diary’ || beat.type === ‘board’ || beat.type === ‘h_board’ || beat.type === ‘aim_compose’ || beat.type === ‘aim_log’ || beat.type === ‘archive_view’ || beat.type === ‘email_view’ || beat.type === ‘search_results’ || beat.type === ‘multiplatform_archive’) && !state.completedBeats.includes(beat.id)) {
+if (beat && (beat.type === 'diary' || beat.type === 'board' || beat.type === 'h_board' || beat.type === 'aim_compose' || beat.type === 'aim_log' || beat.type === 'archive_view' || beat.type === 'email_view' || beat.type === 'search_results' || beat.type === 'multiplatform_archive') && !state.completedBeats.includes(beat.id)) {
 state.completedBeats.push(beat.id);
 }
 state.currentBeat = Math.min(state.currentBeat + 1, BEATS.length - 1);
@@ -2270,7 +2268,7 @@ renderStory();
 }
 
 function resetGame() {
-if (confirm(‘really restart from the beginning? all your progress will be erased.’)) {
+if (confirm('really restart from the beginning? all your progress will be erased.')) {
 localStorage.removeItem(SAVE_KEY);
 location.reload();
 }
@@ -2280,27 +2278,27 @@ location.reload();
 // BUDDY POPUP
 // ===========================================================================
 function showBuddy(name, msg) {
-document.getElementById(‘buddyName’).textContent = name + ’ :: incoming message’;
-document.getElementById(‘buddyMessage’).innerHTML = msg;
-const popup = document.getElementById(‘buddyPopup’);
-popup.classList.remove(‘hidden’);
+document.getElementById('buddyName').textContent = name + ' :: incoming message';
+document.getElementById('buddyMessage').innerHTML = msg;
+const popup = document.getElementById('buddyPopup');
+popup.classList.remove('hidden');
 // play a soft chime — emulated as a CSS attention grab
-popup.style.animation = ‘none’;
-setTimeout(() => { popup.style.animation = ‘’; }, 10);
+popup.style.animation = 'none';
+setTimeout(() => { popup.style.animation = ''; }, 10);
 }
 function closeBuddy() {
-document.getElementById(‘buddyPopup’).classList.add(‘hidden’);
+document.getElementById('buddyPopup').classList.add('hidden');
 }
 
 // auto-resume from save
 if (state.userName && state.currentBeat > 0) {
 // skip intro
-document.getElementById(‘userNameInput’).value = state.userName;
+document.getElementById('userNameInput').value = state.userName;
 // keep intro visible but offer continue — simpler: go straight in
 setTimeout(() => {
-document.getElementById(‘introScreen’).classList.add(‘hidden’);
-document.getElementById(‘desktop’).classList.remove(‘hidden’);
-document.getElementById(‘taskbar’).classList.remove(‘hidden’);
+document.getElementById('introScreen').classList.add('hidden');
+document.getElementById('desktop').classList.remove('hidden');
+document.getElementById('taskbar').classList.remove('hidden');
 makeSparkles();
 startClock();
 renderStory();
