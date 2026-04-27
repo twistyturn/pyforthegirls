@@ -1096,13 +1096,23 @@ let code = codeEl.value
 // Reflect the cleanup in the textarea so the user can see what's actually being run
 if (code !== codeEl.value) codeEl.value = code;
 
-outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
+outEl.innerHTML = `<span class="info">// booting python interpreter...
+// (~10 seconds on first run, instant after that)
+// ▰▰▱▱▱▱▱▱▱▱</span>`;
 
 // Patch input() if needed
 let runCode = code;
 if (beat.fakeInput !== undefined) {
 // monkey-patch input() to return our fake value
-runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
+runCode = `
+import builtins
+__fake_input_value = ${JSON.stringify(beat.fakeInput)}
+__orig_input = builtins.input
+def __patched_input(prompt=""):
+    print(prompt + __fake_input_value)
+    return __fake_input_value
+builtins.input = __patched_input
+` + code;
 }
 
 const result = await runPython(runCode);

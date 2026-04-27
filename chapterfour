@@ -980,7 +980,7 @@ Looking forward to seeing you on the 21st.
     lines = f.readlines()</pre>
 
 your task: open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. each line ends with a newline character (\n) so use <code>.strip()</code> on each line to avoid double-spacing.`, starter: `with open("outlook/inbox/attachments/roster_2004.txt") as f:
-lines = f.readlines()
+    lines = f.readlines()
 
 # print lines[0], lines[1], lines[2] using .strip()
 
@@ -1006,7 +1006,7 @@ instructions: `string method <code>.split(separator)</code> breaks a string into
 
 combine with <code>.strip()</code> to clean each piece. skip the header (line 0). for each remaining line, split on <code>|</code>, strip each piece, and build a dict with keys: role, first, last, cabin, status. append each dict to a list called <code>staff</code>. then print <code>len(staff)</code>.`, starter: `staff = []
 with open("outlook/inbox/attachments/roster_2004.txt") as f:
-lines = f.readlines()
+    lines = f.readlines()
 
 # skip header (lines[0]). for each line in lines[1:]:
 
@@ -1154,7 +1154,7 @@ storyAbove: `the H wasn't on the 2004 roster. you scroll up in tegan's inbox to 
 instructions: `your task: open <code>outlook/inbox/attachments/roster_2003.txt</code>, parse it the same way you parsed the 2004 file (skip header, split on <code>|</code>, build dicts), and put the results in a list called <code>staff_2003</code>. then filter for first names starting with <code>"h"</code> and print <code>"first last"</code> for each match.`,
 starter: `staff_2003 = []
 with open("outlook/inbox/attachments/roster_2003.txt") as f:
-lines = f.readlines()
+    lines = f.readlines()
 
 # parse just like before
 
@@ -1327,13 +1327,23 @@ const codeEl = document.getElementById('code-' + beatId);
 const outEl = document.getElementById('output-' + beatId);
 const code = codeEl.value;
 
-outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
+outEl.innerHTML = `<span class="info">// booting python interpreter...
+// (~10 seconds on first run, instant after that)
+// ▰▰▱▱▱▱▱▱▱▱</span>`;
 
 // Patch input() if needed
 let runCode = code;
 if (beat.fakeInput !== undefined) {
 // monkey-patch input() to return our fake value
-runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
+runCode = `
+import builtins
+__fake_input_value = ${JSON.stringify(beat.fakeInput)}
+__orig_input = builtins.input
+def __patched_input(prompt=""):
+    print(prompt + __fake_input_value)
+    return __fake_input_value
+builtins.input = __patched_input
+` + code;
 }
 
 // Inject roster files into Pyodide's virtual FS if requested
