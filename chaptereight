@@ -1,0 +1,3167 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pyforthegirls :: chapter 8 :: next summer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+<style>
+  /* ============ Y2K-007 PALETTE ============ */
+  :root {
+    --bg-deep: #1a0628;
+    --bg-mid: #2d0a3d;
+    --pink-hot: #ff66c4;
+    --pink-soft: #ffb3e6;
+    --pink-bubble: #ffd6f0;
+    --lavender: #c8a8e8;
+    --cyan-glow: #66ffff;
+    --lime-acid: #c8ff66;
+    --silver: #d8d8e8;
+    --chrome-1: #b8b8d0;
+    --chrome-2: #f0f0ff;
+    --window-bg: #f4d4f0;
+    --window-border: #ff66c4;
+    --shadow-hard: 4px 4px 0 #1a0628;
+    --shadow-soft: 0 0 24px rgba(255, 102, 196, 0.4);
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+min-height: 100vh;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+color: var(–silver);
+background: var(–bg-deep);
+overflow-x: hidden;
+cursor: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘24’ height=‘24’ viewBox=‘0 0 24 24’%3E%3Cpath fill=’%23ff66c4’ stroke=’%23fff’ stroke-width=‘1’ d=‘M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z’/%3E%3C/svg%3E”) 2 2, auto;
+}
+
+/* ============ ANIMATED BACKGROUND ============ */
+body::before {
+content: ‘’;
+position: fixed; inset: 0; z-index: -2;
+background:
+radial-gradient(ellipse at 20% 30%, rgba(255, 102, 196, 0.18), transparent 50%),
+radial-gradient(ellipse at 80% 70%, rgba(102, 255, 255, 0.12), transparent 50%),
+radial-gradient(ellipse at 50% 100%, rgba(200, 168, 232, 0.15), transparent 60%),
+var(–bg-deep);
+}
+body::after {
+content: ‘’;
+position: fixed; inset: 0; z-index: -1;
+background-image:
+repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 3px);
+pointer-events: none;
+}
+
+/* sparkle layer */
+.sparkles {
+position: fixed; inset: 0; pointer-events: none; z-index: 1;
+}
+.sparkle {
+position: absolute;
+width: 6px; height: 6px;
+background: radial-gradient(circle, #fff 0%, var(–pink-hot) 50%, transparent 70%);
+border-radius: 50%;
+animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+0%, 100% { opacity: 0; transform: scale(0); }
+50% { opacity: 1; transform: scale(1); }
+}
+
+/* ============ DESKTOP / TASKBAR ============ */
+.desktop {
+min-height: 100vh;
+padding: 16px 16px 56px 16px;
+position: relative;
+}
+.taskbar {
+position: fixed; bottom: 0; left: 0; right: 0;
+height: 40px;
+background: linear-gradient(180deg, var(–chrome-2) 0%, var(–chrome-1) 100%);
+border-top: 2px solid var(–window-border);
+display: flex;
+align-items: center;
+padding: 0 12px;
+gap: 12px;
+z-index: 100;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+}
+.start-btn {
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+border: 2px solid var(–bg-deep);
+border-right-color: #ff99d6;
+border-bottom-color: #ff99d6;
+padding: 4px 14px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+color: var(–bg-deep);
+font-weight: bold;
+box-shadow: 2px 2px 0 var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+.start-btn::before { content: ’✿ ’; }
+.taskbar-time {
+margin-left: auto;
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 10px;
+border: 1px solid var(–bg-deep);
+box-shadow: inset 1px 1px 0 #000;
+font-family: ‘VT323’, monospace;
+font-size: 14px;
+}
+.taskbar-mail {
+background: var(–bg-deep);
+color: var(–cyan-glow);
+padding: 3px 8px;
+border: 1px solid var(–lavender);
+font-size: 11px;
+animation: blink 1.5s steps(2) infinite;
+cursor: pointer;
+}
+@keyframes blink { 50% { opacity: 0.4; } }
+
+/* ============ DESKTOP ICONS ============ */
+.icon-grid {
+display: grid;
+grid-template-columns: 80px;
+gap: 12px;
+margin-bottom: 24px;
+}
+.desktop-icon {
+text-align: center;
+color: var(–silver);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+cursor: pointer;
+padding: 4px;
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
+.desktop-icon-img {
+width: 48px; height: 48px;
+margin: 0 auto 4px;
+display: flex; align-items: center; justify-content: center;
+font-size: 32px;
+filter: drop-shadow(2px 2px 0 var(–bg-deep));
+}
+
+/* ============ WINDOWS ============ */
+.window {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+}
+.window-titlebar {
+background: linear-gradient(90deg, var(–pink-hot) 0%, var(–lavender) 100%);
+color: white;
+padding: 4px 8px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 1px;
+text-transform: uppercase;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 2px solid var(–bg-deep);
+text-shadow: 1px 1px 0 var(–bg-deep);
+}
+.window-titlebar-buttons {
+display: flex; gap: 4px;
+}
+.titlebar-btn {
+width: 16px; height: 14px;
+background: var(–chrome-2);
+border: 1px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+line-height: 12px;
+text-align: center;
+cursor: pointer;
+}
+.window-content { padding: 16px; }
+
+/* ============ AIM-STYLE BUDDY MESSAGE / STORY POPUP ============ */
+.story-window {
+max-width: 540px;
+margin: 24px auto;
+animation: window-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes window-pop {
+from { transform: scale(0.85); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+.story-window .window-titlebar { background: linear-gradient(90deg, #ff66c4, #c8a8e8); }
+.diary-entry {
+background: #fff8f0;
+background-image:
+repeating-linear-gradient(180deg, transparent 0, transparent 23px, #ffd6e8 23px, #ffd6e8 24px);
+color: #2d0a3d;
+padding: 24px 20px 20px 36px;
+font-family: ‘Nanum Pen Script’, ‘Special Elite’, cursive;
+font-size: 19px;
+line-height: 24px;
+border-left: 8px solid var(–pink-hot);
+position: relative;
+}
+.diary-entry::before {
+content: ‘’;
+position: absolute;
+left: 18px; top: 0; bottom: 0;
+border-left: 1px solid #ff99cc;
+}
+.diary-meta {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #999;
+margin-bottom: 8px;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+
+/* ============ TERMINAL / CODE EDITOR ============ */
+.terminal-window { max-width: 760px; margin: 24px auto; }
+.terminal-window .window-titlebar {
+background: linear-gradient(90deg, var(–bg-deep), var(–bg-mid));
+color: var(–lime-acid);
+}
+.editor-wrap {
+display: grid;
+grid-template-columns: 1fr;
+gap: 0;
+}
+.file-tab {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 4px 12px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+border-bottom: 1px solid var(–pink-hot);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.file-tab::before { content: ‘▸’; color: var(–pink-hot); }
+.code-area {
+background: #0a0218;
+color: var(–cyan-glow);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 17px;
+line-height: 1.4;
+border: none;
+width: 100%;
+min-height: 140px;
+resize: vertical;
+outline: none;
+tab-size: 4;
+caret-color: var(–pink-hot);
+}
+.code-area:focus { box-shadow: inset 0 0 12px rgba(255, 102, 196, 0.3); }
+.editor-bar {
+background: var(–chrome-1);
+padding: 8px 12px;
+display: flex;
+gap: 8px;
+border-top: 2px solid var(–bg-deep);
+flex-wrap: wrap;
+align-items: center;
+}
+.btn {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+padding: 6px 12px;
+border: 2px solid var(–bg-deep);
+background: linear-gradient(180deg, var(–pink-soft), var(–pink-hot));
+color: var(–bg-deep);
+cursor: pointer;
+text-transform: uppercase;
+letter-spacing: 1px;
+box-shadow: 2px 2px 0 var(–bg-deep);
+transition: transform 0.05s;
+font-weight: bold;
+}
+.btn:hover { background: linear-gradient(180deg, var(–pink-bubble), var(–pink-soft)); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(–bg-deep); }
+.btn.btn-secondary {
+background: linear-gradient(180deg, var(–chrome-2), var(–chrome-1));
+}
+.btn.btn-acid {
+background: linear-gradient(180deg, #e6ff99, var(–lime-acid));
+}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.output-area {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 12px;
+font-family: ‘VT323’, ‘Courier New’, monospace;
+font-size: 16px;
+min-height: 60px;
+border-top: 2px solid var(–pink-hot);
+white-space: pre-wrap;
+word-wrap: break-word;
+line-height: 1.4;
+}
+.output-area .err { color: #ff6688; }
+.output-area .ok { color: var(–lime-acid); }
+.output-area .info { color: var(–cyan-glow); }
+
+/* ============ TASK / OBJECTIVE PANEL ============ */
+.task-panel {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.task-panel .window-titlebar { background: linear-gradient(90deg, var(–lime-acid), #99cc66); color: var(–bg-deep); text-shadow: none; }
+.task-content { padding: 16px; }
+.task-content h3 {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+margin-bottom: 8px;
+color: var(–bg-deep);
+}
+.task-content p, .task-content li {
+font-family: ‘VT323’, monospace;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+margin-bottom: 8px;
+}
+.task-content ul { padding-left: 20px; }
+.task-content code {
+background: var(–bg-deep);
+color: var(–lime-acid);
+padding: 1px 6px;
+font-family: ‘VT323’, monospace;
+border-radius: 2px;
+font-size: 16px;
+}
+.hint-box {
+background: linear-gradient(180deg, #ffe6f5, var(–pink-bubble));
+border: 1px dashed var(–pink-hot);
+padding: 10px 12px;
+margin-top: 12px;
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+color: var(–bg-deep);
+}
+.hint-box::before {
+content: ’✿ HINT: ’;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+}
+
+/* ============ MENTOR / BUDDY POPUP ============ */
+.buddy-popup {
+position: fixed;
+bottom: 60px;
+right: 20px;
+width: 280px;
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+box-shadow: var(–shadow-hard), var(–shadow-soft);
+z-index: 200;
+animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+font-family: ‘VT323’, monospace;
+}
+.buddy-popup .window-titlebar { background: linear-gradient(90deg, var(–cyan-glow), var(–lavender)); }
+.buddy-content {
+padding: 12px;
+color: var(–bg-deep);
+font-size: 16px;
+line-height: 1.3;
+}
+.buddy-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–pink-hot);
+margin-bottom: 6px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM COMPOSE / LOG (Ch5) ============ */
+.aim-window {
+border: 2px solid var(–bg-deep);
+background: #f0e8ff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+}
+.aim-window .window-titlebar {
+background: linear-gradient(90deg, #6699ff, #99ccff);
+color: #fff;
+}
+.aim-buddy-strip {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-buddy-strip .online-dot {
+color: var(–lime-acid);
+font-size: 14px;
+vertical-align: middle;
+}
+.aim-compose-body {
+padding: 16px;
+background: #fff;
+color: var(–bg-deep);
+font-size: 18px;
+line-height: 1.5;
+min-height: 120px;
+border: 1px solid var(–bg-deep);
+margin: 12px;
+white-space: pre-wrap;
+}
+.aim-log-body {
+padding: 14px;
+background: #fff;
+margin: 12px;
+border: 1px solid var(–bg-deep);
+max-height: 70vh;
+overflow-y: auto;
+}
+.aim-message {
+margin-bottom: 10px;
+font-size: 17px;
+line-height: 1.4;
+color: var(–bg-deep);
+}
+.aim-message-from {
+color: #cc3399;
+font-weight: bold;
+margin-right: 6px;
+}
+.aim-message-player .aim-message-from {
+color: #336699;
+}
+.aim-message-player {
+padding-left: 24px;
+border-left: 3px solid #336699;
+}
+.aim-message-pause {
+text-align: center;
+color: #999;
+font-size: 18px;
+margin: 14px 0;
+letter-spacing: 4px;
+}
+.aim-send-bar {
+padding: 10px 12px;
+background: var(–window-bg);
+border-top: 1px solid var(–bg-deep);
+text-align: right;
+}
+.aim-send-btn {
+background: var(–lime-acid);
+border: 2px solid var(–bg-deep);
+color: var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 11px;
+padding: 8px 18px;
+cursor: pointer;
+box-shadow: 2px 2px 0 var(–bg-deep);
+letter-spacing: 1px;
+}
+.aim-send-btn:hover { background: #ccff66; }
+.aim-send-btn:active { transform: translate(2px, 2px); box-shadow: none; }
+
+/* ============ ARCHIVE VIEW (Ch6) ============ */
+.archive-window {
+border: 2px solid var(–bg-deep);
+background: #f0f4ff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘VT323’, monospace;
+}
+.archive-window .window-titlebar {
+background: linear-gradient(90deg, #6699ff, #99ccff);
+color: #fff;
+}
+.archive-meta {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(–bg-deep);
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: var(–bg-deep);
+letter-spacing: 1px;
+}
+.archive-body {
+padding: 14px;
+background: #fff;
+margin: 12px;
+border: 1px solid var(–bg-deep);
+max-height: 60vh;
+overflow-y: auto;
+font-family: ‘VT323’, monospace;
+font-size: 15px;
+line-height: 1.5;
+color: var(–bg-deep);
+}
+.archive-line {
+margin-bottom: 4px;
+white-space: pre-wrap;
+}
+.archive-sender {
+color: #cc3399;
+font-weight: bold;
+}
+
+/* ============ EMAIL VIEW (Ch7 — Outlook Express vibe) ============ */
+.email-window {
+border: 2px solid var(–bg-deep);
+background: #ffffff;
+box-shadow: 4px 4px 0 var(–bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: ‘Tahoma’, ‘Geneva’, sans-serif;
+}
+.email-titlebar {
+background: linear-gradient(180deg, #4477cc 0%, #3366aa 100%) !important;
+color: #fff !important;
+text-shadow: none !important;
+font-family: ‘Tahoma’, sans-serif;
+font-size: 11px;
+}
+.email-headers {
+padding: 10px 14px;
+background: #f0f0e8;
+border-bottom: 1px solid #aaa;
+font-family: ‘Tahoma’, sans-serif;
+font-size: 13px;
+color: var(–bg-deep);
+}
+.email-header-row {
+margin-bottom: 4px;
+line-height: 1.3;
+}
+.email-header-label {
+display: inline-block;
+width: 60px;
+color: #555;
+font-weight: bold;
+}
+.email-header-value {
+color: #000;
+}
+.email-subject {
+font-weight: bold;
+}
+.email-body {
+padding: 16px;
+background: #ffffff;
+color: #000;
+font-family: ‘Courier New’, ‘Consolas’, monospace;
+font-size: 14px;
+line-height: 1.55;
+white-space: pre-wrap;
+border-bottom: 1px solid #ccc;
+}
+.email-diary-below {
+padding: 14px 16px;
+background: var(–bg-deep);
+color: var(–lime-acid);
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+line-height: 1.5;
+border-top: 2px solid var(–lime-acid);
+}
+
+/* ============ SERP VIEW (Ch7 — period Google) ============ */
+.serp-window {
+border: 2px solid var(–bg-deep);
+background: #fff;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+font-family: ‘Arial’, ‘Helvetica’, sans-serif;
+}
+.serp-preamble {
+padding: 16px 18px;
+background: var(–bg-deep);
+color: var(–lime-acid);
+font-family: ‘VT323’, monospace;
+font-size: 16px;
+line-height: 1.5;
+border-bottom: 2px solid var(–lime-acid);
+}
+.serp-window .window-titlebar {
+background: linear-gradient(90deg, #ffffff, #eeeeee) !important;
+color: var(–bg-deep) !important;
+text-shadow: none !important;
+font-size: 11px;
+border-bottom: 1px solid #aaa;
+}
+.serp-header {
+padding: 18px 24px 12px;
+background: #fff;
+border-bottom: 1px solid #ccc;
+display: flex;
+align-items: center;
+gap: 18px;
+flex-wrap: wrap;
+}
+.serp-logo {
+font-family: ‘Times New Roman’, serif;
+font-size: 36px;
+font-weight: bold;
+color: #3366cc;
+letter-spacing: -1px;
+line-height: 1;
+}
+.serp-search-bar {
+display: flex;
+gap: 6px;
+align-items: center;
+flex: 1;
+min-width: 240px;
+}
+.serp-search-input {
+flex: 1;
+padding: 4px 6px;
+border: 1px solid #888;
+font-family: ‘Arial’, sans-serif;
+font-size: 13px;
+background: #fff;
+color: #000;
+}
+.serp-search-btn {
+padding: 4px 10px;
+border: 1px solid #888;
+background: linear-gradient(180deg, #fff, #ddd);
+font-family: ‘Arial’, sans-serif;
+font-size: 11px;
+color: #000;
+cursor: default;
+}
+.serp-result-count {
+padding: 8px 24px;
+background: #e5ecf9;
+color: #000;
+font-family: ‘Arial’, sans-serif;
+font-size: 11px;
+border-bottom: 1px solid #ccc;
+}
+.serp-results {
+padding: 14px 24px;
+background: #fff;
+}
+.serp-result {
+margin-bottom: 14px;
+}
+.serp-result-title {
+color: #0000cc;
+font-family: ‘Arial’, sans-serif;
+font-size: 14px;
+text-decoration: underline;
+font-weight: normal;
+cursor: default;
+}
+.serp-result-snippet {
+color: #000;
+font-family: ‘Arial’, sans-serif;
+font-size: 12px;
+line-height: 1.4;
+margin-top: 2px;
+}
+.serp-result-url {
+color: #008000;
+font-family: ‘Arial’, sans-serif;
+font-size: 11px;
+margin-top: 1px;
+}
+
+/* ============ MULTIPLATFORM ARCHIVE (Ch7 — Tyler dossier) ============ */
+.multiplatform-window {
+border: 2px solid var(–bg-deep);
+background: #1a1a2e;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+}
+.multiplatform-window .window-titlebar {
+background: linear-gradient(90deg, #882244, #cc3399) !important;
+color: #fff !important;
+text-shadow: none !important;
+}
+.multiplatform-body {
+padding: 14px 16px;
+background: #1a1a2e;
+max-height: 70vh;
+overflow-y: auto;
+}
+.mp-post {
+margin-bottom: 14px;
+padding: 10px 12px;
+border-left: 4px solid #888;
+background: #f0f0e8;
+color: #1a1a2e;
+font-family: ‘Tahoma’, sans-serif;
+font-size: 13px;
+line-height: 1.45;
+}
+.mp-post-header {
+font-weight: bold;
+margin-bottom: 6px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 1px;
+}
+.mp-platform-tag {
+display: inline-block;
+padding: 1px 5px;
+margin-right: 4px;
+color: #fff;
+border-radius: 2px;
+}
+.mp-xanga {
+border-left-color: #99cc66;
+background: #f5f5dc;
+}
+.mp-xanga .mp-platform-tag {
+background: #99cc66;
+}
+.mp-myspace {
+border-left-color: #6699ff;
+background: #e8eef8;
+}
+.mp-myspace .mp-platform-tag {
+background: #3366cc;
+}
+.mp-forum {
+border-left-color: #cc6633;
+background: #f0e8e0;
+}
+.mp-forum .mp-platform-tag {
+background: #883311;
+}
+.mp-mood, .mp-music {
+font-style: italic;
+color: #555;
+font-size: 12px;
+margin-bottom: 2px;
+}
+.mp-content {
+margin-top: 6px;
+color: #1a1a2e;
+font-family: ‘VT323’, monospace;
+font-size: 15px;
+line-height: 1.45;
+}
+.mp-comments {
+color: #888;
+font-size: 11px;
+margin-top: 6px;
+border-top: 1px dashed #aaa;
+padding-top: 4px;
+}
+.mp-photo {
+padding: 14px;
+margin: 6px 0;
+background: #d0d0c0;
+color: #555;
+font-family: ‘Courier New’, monospace;
+font-size: 12px;
+border: 1px solid #888;
+font-style: italic;
+}
+.mp-caption {
+margin-top: 4px;
+font-size: 13px;
+}
+.mp-top-friends {
+margin-top: 4px;
+font-size: 11px;
+color: #555;
+border-top: 1px dashed #aaa;
+padding-top: 4px;
+}
+.mp-status {
+font-size: 14px;
+color: #1a1a2e;
+}
+.mp-thread {
+color: #555;
+font-size: 11px;
+margin-bottom: 4px;
+font-style: italic;
+}
+.mp-gap {
+margin: 18px 14px;
+padding: 12px;
+background: #2a2a3e;
+color: #ff66c4;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+text-align: center;
+letter-spacing: 1px;
+border: 1px dashed #ff66c4;
+}
+
+/* ============ HOTMAIL VIEW (Ch8 — webmail aesthetic) ============ */
+.hotmail-window {
+border: 2px solid var(–bg-deep);
+background: #ffffff;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+font-family: ‘Tahoma’, sans-serif;
+}
+.hotmail-titlebar {
+background: linear-gradient(180deg, #f08020 0%, #c25010 100%) !important;
+color: #fff !important;
+text-shadow: none !important;
+font-size: 11px;
+}
+.hotmail-banner {
+background: linear-gradient(180deg, #00b4d8 0%, #0086a8 100%);
+color: #fff;
+padding: 8px 14px;
+font-family: ‘Verdana’, sans-serif;
+font-size: 11px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 1px solid #006080;
+}
+.hotmail-logo {
+font-size: 18px;
+font-weight: bold;
+letter-spacing: -0.5px;
+}
+.hotmail-logo-accent {
+color: #ffe080;
+}
+.hotmail-userinfo {
+font-size: 10px;
+opacity: 0.9;
+}
+.hotmail-headers {
+padding: 12px 14px;
+background: #fff8e8;
+border-bottom: 1px solid #d0c090;
+font-size: 12px;
+color: var(–bg-deep);
+}
+.hotmail-header-row {
+margin-bottom: 4px;
+line-height: 1.4;
+}
+.hotmail-header-label {
+display: inline-block;
+width: 64px;
+color: #806020;
+font-weight: bold;
+}
+.hotmail-header-value {
+color: #000;
+}
+.hotmail-subject {
+font-weight: bold;
+}
+.hotmail-body {
+padding: 16px;
+background: #ffffff;
+color: #000;
+font-family: ‘Verdana’, sans-serif;
+font-size: 13px;
+line-height: 1.6;
+white-space: pre-wrap;
+}
+.hotmail-attachment {
+margin: 12px 14px;
+padding: 8px 12px;
+background: #fff8e8;
+border: 1px dashed #c08020;
+font-size: 12px;
+color: var(–bg-deep);
+}
+.hotmail-attach-icon {
+margin-right: 6px;
+}
+.hotmail-attach-name {
+font-weight: bold;
+color: #0066aa;
+text-decoration: underline;
+cursor: default;
+}
+.hotmail-attach-size {
+margin-left: 8px;
+color: #806020;
+font-size: 10px;
+}
+
+/* ============ CODE VIEW (Ch8 — Hannah’s script) ============ */
+.code-window {
+border: 2px solid var(–bg-deep);
+background: #1a1a2e;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+}
+.code-titlebar {
+background: linear-gradient(180deg, #4a4a5e 0%, #2a2a3e 100%) !important;
+color: #ff66c4 !important;
+text-shadow: none !important;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+}
+.code-meta {
+padding: 6px 14px;
+background: #2a2a3e;
+color: #ccc8a0;
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+border-bottom: 1px solid var(–lime-acid);
+}
+.code-body {
+padding: 14px 16px;
+background: #1a1a2e;
+font-family: ‘Courier New’, ‘Consolas’, monospace;
+font-size: 13px;
+line-height: 1.5;
+color: #e8e8d0;
+overflow-x: auto;
+}
+.code-line {
+white-space: pre;
+color: #e8e8d0;
+}
+.code-comment {
+color: #88aa66;
+font-style: italic;
+}
+.code-keyword .kw,
+.code-def .kw {
+color: #ff66c4;
+font-weight: bold;
+}
+.code-def .fn {
+color: var(–lime-acid);
+}
+.code-docstring {
+color: #ddaa66;
+font-style: italic;
+}
+
+/* ============ NEXOPIA VIEW (Ch8 — Camille’s profile) ============ */
+.nexopia-window {
+border: 2px solid var(–bg-deep);
+background: #ffffff;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+font-family: ‘Verdana’, sans-serif;
+font-size: 12px;
+}
+.nexopia-titlebar {
+background: linear-gradient(180deg, #66cc88 0%, #338855 100%) !important;
+color: #fff !important;
+text-shadow: none !important;
+font-size: 11px;
+}
+.nexopia-banner {
+background: linear-gradient(180deg, #88dd99 0%, #66bb77 100%);
+color: #fff;
+padding: 10px 14px;
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+border-bottom: 2px solid #226633;
+}
+.nexopia-logo {
+font-size: 22px;
+font-weight: bold;
+font-family: ‘Verdana’, sans-serif;
+letter-spacing: -0.5px;
+}
+.nexopia-logo-accent {
+color: #ffe080;
+}
+.nexopia-tagline {
+font-size: 10px;
+opacity: 0.9;
+text-transform: uppercase;
+letter-spacing: 1px;
+}
+.nexopia-profile {
+display: flex;
+gap: 14px;
+padding: 14px;
+background: #f0f8f0;
+border-bottom: 1px solid #cce0cc;
+}
+.nx-pic-placeholder {
+width: 96px;
+height: 96px;
+background: #d0e0d0;
+border: 1px solid #88aa88;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Courier New’, monospace;
+font-size: 11px;
+color: #557755;
+flex-shrink: 0;
+}
+.nx-info {
+flex: 1;
+}
+.nx-username {
+font-size: 18px;
+font-weight: bold;
+color: #226633;
+margin-bottom: 6px;
+}
+.nx-stat {
+font-size: 11px;
+color: #335544;
+margin-bottom: 2px;
+}
+.nx-stat-label {
+color: #557755;
+font-weight: bold;
+margin-right: 4px;
+}
+.nx-section {
+padding: 10px 14px;
+border-bottom: 1px solid #e8eee8;
+font-size: 12px;
+}
+.nx-section-title {
+font-weight: bold;
+color: #226633;
+text-transform: lowercase;
+margin-bottom: 4px;
+font-size: 11px;
+}
+.nx-section-body {
+color: #2a3a2a;
+line-height: 1.5;
+}
+.nx-about {
+background: #fffff0;
+padding: 8px;
+border: 1px dashed #d0d0a0;
+font-style: italic;
+}
+.nx-wallpost {
+background: #f8fcf8;
+padding: 8px 10px;
+margin-bottom: 6px;
+border-left: 3px solid #88cc88;
+font-size: 11px;
+}
+.nx-wallpost-header {
+margin-bottom: 4px;
+color: #557755;
+font-size: 10px;
+}
+.nx-wallpost-from {
+font-weight: bold;
+color: #226633;
+margin-right: 6px;
+}
+.nx-wallpost-text {
+color: #2a3a2a;
+}
+
+/* ============ LIVEJOURNAL VIEW (Ch8 — Melissa’s LJ) ============ */
+.lj-window {
+border: 2px solid var(–bg-deep);
+background: #fdfdf3;
+box-shadow: 4px 4px 0 var(–bg-deep);
+margin: 16px 0;
+font-family: ‘Verdana’, sans-serif;
+}
+.lj-titlebar {
+background: linear-gradient(180deg, #6688cc 0%, #334477 100%) !important;
+color: #ffffe0 !important;
+text-shadow: none !important;
+font-size: 11px;
+}
+.lj-banner {
+background: #4477aa;
+color: #ffffe0;
+padding: 8px 14px;
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+border-bottom: 2px solid #223355;
+font-family: ‘Times New Roman’, serif;
+}
+.lj-logo {
+font-size: 22px;
+font-weight: bold;
+font-style: italic;
+letter-spacing: -0.5px;
+}
+.lj-username {
+font-size: 11px;
+font-family: ‘Courier New’, monospace;
+opacity: 0.9;
+}
+.lj-userhead {
+background: #eef3fa;
+padding: 8px 14px;
+border-bottom: 1px solid #ccd5e8;
+}
+.lj-name {
+font-weight: bold;
+color: #334477;
+font-size: 13px;
+}
+.lj-loc {
+color: #557799;
+font-size: 11px;
+margin-top: 2px;
+}
+.lj-posts {
+padding: 8px 14px;
+max-height: 70vh;
+overflow-y: auto;
+}
+.lj-post {
+margin: 12px 0;
+padding: 12px;
+background: #ffffff;
+border: 1px solid #ccd5e8;
+border-radius: 0;
+font-size: 13px;
+line-height: 1.6;
+color: #1a1a2e;
+}
+.lj-post-locked {
+background: #f4f4ee;
+color: #776644;
+border-color: #ccc4a8;
+font-style: italic;
+}
+.lj-post-date {
+font-size: 10px;
+color: #557799;
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 4px;
+font-family: ‘Courier New’, monospace;
+}
+.lj-post-title {
+font-weight: bold;
+color: #334477;
+font-size: 14px;
+margin-bottom: 6px;
+}
+.lj-post-locked .lj-post-title {
+color: #886633;
+}
+.lj-lock {
+margin-right: 4px;
+}
+.lj-post-meta {
+font-size: 11px;
+color: #557799;
+margin-bottom: 2px;
+}
+.lj-mood, .lj-music {
+color: #226699;
+font-style: italic;
+}
+.lj-post-body {
+color: #1a1a2e;
+margin-top: 8px;
+font-family: ‘Georgia’, serif;
+font-size: 13px;
+}
+.lj-post-body-locked {
+color: #886633;
+font-family: ‘Verdana’, sans-serif;
+font-size: 12px;
+}
+.lj-post-footer {
+font-size: 10px;
+color: #557799;
+margin-top: 8px;
+padding-top: 6px;
+border-top: 1px dashed #ccd5e8;
+}
+
+/* ============ CAMILLE INTERACTIVE AIM (Ch8) ============ */
+.camille-aim .aim-send-input {
+flex: 1;
+padding: 6px 8px;
+font-family: ‘Courier New’, monospace;
+font-size: 12px;
+border: 2px inset #888;
+background: #fff;
+color: #000;
+}
+.camille-aim .aim-handle-them {
+color: #cc3399;
+}
+.camille-aim .aim-handle-you {
+color: var(–lime-acid);
+}
+
+.intro-screen {
+position: fixed; inset: 0;
+background: var(–bg-deep);
+z-index: 9999;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+flex-direction: column;
+padding: 40px 20px;
+overflow-y: auto;
+}
+.intro-logo {
+font-family: ‘Press Start 2P’, monospace;
+font-size: 28px;
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow), var(–lime-acid), var(–pink-hot));
+background-size: 300% 100%;
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+animation: shimmer 4s linear infinite;
+text-align: center;
+line-height: 1.5;
+margin-bottom: 24px;
+text-shadow: 0 0 30px rgba(255, 102, 196, 0.5);
+}
+@keyframes shimmer {
+0% { background-position: 0% 50%; }
+100% { background-position: 300% 50%; }
+}
+.intro-tag {
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+color: var(–lavender);
+letter-spacing: 3px;
+margin-bottom: 36px;
+text-align: center;
+}
+.intro-prose {
+max-width: 560px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+color: var(–silver);
+line-height: 1.5;
+margin-bottom: 24px;
+text-align: left;
+background: var(–bg-mid);
+padding: 20px;
+border: 2px solid var(–pink-hot);
+box-shadow: var(–shadow-soft);
+}
+.intro-prose p { margin-bottom: 12px; }
+.intro-prose .em { color: var(–pink-hot); font-style: italic; }
+.intro-input {
+background: var(–bg-deep);
+color: var(–lime-acid);
+border: 2px solid var(–pink-hot);
+padding: 8px 12px;
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+width: 280px;
+text-align: center;
+outline: none;
+margin-bottom: 16px;
+}
+.intro-input:focus { box-shadow: 0 0 12px var(–pink-hot); }
+
+/* ============ FRAGMENT BOARD (Roottrees-style) ============ */
+.fragment-board {
+background: var(–window-bg);
+border: 2px solid var(–bg-deep);
+margin: 16px auto;
+max-width: 760px;
+box-shadow: var(–shadow-hard);
+}
+.fragment-board .window-titlebar {
+background: linear-gradient(90deg, #ffaa66, var(–pink-hot));
+}
+.fragment-grid {
+padding: 12px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 10px;
+background:
+repeating-linear-gradient(45deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.fragment-card {
+background: #fff;
+border: 1.5px solid var(–bg-deep);
+padding: 8px;
+font-family: ‘VT323’, monospace;
+font-size: 13px;
+color: var(–bg-deep);
+box-shadow: 2px 2px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-1deg);
+transition: transform 0.15s, box-shadow 0.15s;
+cursor: default;
+word-wrap: break-word;
+overflow: hidden;
+}
+.fragment-card:nth-child(2n) { transform: rotate(1deg); }
+.fragment-card:nth-child(3n) { transform: rotate(-0.5deg); }
+.fragment-card:nth-child(5n) { transform: rotate(0.7deg); }
+.fragment-card:hover {
+transform: rotate(0) scale(1.04);
+box-shadow: 4px 4px 0 var(–pink-hot);
+z-index: 10;
+}
+.fragment-card.sms {
+background: #d4f4d4;
+border-color: #336633;
+}
+.fragment-card.aim {
+background: #d4e4ff;
+border-color: #334466;
+}
+.fragment-platform {
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+background: var(–bg-deep);
+color: var(–pink-hot);
+padding: 1px 4px;
+margin-bottom: 4px;
+display: inline-block;
+letter-spacing: 1px;
+}
+.fragment-card.sms .fragment-platform { color: var(–lime-acid); }
+.fragment-time {
+font-family: ‘Silkscreen’, monospace;
+font-size: 9px;
+color: #666;
+margin-bottom: 3px;
+}
+.fragment-from {
+font-weight: bold;
+color: var(–pink-hot);
+font-size: 11px;
+margin-bottom: 2px;
+}
+.fragment-card.aim .fragment-from { color: #336699; }
+.fragment-content {
+font-size: 13px;
+line-height: 1.3;
+}
+.fragment-id {
+position: absolute;
+top: 2px;
+right: 4px;
+font-family: ‘Silkscreen’, monospace;
+font-size: 7px;
+color: #999;
+}
+
+/* ============ H-BOARD (suspect cards) ============ */
+.hboard-grid {
+padding: 16px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 14px;
+background:
+repeating-linear-gradient(135deg, var(–pink-bubble) 0, var(–pink-bubble) 8px, var(–window-bg) 8px, var(–window-bg) 16px);
+}
+.hboard-card {
+background: #fff8f0;
+border: 2px solid var(–bg-deep);
+padding: 12px;
+font-family: ‘VT323’, monospace;
+color: var(–bg-deep);
+box-shadow: 3px 3px 0 var(–bg-deep);
+position: relative;
+transform: rotate(-0.8deg);
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.hboard-card:nth-child(2n) { transform: rotate(0.6deg); }
+.hboard-card:nth-child(3n) { transform: rotate(-0.4deg); }
+.hboard-card:hover {
+transform: rotate(0) scale(1.03);
+box-shadow: 5px 5px 0 var(–pink-hot);
+z-index: 10;
+}
+.hboard-name {
+font-family: ‘Silkscreen’, monospace;
+font-size: 14px;
+color: var(–pink-hot);
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 4px;
+border-bottom: 1px dashed var(–bg-deep);
+padding-bottom: 4px;
+}
+.hboard-role {
+font-size: 14px;
+font-style: italic;
+color: #666;
+margin-bottom: 8px;
+}
+.hboard-row {
+font-size: 14px;
+line-height: 1.3;
+margin-bottom: 4px;
+}
+.hboard-label {
+font-family: ‘Silkscreen’, monospace;
+font-size: 8px;
+color: var(–bg-deep);
+background: var(–lime-acid);
+padding: 1px 4px;
+letter-spacing: 1px;
+display: inline-block;
+margin-right: 4px;
+}
+
+/* ============ DECORATIVE BITS ============ */
+.marquee-strip {
+background: var(–bg-deep);
+color: var(–pink-hot);
+border-top: 1px solid var(–pink-hot);
+border-bottom: 1px solid var(–pink-hot);
+overflow: hidden;
+padding: 4px 0;
+font-family: ‘Silkscreen’, monospace;
+font-size: 10px;
+letter-spacing: 2px;
+margin: 12px 0;
+}
+.marquee-strip span {
+display: inline-block;
+padding-left: 100%;
+animation: marquee 30s linear infinite;
+white-space: nowrap;
+}
+@keyframes marquee {
+0% { transform: translateX(0); }
+100% { transform: translateX(-100%); }
+}
+
+.progress-bar-outer {
+background: var(–bg-deep);
+border: 1px solid var(–bg-deep);
+height: 12px;
+margin-top: 8px;
+box-shadow: inset 1px 1px 0 #000;
+}
+.progress-bar-inner {
+background: linear-gradient(90deg, var(–pink-hot), var(–cyan-glow));
+height: 100%;
+transition: width 0.5s ease-out;
+background-size: 20px 20px;
+background-image: linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent);
+animation: stripe-shift 1s linear infinite;
+}
+@keyframes stripe-shift { to { background-position: 20px 0; } }
+
+.glitter-divider {
+text-align: center;
+color: var(–pink-hot);
+font-family: ‘VT323’, monospace;
+font-size: 18px;
+margin: 16px 0;
+letter-spacing: 8px;
+}
+
+/* hidden by default */
+.hidden { display: none !important; }
+
+/* small mobile adjustments */
+@media (max-width: 600px) {
+.intro-logo { font-size: 18px; }
+.intro-prose { font-size: 16px; padding: 16px; }
+.buddy-popup { width: calc(100% - 40px); right: 20px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- ============ INTRO / NAME SCREEN ============ -->
+
+<div class="intro-screen" id="introScreen">
+  <div class="intro-logo">pyforthegirls</div>
+  <div class="intro-tag">★ chapter eight ★ next summer ★</div>
+  <div class="intro-prose">
+    <p>Three weeks since the dossier closed.</p>
+    <p>You haven't talked to <span class="em">glorfindel_lives</span> about Tyler since. She's online. She's been online. She knows you're thinking.</p>
+    <p>You don't have anywhere to take what you have. The detachment that responded was Tyler's father's. There's no outside to go to.</p>
+  </div>
+  <input class="intro-input" id="userNameInput" placeholder="enter your name" maxlength="20" autofocus>
+  <button class="btn btn-acid" id="startBtn" style="font-size: 12px; padding: 10px 24px;">▸ OPEN AIM</button>
+</div>
+
+<!-- ============ MAIN DESKTOP ============ -->
+
+<div class="desktop hidden" id="desktop">
+  <div class="sparkles" id="sparkles"></div>
+
+  <!-- Desktop icons -->
+
+  <div class="icon-grid">
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💾</div>
+      My Computer
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📂</div>
+      pinecrest_summer/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">🐍</div>
+      python.exe
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📔</div>
+      diary/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">💬</div>
+      AIM_archives/
+    </div>
+    <div class="desktop-icon">
+      <div class="desktop-icon-img">📱</div>
+      SMS_dumps/
+    </div>
+  </div>
+
+  <!-- Marquee -->
+
+  <div class="marquee-strip"><span>★ now playing: sufjan stevens — for the widows in paradise ★ AIM status: invisible ★ hannah :: online (typing) ★ camille_m :: online (silent) ★ wren_h :: brief ★ melissa_k :: not contacted ★ now playing: sufjan stevens — for the widows in paradise ★</span></div>
+
+  <!-- ============ STORY WINDOWS RENDERED HERE ============ -->
+
+  <div id="storyContainer"></div>
+
+  <!-- ============ BUDDY POPUP ============ -->
+
+  <div class="buddy-popup hidden" id="buddyPopup">
+    <div class="window-titlebar">
+      <span>buddyhelper :: incoming</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
+      </div>
+    </div>
+    <div class="buddy-content">
+      <div class="buddy-name" id="buddyName">tegan_a87</div>
+      <div id="buddyMessage"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TASKBAR ============ -->
+
+<div class="taskbar hidden" id="taskbar">
+  <button class="start-btn">Start</button>
+  <span style="font-family: 'Silkscreen', monospace; font-size: 9px;">CHAPTER 8 :: NEXT SUMMER</span>
+  <span class="taskbar-mail" id="mailIndicator">✉ 1 NEW</span>
+  <span class="taskbar-time" id="taskbarTime">11:47 PM</span>
+</div>
+
+<script>
+// ===========================================================================
+// PYODIDE LOADING
+// ===========================================================================
+let pyodide = null;
+let pyodideLoading = false;
+
+async function loadPyodideOnce() {
+  if (pyodide) return pyodide;
+  if (pyodideLoading) {
+    while (!pyodide) await new Promise(r => setTimeout(r, 100));
+    return pyodide;
+  }
+  pyodideLoading = true;
+  pyodide = await loadPyodide();
+  return pyodide;
+}
+
+async function runPython(code) {
+  const py = await loadPyodideOnce();
+  let stdout = '';
+  py.setStdout({ batched: (s) => { stdout += s + '\n'; } });
+  py.setStderr({ batched: (s) => { stdout += s + '\n'; } });
+  try {
+    await py.runPythonAsync(code);
+    return { ok: true, output: stdout };
+  } catch (err) {
+    return { ok: false, output: stdout, error: String(err.message || err) };
+  }
+}
+
+// ===========================================================================
+// SAVE / LOAD STATE (Neocities-friendly: localStorage only)
+// ===========================================================================
+const SAVE_KEY = 'pyforthegirls_save_ch8_v1';
+
+// ===========================================================================
+// IN-GAME FILE CONTENTS — Pyodide setup for Ch8
+// ===========================================================================
+
+// Set up Hannah's find_person() function as a mock.
+// Player calls it from their code; it returns hardcoded results.
+async function injectChapter8Files() {
+  const py = await loadPyodideOnce();
+
+  await py.runPythonAsync(`
+# Hannah's find_person() — mocked.
+# In the real script (which the player reads in beat 3) it does an actual
+# urllib fetch and regex. Here in the test environment it returns hardcoded
+# results for the names we know. Anything else returns empty.
+
+def find_person(name, region):
+    db = {
+        ("Camille McCleod", "edmonton"): {
+            "name": "Camille McCleod",
+            "region": "edmonton",
+            "nexopia": ["camille_m_88"],
+            "livejournals": [],
+            "school_papers": []
+        },
+        ("Melissa Klassen", "calgary"): {
+            "name": "Melissa Klassen",
+            "region": "calgary",
+            "nexopia": [],
+            "livejournals": ["mel_k_lights"],
+            "school_papers": []
+        }
+    }
+    return db.get((name, region), {
+        "name": name,
+        "region": region,
+        "nexopia": [],
+        "livejournals": [],
+        "school_papers": []
+    })
+`);
+}
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (e) { return null; }
+}
+
+function writeSave(data) {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+let state = loadSave() || {
+  userName: '',
+  currentBeat: 0,
+  completedBeats: [],
+  charms: 0,
+  camilleLog: null
+};
+
+// ===========================================================================
+// SPARKLES
+// ===========================================================================
+function makeSparkles() {
+  const container = document.getElementById('sparkles');
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    container.appendChild(s);
+  }
+}
+
+// ===========================================================================
+// INTRO -> DESKTOP
+// ===========================================================================
+document.getElementById('startBtn').addEventListener('click', startGame);
+document.getElementById('userNameInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startGame();
+});
+
+function startGame() {
+  const name = document.getElementById('userNameInput').value.trim() || 'guest';
+  state.userName = name;
+  writeSave(state);
+  document.getElementById('introScreen').classList.add('hidden');
+  document.getElementById('desktop').classList.remove('hidden');
+  document.getElementById('taskbar').classList.remove('hidden');
+  makeSparkles();
+  startClock();
+  renderStory();
+}
+
+function startClock() {
+  const start = Date.now();
+  setInterval(() => {
+    // in-fiction time: late november 2005, just after hannah's email
+    const elapsed = Math.floor((Date.now() - start) / 60000);
+    let mm = (43 + elapsed);
+    let hh = 11;
+    if (mm >= 60) {
+      hh = hh + Math.floor(mm / 60);
+      mm = mm % 60;
+    }
+    // hh 11 -> 11 PM, hh 12 -> 12 AM (midnight), hh 13+ -> AM, hh 24 -> 12 AM next day
+    let dispHour, ampm;
+    if (hh === 11) { dispHour = 11; ampm = 'PM'; }
+    else if (hh === 12) { dispHour = 12; ampm = 'AM'; }
+    else if (hh < 24) { dispHour = hh - 12; ampm = 'AM'; }
+    else { dispHour = 12; ampm = 'AM'; }  // shouldn't ever get here in practice
+    document.getElementById('taskbarTime').textContent =
+      `${dispHour}:${String(mm).padStart(2,'0')} ${ampm}`;
+  }, 1000);
+}
+
+// ===========================================================================
+// CONTENT — STORY BEATS
+// Each beat is either a 'diary' card (pure narrative) or a 'task' card
+// (story + Python challenge). Player progresses linearly.
+// ===========================================================================
+// CH8 BEATS — 13 beats. functions chapter. interpersonal: camille, melissa (read), wren brief, hannah call.
+
+// CH8 BEATS — 13 beats: open, hannah collab, hotmail, code view, define fn, find camille,
+// nexopia view, camille AIM with input, find melissa, lj view, wren breaks silence,
+// hannah phone decision, wrap.
+// (We dropped task_filter_jersey to keep things tight. Camille's jersey memory still lands narratively.)
+
+const BEATS = [
+  // ---- BEAT 0: ch8_open — three weeks later, paralysis, decision to talk to Hannah ----
+  {
+    id: 'ch8_open',
+    type: 'diary',
+    title: 'open file: notes/late_november.txt',
+    meta: 'three weeks. you\'ve been thinking.',
+    body: `i keep going back to one thing.
+
+tyler's dad is a mountie. whitecourt detachment. the same detachment that responded.
+
+this isn't going to come from outside. nobody is going to look at what i have and act on it. i could send a packet to the edmonton journal. they'd put it in a drawer. i could send it to RCMP K Division. it would land on the same desk her dad sits at.
+
+the body is in the lake somewhere. it's been there fifteen months.
+
+i'm going to talk to hannah.`,
+    nextBtn: '\u25b8 open AIM'
+  },
+
+  // ---- BEAT 1: hannah_collab — Hannah pivots to other people who were there ----
+  {
+    id: 'hannah_collab',
+    type: 'aim_log',
+    title: 'AIM :: glorfindel_lives',
+    meta: 'glorfindel_lives :: online',
+    log: [
+      { who: 'you', text: "i don't know what to do with this" },
+      { who: 'glorfindel_lives', text: "i know" },
+      { who: 'you', text: "there isn't anywhere to take it. his dad's detachment took the call" },
+      { who: 'glorfindel_lives', text: "yeah" },
+      { who: 'you', text: "so what do i do" },
+      { who: 'glorfindel_lives', text: "ok. here's what i've been thinking" },
+      { who: 'glorfindel_lives', text: "there are people who were there that we haven't talked to" },
+      { who: 'glorfindel_lives', text: "camille left the morning after. she was tegan's friend. she might have seen things" },
+      { who: 'glorfindel_lives', text: "and melissa \u2014 you tried to find her last year and got nothing. i've been getting better at this since then" },
+      { who: 'glorfindel_lives', text: "i wrote some code. let me send it to you" },
+      { who: 'you', text: "code for what" },
+      { who: 'glorfindel_lives', text: "finding people. tries a bunch of search engines. half the time it returns nothing \u2014 that's still data" },
+      { who: 'glorfindel_lives', text: "but i wrote it as functions so you can use the parts you want" },
+      { who: 'glorfindel_lives', text: "i'll email it. read through before you run it" },
+      { who: 'you', text: "ok" },
+      { who: 'glorfindel_lives', text: "check your hotmail" }
+    ],
+    nextBtn: '\u25b8 check hotmail'
+  },
+
+  // ---- BEAT 2: read_hannah_email — Hotmail interface, the email and attached script ----
+  {
+    id: 'read_hannah_email',
+    type: 'hotmail_view',
+    title: 'hotmail :: inbox (1 new)',
+    headers: {
+      from: 'glorfindel_h@hotmail.com',
+      to: 'you',
+      date: 'Thu, 17 Nov 2005 11:42 PM',
+      subject: 'find_person.py'
+    },
+    body: `i wrote this last week. i was going to wait until you asked but you asked.
+
+it takes a name and a region and tries a bunch of search engines, sometimes you get a livejournal, sometimes a school newspaper, sometimes nothing.
+
+the comments will help. read through it before you run anything.
+
+attached: find_person.py
+
+\u2014 h.`,
+    attachment: { name: 'find_person.py', size: '2 KB' },
+    diaryAfter: `// hannah is a programmer. i forgot. she's been programming as long as she's been online.
+// i'm going to read what she sent me.`,
+    nextBtn: '\u25b8 open the script'
+  },
+
+  // ---- BEAT 3: read_script — code-as-document, functions introduced by reading ----
+  {
+    id: 'read_script',
+    type: 'code_view',
+    title: 'find_person.py',
+    meta: 'h. v0.4. november 2005.',
+    code: `# find_person.py
+# h. glorfindel_h@hotmail.com
+# v0.4 \u2014 november 2005
+#
+# you give me a name and a region. i give you back what i can find.
+# it's not magic. half the time it returns nothing. that's still data.
+
+import urllib.request
+import re
+
+def google_for(name, region):
+    """ask google for the name and region. return the raw HTML."""
+    query = f'"{name}" {region}'.replace(' ', '+')
+    url = f"https://www.google.com/search?q={query}"
+    response = urllib.request.urlopen(url)
+    return response.read().decode("utf-8")
+
+def find_nexopia(html):
+    """search the html for nexopia profiles. return a list of usernames."""
+    pattern = r"www\\.nexopia\\.com/users/(\\w+)"
+    matches = re.findall(pattern, html)
+    seen = set()
+    unique = []
+    for m in matches:
+        if m not in seen:
+            seen.add(m)
+            unique.append(m)
+    return unique
+
+def find_livejournal(html):
+    """search the html for livejournal usernames."""
+    pattern = r"(\\w+)\\.livejournal\\.com"
+    matches = re.findall(pattern, html)
+    seen = set()
+    unique = []
+    for m in matches:
+        if m not in seen:
+            seen.add(m)
+            unique.append(m)
+    return unique
+
+def find_school_papers(html):
+    """find references to school newspapers."""
+    pattern = r"(\\w+(?:\\.com|\\.ca)/(?:news|paper|sports)/[\\w-]+)"
+    return re.findall(pattern, html)
+
+def find_person(name, region):
+    """the main one. takes a name and region. returns a dict of what we found."""
+    html = google_for(name, region)
+    return {
+        "name": name,
+        "region": region,
+        "nexopia": find_nexopia(html),
+        "livejournals": find_livejournal(html),
+        "school_papers": find_school_papers(html)
+    }
+
+# usage:
+# result = find_person("First Last", "alberta")
+# print(result["nexopia"])
+`,
+    diaryAfter: `// she defined functions.
+// i've been writing scripts top to bottom this whole time. she defined four functions and put them in a file and now she can call any one of them whenever she wants.
+// it's the same code i would have written, just \u2014 organized.
+// ok. i'm going to do this myself.`,
+    nextBtn: '\u25b8 python.exe'
+  },
+
+  // ---- BEAT 4: task_define_function — first function, def + return ----
+  {
+    id: 'task_define_function',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: summarize.py',
+    meta: 'your turn. write a function.',
+    skill: 'FUNCTIONS :: def AND RETURN VALUES',
+    storyAbove: `functions in python start with \`def\`, then a name, then parentheses with parameters, then a colon. inside the function you can do anything you'd do anywhere else. when you want to give back a value, use \`return\`. then anywhere else in your code you can call the function by name and use whatever it returns.`,
+    instructions: `define a function called \`summarize_person(result_dict)\` that takes a dict like the one Hannah's \`find_person\` returns. it should print one line: the name, then the count of nexopia profiles, livejournals, and school papers.`,
+    starterCode: `example = {
+    "name": "Camille McCleod",
+    "region": "edmonton",
+    "nexopia": ["camille_m"],
+    "livejournals": [],
+    "school_papers": ["uofaeditorial.com/news/2005-09-12"]
+}
+
+def summarize_person(result_dict):
+    # your code here
+    pass
+
+summarize_person(example)
+`,
+    expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 1 school papers`,
+    matchType: 'exact',
+    fileInjection: false,
+    onComplete: {
+      diary: `// first function. it's just code with a name on it.
+// ok. now camille.`
+    }
+  },
+
+  // ---- BEAT 5: task_find_camille — call find_person and summarize_person ----
+  {
+    id: 'task_find_camille',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: find_camille.py',
+    meta: 'use what hannah wrote. and what you wrote.',
+    skill: 'FUNCTION CALLS :: USING WHAT YOU AND OTHERS HAVE WRITTEN',
+    storyAbove: `hannah's \`find_person\` is loaded. your \`summarize_person\` is loaded. call them.`,
+    instructions: `call \`find_person("Camille McCleod", "edmonton")\` and store the result. summarize it with your function. then print the first nexopia username from the result.`,
+    starterCode: `result = find_person("Camille McCleod", "edmonton")
+summarize_person(result)
+
+# print the first nexopia username
+`,
+    expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 0 school papers
+camille_m_88`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// camille_m_88. nexopia profile, public, low traffic.
+// i'm going to look.`
+    }
+  },
+
+  // ---- BEAT 6: read_camille_nexopia — Camille's profile, normal Alberta teen ----
+  {
+    id: 'read_camille_nexopia',
+    type: 'nexopia_view',
+    title: 'nexopia :: camille_m_88',
+    profile: {
+      username: 'camille_m_88',
+      age: 18,
+      sex: 'female',
+      location: 'edmonton, alberta',
+      lastLogin: '2005-10-02',
+      mood: '',
+      music: 'avril lavigne, sum 41, three days grace, nickelback',
+      movies: 'mean girls, a walk to remember, the notebook',
+      aboutMe: `hey im camille!! im 14 and i live in edmonton with my parents and my little brother. i love camp pinecrest!!! best place ever :) my friends are the BEST. add me as a friend!! xoxo`,
+      wallPosts: [
+        { from: 'jenna_xo', date: '2005-09-14', text: 'missing u camille!! call me when ur back at school!!' },
+        { from: 'kaitlin_94', date: '2005-08-22', text: 'happy birthday bestie <3 <3' },
+        { from: 'matt_n_ab', date: '2005-07-03', text: 'hope u have a good summer girl' }
+      ]
+    },
+    diaryAfter: `// she's a normal kid. nexopia profile she stopped updating.
+// her wall is friends. her music is what every other 17-year-old in alberta is listening to.
+// i'm going to AIM her.`,
+    nextBtn: '\u25b8 message camille'
+  },
+
+  // ---- BEAT 7: camille_one_message — interactive AIM with player input ----
+  // The chapter's emotional center. Camille opens confident Wren did it.
+  // Cousin redirects to Tyler. Jersey memory surfaces. Cousin tells Camille
+  // about the Wren-engineered report. Camille processes.
+  {
+    id: 'camille_one_message',
+    type: 'camille_aim',
+    title: 'AIM :: camille_m_88',
+    meta: 'camille_m_88 :: online',
+    // The whole interaction is a state machine inside renderCamilleAim.
+    // States: opening -> ask_how_found -> camille_recognizes -> conviction_speech ->
+    //         redirect_check -> tyler_processing -> jersey_memory ->
+    //         betrayal_correction -> camille_close
+    diaryAfter: `// i told her.
+// she'd been certain it was wren for fifteen months. she'd told the police, she'd been brushed off, she'd carried it.
+// she was so right about wren and so wrong about what wren did.
+// tyler wore his lucky jersey to the bonfire and never wore it again.`,
+    nextBtn: '\u25b8 python.exe'
+  },
+
+  // ---- BEAT 8: task_find_melissa — function reuse on different input ----
+  {
+    id: 'task_find_melissa',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: find_melissa.py',
+    meta: 'same code. different input.',
+    skill: 'FUNCTION REUSE :: SAME CODE, DIFFERENT INPUTS',
+    storyAbove: `the function works for any name. you don't have to write it again.`,
+    instructions: `call \`find_person("Melissa Klassen", "calgary")\`. summarize. print all livejournal usernames, one per line.`,
+    starterCode: `result = find_person("Melissa Klassen", "calgary")
+summarize_person(result)
+
+# print all livejournal usernames, one per line
+`,
+    expectedOutput: `Melissa Klassen: 0 nexopia, 1 livejournals, 0 school papers
+mel_k_lights`,
+    matchType: 'exact',
+    fileInjection: true,
+    onComplete: {
+      diary: `// mel_k_lights. she still posts.
+// i'm going to read her. i'm not going to message her.`
+    }
+  },
+
+  // ---- BEAT 9: read_melissa_LJ — Melissa across years, getting out from under it ----
+  {
+    id: 'read_melissa_lj',
+    type: 'livejournal_view',
+    title: 'livejournal :: mel_k_lights',
+    profile: {
+      username: 'mel_k_lights',
+      name: 'melissa',
+      location: 'calgary, alberta',
+      mood: 'thoughtful',
+      music: 'tegan and sara'
+    },
+    posts: [
+      {
+        date: '2003-08-29',
+        title: 'home',
+        mood: 'exhausted',
+        music: '',
+        body: `i don't want to talk about it.
+
+i'll be fine.
+
+i need to sleep.`,
+        comments: 3,
+        locked: false
+      },
+      {
+        date: '2003-09-18',
+        title: '(no subject)',
+        mood: 'sarcastic',
+        music: 'death cab \u2014 transatlanticism',
+        body: `mom is making me see a therapist!! lucky me!! she's nice though i guess. her office has a fish tank.
+
+i'll go. i'll sit there. fine.`,
+        comments: 7,
+        locked: false
+      },
+      {
+        date: '2004-01-24',
+        title: 'an honest one',
+        mood: 'clearer',
+        music: '',
+        body: `the thing about being eaten alive by another girl is that you eventually start to see her as just a girl too.
+
+she's not a god. she's not the world. she's a 19-year-old in edmonton with a complex about being chosen and i was 16 and didn't know what i was getting into.
+
+i still love her in some way i don't have a name for. i don't want to. it's just there.
+
+but i can see her now. and the thing about seeing her is that she gets smaller.`,
+        comments: 14,
+        locked: false
+      },
+      {
+        date: '2004-08-17',
+        title: 'i didn\'t know her',
+        mood: 'angry',
+        music: '',
+        body: `the news said a girl from camp pinecrest. junior counsellor. drowned.
+
+i didn't know her. i wish i had.
+
+i'm so angry. i'm so angry at someone for the wrong reasons.`,
+        comments: 22,
+        locked: false
+      },
+      {
+        date: '2004-12-30',
+        title: '[friends only]',
+        body: '[locked post]',
+        comments: 0,
+        locked: true
+      },
+      {
+        date: '2005-03-11',
+        title: 'a year and a half',
+        mood: 'okay',
+        music: 'sufjan stevens',
+        body: `it's been a year and a half. i wanted to write something honest.
+
+what happened to me wasn't formative the way people think things are formative. it was damage. i didn't deserve it.
+
+what i did with it after \u2014 the therapist, the meds, the hard year, the friends who waited for me \u2014 that is what is forming me. forgiveness isn't for her. it's for me. i'm doing it for me.
+
+she's still 19 in my head. that's where i'm leaving her.`,
+        comments: 31,
+        locked: false
+      },
+      {
+        date: '2005-10-08',
+        title: 'in love (gay)',
+        mood: 'in love',
+        music: 'sleater-kinney',
+        body: `her name is robin. she's in my poli sci tutorial. she has this laugh.
+
+i'm just gonna leave that here.`,
+        comments: 47,
+        locked: false
+      }
+    ],
+    diaryAfter: `// melissa is alive. melissa is fine. she clocked exactly what happened to her.
+// wren did this to her. wren did it again to tegan. tegan knew the pattern and walked into it because she was already planning to leave.
+// i'm not going to message her. she did the work to get out from under it. she doesn't need me dragging her back.
+// wren is online. she always is.`,
+    nextBtn: '\u25b8 AIM'
+  },
+
+  // ---- BEAT 10: wren_breaks_silence — Wren AIMs first, brief, exhausted ----
+  {
+    id: 'wren_breaks_silence',
+    type: 'aim_log',
+    title: 'AIM :: wren_h',
+    meta: 'wren_h :: typing\u2026',
+    log: [
+      { who: 'wren_h', text: "i can't tell you everything you want to know" },
+      { who: 'wren_h', text: "i wasn't with her when she died. i told you that the first time. i'm telling you again" },
+      { who: 'wren_h', text: "but i thought of two things. idk if they help" },
+      { who: 'wren_h', text: "the bonfire. tyler hughes was sitting two rows behind tegan. i remember bc she made a joke later and called him \"the boy with the staring problem\"" },
+      { who: 'wren_h', text: "when i left the boathouse at 11:34 the lake was completely still. dock creaks. anyone walking near it would have made noise on the gravel" },
+      { who: 'wren_h', text: "she was alive when i left" },
+      { who: 'wren_h', text: "i'm trying to move on. i can't keep being in this" },
+      { who: 'wren_h', text: "i hope you find what you need. i'm done after this" },
+      { who: 'system', text: 'wren_h has signed off.' }
+    ],
+    diaryAfter: `// tyler at the bonfire. tegan called him "the boy with the staring problem."
+// tegan was alive when wren left. the dock acoustics confirm camille's timing on tyler.
+// wren was a piece of shit but wren wasn't this. camille had to find that out the hard way today.
+// wren is done. i'm letting her be done.`,
+    nextBtn: '\u25b8 AIM hannah'
+  },
+
+  // ---- BEAT 11: hannah_phone_decision — joint deduction of body location, phone call ----
+  {
+    id: 'hannah_phone_decision',
+    type: 'aim_log',
+    title: 'AIM :: glorfindel_lives',
+    meta: 'glorfindel_lives :: online',
+    log: [
+      { who: 'you', text: "camille saw tyler walking back from behind the boathouse at 11:50" },
+      { who: 'glorfindel_lives', text: "\u2026\u2026" },
+      { who: 'you', text: "wren left the dock at 11:34. tyler must have been waiting in the bush" },
+      { who: 'glorfindel_lives', text: "waiting for what" },
+      { who: 'you', text: "for wren to leave" },
+      { who: 'glorfindel_lives', text: "ok" },
+      { who: 'glorfindel_lives', text: "the friend who was supposed to drive her \u2014 i won't give you her name, for obvious reasons. it would have been a crime if the plan had worked, even though it shouldn't be" },
+      { who: 'glorfindel_lives', text: "she was at the boathouse from midnight to 2 AM. tegan never came" },
+      { who: 'glorfindel_lives', text: "she's been carrying that for fifteen months. she heard nothing" },
+      { who: 'you', text: "\u2026\u2026" },
+      { who: 'glorfindel_lives', text: "so the timing fits. tegan was already gone before midnight" },
+      { who: 'glorfindel_lives', text: "the dive team searched the open lake. they didn't search under the boathouse pilings" },
+      { who: 'glorfindel_lives', text: "if tyler killed her at the dock there are two places she ends up. floating out, or pinned under the structure" },
+      { who: 'glorfindel_lives', text: "they didn't find her floating" },
+      { who: 'you', text: "\u2026\u2026" },
+      { who: 'you', text: "she's under the boathouse" },
+      { who: 'glorfindel_lives', text: "that's what i think too" },
+      { who: 'glorfindel_lives', text: "do you want to find her" },
+      { who: 'you', text: "yes" },
+      { who: 'glorfindel_lives', text: "like. actually find her" },
+      { who: 'you', text: "yes" },
+      { who: 'glorfindel_lives', text: "the camp opens for staff in late june. you'd need waterproof gear. a flashlight. a way to be on the lake without being seen. ideally a partner who knows what they're doing" },
+      { who: 'glorfindel_lives', text: "i grew up swimming in halifax harbour. i can be there" },
+      { who: 'you', text: "are you serious" },
+      { who: 'glorfindel_lives', text: "can i call you" },
+      { who: 'you', text: "yes" },
+      { who: 'you', text: "my number is [redacted]" },
+      { who: 'glorfindel_lives', text: "calling now" }
+    ],
+    diaryAfter: `// the phone is ringing.`,
+    nextBtn: '\u25b8 wrap'
+  },
+
+  // ---- BEAT 12: wrap ----
+  {
+    id: 'wrap',
+    type: 'wrap',
+    title: 'chapter 8 :: complete',
+    body: `the call lasted forty minutes.
+we have until late june.`,
+    skillsLearned: [
+      'def: defining functions',
+      'return: function return values',
+      'function parameters',
+      'calling functions you wrote',
+      'calling functions someone else wrote',
+      'functions as a way to reuse code on different inputs',
+      'reading code by example',
+      '(integrated review) all of: file I/O, regex, datetime, list comprehensions, dict construction, urllib, the email module, string parsing, aggregation'
+    ],
+    statusBlock: `> save_state.dat written to localStorage
+> tegan_ashby :: located, presumed (boathouse pilings, kettle lake)
+> tyler_hughes :: located, age 19, red deer junior B hockey
+> sgt_d_hughes :: rcmp whitecourt, k division
+> camille_m :: gone (her choice, respected)
+> melissa_k :: alive, doing okay, not contacted (her right)
+> wren_h :: done
+> glorfindel_lives :: still here
+> deadline :: late june 2006`,
+    nextBtn: '\u25b8 end of chapter 8'
+  }
+];
+// ===========================================================================
+// RENDER STORY (linear, append-as-you-go)
+// ===========================================================================
+const storyContainer = document.getElementById('storyContainer');
+
+function renderStory() {
+  storyContainer.innerHTML = '';
+  // render all completed beats, then current beat
+  const upTo = Math.min(state.currentBeat, BEATS.length - 1);
+  for (let i = 0; i <= upTo; i++) {
+    renderBeat(BEATS[i], i === upTo);
+  }
+  // scroll to bottom
+  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+}
+
+function renderBeat(beat, isActive) {
+  if (beat.type === 'diary') return renderDiary(beat, isActive);
+  if (beat.type === 'task') return renderTask(beat, isActive);
+  if (beat.type === 'wrap') return renderWrap(beat, isActive);
+  if (beat.type === 'board') return renderBoard(beat, isActive);
+  if (beat.type === 'h_board') return renderHBoard(beat, isActive);
+  if (beat.type === 'aim_compose') return renderAimCompose(beat, isActive);
+  if (beat.type === 'aim_log') return renderAimLog(beat, isActive);
+  if (beat.type === 'archive_view') return renderArchiveView(beat, isActive);
+  if (beat.type === 'email_view') return renderEmailView(beat, isActive);
+  if (beat.type === 'search_results') return renderSearchResults(beat, isActive);
+  if (beat.type === 'multiplatform_archive') return renderMultiplatformArchive(beat, isActive);
+  // Ch8 new beat types:
+  if (beat.type === 'hotmail_view') return renderHotmailView(beat, isActive);
+  if (beat.type === 'code_view') return renderCodeView(beat, isActive);
+  if (beat.type === 'nexopia_view') return renderNexopiaView(beat, isActive);
+  if (beat.type === 'livejournal_view') return renderLivejournalView(beat, isActive);
+  if (beat.type === 'camille_aim') return renderCamilleAim(beat, isActive);
+}
+
+function renderEmailView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'email-window';
+  const email = beat.email;
+  w.innerHTML = `
+    <div class="window-titlebar email-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="email-headers">
+      <div class="email-header-row"><span class="email-header-label">From:</span> ${escapeHtml(email.from)}</div>
+      <div class="email-header-row"><span class="email-header-label">To:</span> ${escapeHtml(email.to)}</div>
+      <div class="email-header-row"><span class="email-header-label">Date:</span> ${escapeHtml(email.date)}</div>
+      <div class="email-header-row"><span class="email-header-label">Subject:</span> ${escapeHtml(email.subject)}</div>
+    </div>
+    <div class="email-body">${escapeHtml(email.body)}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderSearchResults(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'serp-window';
+  const resultsHtml = beat.results.map(r => `
+    <div class="serp-result">
+      <div class="serp-result-title">${escapeHtml(r.title)}</div>
+      <div class="serp-result-url">${escapeHtml(r.url)}</div>
+      <div class="serp-result-snippet">${escapeHtml(r.snippet)}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    ${beat.preamble ? `<div class="serp-preamble">${escapeHtml(beat.preamble).replace(/\n/g, '<br>')}</div>` : ''}
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="serp-header">
+      <span class="serp-logo">G<span style="color:#dd4b39">o</span><span style="color:#f4b400">o</span>g<span style="color:#0f9d58">l</span>e</span>
+      <div class="serp-search-bar">
+        <input class="serp-search-input" value="${escapeHtml(beat.query || '')}" readonly>
+        <button class="serp-search-btn">Google Search</button>
+      </div>
+    </div>
+    <div class="serp-result-count">Web Results 1-10 of about ${escapeHtml(beat.resultsCount || '???')}.</div>
+    <div class="serp-results">${resultsHtml}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderMultiplatformArchive(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'multiplatform-window';
+  const postsHtml = beat.posts.map(p => {
+    if (p.platform === 'GAP') {
+      return `<div class="mp-gap">${escapeHtml(p.body)}</div>`;
+    }
+    if (p.platform === 'XANGA') {
+      return `<div class="mp-post mp-xanga">
+        <div class="mp-post-header"><span class="mp-platform-tag">XANGA</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
+        ${p.mood ? `<div class="mp-mood">mood: ${escapeHtml(p.mood)}</div><div class="mp-music">music: ${escapeHtml(p.music)}</div>` : ''}
+        <div class="mp-content">${escapeHtml(p.body).replace(/\n/g, '<br>')}</div>
+        ${p.comments ? `<div class="mp-comments">${escapeHtml(p.comments)}</div>` : ''}
+      </div>`;
+    }
+    if (p.platform === 'MYSPACE') {
+      return `<div class="mp-post mp-myspace">
+        <div class="mp-post-header"><span class="mp-platform-tag">MYSPACE</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
+        ${p.photoDescription ? `<div class="mp-photo">${escapeHtml(p.photoDescription)}</div>` : ''}
+        ${p.photoCaption ? `<div class="mp-caption">caption: ${escapeHtml(p.photoCaption)}</div>` : ''}
+        ${p.statusUpdate ? `<div class="mp-status">status: ${escapeHtml(p.statusUpdate)}</div>` : ''}
+        ${p.top8 ? `<div class="mp-top-friends">top 8 friends: ${p.top8.map(f => escapeHtml(f)).join(', ')}</div>` : ''}
+      </div>`;
+    }
+    if (p.platform === 'HOCKEY FORUM') {
+      return `<div class="mp-post mp-forum">
+        <div class="mp-post-header"><span class="mp-platform-tag">FORUM</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
+        <div class="mp-thread">post ${escapeHtml(p.postNumber)} in thread "${escapeHtml(p.thread)}"</div>
+        <div class="mp-content">${escapeHtml(p.body).replace(/\n/g, '<br>')}</div>
+      </div>`;
+    }
+    return '';
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="archive-meta">${beat.meta || ''}</div>
+    <div class="multiplatform-body">${postsHtml}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+// ===========================================================================
+// CH8 BEAT RENDERERS
+// ===========================================================================
+
+function renderHotmailView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'hotmail-window';
+  const h = beat.headers || {};
+  const att = beat.attachment;
+  w.innerHTML = `
+    <div class="window-titlebar hotmail-titlebar">
+      <span>${escapeHtml(beat.title)}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="hotmail-banner">
+      <span class="hotmail-logo">MSN <span class="hotmail-logo-accent">Hotmail</span></span>
+      <span class="hotmail-userinfo">signed in as: you@hotmail.com</span>
+    </div>
+    <div class="hotmail-headers">
+      <div class="hotmail-header-row"><span class="hotmail-header-label">From:</span> <span class="hotmail-header-value">${escapeHtml(h.from || '')}</span></div>
+      <div class="hotmail-header-row"><span class="hotmail-header-label">To:</span> <span class="hotmail-header-value">${escapeHtml(h.to || '')}</span></div>
+      <div class="hotmail-header-row"><span class="hotmail-header-label">Date:</span> <span class="hotmail-header-value">${escapeHtml(h.date || '')}</span></div>
+      <div class="hotmail-header-row"><span class="hotmail-header-label">Subject:</span> <span class="hotmail-header-value hotmail-subject">${escapeHtml(h.subject || '')}</span></div>
+    </div>
+    <div class="hotmail-body">${escapeHtml(beat.body || '').replace(/\n/g, '<br>')}</div>
+    ${att ? `<div class="hotmail-attachment">
+      <span class="hotmail-attach-icon">📎</span>
+      <span class="hotmail-attach-name">${escapeHtml(att.name)}</span>
+      <span class="hotmail-attach-size">${escapeHtml(att.size || '')}</span>
+    </div>` : ''}
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderCodeView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'code-window';
+  // Simple syntax highlighting via line-by-line classification
+  const lines = (beat.code || '').split('\n');
+  const highlighted = lines.map(line => {
+    let cls = 'code-line';
+    let html = escapeHtml(line);
+    if (line.trim().startsWith('#')) {
+      cls += ' code-comment';
+    } else if (/^\s*def\s/.test(line)) {
+      cls += ' code-def';
+      html = html.replace(/(def)(\s+)(\w+)/, '<span class="kw">$1</span>$2<span class="fn">$3</span>');
+    } else if (/^\s*(import|from|return|if|else|for|in|not|and|or|class)(\s|$)/.test(line)) {
+      cls += ' code-keyword';
+      html = html.replace(/^(\s*)(import|from|return|if|else|for|in|not|and|or|class)(\b)/, '$1<span class="kw">$2</span>$3');
+    } else if (line.trim().startsWith('"""') || line.trim().endsWith('"""')) {
+      cls += ' code-docstring';
+    }
+    return `<div class="${cls}">${html || '&nbsp;'}</div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar code-titlebar">
+      <span>${escapeHtml(beat.title)}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="code-meta">${escapeHtml(beat.meta || '')}</div>
+    <div class="code-body">${highlighted}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderNexopiaView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'nexopia-window';
+  const p = beat.profile || {};
+  const wallHtml = (p.wallPosts || []).map(post => `
+    <div class="nx-wallpost">
+      <div class="nx-wallpost-header"><span class="nx-wallpost-from">${escapeHtml(post.from)}</span> <span class="nx-wallpost-date">${escapeHtml(post.date)}</span></div>
+      <div class="nx-wallpost-text">${escapeHtml(post.text)}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar nexopia-titlebar">
+      <span>${escapeHtml(beat.title)}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="nexopia-banner">
+      <span class="nexopia-logo">nex<span class="nexopia-logo-accent">opia</span></span>
+      <span class="nexopia-tagline">user profile</span>
+    </div>
+    <div class="nexopia-profile">
+      <div class="nx-pic-placeholder">[no pic]</div>
+      <div class="nx-info">
+        <div class="nx-username">${escapeHtml(p.username || '')}</div>
+        <div class="nx-stat"><span class="nx-stat-label">age:</span> ${escapeHtml(String(p.age || ''))}</div>
+        <div class="nx-stat"><span class="nx-stat-label">sex:</span> ${escapeHtml(p.sex || '')}</div>
+        <div class="nx-stat"><span class="nx-stat-label">location:</span> ${escapeHtml(p.location || '')}</div>
+        <div class="nx-stat"><span class="nx-stat-label">last login:</span> ${escapeHtml(p.lastLogin || '')}</div>
+      </div>
+    </div>
+    <div class="nx-section">
+      <div class="nx-section-title">music:</div>
+      <div class="nx-section-body">${escapeHtml(p.music || '')}</div>
+    </div>
+    <div class="nx-section">
+      <div class="nx-section-title">movies:</div>
+      <div class="nx-section-body">${escapeHtml(p.movies || '')}</div>
+    </div>
+    <div class="nx-section">
+      <div class="nx-section-title">about me:</div>
+      <div class="nx-section-body nx-about">${escapeHtml(p.aboutMe || '')}</div>
+    </div>
+    <div class="nx-section">
+      <div class="nx-section-title">wall posts:</div>
+      <div class="nx-section-body">${wallHtml}</div>
+    </div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderLivejournalView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'lj-window';
+  const p = beat.profile || {};
+  const postsHtml = (beat.posts || []).map(post => {
+    if (post.locked) {
+      return `<div class="lj-post lj-post-locked">
+        <div class="lj-post-date">${escapeHtml(post.date)}</div>
+        <div class="lj-post-title"><span class="lj-lock">🔒</span> ${escapeHtml(post.title)}</div>
+        <div class="lj-post-body lj-post-body-locked">${escapeHtml(post.body)}</div>
+      </div>`;
+    }
+    return `<div class="lj-post">
+      <div class="lj-post-date">${escapeHtml(post.date)}</div>
+      <div class="lj-post-title">${escapeHtml(post.title || '(no subject)')}</div>
+      ${post.mood ? `<div class="lj-post-meta">current mood: <span class="lj-mood">${escapeHtml(post.mood)}</span></div>` : ''}
+      ${post.music ? `<div class="lj-post-meta">current music: <span class="lj-music">${escapeHtml(post.music)}</span></div>` : ''}
+      <div class="lj-post-body">${escapeHtml(post.body).replace(/\n/g, '<br>')}</div>
+      ${post.comments ? `<div class="lj-post-footer">${post.comments} comments</div>` : ''}
+    </div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar lj-titlebar">
+      <span>${escapeHtml(beat.title)}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="lj-banner">
+      <span class="lj-logo">LiveJournal</span>
+      <span class="lj-username">/users/${escapeHtml(p.username || '')}/</span>
+    </div>
+    <div class="lj-userhead">
+      <div class="lj-name">${escapeHtml(p.name || '')}</div>
+      <div class="lj-loc">${escapeHtml(p.location || '')}</div>
+    </div>
+    <div class="lj-posts">${postsHtml}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+// ============ CAMILLE INTERACTIVE AIM ============
+// State machine: opening -> q1_input -> recognize -> q2_input -> conviction ->
+//                redirect_input -> tyler_processing -> jersey_memory ->
+//                betrayal_correction -> close
+// State stored in window._camilleState (per-render-cycle).
+
+function renderCamilleAim(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window camille-aim';
+  w.id = 'camille-aim-' + beat.id;
+
+  const completed = state.completedBeats.includes(beat.id);
+
+  // Initialize state if first render and not already completed
+  if (isActive && !completed && !window._camilleState) {
+    window._camilleState = { stage: 'opening', log: [] };
+    // Seed opening messages
+    window._camilleState.log = [
+      { who: 'camille_m_88', text: 'wait' },
+      { who: 'camille_m_88', text: "are you tegan's cousin??" }
+    ];
+  }
+
+  // If already completed (returning to chapter), show full transcript
+  if (completed) {
+    w.innerHTML = `
+      <div class="window-titlebar">
+        <span>${escapeHtml(beat.title)}</span>
+        <div class="window-titlebar-buttons">
+          <span class="titlebar-btn">_</span>
+          <span class="titlebar-btn">□</span>
+          <span class="titlebar-btn">×</span>
+        </div>
+      </div>
+      <div class="aim-meta">${escapeHtml(beat.meta || '')}</div>
+      <div class="aim-log">${renderCamilleFullLog()}</div>
+      ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+      ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+        <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+      </div>` : ''}
+    `;
+    storyContainer.appendChild(w);
+    return;
+  }
+
+  if (!isActive) {
+    // Past beat, not yet completed (shouldn't really happen but safety)
+    w.innerHTML = `
+      <div class="window-titlebar"><span>${escapeHtml(beat.title)}</span></div>
+      <div class="aim-meta">${escapeHtml(beat.meta || '')}</div>
+      <div class="aim-log">${renderCamilleLog(window._camilleState ? window._camilleState.log : [])}</div>
+    `;
+    storyContainer.appendChild(w);
+    return;
+  }
+
+  // Active interactive render
+  const st = window._camilleState;
+  const logHtml = renderCamilleLog(st.log);
+
+  let inputHtml = '';
+  if (st.stage === 'opening') {
+    inputHtml = `
+      <div class="aim-send-bar">
+        <input class="aim-send-input" id="camille-input" type="text" placeholder="how did you find me..." maxlength="200" onkeypress="if(event.key==='Enter')camilleSubmit('opening')">
+        <button class="aim-send-btn" onclick="camilleSubmit('opening')">send</button>
+      </div>
+    `;
+  } else if (st.stage === 'after_recognize') {
+    inputHtml = `
+      <div class="aim-send-bar">
+        <input class="aim-send-input" id="camille-input" type="text" placeholder="ask her something..." maxlength="200" onkeypress="if(event.key==='Enter')camilleSubmit('after_recognize')">
+        <button class="aim-send-btn" onclick="camilleSubmit('after_recognize')">send</button>
+      </div>
+    `;
+  } else if (st.stage === 'after_conviction') {
+    inputHtml = `
+      <div class="aim-send-bar">
+        <input class="aim-send-input" id="camille-input" type="text" placeholder="redirect her..." maxlength="200" onkeypress="if(event.key==='Enter')camilleSubmit('after_conviction')">
+        <button class="aim-send-btn" onclick="camilleSubmit('after_conviction')">send</button>
+      </div>
+    `;
+  } else if (st.stage === 'closed') {
+    inputHtml = `
+      <div class="aim-send-bar" style="text-align: center;">
+        <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+      </div>
+    `;
+  }
+
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${escapeHtml(beat.title)}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-meta">${escapeHtml(beat.meta || '')}</div>
+    <div class="aim-log" id="camille-log">${logHtml}</div>
+    ${st.stage === 'closed' && beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${inputHtml}
+  `;
+  storyContainer.appendChild(w);
+  // Auto-focus input
+  setTimeout(() => {
+    const inp = document.getElementById('camille-input');
+    if (inp) inp.focus();
+  }, 50);
+}
+
+function renderCamilleLog(log) {
+  return log.map(entry => {
+    if (entry.who === 'system') {
+      return `<div class="aim-line aim-system">${escapeHtml(entry.text)}</div>`;
+    }
+    if (entry.who === 'pause') {
+      return `<div class="aim-line aim-system">[${escapeHtml(entry.text)}]</div>`;
+    }
+    const isYou = entry.who === 'you';
+    return `<div class="aim-line"><span class="aim-handle ${isYou ? 'aim-handle-you' : 'aim-handle-them'}">${escapeHtml(entry.who)}:</span> <span class="aim-text">${escapeHtml(entry.text)}</span></div>`;
+  }).join('');
+}
+
+function renderCamilleFullLog() {
+  // For replay after completion — show the entire conversation
+  const log = window._camilleFullLog || state.camilleLog;
+  if (!log) return '';
+  return renderCamilleLog(log);
+}
+
+// Submit handler for Camille's interactive AIM
+function camilleSubmit(stage) {
+  const inp = document.getElementById('camille-input');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+
+  const st = window._camilleState;
+  if (!st || st.stage !== stage) return;  // ignore stale clicks
+  st.log.push({ who: 'you', text: text });
+
+  if (stage === 'opening') {
+    // Player told Camille how they found her
+    st.log.push({ who: 'camille_m_88', text: 'omg that screenname is hers. that\'s what i thought' });
+    st.log.push({ who: 'camille_m_88', text: 'ok. so u\'ve been digging' });
+    st.log.push({ who: 'camille_m_88', text: 'i\'ve been waiting for someone to dig' });
+    st.log.push({ who: 'camille_m_88', text: 'what do u have' });
+    st.stage = 'after_recognize';
+  } else if (stage === 'after_recognize') {
+    // Player asks Camille something. Camille leads with Wren conviction regardless.
+    st.log.push({ who: 'camille_m_88', text: 'ok i\'ll tell u what i\'ve been saying for fifteen months and what nobody listens to' });
+    st.log.push({ who: 'camille_m_88', text: 'wren did it' });
+    st.log.push({ who: 'camille_m_88', text: 'like. 100% wren did it' });
+    st.log.push({ who: 'camille_m_88', text: 'i told the police that morning. about wren and melissa last summer. about wren coming back to the cabin wet at 11:35' });
+    st.log.push({ who: 'camille_m_88', text: 'they brushed me off :/ they had her cabin time confirmed but she had hours unaccounted for before that' });
+    st.log.push({ who: 'camille_m_88', text: 'i was 17. i was a kid. nobody listens to a kid' });
+    st.log.push({ who: 'camille_m_88', text: 'but i KNOW her. i watched her destroy melissa in 2003 and i watched her work on tegan all summer' });
+    st.log.push({ who: 'camille_m_88', text: 'i\'ve been waiting for someone to actually look' });
+    st.log.push({ who: 'camille_m_88', text: 'what did u find. did u get her' });
+    st.stage = 'after_conviction';
+  } else if (stage === 'after_conviction') {
+    // Player's job: redirect to Tyler. Look for "tyler" keyword.
+    const lower = text.toLowerCase();
+    if (lower.includes('tyler')) {
+      // Tyler revealed
+      st.log.push({ who: 'camille_m_88', text: 'tyler hughes' });
+      st.log.push({ who: 'camille_m_88', text: 'the pinewood JC??' });
+      st.log.push({ who: 'camille_m_88', text: '\u2026\u2026' });
+      st.log.push({ who: 'camille_m_88', text: 'are u serious' });
+      st.log.push({ who: 'camille_m_88', text: 'i need u to walk me thru this' });
+      // Cousin's auto-summary
+      st.log.push({ who: 'you', text: 'abrasions on his hands, at the nurse the next morning' });
+      st.log.push({ who: 'you', text: 'he said he fell on the trail in the dark. but he was at the bonfire with her hours before' });
+      st.log.push({ who: 'you', text: 'ten hour gap between when wren left her at the boathouse and when he showed up at the nurse' });
+      st.log.push({ who: 'you', text: 'his dad is RCMP. whitecourt detachment' });
+      st.log.push({ who: 'pause', text: 'camille_m_88 is typing\u2026' });
+      st.log.push({ who: 'camille_m_88', text: 'i\'ve spent fifteen months hating her' });
+      st.log.push({ who: 'camille_m_88', text: 'i need to sit with this for a sec' });
+      st.log.push({ who: 'camille_m_88', text: 'ok' });
+      st.log.push({ who: 'camille_m_88', text: 'ok if it was tyler' });
+      st.log.push({ who: 'camille_m_88', text: 'then i was completely fucking wrong about what i saw that night' });
+      st.log.push({ who: 'camille_m_88', text: 'wren was wet bc she\'d been on the dock with tegan. they hadn\'t been in the water. tegan was alive when wren left' });
+      st.log.push({ who: 'camille_m_88', text: 'which means whatever wren did to her wasn\'t this' });
+      st.log.push({ who: 'camille_m_88', text: 'ok' });
+      st.log.push({ who: 'pause', text: 'camille_m_88 is typing\u2026' });
+      st.log.push({ who: 'camille_m_88', text: 'wait' });
+      st.log.push({ who: 'camille_m_88', text: 'the jersey' });
+      st.log.push({ who: 'camille_m_88', text: 'tyler had this hockey jersey he wore literally everywhere. whitecourt minor hockey, his old team. he\'d talk about it to the campers. the pucks, the scouts, all that' });
+      st.log.push({ who: 'camille_m_88', text: 'he wore it to the bonfire. i remember bc i thought it was weird he wore it to a CAMP bonfire on the last weekend' });
+      st.log.push({ who: 'camille_m_88', text: 'after that night i never saw him in it again' });
+      st.log.push({ who: 'camille_m_88', text: 'i thought maybe his mom finally made him stop wearing it like a freshman or whatever lol' });
+      st.log.push({ who: 'camille_m_88', text: 'i didn\'t think anything of it bc i was so locked onto wren' });
+      st.log.push({ who: 'camille_m_88', text: 'but if it was tyler' });
+      st.log.push({ who: 'camille_m_88', text: 'he was wearing the jersey when he did it' });
+      // Cousin tells her about the report betrayal
+      st.log.push({ who: 'you', text: 'camille' });
+      st.log.push({ who: 'you', text: "there's something i need to tell you about the report tegan made about your meds" });
+      st.log.push({ who: 'camille_m_88', text: 'what' });
+      st.log.push({ who: 'you', text: 'wren made her do it' });
+      st.log.push({ who: 'you', text: "there's an email from wren to tegan two days before she died. wren told her to scare you about melissa. tegan wouldn't. so wren told her to report you instead" });
+      st.log.push({ who: 'you', text: "tegan was being controlled. she didn't choose to do it" });
+      st.log.push({ who: 'pause', text: 'camille_m_88 is typing\u2026' });
+      st.log.push({ who: 'camille_m_88', text: 'oh' });
+      st.log.push({ who: 'camille_m_88', text: 'oh tegan :(' });
+      st.log.push({ who: 'camille_m_88', text: "i thought she'd just decided i wasn't worth it anymore" });
+      st.log.push({ who: 'camille_m_88', text: "i'm so sorry tegan" });
+      st.log.push({ who: 'camille_m_88', text: 'thank u for telling me' });
+      // Close
+      st.log.push({ who: 'camille_m_88', text: 'i need to go. i need to think' });
+      st.log.push({ who: 'camille_m_88', text: 'i was so wrong and so right at the same time' });
+      st.log.push({ who: 'camille_m_88', text: 'wren was a monster. she just wasn\'t THIS monster' });
+      st.log.push({ who: 'camille_m_88', text: "can u not message me again unless something happens. i can't process this in real time" });
+      st.log.push({ who: 'camille_m_88', text: 'but tell me if u find her' });
+      st.log.push({ who: 'camille_m_88', text: 'tegan i mean' });
+      st.log.push({ who: 'camille_m_88', text: 'tell me when u find her' });
+      st.log.push({ who: 'system', text: 'camille_m_88 has signed off.' });
+      st.stage = 'closed';
+      // Save full log so we can replay it later if player revisits
+      window._camilleFullLog = st.log.slice();
+      state.camilleLog = st.log.slice();
+      // Mark beat complete
+      const beat = BEATS.find(b => b.id === 'camille_one_message');
+      if (beat) {
+        if (beat.charms) state.charms += beat.charms;
+        if (!state.completedBeats.includes(beat.id)) {
+          state.completedBeats.push(beat.id);
+        }
+        writeSave(state);
+      }
+    } else {
+      // Player didn't mention Tyler. Camille presses for clarification.
+      st.log.push({ who: 'camille_m_88', text: 'what' });
+      st.log.push({ who: 'camille_m_88', text: 'what do u mean' });
+      st.log.push({ who: 'camille_m_88', text: 'is there someone specific you\'re asking about' });
+      // Stay in same stage so they can try again
+    }
+  }
+  renderStory();
+}
+
+function renderAimCompose(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-compose-body">${beat.body}</div>
+    ${isActive ? `<div class="aim-send-bar">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
+    </div>` : `<div class="aim-send-bar" style="text-align: right; color: var(--bg-deep); font-family: 'Silkscreen', monospace; font-size: 9px;">✓ sent</div>`}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderAimLog(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'aim-window';
+  const items = beat.messages || beat.log || [];
+  const messagesHtml = items.map(m => {
+    const handle = m.from || m.who || '';
+    if (!m.text || m.text.trim() === '' || m.text === '…') {
+      return `<div class="aim-message-pause">. . .</div>`;
+    }
+    if (handle === 'system') {
+      return `<div class="aim-message-pause" style="color: var(--lime-acid); font-style: italic;">${escapeHtml(m.text)}</div>`;
+    }
+    if (handle === 'pause') {
+      return `<div class="aim-message-pause">[${escapeHtml(m.text)}]</div>`;
+    }
+    const isPlayer = handle === 'you';
+    const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
+    return `<div class="${cls}"><span class="aim-message-from">${escapeHtml(handle)}:</span>${escapeHtml(m.text)}</div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-log-body">${messagesHtml}</div>
+    ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderArchiveView(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'archive-window';
+  const messagesHtml = beat.messages.map(m => {
+    return `<div class="archive-line">[${m.date}] <span class="archive-sender">${m.sender}:</span> ${escapeHtml(m.content)}</div>`;
+  }).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="archive-meta">${beat.meta || ''}</div>
+    <div class="archive-body">${messagesHtml}</div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.fragments.map(f => `
+    <div class="fragment-card ${f.platform.toLowerCase()}">
+      <div class="fragment-id">#${f.id}</div>
+      <div class="fragment-platform">${f.platform}</div>
+      <div class="fragment-time">${f.time}</div>
+      <div class="fragment-from">${f.from} → ${f.to}</div>
+      <div class="fragment-content">${f.content}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="fragment-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderHBoard(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'fragment-board';
+  const cardsHtml = beat.candidates.map(c => `
+    <div class="hboard-card">
+      <div class="hboard-name">${c.first} ${c.last}</div>
+      <div class="hboard-role">${c.role}, age ${c.age}</div>
+      <div class="hboard-row"><span class="hboard-label">aug 14</span>${c.status}</div>
+      <div class="hboard-row"><span class="hboard-label">alibi</span>${c.alibi}</div>
+    </div>
+  `).join('');
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div style="padding: 12px 16px; background: var(--window-bg); color: var(--bg-deep); font-family: 'VT323', monospace; font-size: 16px; border-bottom: 2px solid var(--bg-deep);">
+      ${beat.intro}
+    </div>
+    <div class="hboard-grid">
+      ${cardsHtml}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 2px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderDiary(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'window story-window';
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="diary-entry">
+      <div class="diary-meta">${beat.meta}</div>
+${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')}
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function renderTask(beat, isActive) {
+  const completed = state.completedBeats.includes(beat.id);
+  const w = document.createElement('div');
+  w.className = 'window terminal-window';
+
+  // Story above, in a diary-ish small note
+  const storyHtml = beat.storyAbove ? `
+    <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;">
+      ${beat.storyAbove}
+    </div>` : '';
+
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    ${storyHtml}
+    <div style="background: var(--window-bg); padding: 14px 16px;">
+      <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;">
+        ✦ skill unlocking: ${beat.skill}
+      </div>
+      <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;">
+        ${beat.instructions}
+      </div>
+      <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div>
+      <div style="margin-top: 8px;">
+        <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button>
+      </div>
+    </div>
+    <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div>
+    <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starterCode || beat.starter || '') : (beat.starterCode || beat.starter || '')}</textarea>
+
+```
+<div class="editor-bar">
+  <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button>
+  <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button>
+  <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);">
+    ${completed ? '✓ COMPLETE' : 'NOT YET RUN'}
+  </span>
+</div>
+<div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div>
+${completed && isActive ? `<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
+  <button class="btn" onclick="advanceBeat()">▸ continue</button>
+</div>` : ''}
+```
+
+`;
+storyContainer.appendChild(w);
+}
+
+function renderWrap(beat, isActive) {
+const w = document.createElement(‘div’);
+w.className = ‘window story-window’;
+w.style.maxWidth = ‘640px’;
+w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> ${beat.statusBlock ? beat.statusBlock.replace(/\n/g, '<br>') : '> save_state.dat written to localStorage'} </div> <div style="margin-top: 16px; text-align: center;"> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
+storyContainer.appendChild(w);
+}
+
+// ===========================================================================
+// TASK EXECUTION
+// ===========================================================================
+async function runTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+const codeEl = document.getElementById(‘code-’ + beatId);
+const outEl = document.getElementById(‘output-’ + beatId);
+const code = codeEl.value;
+
+outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
+
+// Patch input() if needed
+let runCode = code;
+if (beat.fakeInput !== undefined) {
+// monkey-patch input() to return our fake value
+runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
+}
+
+// Inject the chapter’s filesystem if requested
+if (beat.fileInjection) {
+await injectChapter8Files();
+}
+
+const result = await runPython(runCode);
+const actualOutput = (result.output || ‘’).trimEnd();
+
+if (!result.ok) {
+outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+return;
+}
+
+// Check expected output
+let passed = false;
+// Allow expectedOutput to use \n as literal newline escape
+const expectedNormalized = (beat.expectedOutput || ‘’).replace(/\n/g, ‘\n’);
+if (beat.matchType === ‘exact’) {
+passed = actualOutput.trim() === expectedNormalized.trim();
+} else if (beat.matchType === ‘contains’) {
+passed = actualOutput.includes(expectedNormalized);
+}
+
+if (passed) {
+outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
+// mark complete
+if (!state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+state.charms += (beat.charms || 0);
+// store the working code
+beat.completedCode = code;
+writeSave(state);
+}
+// show buddy popup
+if (beat.onComplete?.buddy) {
+showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
+}
+// re-render to show “continue” button
+setTimeout(() => renderStory(), 600);
+} else {
+outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
+}
+}
+
+function resetTask(beatId) {
+const beat = BEATS.find(b => b.id === beatId);
+document.getElementById(‘code-’ + beatId).value = beat.starterCode || beat.starter || ‘’;
+document.getElementById(‘output-’ + beatId).innerHTML = `<span class="info">// awaiting execution...</span>`;
+}
+
+function escapeHtml(s) {
+return String(s).replace(/[&<>]/g, c => ({’&’:’&’,’<’:’<’,’>’:’>’}[c]));
+}
+
+// ===========================================================================
+// BEAT ADVANCE
+// ===========================================================================
+function advanceBeat() {
+// mark diary beats as “completed” implicitly (they only need to be read)
+const beat = BEATS[state.currentBeat];
+if (beat && (beat.type === ‘diary’ || beat.type === ‘board’ || beat.type === ‘h_board’ || beat.type === ‘aim_compose’ || beat.type === ‘aim_log’ || beat.type === ‘archive_view’ || beat.type === ‘email_view’ || beat.type === ‘search_results’ || beat.type === ‘multiplatform_archive’ || beat.type === ‘hotmail_view’ || beat.type === ‘code_view’ || beat.type === ‘nexopia_view’ || beat.type === ‘livejournal_view’) && !state.completedBeats.includes(beat.id)) {
+state.completedBeats.push(beat.id);
+}
+state.currentBeat = Math.min(state.currentBeat + 1, BEATS.length - 1);
+writeSave(state);
+renderStory();
+}
+
+function resetGame() {
+if (confirm(‘really restart from the beginning? all your progress will be erased.’)) {
+localStorage.removeItem(SAVE_KEY);
+location.reload();
+}
+}
+
+// ===========================================================================
+// BUDDY POPUP
+// ===========================================================================
+function showBuddy(name, msg) {
+document.getElementById(‘buddyName’).textContent = name + ’ :: incoming message’;
+document.getElementById(‘buddyMessage’).innerHTML = msg;
+const popup = document.getElementById(‘buddyPopup’);
+popup.classList.remove(‘hidden’);
+// play a soft chime — emulated as a CSS attention grab
+popup.style.animation = ‘none’;
+setTimeout(() => { popup.style.animation = ‘’; }, 10);
+}
+function closeBuddy() {
+document.getElementById(‘buddyPopup’).classList.add(‘hidden’);
+}
+
+// auto-resume from save
+if (state.userName && state.currentBeat > 0) {
+// skip intro
+document.getElementById(‘userNameInput’).value = state.userName;
+// keep intro visible but offer continue — simpler: go straight in
+setTimeout(() => {
+document.getElementById(‘introScreen’).classList.add(‘hidden’);
+document.getElementById(‘desktop’).classList.remove(‘hidden’);
+document.getElementById(‘taskbar’).classList.remove(‘hidden’);
+makeSparkles();
+startClock();
+renderStory();
+}, 100);
+}
+</script>
+
+</body>
+</html>
