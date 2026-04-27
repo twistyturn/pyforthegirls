@@ -823,11 +823,11 @@ i can't sleep.`,
     instructions: `<p>a <strong>variable</strong> stores a value you can reuse. you make one with <code>=</code>:</p>
                    <p><code>name = "tegan"</code></p>
                    <p>then <code>print(name)</code> shows what's inside.</p>
-                   <p><strong>your task:</strong> make two variables, <code>name</code> and <code>day</code>, with values <code>"tegan"</code> and <code>5</code>. then print them, each on their own line, in that order.</p>`,
-    starter: `name = \nday = \nprint(name)\nprint(day)`,
+                   <p><strong>your task:</strong> the scaffold below already runs. change the placeholder values so <code>name</code> is <code>"tegan"</code> and <code>day</code> is <code>5</code>. (5 is a number, so no quotes around it.)</p>`,
+    starter: `name = "your name"\nday = "today"\nprint(name)\nprint(day)`,
     expectedOutput: 'tegan\n5',
     matchType: 'exact',
-    hint: `you only need to fill in the right side of each <code>=</code>. quotes around <code>tegan</code>, no quotes around <code>5</code> (it's a number).`,
+    hint: `change <code>"your name"</code> to <code>"tegan"</code>. change <code>"today"</code> to <code>5</code>. (5 is a number, no quotes around it.)`,
     onComplete: {
       diary: `// log_entry.py running. day 5 of camp.`,
       buddy: { name: 'tegan_a87', msg: 'hey. did wren\'s name come up in any of those scripts yet? if it did, don\'t skip past it. please.' }
