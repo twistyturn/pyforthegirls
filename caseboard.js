@@ -235,6 +235,99 @@
     document.head.appendChild(style);
   }
 
+  // ===========================================================================
+  // modal scaffold + scrubber
+  // ===========================================================================
+  function injectModal() {
+    if (document.getElementById('cb-overlay')) return;
+    const div = document.createElement('div');
+    div.id = 'cb-overlay';
+    div.className = 'cb-overlay';
+    div.innerHTML = `
+      <div class="cb-shell" role="dialog" aria-modal="true" aria-label="caseboard">
+        <div class="cb-titlebar">
+          <span>caseboard.psd :: tegan</span>
+          <span class="cb-close" id="cb-close-btn" title="close">x</span>
+        </div>
+        <div class="cb-scrubber" id="cb-scrubber">
+          <span class="cb-scrubber-label" id="cb-scrub-label">showing: end of chapter 1</span>
+          <span style="flex: 1;"></span>
+          <span style="color:#c8a8e8; letter-spacing:1px;">jump to:</span>
+          <span id="cb-scrub-buttons"></span>
+        </div>
+        <div class="cb-board" id="cb-board"></div>
+      </div>
+    `;
+    document.body.appendChild(div);
+    document.getElementById('cb-close-btn').addEventListener('click', Caseboard.close);
+    div.addEventListener('click', function(e) {
+      if (e.target === div) Caseboard.close();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && div.classList.contains('cb-open')) Caseboard.close();
+    });
+  }
+
+  // module-internal state
+  let currentView = 1;        // chapter snapshot currently displayed
+  let highestUnlocked = 1;    // highest chapter the player can scrub to
+
+  function renderScrubber() {
+    const btns = document.getElementById('cb-scrub-buttons');
+    const label = document.getElementById('cb-scrub-label');
+    if (!btns || !label) return;
+    label.textContent = 'showing: end of chapter ' + currentView;
+    btns.innerHTML = '';
+    for (let i = 1; i <= 8; i++) {
+      const b = document.createElement('button');
+      b.className = 'cb-scrub-btn' + (i === currentView ? ' cb-active' : '');
+      b.textContent = 'ch' + i;
+      if (i > highestUnlocked) {
+        b.disabled = true;
+        b.title = 'not yet';
+      } else {
+        b.addEventListener('click', function() { Caseboard.scrubTo(i); });
+      }
+      btns.appendChild(b);
+    }
+  }
+
+  // placeholder until the real renderer lands
+  function renderBoard() {
+    const board = document.getElementById('cb-board');
+    if (!board) return;
+    const snap = SNAPSHOTS[currentView];
+    if (!snap) {
+      board.innerHTML = '<div class="cb-empty">no snapshot yet for ch' + currentView + '</div>';
+      return;
+    }
+    board.innerHTML = '<div class="cb-empty">render pending — ch' + currentView + ' snapshot loaded</div>';
+  }
+
+  Caseboard.open = function() {
+    injectCSS();
+    injectModal();
+    highestUnlocked = Math.max(1, Caseboard.progress());
+    if (currentView > highestUnlocked) currentView = highestUnlocked;
+    renderScrubber();
+    renderBoard();
+    document.getElementById('cb-overlay').classList.add('cb-open');
+  };
+
+  Caseboard.close = function() {
+    const el = document.getElementById('cb-overlay');
+    if (el) el.classList.remove('cb-open');
+  };
+
+  Caseboard.scrubTo = function(chapter) {
+    chapter = parseInt(chapter, 10);
+    if (!chapter || chapter < 1 || chapter > 8) return;
+    if (chapter > highestUnlocked) return;
+    currentView = chapter;
+    renderScrubber();
+    renderBoard();
+  };
+
   // populated in subsequent chunks
   const SNAPSHOTS = {};
 
