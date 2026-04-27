@@ -466,6 +466,11 @@ color: #999;
 font-size: 18px;
 margin: 14px 0;
 letter-spacing: 4px;
+animation: aim-pulse 1.4s ease-in-out infinite;
+}
+@keyframes aim-pulse {
+0%, 100% { opacity: 0.4; }
+50%      { opacity: 1; }
 }
 .aim-send-bar {
 padding: 10px 12px;
@@ -689,6 +694,37 @@ color: #008000;
 font-family: 'Arial', sans-serif;
 font-size: 11px;
 margin-top: 1px;
+}
+.serp-footer {
+padding: 18px 24px 22px;
+background: #fff;
+border-top: 1px solid #e0e0e0;
+text-align: center;
+font-family: 'Arial', 'Helvetica', sans-serif;
+font-size: 13px;
+}
+.serp-footer-goog {
+font-family: 'Times New Roman', serif;
+font-size: 26px;
+letter-spacing: -1px;
+margin-bottom: 6px;
+color: #3366cc;
+}
+.serp-footer-pages {
+color: #0000cc;
+font-size: 12px;
+}
+.serp-footer-pages .serp-page-current {
+color: #000;
+font-weight: bold;
+text-decoration: none;
+margin: 0 3px;
+}
+.serp-footer-pages a {
+color: #0000cc;
+text-decoration: underline;
+margin: 0 3px;
+cursor: default;
 }
 
 /* ============ MULTIPLATFORM ARCHIVE (Ch7 — Tyler dossier) ============ */
@@ -1067,6 +1103,9 @@ padding: 8px 10px;
 margin-bottom: 6px;
 border-left: 3px solid #88cc88;
 font-size: 11px;
+}
+.nx-wallpost:nth-child(even) {
+background: #fffaf0;
 }
 .nx-wallpost-header {
 margin-bottom: 4px;
@@ -2322,6 +2361,10 @@ function renderSearchResults(beat, isActive) {
     </div>
     <div class="serp-result-count">Web Results 1-10 of about ${escapeHtml(beat.resultsCount || '???')}.</div>
     <div class="serp-results">${resultsHtml}</div>
+    <div class="serp-footer">
+      <div class="serp-footer-goog">G<span style="color:#dd4b39">o</span><span style="color:#f4b400">o</span><span style="color:#3366cc">o</span><span style="color:#0f9d58">o</span><span style="color:#dd4b39">o</span><span style="color:#f4b400">o</span>gle ▸</div>
+      <div class="serp-footer-pages"><span class="serp-page-current">1</span><a>2</a><a>3</a><a>4</a><a>5</a><a>6</a><a>7</a><a>8</a><a>9</a><a>10</a> | <a>Next</a></div>
+    </div>
     ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
     ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
       <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
@@ -2340,7 +2383,7 @@ function renderMultiplatformArchive(beat, isActive) {
     if (p.platform === 'XANGA') {
       return `<div class="mp-post mp-xanga">
         <div class="mp-post-header"><span class="mp-platform-tag">XANGA</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
-        ${p.mood ? `<div class="mp-mood">mood: ${escapeHtml(p.mood)}</div><div class="mp-music">music: ${escapeHtml(p.music)}</div>` : ''}
+        ${p.mood ? `<div class="mp-mood">♥ mood: ${escapeHtml(p.mood)}</div><div class="mp-music">♪ music: ${escapeHtml(p.music)}</div>` : ''}
         <div class="mp-content">${escapeHtml(p.body).replace(/\n/g, '<br>')}</div>
         ${p.comments ? `<div class="mp-comments">${escapeHtml(p.comments)}</div>` : ''}
       </div>`;
@@ -2498,11 +2541,11 @@ function renderNexopiaView(beat, isActive) {
       </div>
     </div>
     <div class="nx-section">
-      <div class="nx-section-title">music:</div>
+      <div class="nx-section-title">♫ music:</div>
       <div class="nx-section-body">${escapeHtml(p.music || '')}</div>
     </div>
     <div class="nx-section">
-      <div class="nx-section-title">movies:</div>
+      <div class="nx-section-title">🎬 movies:</div>
       <div class="nx-section-body">${escapeHtml(p.movies || '')}</div>
     </div>
     <div class="nx-section">
@@ -2536,8 +2579,8 @@ function renderLivejournalView(beat, isActive) {
     return `<div class="lj-post">
       <div class="lj-post-date">${escapeHtml(post.date)}</div>
       <div class="lj-post-title">${escapeHtml(post.title || '(no subject)')}</div>
-      ${post.mood ? `<div class="lj-post-meta">current mood: <span class="lj-mood">${escapeHtml(post.mood)}</span></div>` : ''}
-      ${post.music ? `<div class="lj-post-meta">current music: <span class="lj-music">${escapeHtml(post.music)}</span></div>` : ''}
+      ${post.mood ? `<div class="lj-post-meta">♥ current mood: <span class="lj-mood">${escapeHtml(post.mood)}</span></div>` : ''}
+      ${post.music ? `<div class="lj-post-meta">♪ current music: <span class="lj-music">${escapeHtml(post.music)}</span></div>` : ''}
       <div class="lj-post-body">${escapeHtml(post.body).replace(/\n/g, '<br>')}</div>
       ${post.comments ? `<div class="lj-post-footer">${post.comments} comments</div>` : ''}
     </div>`;
