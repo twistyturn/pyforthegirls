@@ -467,6 +467,11 @@ color: #999;
 font-size: 18px;
 margin: 14px 0;
 letter-spacing: 4px;
+animation: aim-pulse 1.4s ease-in-out infinite;
+}
+@keyframes aim-pulse {
+0%, 100% { opacity: 0.4; }
+50%      { opacity: 1; }
 }
 
 /* ============ ARCHIVE VIEW (Ch6 styled chat scroll) ============ */
@@ -525,8 +530,8 @@ margin-right: 4px;
 color: var(--bg-deep);
 }
 .archive-line .archive-content.redacted-line {
-/* messages with [REDACTED] get a subtle background */
-background: rgba(0, 0, 0, 0.04);
+/* messages with [REDACTED] get a subtle pink wash that ties into the game palette */
+background: rgba(255, 102, 196, 0.10);
 padding: 0 4px;
 }
 
