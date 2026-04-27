@@ -8,7 +8,7 @@ If you get stuck on any step, the troubleshooting section at the bottom probably
 
 ## What you're uploading
 
-The repository now contains exactly ten files that need to go to Neocities:
+The repository now contains exactly eleven files that need to go to Neocities:
 
 - `index.html` — the landing page (the player sees this first)
 - `chapterone.html`
@@ -20,16 +20,18 @@ The repository now contains exactly ten files that need to go to Neocities:
 - `chapterseven.html`
 - `chaptereight.html`
 - `caseboard.js` — the corkboard module shared by every chapter
+- `clutter.js` — the desktop-clutter module (Tegan's loose files and folders), shared by every chapter
 
-That's it. Nothing else. If you skip `caseboard.js` the chapter pages still work, but the caseboard icon won't open anything.
+That's it. Nothing else. If you skip `caseboard.js` the chapter pages still work, but the caseboard icon won't open anything. If you skip `clutter.js` the chapter pages still work, but the desktop will be missing all the loose files and folders (birthday wishlist, AIM buddy list, drafts/, school/, etc.).
 
 ### Files you must NOT upload
 
 - `CANON` — this is the writing-room spoiler bible. It names the killer. **Do not put this on the public internet.**
 - `NEOCITIES.md` — this file you're reading. Not needed on the site.
+- The `desktop/` folder — these are the on-disk source-of-truth copies of the files Tegan has on her laptop. The game reads them from inside `clutter.js` (which is a self-contained mirror), so this folder is for repo-browsing texture only. Don't upload it.
 - The `.git` folder if you see one — Neocities won't show it to you in the web uploader, but if you're using something like a bulk-upload tool, skip it.
 
-When in doubt: the only files that should end up on your Neocities account are the nine `.html` files plus `caseboard.js`.
+When in doubt: the only files that should end up on your Neocities account are the nine `.html` files plus `caseboard.js` and `clutter.js`.
 
 ---
 
@@ -50,7 +52,7 @@ If you've been editing in GitHub directly, you'll need them locally:
 2. Click the green **Code** button.
 3. Click **Download ZIP**.
 4. Unzip it somewhere obvious (your Desktop is fine).
-5. Open the unzipped folder. You should see the nine `.html` files, `caseboard.js`, plus `CANON` and `NEOCITIES.md`. Ignore the last two.
+5. Open the unzipped folder. You should see the nine `.html` files, `caseboard.js`, `clutter.js`, plus `CANON`, `NEOCITIES.md`, and a `desktop/` folder. Ignore the last three.
 
 ## Step 3 — Upload to Neocities
 
@@ -58,7 +60,7 @@ If you've been editing in GitHub directly, you'll need them locally:
 2. Click **Edit Site** (or **Manage Site Files**, depending on the layout).
 3. You'll see a file list. There's already an `index.html` Neocities made for you. **Delete it.** (Click it, then the trash icon. You're going to replace it with your own.)
 4. Click **Upload** (often a button at the top of the file list, sometimes it's drag-and-drop directly into the page).
-5. Select all nine `.html` files plus `caseboard.js` and upload them.
+5. Select all nine `.html` files plus `caseboard.js` and `clutter.js` and upload them.
 6. Wait for the green checkmarks.
 
 That's the whole upload. The site is now live.
@@ -111,6 +113,9 @@ The file probably doesn't have `.html` on the end. Check Neocities' file list. I
 
 **The landing page works but clicking a chapter shows 404.**
 Chapter file isn't there, or is named differently. The landing page expects exactly `chapterone.html`, `chaptertwo.html`, …, `chaptereight.html` — all lowercase, no spaces.
+
+**The desktop clutter (loose files, folders) isn't showing up.**
+`clutter.js` didn't get uploaded, or it's named differently. Check Neocities' file list — you should see `clutter.js` next to `caseboard.js`. If it's missing, re-upload it.
 
 **Chapter loads but Python doesn't run / "loading…" forever.**
 Pyodide is slow on slow connections. Give it 30 seconds the first time. If it never loads, check your browser console (F12 → Console) for an error. Most likely cause: an ad blocker or strict tracking-protection extension is blocking `cdn.jsdelivr.net`. Whitelist the site or test in a private window with extensions disabled.
