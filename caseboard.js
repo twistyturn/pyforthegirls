@@ -448,6 +448,23 @@
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // marginalia — the diagonal marker scrawls across the board
+  // ---------------------------------------------------------------------------
+  function renderMarginalia(board, snap) {
+    (snap.marginalia || []).forEach(function(m) {
+      const el = document.createElement('div');
+      const size = m.size || 'medium';
+      const color = m.color || 'red';
+      el.className = 'cb-marg cb-size-' + size + ' cb-color-' + color;
+      el.style.left = (m.pos.x | 0) + '%';
+      el.style.top = (m.pos.y | 0) + '%';
+      el.style.setProperty('--cb-rot', (m.angle == null ? -6 : m.angle) + 'deg');
+      el.textContent = m.text;
+      board.appendChild(el);
+    });
+  }
+
   function renderBoard() {
     const board = document.getElementById('cb-board');
     if (!board) return;
@@ -461,7 +478,7 @@
     (snap.cards || []).forEach(function(c) {
       board.appendChild(renderCard(c, currentView));
     });
-    // marginalia renders in the next chunk
+    renderMarginalia(board, snap);
   }
 
   Caseboard.open = function() {
