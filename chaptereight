@@ -3045,13 +3045,23 @@ const codeEl = document.getElementById('code-' + beatId);
 const outEl = document.getElementById('output-' + beatId);
 const code = codeEl.value;
 
-outEl.innerHTML = `<span class="info">// booting python interpreter... // (~10 seconds on first run, instant after that) // ▰▰▱▱▱▱▱▱▱▱</span>`;
+outEl.innerHTML = `<span class="info">// booting python interpreter...
+// (~10 seconds on first run, instant after that)
+// ▰▰▱▱▱▱▱▱▱▱</span>`;
 
 // Patch input() if needed
 let runCode = code;
 if (beat.fakeInput !== undefined) {
 // monkey-patch input() to return our fake value
-runCode = `import builtins __fake_input_value = ${JSON.stringify(beat.fakeInput)} __orig_input = builtins.input def __patched_input(prompt=""): print(prompt + __fake_input_value) return __fake_input_value builtins.input = __patched_input` + code;
+runCode = `
+import builtins
+__fake_input_value = ${JSON.stringify(beat.fakeInput)}
+__orig_input = builtins.input
+def __patched_input(prompt=""):
+    print(prompt + __fake_input_value)
+    return __fake_input_value
+builtins.input = __patched_input
+` + code;
 }
 
 // Inject the chapter's filesystem if requested
