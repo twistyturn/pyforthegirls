@@ -758,15 +758,15 @@ i have her laptop and she left tools. start digging.`,
 else:
     print("denied")</pre>
 
-               <p><strong>your task:</strong> the variable <code>guess</code> is set to <code>"rosewood"</code> (tegan's cabin name). complete the if/else so it prints <code>ACCESS GRANTED</code> when the guess equals <code>"rosewood"</code>, and <code>denied</code> otherwise.</p>`,
+               <p><strong>your task:</strong> the variable <code>guess</code> is set to <code>"rosewood"</code> (tegan's cabin name). the scaffold below runs but doesn't check anything yet. change <code>True</code> to a comparison that's true when <code>guess</code> equals <code>"rosewood"</code>, and change the print messages so it prints <code>ACCESS GRANTED</code> when matching and <code>denied</code> otherwise.</p>`,
 starter: `guess = "rosewood"
 
-# fill in the if/else below
+# change True to a comparison. change the prints to the right messages.
 
-if :
-print("")
+if True:
+    print("placeholder")
 else:
-print("")`, expectedOutput: 'ACCESS GRANTED', matchType: 'exact', hint: `<code>if guess == "rosewood":</code> on the first line. then <code>print("ACCESS GRANTED")</code> indented under it. then <code>print("denied")</code> indented under <code>else:</code>. python is picky about indentation. use 4 spaces.`, onComplete: { diary: `// rosewood was the obvious first guess. didn't work on the real zip. but the script runs.`,
+    print("placeholder")`, expectedOutput: 'ACCESS GRANTED', matchType: 'exact', hint: `replace <code>True</code> with <code>guess == "rosewood"</code>. replace the if-branch print with <code>print("ACCESS GRANTED")</code> and the else-branch with <code>print("denied")</code>. the indentation in the scaffold is already correct, so leave it alone.`, onComplete: { diary: `// rosewood was the obvious first guess. didn't work on the real zip. but the script runs.`,
 buddy: { name: 'tegan_a87', msg: "rosewood was my cabin. it was never going to be my password. that's lazy. i wasn't lazy." }
 },
 charms: 2
@@ -860,7 +860,7 @@ else:
     id: 'wren_email',
     type: 'diary',
     title: 'open file: outlook/inbox/2004-08-12.eml',
-    meta: 'from: w.halloway@pinecrest.ab.ca :: to: tegan_a87@hotmail.com :: aug 12 2004 — 9:14 pm',
+    meta: 'from: w.halloway@camppinecrest.ca :: to: tegan_a87@hotmail.com :: aug 12 2004 — 9:14 pm',
     body: `subject: (no subject)
 
 camille talked to laurie. i don't know what she said but laurie pulled me

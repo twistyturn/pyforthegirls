@@ -100,8 +100,19 @@ Every text reads completely differently with this canon. The text itself doesn�
 - **Camille** — 16, camper, witness, threatened into silence; her “and it’s okay” was almost the thing that saved Tegan
 - **Briar Vance** — 19, senior counsellor, built the alibi for Wren knowingly (knew about predation, didn’t know about murder because there wasn’t one she knew about)
 - **Hattie Whitlock** — counsellor at camp, RED HERRING — left two days after Aug 14 citing family emergency, looks suspicious, isn’t connected. Possibly a Melissa-successor (was being preyed on by Wren and got out)
+- **Marcia Deveraux** — camp director, admin staff. Email: `m.deveraux@camppinecrest.ca`
 - **Melissa** — Wren’s previous predation target, “last summer.” Status: unknown, mentioned in Wren’s email
 - **Laila** — random camper at Pinewood, set dressing only, not in the plot
+
+## Canonical identifiers (don't drift)
+
+- **Camp domain (web + email):** `camppinecrest.ca`
+  - Staff email format: `<first-initial>.<lastname>@camppinecrest.ca` (e.g. `m.deveraux@camppinecrest.ca`, `w.halloway@camppinecrest.ca`)
+  - Group aliases: `all_staff@camppinecrest.ca`, `office@camppinecrest.ca`, `kitchen@camppinecrest.ca`, `nurse_pinecrest@camppinecrest.ca`
+  - Website URL: `https://camppinecrest.ca/` (used in ch7 directory-listing task)
+- **Tegan's external email:** `tegan_a87@hotmail.com` (intentional — campers used outside addresses)
+- **Hannah's external email:** `glorfindel_lives@hotmail.com`
+- **Earlier drafts** used `pinecrest.ab.ca` for the camp domain — this is no longer canonical, do not reintroduce.
 
 ## Pedagogy = plot
 
