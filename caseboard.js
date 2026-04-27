@@ -292,7 +292,67 @@
     }
   }
 
-  // placeholder until the real renderer lands
+  // ---------------------------------------------------------------------------
+  // text marker parser
+  //   [x]...[/x]  ->  strikethrough
+  //   [a]...[/a]  ->  annotation in marker (different colour, scrawled)
+  //   [r]...[/r]  ->  redacted (black sharpie bar)
+  //   newlines    ->  <br>
+  // ---------------------------------------------------------------------------
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>]/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c];
+    });
+  }
+
+  function parseCardText(text) {
+    const SENTINEL = {
+      x_open:  '\x00X\x00', x_close:  '\x00/X\x00',
+      a_open:  '\x00A\x00', a_close:  '\x00/A\x00',
+      r_open:  '\x00R\x00', r_close:  '\x00/R\x00'
+    };
+    let s = String(text || '');
+    s = s.replace(/\[x\]/g, SENTINEL.x_open).replace(/\[\/x\]/g, SENTINEL.x_close);
+    s = s.replace(/\[a\]/g, SENTINEL.a_open).replace(/\[\/a\]/g, SENTINEL.a_close);
+    s = s.replace(/\[r\]/g, SENTINEL.r_open).replace(/\[\/r\]/g, SENTINEL.r_close);
+    s = escapeHtml(s);
+    s = s.split(SENTINEL.x_open).join('<s class="cb-strike">').split(SENTINEL.x_close).join('</s>');
+    s = s.split(SENTINEL.a_open).join('<span class="cb-ann">').split(SENTINEL.a_close).join('</span>');
+    s = s.split(SENTINEL.r_open).join('<span class="cb-redact">').split(SENTINEL.r_close).join('</span>');
+    s = s.replace(/\n/g, '<br>');
+    return s;
+  }
+
+  // deterministic tiny rotation from card id, so cards don't jump on re-render
+  function cardTilt(id) {
+    let h = 0;
+    for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) | 0;
+    const range = 6; // degrees
+    const v = ((Math.abs(h) % (range * 200)) / 100) - range; // -range..+range
+    return v.toFixed(2) + 'deg';
+  }
+
+  function ageClass(chapter_added, viewing) {
+    const diff = (viewing | 0) - (chapter_added | 0);
+    if (diff <= 1) return '';
+    if (diff <= 3) return ' cb-age-old';
+    if (diff <= 5) return ' cb-age-older';
+    return ' cb-age-oldest';
+  }
+
+  function renderCard(card, viewing) {
+    const el = document.createElement('div');
+    const color = card.color || 'yellow';
+    const style = card.style || 'clean';
+    el.className = 'cb-card cb-color-' + color + ' cb-style-' + style + ageClass(card.chapter_added, viewing);
+    el.style.left = (card.pos.x | 0) + '%';
+    el.style.top = (card.pos.y | 0) + '%';
+    el.style.setProperty('--cb-rot', cardTilt(card.id));
+    el.dataset.id = card.id;
+    el.innerHTML = '<span class="cb-pin"></span>' + parseCardText(card.text);
+    return el;
+  }
+
   function renderBoard() {
     const board = document.getElementById('cb-board');
     if (!board) return;
@@ -301,7 +361,11 @@
       board.innerHTML = '<div class="cb-empty">no snapshot yet for ch' + currentView + '</div>';
       return;
     }
-    board.innerHTML = '<div class="cb-empty">render pending — ch' + currentView + ' snapshot loaded</div>';
+    board.innerHTML = '';
+    (snap.cards || []).forEach(function(c) {
+      board.appendChild(renderCard(c, currentView));
+    });
+    // strings + marginalia render in subsequent chunks
   }
 
   Caseboard.open = function() {
