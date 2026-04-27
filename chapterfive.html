@@ -910,6 +910,38 @@ e'h skqqy e okucrj't sgy nkkrlyf. e wgs 17 gjr e dgr tk nk.
 ckvf,
 tfngj`;
 
+// decoder.py — Tegan's helper module, injected into Pyodide's FS so the player
+// can `from decoder import ...` instead of redefining the cipher inline.
+const DECODER_PY = `# decoder.py
+# tegan ashby. summer 2004.
+# built this so hannah could read my letter if i actually went thru with it.
+# broken into helpers bc i kept getting confused doing it all at once.
+
+def build_cipher_alpha(key):
+    """take the unique letters of the key (in order, no repeats),
+    then append the rest of the alphabet. returns a 26-letter string."""
+    seen = set()
+    cipher_alpha = ""
+    for c in key.lower():
+        if c.isalpha() and c not in seen:
+            cipher_alpha += c
+            seen.add(c)
+    for c in "abcdefghijklmnopqrstuvwxyz":
+        if c not in seen:
+            cipher_alpha += c
+            seen.add(c)
+    return cipher_alpha
+
+def build_decode_map(cipher_alpha):
+    """given the 26-letter cipher alphabet, build a dict that maps
+    each cipher letter back to its plain letter. cipher is the KEY,
+    plain is the VALUE — that's the part i kept getting backwards."""
+    decode_map = {}
+    for plain, cipher in zip("abcdefghijklmnopqrstuvwxyz", cipher_alpha):
+        decode_map[cipher] = plain
+    return decode_map
+`;
+
 // Write Tegan's filesystem layout into Pyodide's virtual FS so file ops work.
 async function injectChapter5Files() {
   const py = await loadPyodideOnce();
@@ -919,6 +951,7 @@ async function injectChapter5Files() {
   }
   try { py.FS.mkdir('diary/.hidden'); } catch (e) { /* exists */ }
   py.FS.writeFile('diary/.hidden/letter.txt', ENCRYPTED_LETTER);
+  py.FS.writeFile('decoder.py', DECODER_PY);
 }
 
 function loadSave() {
@@ -1075,43 +1108,38 @@ you open letter.txt first. it starts:
 
 eight letters in, you stop reading. it's encrypted.
 
-you open decoder.py. tegan left a template with comments.
-she's telling you how to read what she wrote.`,
+you open decoder.py. tegan split it into two helper functions.
+the comments are her, talking herself through it.`,
     nextBtn: '\u25b8 build the decoder'
   },
 
-  // ---- BEAT 3: task_build_decoder — build cipher_alpha and decode_map ----
+  // ---- BEAT 3: task_build_decoder — call decoder.py's helpers ----
   {
     id: 'task_build_decoder',
     type: 'task',
     charms: 3,
-    title: 'python.exe :: decoder.py (build the table)',
-    meta: 'tegan\'s template. you fill in the gaps.',
-    skill: 'DICT CONSTRUCTION :: PARALLEL ITERATION',
-    hint: `first loop: <code>for c in key.lower():</code> then <code>if c.isalpha() and c not in seen: cipher_alpha += c; seen.add(c)</code>. second loop: <code>for c in "abcdefghijklmnopqrstuvwxyz":</code> then <code>if c not in seen: cipher_alpha += c</code>. third: <code>for plain, cipher in zip("abcdefghijklmnopqrstuvwxyz", cipher_alpha):</code> then <code>decode_map[cipher] = plain</code>.`,
-    storyAbove: `decoder.py builds a substitution table from a key. given a key string, it takes the unique letters of the key (in order, no duplicates) and appends every other letter of the alphabet to make a 26-letter cipher alphabet. then it pairs that against the regular alphabet to build a decoding dictionary.`,
-    instructions: `your task: given <code>key = "test"</code>, build <code>cipher_alpha</code> (26 letters: deduplicated key letters first, then unused alphabet letters in order). then build <code>decode_map</code>, a dict mapping each <code>cipher_alpha</code> letter to its corresponding regular alphabet letter. print <code>cipher_alpha</code> and <code>decode_map['t']</code>.`,
-    starter: `key = "test"
+    title: 'python.exe :: decoder.py (call the helpers)',
+    meta: 'tegan already wrote the helpers. you call them.',
+    skill: 'IMPORT :: FUNCTION CALL',
+    hint: `at the top: <code>from decoder import build_cipher_alpha, build_decode_map</code>. then <code>cipher_alpha = build_cipher_alpha(key)</code> and <code>decode_map = build_decode_map(cipher_alpha)</code>. functions take inputs in the parens and give back a value you store in a variable.`,
+    storyAbove: `decoder.py builds a substitution table from a key. tegan split it into two helper functions so it'd be easier to follow: <code>build_cipher_alpha(key)</code> returns the 26-letter cipher alphabet, and <code>build_decode_map(cipher_alpha)</code> turns that into the decoding dictionary. you don't have to write the loops — you just have to call the functions.`,
+    instructions: `your task: import the two helpers from <code>decoder</code>. call <code>build_cipher_alpha(key)</code> with the given key and store the result in <code>cipher_alpha</code>. call <code>build_decode_map(cipher_alpha)</code> and store the result in <code>decode_map</code>. print <code>cipher_alpha</code> and <code>len(decode_map)</code>.`,
+    starter: `from decoder import build_cipher_alpha, build_decode_map
 
-# build cipher_alpha: unique key letters in order, then remaining alphabet
-seen = set()
-cipher_alpha = ""
-
-# loop through key.lower() — for each letter, if it's a letter and we haven't seen it, add it
-
-# loop through "abcdefghijklmnopqrstuvwxyz" — for each letter not in seen, add it to cipher_alpha
-
-# build decode_map: dict mapping cipher_alpha letter -> regular alphabet letter at same index
-decode_map = {}
-
+key = "birchwoodcounsellor1985"
+# call build_cipher_alpha to get the 26-letter cipher alphabet
+cipher_alpha = ___
+# call build_decode_map to get the decode dictionary
+decode_map = ___
 print(cipher_alpha)
-print(decode_map['t'])
+print(len(decode_map))
 `,
-    expectedOutput: `testabcdfghijklmnopqruvwxyz
-a`,
+    expectedOutput: `birchwodunselafgjkmpqtvxyz
+26`,
     matchType: 'exact',
+    fileInjection: true,
     onComplete: {
-      diary: `// table built. for key 'test', t maps back to a. that's the inverse i need.`
+      diary: `// table built. helpers did the loops. i just called them.`
     }
   },
 
@@ -1143,21 +1171,11 @@ i think i know who.`,
     hint: `<code>for c in encoded:</code> indented <code>if c.isalpha():</code> then <code>decoded_char = decode_map[c.lower()]</code> then <code>if c.isupper(): decoded_char = decoded_char.upper()</code> then <code>decoded += decoded_char</code> else <code>decoded += c</code>.`,
     storyAbove: `you've built the decode_map. now apply it: read the encrypted letter, walk through it character by character, look up each letter in the map, build the decoded output. preserve case (uppercase letters stay uppercase). preserve everything that isn't a letter (spaces, punctuation, newlines).`,
     instructions: `your task: open <code>diary/.hidden/letter.txt</code>. for each character: if it's a letter, look it up in <code>decode_map</code> (lowercase) and preserve the original case. otherwise leave it as-is. print the decoded text. use <code>key = "glorfindel"</code>.`,
-    starter: `key = "glorfindel"
+    starter: `from decoder import build_cipher_alpha, build_decode_map
 
-# build cipher_alpha and decode_map (same as before)
-seen = set()
-cipher_alpha = ""
-for c in key.lower():
-    if c.isalpha() and c not in seen:
-        cipher_alpha += c
-        seen.add(c)
-for c in "abcdefghijklmnopqrstuvwxyz":
-    if c not in seen:
-        cipher_alpha += c
-decode_map = {}
-for plain, cipher in zip("abcdefghijklmnopqrstuvwxyz", cipher_alpha):
-    decode_map[cipher] = plain
+key = "glorfindel"
+cipher_alpha = build_cipher_alpha(key)
+decode_map = build_decode_map(cipher_alpha)
 
 # read the encoded letter
 with open("diary/.hidden/letter.txt") as f:

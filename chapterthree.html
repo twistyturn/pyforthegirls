@@ -1077,14 +1077,15 @@ big = [n for n in numbers if n > 2]
                <p>it works on dicts inside lists too:</p>
                <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">tegans = [f for f in fragments if f["from"] == "tegan_a87"]</pre>
                <p><strong>your task:</strong> build a list called <code>wren_msgs</code> containing every fragment where the <code>"from"</code> field equals <code>"wren_h"</code>. then print just the count: <code>len(wren_msgs)</code>.</p>`,
-starter: `# fragments is already loaded
-
-# build wren_msgs as a list comprehension filtering by from == "wren_h"
-
+starter: `# the long way (you've already done this kind of thing):
+#   wren_msgs = []
+#   for f in fragments:
+#       if f["from"] == "wren_h":
+#           wren_msgs.append(f)
+# but actually you can do all of that in one line. watch:
 wren_msgs =
 
-# then print(len(wren_msgs))
-
+print(len(wren_msgs))
 `, expectedOutput: '4', matchType: 'exact', hint: `<code>wren_msgs = [f for f in fragments if f["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 4 messages. four times wren reached out to briar that night.
 // 9:30: set up alibi.
 // 10:42: refine alibi.
