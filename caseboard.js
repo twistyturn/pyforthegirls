@@ -210,6 +210,12 @@
 .cb-marg.cb-color-red   { color: #c0002a; }
 .cb-marg.cb-color-black { color: #1a0628; }
 .cb-marg.cb-color-blue  { color: #003a8c; }
+.cb-marg.cb-marg-crossed {
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: #1a0628;
+  opacity: 0.55;
+}
 .cb-empty {
   display: flex; align-items: center; justify-content: center;
   height: 100%;
@@ -456,7 +462,7 @@
       const el = document.createElement('div');
       const size = m.size || 'medium';
       const color = m.color || 'red';
-      el.className = 'cb-marg cb-size-' + size + ' cb-color-' + color;
+      el.className = 'cb-marg cb-size-' + size + ' cb-color-' + color + (m.crossed ? ' cb-marg-crossed' : '');
       el.style.left = (m.pos.x | 0) + '%';
       el.style.top = (m.pos.y | 0) + '%';
       el.style.setProperty('--cb-rot', (m.angle == null ? -6 : m.angle) + 'deg');
@@ -468,7 +474,7 @@
   function renderBoard() {
     const board = document.getElementById('cb-board');
     if (!board) return;
-    const snap = SNAPSHOTS[currentView];
+    const snap = getSnapshot(currentView);
     if (!snap) {
       board.innerHTML = '<div class="cb-empty">no snapshot yet for ch' + currentView + '</div>';
       return;
@@ -480,30 +486,6 @@
     });
     renderMarginalia(board, snap);
   }
-
-  Caseboard.open = function() {
-    injectCSS();
-    injectModal();
-    highestUnlocked = Math.max(1, Caseboard.progress());
-    if (currentView > highestUnlocked) currentView = highestUnlocked;
-    renderScrubber();
-    renderBoard();
-    document.getElementById('cb-overlay').classList.add('cb-open');
-  };
-
-  Caseboard.close = function() {
-    const el = document.getElementById('cb-overlay');
-    if (el) el.classList.remove('cb-open');
-  };
-
-  Caseboard.scrubTo = function(chapter) {
-    chapter = parseInt(chapter, 10);
-    if (!chapter || chapter < 1 || chapter > 8) return;
-    if (chapter > highestUnlocked) return;
-    currentView = chapter;
-    renderScrubber();
-    renderBoard();
-  };
 
   // ===========================================================================
   // SNAPSHOTS
@@ -604,25 +586,972 @@
     ]
   };
 
+  // ---------------------------------------------------------------------------
+  // ch3 — SMS log surfaces. last text "h", glorfindel screen name, briar.
+  // wren conviction grows. camille fills in. first big diagonal scrawl.
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[3] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'wren',
+        text: 'WREN\n"we were just at the cabin"\nliar\nliar\nliar\nRED FLAGS',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'camille',
+        text: 'Camille (camille.j.89)\nfriend?\nat pinewood cabin\nsaw something at boathouse??',
+        pos: { x: 30, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'password',
+        text: 'password worked\nbirchwoodcounsellor1985\nshe SET THIS UP',
+        pos: { x: 80, y: 68 },
+        color: 'blue', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'tyler_placeholder',
+        text: 'tyler?\na "boy" tegan kissed wren\nin front of?\nwho',
+        pos: { x: 14, y: 54 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'last_text_h',
+        text: 'last text "h"\n11:46 pm\nwho is h????',
+        pos: { x: 42, y: 15 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'h_question',
+        text: 'H = ???',
+        pos: { x: 60, y: 15 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'glorfindel',
+        text: 'G♡ glorfindel_lives\nher ONLY texts go here\nwho ARE you',
+        pos: { x: 88, y: 45 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'briar',
+        text: 'Briar Vance\nsenior counsellor\nwas up all night\ntalking to wren???',
+        pos: { x: 64, y: 85 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      }
+    ],
+    strings: [
+      {
+        from: 'wren', to: 'tegan_main',
+        color: 'red', thickness: 'thick',
+        label: 'something HAPPENED',
+        chapter_added: 2
+      },
+      {
+        from: 'wren', to: 'briar',
+        color: 'red', thickness: 'thin',
+        chapter_added: 3
+      }
+    ],
+    marginalia: [
+      {
+        text: 'she was leaving???',
+        pos: { x: 52, y: 60 }, angle: -14,
+        color: 'red', size: 'medium',
+        chapter_added: 2
+      },
+      {
+        text: 'SHE LEFT IT 3X',
+        pos: { x: 25, y: 7 }, angle: -8,
+        color: 'red', size: 'big',
+        chapter_added: 3
+      }
+    ]
+  };
+
+  // ---------------------------------------------------------------------------
+  // ch4 — Hattie introduces and clears in the same chapter. Melissa surfaces.
+  // Wren conviction grows (Melissa link). Soft scrawl: tegan AND melissa???
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[4] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'wren',
+        text: 'WREN\n"we were just at the cabin"\nliar liar liar\nRED FLAGS\ndid something to melissa in 2003\nWHO ELSE??',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 4
+      },
+      {
+        id: 'camille',
+        text: 'Camille (camille.j.89)\nfriend?\nat pinewood cabin\nsaw something at boathouse??',
+        pos: { x: 30, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'password',
+        text: 'password worked\nbirchwoodcounsellor1985\nshe SET THIS UP',
+        pos: { x: 80, y: 68 },
+        color: 'blue', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'tyler_placeholder',
+        text: 'tyler?\na "boy" tegan kissed wren\nin front of?\nwho',
+        pos: { x: 14, y: 54 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'last_text_h',
+        text: 'last text "h"\n11:46 pm\nwho is h????',
+        pos: { x: 42, y: 15 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'h_question',
+        text: 'H = ???',
+        pos: { x: 60, y: 15 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'glorfindel',
+        text: 'G♡ glorfindel_lives\nher ONLY texts go here\nwho ARE you',
+        pos: { x: 88, y: 45 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'briar',
+        text: 'Briar Vance\nsenior counsellor\nwas up all night\ntalking to wren???',
+        pos: { x: 64, y: 85 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'hattie',
+        text: 'HATTIE\n↑ checked\n↑ sister hit by car aug 14\n↑ marcia drove her to whitecourt\n↑ left aug 16\n↑ CLEARED\nnot the H',
+        pos: { x: 14, y: 22 },
+        color: 'white', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'melissa',
+        text: 'MELISSA KLASSEN\nwhy is no one talking about her\npulled out of camp 2003\nsomething HAPPENED to her',
+        pos: { x: 14, y: 86 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      }
+    ],
+    strings: [
+      {
+        from: 'wren', to: 'tegan_main',
+        color: 'red', thickness: 'thick',
+        label: 'something HAPPENED',
+        chapter_added: 2
+      },
+      {
+        from: 'wren', to: 'briar',
+        color: 'red', thickness: 'thin',
+        chapter_added: 3
+      }
+    ],
+    marginalia: [
+      {
+        text: 'she was leaving???',
+        pos: { x: 52, y: 60 }, angle: -14,
+        color: 'red', size: 'medium',
+        chapter_added: 2
+      },
+      {
+        text: 'SHE LEFT IT 3X',
+        pos: { x: 25, y: 7 }, angle: -8,
+        color: 'red', size: 'big',
+        chapter_added: 3
+      },
+      {
+        text: 'tegan AND melissa???',
+        pos: { x: 60, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 4
+      }
+    ]
+  };
+
+  // ---------------------------------------------------------------------------
+  // ch5 — H = HANNAH. tegan was leaving. pink string different from red ones.
+  // last_text_h and h_question consolidated into hannah_main.
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[5] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan\nWAS LEAVING\nhad a plan\nhad a RIDE',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 5
+      },
+      {
+        id: 'wren',
+        text: 'WREN\n"we were just at the cabin"\nliar liar liar\nRED FLAGS\ndid something to melissa in 2003\nWHO ELSE??\nshe found out??',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 5
+      },
+      {
+        id: 'camille',
+        text: 'Camille (camille.j.89)\nfriend?\nat pinewood cabin\nsaw something at boathouse??',
+        pos: { x: 30, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'password',
+        text: 'password worked\nbirchwoodcounsellor1985\nshe SET THIS UP',
+        pos: { x: 80, y: 68 },
+        color: 'blue', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'tyler_placeholder',
+        text: 'tyler?\na "boy" tegan kissed wren\nin front of?\nwho',
+        pos: { x: 14, y: 54 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'glorfindel',
+        text: 'G♡ glorfindel_lives\nher ONLY texts go here\nwho ARE you',
+        pos: { x: 88, y: 45 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'briar',
+        text: 'Briar Vance\nsenior counsellor\nwas up all night\ntalking to wren???',
+        pos: { x: 64, y: 85 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'hattie',
+        text: 'HATTIE\n↑ checked\n↑ sister hit by car aug 14\n↑ marcia drove her to whitecourt\n↑ left aug 16\n↑ CLEARED\nnot the H',
+        pos: { x: 14, y: 22 },
+        color: 'white', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'melissa',
+        text: 'MELISSA KLASSEN\nwhy is no one talking about her\npulled out of camp 2003\nsomething HAPPENED to her',
+        pos: { x: 14, y: 86 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'hannah_main',
+        text: 'H = HANNAH\n19. halifax. nova scotia.\nglorfindel_lives = HANNAH\nTEGAN WAS GOING TO HER',
+        pos: { x: 50, y: 13 },
+        color: 'pink', style: 'clean',
+        chapter_added: 5, chapter_modified: 5
+      },
+      {
+        id: 'escape',
+        text: 'the escape\nride at boathouse\n11 pm aug 14',
+        pos: { x: 30, y: 60 },
+        color: 'blue', style: 'clean',
+        chapter_added: 5, chapter_modified: 5
+      }
+    ],
+    strings: [
+      {
+        from: 'wren', to: 'tegan_main',
+        color: 'red', thickness: 'thick',
+        label: 'something HAPPENED',
+        chapter_added: 2
+      },
+      {
+        from: 'wren', to: 'briar',
+        color: 'red', thickness: 'thin',
+        chapter_added: 3
+      },
+      {
+        from: 'tegan_main', to: 'hannah_main',
+        color: 'pink', thickness: 'thin',
+        chapter_added: 5
+      }
+    ],
+    marginalia: [
+      {
+        text: 'she was leaving???',
+        pos: { x: 52, y: 60 }, angle: -14,
+        color: 'red', size: 'medium',
+        chapter_added: 2
+      },
+      {
+        text: 'SHE LEFT IT 3X',
+        pos: { x: 25, y: 7 }, angle: -8,
+        color: 'red', size: 'big',
+        chapter_added: 3
+      },
+      {
+        text: 'tegan AND melissa???',
+        pos: { x: 60, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 4
+      },
+      {
+        text: 'SHE NEVER MADE IT TO THE RIDE',
+        pos: { x: 50, y: 52 }, angle: -16,
+        color: 'red', size: 'big',
+        chapter_added: 5
+      }
+    ]
+  };
+
+  // ---------------------------------------------------------------------------
+  // ch6 — peak conviction. Wren card grows BIG. WHAT HAPPENED IN THAT BOATHOUSE
+  // scrawl. triple red string. character-based, not yet forensic.
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[6] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan\nWAS LEAVING\nhad a plan\nhad a RIDE',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 5
+      },
+      {
+        id: 'wren',
+        text: 'WREN\n"we were just at the cabin" — liar\nRED FLAGS\ndid things to melissa 2003\ndid things to tegan 2004\nemotional control. lying. silence on aug 14\nemail to tegan: "remind camille what happened to melissa"\nSHE’S LYING ABOUT SOMETHING',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 6
+      },
+      {
+        id: 'camille',
+        text: 'Camille (camille.j.89)\nfriend?\nat pinewood cabin\nsaw something at boathouse??',
+        pos: { x: 30, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'password',
+        text: 'password worked\nbirchwoodcounsellor1985\nshe SET THIS UP',
+        pos: { x: 80, y: 68 },
+        color: 'blue', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'tyler_placeholder',
+        text: 'tyler?\na "boy" tegan kissed wren\nin front of?\nwho',
+        pos: { x: 14, y: 54 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'glorfindel',
+        text: 'G♡ glorfindel_lives\nher ONLY texts go here\nwho ARE you',
+        pos: { x: 88, y: 45 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'briar',
+        text: 'Briar Vance\nsenior counsellor\nwas up all night\ntalking to wren???',
+        pos: { x: 64, y: 85 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'hattie',
+        text: 'HATTIE\n↑ checked\n↑ sister hit by car aug 14\n↑ marcia drove her to whitecourt\n↑ left aug 16\n↑ CLEARED\nnot the H',
+        pos: { x: 14, y: 22 },
+        color: 'white', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'melissa',
+        text: 'MELISSA KLASSEN\nwhy is no one talking about her\npulled out of camp 2003\nsomething HAPPENED to her',
+        pos: { x: 14, y: 86 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'hannah_main',
+        text: 'H = HANNAH\n19. halifax. nova scotia.\nglorfindel_lives = HANNAH\nTEGAN WAS GOING TO HER',
+        pos: { x: 50, y: 13 },
+        color: 'pink', style: 'clean',
+        chapter_added: 5, chapter_modified: 5
+      },
+      {
+        id: 'escape',
+        text: 'the escape\nride at boathouse\n11 pm aug 14',
+        pos: { x: 30, y: 60 },
+        color: 'blue', style: 'clean',
+        chapter_added: 5, chapter_modified: 5
+      },
+      {
+        id: 'hannah_boathouse',
+        text: 'HANNAH\nwas waiting at the boathouse\nnever knew',
+        pos: { x: 88, y: 85 },
+        color: 'pink', style: 'clean',
+        chapter_added: 6, chapter_modified: 6
+      }
+    ],
+    strings: [
+      {
+        from: 'wren', to: 'tegan_main',
+        color: 'red', thickness: 'triple',
+        label: 'something HAPPENED',
+        chapter_added: 2
+      },
+      {
+        from: 'wren', to: 'briar',
+        color: 'red', thickness: 'thin',
+        chapter_added: 3
+      },
+      {
+        from: 'tegan_main', to: 'hannah_main',
+        color: 'pink', thickness: 'thin',
+        chapter_added: 5
+      }
+    ],
+    marginalia: [
+      {
+        text: 'she was leaving???',
+        pos: { x: 52, y: 60 }, angle: -14,
+        color: 'red', size: 'medium',
+        chapter_added: 2
+      },
+      {
+        text: 'SHE LEFT IT 3X',
+        pos: { x: 25, y: 7 }, angle: -8,
+        color: 'red', size: 'big',
+        chapter_added: 3
+      },
+      {
+        text: 'tegan AND melissa???',
+        pos: { x: 60, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 4
+      },
+      {
+        text: 'SHE NEVER MADE IT TO THE RIDE',
+        pos: { x: 50, y: 52 }, angle: -16,
+        color: 'red', size: 'big',
+        chapter_added: 5
+      },
+      {
+        text: 'WHAT HAPPENED IN THAT BOATHOUSE',
+        pos: { x: 70, y: 22 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 6
+      },
+      {
+        text: 'SHE FOUND OUT TEGAN WAS LEAVING',
+        pos: { x: 70, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 6
+      }
+    ]
+  };
+
+  // ---------------------------------------------------------------------------
+  // ch7 — the crossout. wren card heavily scribbled. tyler hughes pinned.
+  // sgt. d. hughes pinned. red string loosens. THERES NOWHERE TO TAKE THIS.
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[7] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan\nWAS LEAVING\nhad a plan\nhad a RIDE',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 5
+      },
+      {
+        id: 'wren',
+        text: 'WREN\n"we were just at the cabin" — liar\nRED FLAGS\ndid things to melissa 2003\ndid things to tegan 2004\nemotional control. lying. silence on aug 14\nemail to tegan: "remind camille what happened to melissa"\nSHE’S LYING ABOUT SOMETHING\n[x]WHAT HAPPENED IN THAT BOATHOUSE[/x] [a]no??[/a]\n• still a piece of shit\n• but not THIS',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'scribbled',
+        chapter_added: 1, chapter_modified: 7
+      },
+      {
+        id: 'camille',
+        text: 'Camille (camille.j.89)\nfriend?\nat pinewood cabin\nsaw something at boathouse??',
+        pos: { x: 30, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 3
+      },
+      {
+        id: 'password',
+        text: 'password worked\nbirchwoodcounsellor1985\nshe SET THIS UP',
+        pos: { x: 80, y: 68 },
+        color: 'blue', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'tyler_placeholder',
+        text: 'tyler?\na "boy" tegan kissed wren\nin front of?\nwho',
+        pos: { x: 14, y: 54 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'glorfindel',
+        text: 'G♡ glorfindel_lives\nher ONLY texts go here\nwho ARE you',
+        pos: { x: 88, y: 45 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'briar',
+        text: 'Briar Vance\nsenior counsellor\nwas up all night\ntalking to wren???',
+        pos: { x: 64, y: 85 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'hattie',
+        text: 'HATTIE\n↑ checked\n↑ sister hit by car aug 14\n↑ marcia drove her to whitecourt\n↑ left aug 16\n↑ CLEARED\nnot the H',
+        pos: { x: 14, y: 22 },
+        color: 'white', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'melissa',
+        text: 'MELISSA KLASSEN\nwhy is no one talking about her\npulled out of camp 2003\nsomething HAPPENED to her',
+        pos: { x: 14, y: 86 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'hannah_main',
+        text: 'H = HANNAH\n19. halifax. nova scotia.\nglorfindel_lives = HANNAH\nTEGAN WAS GOING TO HER',
+        pos: { x: 50, y: 13 },
+        color: 'pink', style: 'clean',
+        chapter_added: 5, chapter_modified: 5
+      },
+      {
+        id: 'escape',
+        text: 'the escape\nride at boathouse\n11 pm aug 14',
+        pos: { x: 30, y: 60 },
+        color: 'blue', style: 'clean',
+        chapter_added: 5, chapter_modified: 5
+      },
+      {
+        id: 'hannah_boathouse',
+        text: 'HANNAH\nwas waiting at the boathouse\nnever knew',
+        pos: { x: 88, y: 85 },
+        color: 'pink', style: 'clean',
+        chapter_added: 6, chapter_modified: 6
+      },
+      {
+        id: 'tyler',
+        text: 'TYLER HUGHES\n17. pinewood JC.\nborn 1986\nSCRATCHES on his hands aug 15 morning\n"fell on the trail"\n↑ LIAR\nten hour gap\nnobody asked',
+        pos: { x: 60, y: 32 },
+        color: 'white', style: 'clean',
+        chapter_added: 7, chapter_modified: 7
+      },
+      {
+        id: 'sgt_hughes',
+        text: 'sgt. d. hughes\nrcmp whitecourt\nTYLER’S DAD\nTHE SAME DETACHMENT',
+        pos: { x: 45, y: 92 },
+        color: 'white', style: 'clean',
+        chapter_added: 7, chapter_modified: 7
+      }
+    ],
+    strings: [
+      {
+        from: 'wren', to: 'tegan_main',
+        color: 'red', thickness: 'loose',
+        label: '?',
+        chapter_added: 2
+      },
+      {
+        from: 'wren', to: 'briar',
+        color: 'red', thickness: 'thin',
+        chapter_added: 3
+      },
+      {
+        from: 'tegan_main', to: 'hannah_main',
+        color: 'pink', thickness: 'thin',
+        chapter_added: 5
+      },
+      {
+        from: 'tyler', to: 'tegan_main',
+        color: 'red', thickness: 'thick',
+        chapter_added: 7
+      }
+    ],
+    marginalia: [
+      {
+        text: 'she was leaving???',
+        pos: { x: 52, y: 60 }, angle: -14,
+        color: 'red', size: 'medium',
+        chapter_added: 2
+      },
+      {
+        text: 'SHE LEFT IT 3X',
+        pos: { x: 25, y: 7 }, angle: -8,
+        color: 'red', size: 'big',
+        chapter_added: 3
+      },
+      {
+        text: 'tegan AND melissa???',
+        pos: { x: 60, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 4
+      },
+      {
+        text: 'SHE NEVER MADE IT TO THE RIDE',
+        pos: { x: 50, y: 52 }, angle: -16,
+        color: 'red', size: 'big',
+        chapter_added: 5
+      },
+      {
+        text: 'SHE FOUND OUT TEGAN WAS LEAVING',
+        pos: { x: 70, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 6, crossed: true
+      },
+      {
+        text: 'THERES NOWHERE TO TAKE THIS',
+        pos: { x: 50, y: 97 }, angle: -3,
+        color: 'red', size: 'big',
+        chapter_added: 7
+      }
+    ]
+  };
+
+  // ---------------------------------------------------------------------------
+  // ch8 — final state. softer wren. full tyler picture. redacted ride driver.
+  // hannah grown. camille grown. melissa: leave her alone. WE HAVE UNTIL LATE
+  // JUNE.
+  // ---------------------------------------------------------------------------
+  SNAPSHOTS[8] = {
+    cards: [
+      {
+        id: 'tegan_main',
+        text: 'tegan\naug 14 2004\nunder the boathouse pilings',
+        pos: { x: 50, y: 45 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 8
+      },
+      {
+        id: 'wren',
+        text: 'WREN\n• monster\n• not THIS monster\n• WET when she got back to cabin 11:35\n• engineered meds report on camille\n• done',
+        pos: { x: 78, y: 22 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 8
+      },
+      {
+        id: 'camille',
+        text: 'Camille\nwas right about wren\nwas wrong about wren\ntold the police that morning\nnobody listened to a kid\nnot until something happens\ntell me if u find her',
+        pos: { x: 30, y: 74 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 1, chapter_modified: 8
+      },
+      {
+        id: 'password',
+        text: 'password worked\nbirchwoodcounsellor1985\nshe SET THIS UP',
+        pos: { x: 80, y: 68 },
+        color: 'blue', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'tyler_placeholder',
+        text: 'tyler?\na "boy" tegan kissed wren\nin front of?\nwho',
+        pos: { x: 14, y: 54 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 2, chapter_modified: 2
+      },
+      {
+        id: 'glorfindel',
+        text: 'G♡ glorfindel_lives\nher ONLY texts go here\nwho ARE you',
+        pos: { x: 88, y: 45 },
+        color: 'pink', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'briar',
+        text: 'Briar Vance\nsenior counsellor\nwas up all night\ntalking to wren???',
+        pos: { x: 64, y: 85 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 3, chapter_modified: 3
+      },
+      {
+        id: 'hattie',
+        text: 'HATTIE\n↑ checked\n↑ sister hit by car aug 14\n↑ marcia drove her to whitecourt\n↑ left aug 16\n↑ CLEARED\nnot the H',
+        pos: { x: 14, y: 22 },
+        color: 'white', style: 'clean',
+        chapter_added: 4, chapter_modified: 4
+      },
+      {
+        id: 'melissa',
+        text: 'Melissa\ndoing okay\ndoing the work\nleave her alone',
+        pos: { x: 14, y: 86 },
+        color: 'yellow', style: 'clean',
+        chapter_added: 4, chapter_modified: 8
+      },
+      {
+        id: 'hannah_main',
+        text: 'HANNAH\nher name. her plan.\ngrew up swimming in halifax harbour\ncan be there in late june',
+        pos: { x: 50, y: 13 },
+        color: 'pink', style: 'clean',
+        chapter_added: 5, chapter_modified: 8
+      },
+      {
+        id: 'escape',
+        text: 'the escape\nride at boathouse\n11 pm aug 14',
+        pos: { x: 30, y: 60 },
+        color: 'blue', style: 'clean',
+        chapter_added: 5, chapter_modified: 5
+      },
+      {
+        id: 'hannah_boathouse',
+        text: 'HANNAH\nwas waiting at the boathouse\nnever knew',
+        pos: { x: 88, y: 85 },
+        color: 'pink', style: 'clean',
+        chapter_added: 6, chapter_modified: 6
+      },
+      {
+        id: 'tyler',
+        text: 'TYLER\nfollowed her to the boathouse\nwaited for wren to leave\nhockey jersey\nhe never wore it again',
+        pos: { x: 60, y: 32 },
+        color: 'white', style: 'clean',
+        chapter_added: 7, chapter_modified: 8
+      },
+      {
+        id: 'sgt_hughes',
+        text: 'sgt. d. hughes (his dad)\nsame detachment',
+        pos: { x: 45, y: 92 },
+        color: 'white', style: 'clean',
+        chapter_added: 7, chapter_modified: 8
+      },
+      {
+        id: 'ride_driver',
+        text: '[r]_______________[/r]\n[name unknown — hannah won’t say]\nthe ride driver\nwaited at the boathouse 12-2 AM\nheard nothing',
+        pos: { x: 78, y: 95 },
+        color: 'redacted', style: 'clean',
+        chapter_added: 8, chapter_modified: 8
+      }
+    ],
+    strings: [
+      {
+        from: 'wren', to: 'tegan_main',
+        color: 'red', thickness: 'loose',
+        label: '?',
+        chapter_added: 2
+      },
+      {
+        from: 'wren', to: 'briar',
+        color: 'red', thickness: 'thin',
+        chapter_added: 3
+      },
+      {
+        from: 'tegan_main', to: 'hannah_main',
+        color: 'pink', thickness: 'thin',
+        chapter_added: 5
+      },
+      {
+        from: 'tyler', to: 'tegan_main',
+        color: 'red', thickness: 'thick',
+        chapter_added: 7
+      },
+      {
+        from: 'sgt_hughes', to: 'tyler',
+        color: 'red', thickness: 'thin',
+        chapter_added: 8
+      }
+    ],
+    marginalia: [
+      {
+        text: 'she was leaving???',
+        pos: { x: 52, y: 60 }, angle: -14,
+        color: 'red', size: 'medium',
+        chapter_added: 2
+      },
+      {
+        text: 'SHE LEFT IT 3X',
+        pos: { x: 25, y: 7 }, angle: -8,
+        color: 'red', size: 'big',
+        chapter_added: 3
+      },
+      {
+        text: 'tegan AND melissa???',
+        pos: { x: 60, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 4
+      },
+      {
+        text: 'SHE NEVER MADE IT TO THE RIDE',
+        pos: { x: 50, y: 52 }, angle: -16,
+        color: 'red', size: 'big',
+        chapter_added: 5
+      },
+      {
+        text: 'SHE FOUND OUT TEGAN WAS LEAVING',
+        pos: { x: 70, y: 38 }, angle: -10,
+        color: 'red', size: 'medium',
+        chapter_added: 6, crossed: true
+      },
+      {
+        text: 'THERES NOWHERE TO TAKE THIS',
+        pos: { x: 50, y: 97 }, angle: -3,
+        color: 'red', size: 'big',
+        chapter_added: 7, crossed: true
+      },
+      {
+        text: 'WE HAVE UNTIL LATE JUNE',
+        pos: { x: 50, y: 92 }, angle: 4,
+        color: 'red', size: 'big',
+        chapter_added: 8
+      }
+    ]
+  };
+
+  // ---------------------------------------------------------------------------
+  // persistence
+  //   localStorage[STORAGE_KEY] holds a {1: snapshot, 2: snapshot, ...} cache
+  //   so older snapshots survive even if SNAPSHOTS shape changes in code.
+  //   localStorage[PROGRESS_KEY] holds the highest chapter the player has
+  //   completed (its wrap reached).
+  // ---------------------------------------------------------------------------
+  function readCache() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+
+  function writeCache(cache) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cache)); } catch (e) {}
+  }
+
+  function getSnapshot(n) {
+    const cache = readCache();
+    if (cache[n]) return cache[n];
+    return SNAPSHOTS[n];
+  }
+
+  // override placeholder used by renderBoard
+  function _resolveSnapshot() { return getSnapshot(currentView); }
+
   // public API attached to window.Caseboard
   const Caseboard = {
     SNAPSHOTS,
-    recordWrap: function(_chapter) { /* TODO */ },
-    open: function() { /* TODO */ },
-    close: function() { /* TODO */ },
-    scrubTo: function(_chapter) { /* TODO */ },
+
+    recordWrap: function(chapter) {
+      chapter = parseInt(chapter, 10);
+      if (!chapter || chapter < 1 || chapter > 8) return;
+      try {
+        const current = parseInt(localStorage.getItem(PROGRESS_KEY) || '0', 10);
+        if (chapter > current) localStorage.setItem(PROGRESS_KEY, String(chapter));
+      } catch (e) {}
+      const cache = readCache();
+      for (let i = 1; i <= chapter; i++) {
+        if (SNAPSHOTS[i]) cache[i] = SNAPSHOTS[i];
+      }
+      writeCache(cache);
+      Caseboard.refreshIcon();
+    },
+
+    open: function() {
+      injectCSS();
+      injectModal();
+      highestUnlocked = Math.max(1, Caseboard.progress());
+      if (currentView > highestUnlocked) currentView = highestUnlocked;
+      renderScrubber();
+      renderBoard();
+      document.getElementById('cb-overlay').classList.add('cb-open');
+    },
+
+    close: function() {
+      const el = document.getElementById('cb-overlay');
+      if (el) el.classList.remove('cb-open');
+    },
+
+    scrubTo: function(chapter) {
+      chapter = parseInt(chapter, 10);
+      if (!chapter || chapter < 1 || chapter > 8) return;
+      if (chapter > highestUnlocked) return;
+      currentView = chapter;
+      renderScrubber();
+      renderBoard();
+    },
+
     isUnlocked: function() {
       try {
         const n = parseInt(localStorage.getItem(PROGRESS_KEY) || '0', 10);
         return n >= 1;
       } catch (e) { return false; }
     },
+
     progress: function() {
       try {
         return parseInt(localStorage.getItem(PROGRESS_KEY) || '0', 10);
       } catch (e) { return 0; }
+    },
+
+    refreshIcon: function() {
+      const el = document.getElementById('icon-caseboard');
+      if (!el) return;
+      el.style.display = Caseboard.isUnlocked() ? '' : 'none';
     }
   };
+
+  // make renderBoard read through cache
+  const _originalRenderBoard = renderBoard;
+  renderBoard = function() {
+    const board = document.getElementById('cb-board');
+    if (!board) return;
+    const snap = getSnapshot(currentView);
+    if (!snap) {
+      board.innerHTML = '<div class="cb-empty">no snapshot yet for ch' + currentView + '</div>';
+      return;
+    }
+    board.innerHTML = '';
+    renderStrings(board, snap);
+    (snap.cards || []).forEach(function(c) {
+      board.appendChild(renderCard(c, currentView));
+    });
+    renderMarginalia(board, snap);
+  };
+
+  // auto-init: refresh icon visibility on load if the page has one
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { Caseboard.refreshIcon(); });
+  } else {
+    Caseboard.refreshIcon();
+  }
 
   window.Caseboard = Caseboard;
 })();

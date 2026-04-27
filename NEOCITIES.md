@@ -8,7 +8,7 @@ If you get stuck on any step, the troubleshooting section at the bottom probably
 
 ## What you're uploading
 
-The repository now contains exactly nine files that need to go to Neocities:
+The repository now contains exactly ten files that need to go to Neocities:
 
 - `index.html` — the landing page (the player sees this first)
 - `chapterone.html`
@@ -19,8 +19,9 @@ The repository now contains exactly nine files that need to go to Neocities:
 - `chaptersix.html`
 - `chapterseven.html`
 - `chaptereight.html`
+- `caseboard.js` — the corkboard module shared by every chapter
 
-That's it. Nothing else.
+That's it. Nothing else. If you skip `caseboard.js` the chapter pages still work, but the caseboard icon won't open anything.
 
 ### Files you must NOT upload
 
@@ -28,7 +29,7 @@ That's it. Nothing else.
 - `NEOCITIES.md` — this file you're reading. Not needed on the site.
 - The `.git` folder if you see one — Neocities won't show it to you in the web uploader, but if you're using something like a bulk-upload tool, skip it.
 
-When in doubt: the only files that should end up on your Neocities account are the nine `.html` files listed above.
+When in doubt: the only files that should end up on your Neocities account are the nine `.html` files plus `caseboard.js`.
 
 ---
 
@@ -49,7 +50,7 @@ If you've been editing in GitHub directly, you'll need them locally:
 2. Click the green **Code** button.
 3. Click **Download ZIP**.
 4. Unzip it somewhere obvious (your Desktop is fine).
-5. Open the unzipped folder. You should see the nine `.html` files plus `CANON` and `NEOCITIES.md`. Ignore the last two.
+5. Open the unzipped folder. You should see the nine `.html` files, `caseboard.js`, plus `CANON` and `NEOCITIES.md`. Ignore the last two.
 
 ## Step 3 — Upload to Neocities
 
@@ -57,7 +58,7 @@ If you've been editing in GitHub directly, you'll need them locally:
 2. Click **Edit Site** (or **Manage Site Files**, depending on the layout).
 3. You'll see a file list. There's already an `index.html` Neocities made for you. **Delete it.** (Click it, then the trash icon. You're going to replace it with your own.)
 4. Click **Upload** (often a button at the top of the file list, sometimes it's drag-and-drop directly into the page).
-5. Select all nine `.html` files at once and upload them.
+5. Select all nine `.html` files plus `caseboard.js` and upload them.
 6. Wait for the green checkmarks.
 
 That's the whole upload. The site is now live.
