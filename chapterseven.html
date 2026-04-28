@@ -1434,7 +1434,7 @@ const BEATS = [
 
 i'd been there before. the first week. when i was reading every public thing i could find about her. the camp's site is mostly photos of the lake and a list of session dates and a contact form. there's nothing on it.
 
-but i was looking at it differently this time. websites in 2004 were usually just files in a folder somewhere on a server. if you knew where to look you could see things they meant to keep private. they didn't think anyone would look.
+but i was looking at it differently this time. websites are usually just files in a folder somewhere on a server. if you know where to look you can see things they meant to keep private. they don't think anyone will look.
 
 i'm going to look.`,
     nextBtn: '\u25b8 python.exe'
@@ -1449,7 +1449,7 @@ i'm going to look.`,
     meta: 'urllib. fetch a page. see what\'s there.',
     skill: 'HTTP REQUESTS :: urllib.request AND READING RESPONSES',
     hint: `<code>response = urllib.request.urlopen(url)</code> then <code>content = response.read().decode("utf-8")</code> then <code>print(content[:500])</code>.`,
-    storyAbove: `the camp's URL is <code>camppinecrest.ca</code>. the public site is at the root. but websites are just folders of files on a server. some folders are linked from the home page; some folders are sitting there unmentioned. you can ask the server for a folder by name and see what comes back. if the server is set up to allow it, asking for a folder shows you a list of every file inside. this is called a "directory listing." it shouldn't be exposed but in 2004 it often was, because people forgot to turn it off.`,
+    storyAbove: `the camp's URL is <code>camppinecrest.ca</code>. the public site is at the root. but websites are just folders of files on a server. some folders are linked from the home page; some folders are sitting there unmentioned. you can ask the server for a folder by name and see what comes back. if the server is set up to allow it, asking for a folder shows you a list of every file inside. this is called a "directory listing." it shouldn't be exposed but it often is, because people forget to turn it off.`,
     instructions: `your task: import urllib.request. fetch <code>https://camppinecrest.ca/staff/</code>. read the response. print the first 500 characters.`,
     starter: `import urllib.request
 
