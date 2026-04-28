@@ -1158,35 +1158,57 @@ to see what she'd do, and now i've seen.`,
     nextBtn: 'next file ▸'
   },
 
-  // ---- BEAT 7: input + type conversion ----
+  // ---- BEAT 7a: type conversion — practice ----
+  {
+    id: 'task_input_a',
+    type: 'task',
+    title: 'python.exe :: prompt_practice.py',
+    meta: 'tegan was practicing type conversion before wiring up the real prompt.',
+    storyAbove: `the next thing tegan was working on was a script that asks her a question and does math with the answer. but there's a quirk: when python reads text from a person, it gives back a <em>string</em>, even if the person typed a number. she left a tiny practice file in the folder before tackling the real one. start with that.`,
+    skill: 'STRINGS vs NUMBERS',
+    instructions: `<p>text-in-quotes (like <code>"5"</code> or <code>"tegan"</code>) is called a <strong>string</strong>, same as you saw in the very first task. python treats strings differently from numbers:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"5" * 2  →  "55"   (python repeats the text twice)
+5 * 2    →  10     (python does the math)</pre>
+                   <p>to do math on a string of digits, you convert it: <code>int("5")</code> turns the string <code>"5"</code> into the number <code>5</code>.</p>
+                   <p><strong>your task:</strong> the variable <code>answer</code> is set to the string <code>"14"</code> (in quotes — it's text, not a number). print it doubled. the script should print <code>28</code>, not <code>1414</code>.</p>`,
+    starter: `answer = "14"
+# answer is a string. convert it to a number, then print it doubled.
+`,
+    expectedOutput: '28',
+    matchType: 'contains',
+    hint: `<p>two lines work:</p>
+           <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
+print(number * 2)</pre>
+           <p>or one line: <code>print(int(answer) * 2)</code>. either is fine.</p>`,
+    onComplete: {
+      diary: `// type conversion practice passes. int("14") -> 14. doubled -> 28.`
+    },
+    charms: 1
+  },
+
+  // ---- BEAT 7b: input + type conversion — write the real one ----
   {
     id: 'task_input',
     type: 'task',
     title: 'python.exe :: prompt.py',
     meta: 'a script for asking herself questions before bed.',
-    storyAbove: `the last script in the folder. she was making something interactive. a script that asks a question and uses the answer. it's broken: she was trying to do math with a number she got from <code>input()</code>, but <code>input()</code> always gives back a string. you need to convert it.`,
+    storyAbove: `now the real one. same int-conversion idea, but you also need <code>input()</code> — the function that pauses the script, shows a prompt, and waits for the person to type something. when they hit enter, <code>input()</code> hands you back whatever they typed, always as a string.`,
     skill: 'INPUT & TYPE CONVERSION',
-    instructions: `<p><code>input("question? ")</code> shows a prompt and pauses while the person types. when they hit enter, you get back whatever they typed — as text, even if they typed digits.</p>
-                   <p>text-in-quotes (like <code>"5"</code> or <code>"tegan"</code>) is called a <strong>string</strong>, same as you saw in the very first task. python treats strings differently from numbers. for example:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"5" * 2  →  "55"   (python repeats the text twice)
-5 * 2    →  10     (python does the math)</pre>
-                   <p>so if you ask "how many days?" and the person types <code>5</code>, you get back the string <code>"5"</code>. if you try to multiply that by 2 you'll get <code>"55"</code>, not <code>10</code>.</p>
-                   <p>to do math on it, you have to convert it: <code>int("5")</code> turns the string <code>"5"</code> into the number <code>5</code>.</p>
+    instructions: `<p><code>input("question? ")</code> shows a prompt and pauses while the person types. when they hit enter, you get back whatever they typed — as text, even if they typed digits. (so the same string-vs-number problem from the practice round applies here.)</p>
                    <p><strong>your task:</strong> complete the script so it asks "how many days left? " and then prints the answer doubled. the autograder will type <code>14</code> in response — your script should print <code>28</code>, not <code>1414</code>.</p>`,
     starter: `answer = input("how many days left? ")\n# convert answer to a number, then print it times 2\n`,
     expectedOutput: '28',
     matchType: 'contains',
     fakeInput: '14',
-    hint: `<p>the simplest version is two lines:</p>
+    hint: `<p>same shape as the practice round:</p>
            <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
 print(number * 2)</pre>
-           <p>the first line uses <code>int()</code> to turn the string from input into an actual number, and stores it in a new variable called <code>number</code>. the second line multiplies <code>number</code> by 2 and prints the result.</p>
-           <p>if you want to do it in one line, you can put the <code>int()</code> call directly inside the <code>print()</code>, which gives you <code>print(int(answer) * 2)</code>. same result, fewer lines. either is fine.</p>`,
+           <p>or as a one-liner: <code>print(int(answer) * 2)</code>.</p>`,
     onComplete: {
       diary: `// prompt.py executed. last input from this machine: "how many days left?" → answer: 1`,
       buddy: { name: 'tegan_a87', msg: 'i ran this script the night before, i typed 1, i was counting down. thought i had one day left to figure it out.' }
     },
-    charms: 2
+    charms: 1
   },
 
   // ---- BEAT 8: the closing diary entry ----
