@@ -1355,6 +1355,7 @@ entries = os.listdir("diary")
 13_a_friend.txt
 14_LAST.txt`,
     matchType: 'exact',
+    codeMustContain: ['os.listdir('],
     fileInjection: true,
     onComplete: {
       diary: `// 14 diary entries i already knew about. plus a folder called .hidden. she put a dot in front so it wouldn't show up in any file browser. tegan was hiding things.`
@@ -1414,6 +1415,7 @@ print(len(decode_map))
     expectedOutput: `birchwodunselafgjkmpqtvxyz
 26`,
     matchType: 'exact',
+    codeMustContain: ['build_cipher_alpha(', 'build_decode_map('],
     fileInjection: true,
     onComplete: {
       diary: `// table built. helpers did the loops. i just called them.`
@@ -1496,6 +1498,7 @@ i'm sorry i couldn't say goodbye. i was 17 and i had to go.
 love,
 tegan`,
     matchType: 'exact',
+    codeMustContain: ['.isalpha(', '.isupper('],
     fileInjection: true,
     onComplete: {
       diary: `// the letter is on screen. i'm reading it three times.`
@@ -1871,6 +1874,41 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
+}
+
+// codeMustContain: ensure the player actually used the skill the task is
+// teaching, not just produced the right output. (A learner who hardcodes
+// the answer and gets a green checkmark has been failed by the autograder,
+// not helped by it.) Per-task patterns live on each beat as
+// `codeMustContain: [...]` — a string is "must include this substring",
+// a nested array is "must include any of these", a RegExp is tested.
+if (passed && beat.codeMustContain) {
+  const __strippedCode = code.split('\n').map(__line => {
+    const __i = __line.indexOf('#');
+    return __i >= 0 ? __line.slice(0, __i) : __line;
+  }).join('\n');
+  let __missingPattern = null;
+  for (const __p of beat.codeMustContain) {
+    let __hit;
+    if (Array.isArray(__p)) {
+      __hit = __p.some(__s => __strippedCode.includes(__s));
+    } else if (__p instanceof RegExp) {
+      __hit = __p.test(__strippedCode);
+    } else {
+      __hit = __strippedCode.includes(__p);
+    }
+    if (!__hit) { __missingPattern = __p; break; }
+  }
+  if (__missingPattern !== null) {
+    passed = false;
+    const __fmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+      : (__missingPattern instanceof RegExp
+          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    return;
+  }
 }
 
 if (passed) {

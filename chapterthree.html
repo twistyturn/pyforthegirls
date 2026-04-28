@@ -1168,6 +1168,7 @@ fragment["from"]   # → "wren_h"</pre>
 `,
     expectedOutput: '10\nwren_h\nwren_h',
     matchType: 'exact',
+    codeMustContain: [['len(', '[0]']],
     hint: `three lines: <code>print(len(fragments))</code>, <code>print(fragments[0]["from"])</code>, <code>print(fragments[-1]["from"])</code>. the brackets after the dict get the value at that key.`,
     fragmentInjection: true,
     onComplete: {
@@ -1226,7 +1227,7 @@ target = "glorfindel_lives"
 
 # fill in the if/else:
 
-`, expectedOutput: 'only SMS', matchType: 'exact', hint: `<code>if target in aim_people:</code> then <code>print("on AIM")</code>. otherwise <code>print("only SMS")</code>.`, onComplete: { diary: `// confirmed: glorfindel never had AIM access. only SMS. only the night-of fragments. they are tegan's only outside witness.`,
+`, expectedOutput: 'only SMS', matchType: 'exact', codeMustContain: [' in '], hint: `<code>if target in aim_people:</code> then <code>print("on AIM")</code>. otherwise <code>print("only SMS")</code>.`, onComplete: { diary: `// confirmed: glorfindel never had AIM access. only SMS. only the night-of fragments. they are tegan's only outside witness.`,
 buddy: { name: 'glorfindel_lives', msg: "i never knew her last name. i never met her family. i couldn't go to the funeral. i didn't even know there was one :(" }
 },
 charms: 2
@@ -1252,7 +1253,7 @@ starter: `last_msg = {
 
 # print last_msg["time"], then last_msg["from"], then last_msg["content"]
 
-`, expectedOutput: '23:46\ntegan_a87\nh', matchType: 'exact', hint: `three lines: <code>print(last_msg["time"])</code>, <code>print(last_msg["from"])</code>, <code>print(last_msg["content"])</code>. the quotes inside the brackets are the key names.`, onComplete: { diary: `// 23:46. tegan_a87. h.
+`, expectedOutput: '23:46\ntegan_a87\nh', matchType: 'exact', codeMustContain: [/\[\s*['\"][^'\"]+['\"]\s*\]/], hint: `three lines: <code>print(last_msg["time"])</code>, <code>print(last_msg["from"])</code>, <code>print(last_msg["content"])</code>. the quotes inside the brackets are the key names.`, onComplete: { diary: `// 23:46. tegan_a87. h.
 // the next message in the SMS thread is from glorfindel: "?? are you okay??" eighteen minutes later. tegan never replies.`,
 buddy: { name: 'tegan_a87', msg: "i don't remember typing that. but my thumb was on the keyboard so it must have been me." }
 },
@@ -1312,7 +1313,7 @@ starter: `fragment_one = {
 
 # loop through fragment_one.items() and print each as "key: value"
 
-`, expectedOutput: "id: 1\ntime: 21:30\nfrom: wren_h\nto: briar_v\nplatform: AIM\ncontent: covering for me tonight right? i'm in the cabin. you saw me in the cabin.", matchType: 'exact', hint: `<code>for key, value in fragment_one.items():</code> then indented <code>print(f"{key}: {value}")</code>. the f-string drops the variable values into the string.`, onComplete: { diary: `// every key visible. now i know exactly what i can filter on.`,
+`, expectedOutput: "id: 1\ntime: 21:30\nfrom: wren_h\nto: briar_v\nplatform: AIM\ncontent: covering for me tonight right? i'm in the cabin. you saw me in the cabin.", matchType: 'exact', codeMustContain: ['.items()'], hint: `<code>for key, value in fragment_one.items():</code> then indented <code>print(f"{key}: {value}")</code>. the f-string drops the variable values into the string.`, onComplete: { diary: `// every key visible. now i know exactly what i can filter on.`,
 buddy: { name: 'briar_v', msg: "i don't know who you are but you should stop. i mean it. you're going to ruin my life. she didn't even DO anything that night, okay? she was with me." }
 },
 charms: 3
@@ -1348,7 +1349,7 @@ matches = []
 
 # then print(matches)
 
-`, expectedOutput: '[1, 3, 10]', matchType: 'exact', hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
+`, expectedOutput: '[1, 3, 10]', matchType: 'exact', codeMustContain: ['.lower()', '.append('], hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
 buddy: { name: 'wren_h', msg: "whatever you think you're piecing together, you're wrong. ask briar. ask anyone. i was in my cabin." }
 },
 charms: 3
@@ -1381,7 +1382,7 @@ starter: `# the long way (you've already done this kind of thing):
 wren_msgs =
 
 print(len(wren_msgs))
-`, expectedOutput: '4', matchType: 'exact', hint: `<code>wren_msgs = [f for f in fragments if f["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 4 messages. four times wren reached out to briar that night.
+`, expectedOutput: '4', matchType: 'exact', codeMustContain: [/\[[^\]\n]*\bfor\b[^\]\n]*\]/], hint: `<code>wren_msgs = [f for f in fragments if f["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 4 messages. four times wren reached out to briar that night.
 // 9:30: set up alibi.
 // 10:42: refine alibi.
 // 12:08: thank briar (for what?)
@@ -1561,6 +1562,41 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
+}
+
+// codeMustContain: ensure the player actually used the skill the task is
+// teaching, not just produced the right output. (A learner who hardcodes
+// the answer and gets a green checkmark has been failed by the autograder,
+// not helped by it.) Per-task patterns live on each beat as
+// `codeMustContain: [...]` — a string is "must include this substring",
+// a nested array is "must include any of these", a RegExp is tested.
+if (passed && beat.codeMustContain) {
+  const __strippedCode = code.split('\n').map(__line => {
+    const __i = __line.indexOf('#');
+    return __i >= 0 ? __line.slice(0, __i) : __line;
+  }).join('\n');
+  let __missingPattern = null;
+  for (const __p of beat.codeMustContain) {
+    let __hit;
+    if (Array.isArray(__p)) {
+      __hit = __p.some(__s => __strippedCode.includes(__s));
+    } else if (__p instanceof RegExp) {
+      __hit = __p.test(__strippedCode);
+    } else {
+      __hit = __strippedCode.includes(__p);
+    }
+    if (!__hit) { __missingPattern = __p; break; }
+  }
+  if (__missingPattern !== null) {
+    passed = false;
+    const __fmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+      : (__missingPattern instanceof RegExp
+          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    return;
+  }
 }
 
 if (passed) {

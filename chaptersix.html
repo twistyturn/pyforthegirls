@@ -3124,6 +3124,7 @@ i'm going to ask her for everything she has.`,
 `,
     expectedOutput: `1747`,
     matchType: 'exact',
+    codeMustContain: ['open(', 'len('],
     fileInjection: true,
     onComplete: {
       diary: `// 1747 messages. fourteen months. and these are just the ones hannah thought were important.`
@@ -3167,6 +3168,7 @@ parsed = []
     expectedOutput: `{'date': '2003-06-15 21:33', 'sender': 'glorfindel_lives', 'content': 'are you the tegan from the silmarillion thread'}
 {'date': '2004-08-14 09:47', 'sender': 'tegan_a87', 'content': 'see you on the other side'}`,
     matchType: 'exact',
+    codeMustContain: ['re.match(', '.group('],
     fileInjection: true,
     onComplete: {
       diary: `// first message ever: hannah asking if tegan was the one from the silmarillion thread. last message: aug 14 morning. "see you on the other side."`
@@ -3231,6 +3233,7 @@ monthly_counts = {}
 2004-07: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 106
 2004-08: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 148`,
     matchType: 'exact',
+    codeMustContain: ['[:7]', '.get('],
     fileInjection: true,
     onComplete: {
       diary: `// most messages were in august 2004. the densest stretch of the friendship was the last three weeks of it.`
@@ -3334,6 +3337,7 @@ camille: 0
 melissa: 0`,
     hint: `<strong>first loop:</strong> <code>for msg in parsed:</code>, then indented <code>for name in names:</code>, then double-indented <code>if re.search(name, msg["content"], re.IGNORECASE):</code> followed by <code>counts[name] = counts[name] + 1</code>.<br><br><strong>second part:</strong> <code>sorted_pairs = sorted(counts.items(), key=lambda p: p[1], reverse=True)</code>, then <code>for name, count in sorted_pairs:</code> with <code>print(f"{name}: {count}")</code>.`,
     matchType: 'exact',
+    codeMustContain: ['re.search(', 're.IGNORECASE'],
     fileInjection: true,
     onComplete: {
       diary: `// wren is the most-mentioned. that tracks. tegan was obsessed.
@@ -3687,6 +3691,41 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
+}
+
+// codeMustContain: ensure the player actually used the skill the task is
+// teaching, not just produced the right output. (A learner who hardcodes
+// the answer and gets a green checkmark has been failed by the autograder,
+// not helped by it.) Per-task patterns live on each beat as
+// `codeMustContain: [...]` — a string is "must include this substring",
+// a nested array is "must include any of these", a RegExp is tested.
+if (passed && beat.codeMustContain) {
+  const __strippedCode = code.split('\n').map(__line => {
+    const __i = __line.indexOf('#');
+    return __i >= 0 ? __line.slice(0, __i) : __line;
+  }).join('\n');
+  let __missingPattern = null;
+  for (const __p of beat.codeMustContain) {
+    let __hit;
+    if (Array.isArray(__p)) {
+      __hit = __p.some(__s => __strippedCode.includes(__s));
+    } else if (__p instanceof RegExp) {
+      __hit = __p.test(__strippedCode);
+    } else {
+      __hit = __strippedCode.includes(__p);
+    }
+    if (!__hit) { __missingPattern = __p; break; }
+  }
+  if (__missingPattern !== null) {
+    passed = false;
+    const __fmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+      : (__missingPattern instanceof RegExp
+          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    return;
+  }
 }
 
 if (passed) {

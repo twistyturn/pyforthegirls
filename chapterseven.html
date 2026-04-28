@@ -1736,6 +1736,7 @@ url = "https://camppinecrest.ca/staff/"
 <li><a href="2005_session3.pdf">2005_session3.pdf</a></li>
 <li><a href="staff_`,
     matchType: 'exact',
+    codeMustContain: ['urlopen(', '.decode('],
     fileInjection: true,
     onComplete: {
       diary: `// a directory listing. apache default. nobody turned it off.
@@ -1790,6 +1791,7 @@ emails = []
     expectedOutput: `149 emails loaded.
 Re: lifeguard rotation update`,
     matchType: 'exact',
+    codeMustContain: ['email.message_from_file('],
     fileInjection: true,
     onComplete: {
       diary: `// 149 emails. seven and a half months of camp staff communications. schedules, parent inquiries, food orders.
@@ -1850,6 +1852,7 @@ aug_emails = []
 [Aug 16, 11:22] Re: missing camper update \u2014 please see attached
 [Aug 16, 17:31] Re: closing ceremony postponed`,
     matchType: 'exact',
+    codeMustContain: ['parsedate_to_datetime('],
     fileInjection: true,
     onComplete: {
       diary: `// friday afternoon: bonfire snacks. saturday morning: emergency dispatch.`
@@ -1878,6 +1881,7 @@ aug_emails = []
 [Aug 14, 16:08] sunscreen restock \u2014 Marcia please review
 [Aug 15, 09:14] incident report \u2014 JC pinewood cabin`,
     matchType: 'exact',
+    codeMustContain: ['any('],
     fileInjection: true,
     onComplete: {
       diary: `// one i wasn't expecting. nine AM the morning after.`
@@ -1975,6 +1979,7 @@ gap = infirmary - boathouse
 `,
     expectedOutput: `10 hours, 14 minutes`,
     matchType: 'exact',
+    codeMustContain: ['//', '%'],
     fileInjection: false,
     onComplete: {
       diary: `// i still don't know who killed her. i know who got hurt that night and lied about how.`
@@ -2593,6 +2598,41 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
+}
+
+// codeMustContain: ensure the player actually used the skill the task is
+// teaching, not just produced the right output. (A learner who hardcodes
+// the answer and gets a green checkmark has been failed by the autograder,
+// not helped by it.) Per-task patterns live on each beat as
+// `codeMustContain: [...]` — a string is "must include this substring",
+// a nested array is "must include any of these", a RegExp is tested.
+if (passed && beat.codeMustContain) {
+  const __strippedCode = code.split('\n').map(__line => {
+    const __i = __line.indexOf('#');
+    return __i >= 0 ? __line.slice(0, __i) : __line;
+  }).join('\n');
+  let __missingPattern = null;
+  for (const __p of beat.codeMustContain) {
+    let __hit;
+    if (Array.isArray(__p)) {
+      __hit = __p.some(__s => __strippedCode.includes(__s));
+    } else if (__p instanceof RegExp) {
+      __hit = __p.test(__strippedCode);
+    } else {
+      __hit = __strippedCode.includes(__p);
+    }
+    if (!__hit) { __missingPattern = __p; break; }
+  }
+  if (__missingPattern !== null) {
+    passed = false;
+    const __fmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+      : (__missingPattern instanceof RegExp
+          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    return;
+  }
 }
 
 if (passed) {

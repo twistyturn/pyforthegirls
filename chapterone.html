@@ -1067,6 +1067,7 @@ through hemlock twice instead of once. i don't know what that means.`,
     starter: `print("___")`,
     expectedOutput: 'tegan ashby',
     matchType: 'exact',
+    codeMustContain: ['print('],
     hint: `wrap the name in quotes and close the parenthesis. like <code>print("hello")</code> but with her name.`,
     onComplete: {
       diary: `// SCRIPT EXECUTED. logged: tegan ashby
@@ -1108,6 +1109,7 @@ i can't sleep.`,
     starter: `name = "your name"\nday = "today"\nprint(name)\nprint(day)`,
     expectedOutput: 'tegan\n5',
     matchType: 'exact',
+    codeMustContain: ['name =', 'day ='],
     hint: `change <code>"your name"</code> to <code>"tegan"</code>. change <code>"today"</code> to <code>5</code>. (5 is a number, no quotes around it.)`,
     onComplete: {
       diary: `// log_entry.py running. day 5 of camp.`,
@@ -1186,6 +1188,7 @@ i should be scared. i'm not scared. i'm so far past scared.`,
     starter: `name = "tegan"\nday = 5\nheader = f""\nprint(header)`,
     expectedOutput: 'day 5',
     matchType: 'contains',
+    codeMustContain: ['{day}', '{name}'],
     hint: `inside the quotes, put <code>{day}</code> and <code>{name}</code> wherever you want the values to show up. the exact decoration around them is up to you. something like <code>=== day {day} :: {name} ===</code> works.`,
     onComplete: {
       diary: `// header generator works. she used this on every entry from july onward.`,
@@ -1297,6 +1300,7 @@ to see what she'd do, and now i've seen.`,
 `,
     expectedOutput: '28',
     matchType: 'contains',
+    codeMustContain: ['int('],
     hint: `<p>two lines work:</p>
            <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
 print(number * 2)</pre>
@@ -1313,13 +1317,24 @@ print(number * 2)</pre>
     type: 'task',
     title: 'python.exe :: prompt.py',
     meta: 'a script for asking herself questions before bed.',
-    storyAbove: `now the real one. same int-conversion idea, but you also need <code>input()</code> — the function that pauses the script, shows a prompt, and waits for the person to type something. when they hit enter, <code>input()</code> hands you back whatever they typed, always as a string.`,
+    storyAbove: `now the real one. same int-conversion idea, but with a new function — <code>input()</code>. it pauses the script and waits for the person at the keyboard to type something, then hits enter. whatever they typed comes back as a string.<br><br>here's the simplest version:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">name = input("what's your name? ")
+print("hi " + name)</pre>when this runs:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">what's your name? <em>(person types: ashley, hits enter)</em>
+hi ashley</pre>the script paused on line 1, waited for the person to type, stored what they typed in <code>name</code>, then ran line 2 with the value.<br><br>this is how scripts become <em>reusable</em>. the same code works for any name. the same code we're about to write would work for any number of days, not just 14.`,
     skill: 'INPUT & TYPE CONVERSION',
-    instructions: `<p><code>input("question? ")</code> shows a prompt and pauses while the person types. when they hit enter, you get back whatever they typed — as text, even if they typed digits. (so the same string-vs-number problem from the practice round applies here.)</p>
-                   <p><strong>your task:</strong> complete the script so it asks "how many days left? " and then prints the answer doubled. the autograder will type <code>14</code> in response — your script should print <code>28</code>, not <code>1414</code>.</p>`,
+    instructions: `<p>this task uses <code>input()</code> to ask "how many days left?" and then doubles whatever the person typed.</p>
+                   <p>since you can't actually type into the autograder, the testing system <em>simulates</em> a person typing. when it runs your script, it'll automatically feed in <code>14</code> as if someone had typed it and hit enter. so:</p>
+                   <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
+                     <li><code>input()</code> pauses, autograder feeds in <code>14</code></li>
+                     <li>your script gets back the string <code>"14"</code></li>
+                     <li>you need to convert it to a number and print it doubled</li>
+                   </ul>
+                   <p>expected output: <code>28</code></p>
+                   <p>NOT <code>1414</code> — that's what you get if you skip the <code>int()</code> conversion and python repeats the string twice.</p>
+                   <p><strong>your task:</strong> write a script that asks "how many days left? " using <code>input()</code>, then prints the answer doubled. you'll need <code>input()</code>, <code>int()</code>, and one <code>print()</code>.</p>`,
     starter: `answer = input("how many days left? ")\n# convert answer to a number, then print it times 2\n`,
     expectedOutput: '28',
     matchType: 'contains',
+    codeMustContain: ['int(', 'input('],
     fakeInput: '14',
     hint: `<p>same shape as the practice round:</p>
            <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
@@ -1537,6 +1552,41 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === beat.expectedOutput.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(beat.expectedOutput);
+}
+
+// codeMustContain: ensure the player actually used the skill the task is
+// teaching, not just produced the right output. (A learner who hardcodes
+// the answer and gets a green checkmark has been failed by the autograder,
+// not helped by it.) Per-task patterns live on each beat as
+// `codeMustContain: [...]` — a string is "must include this substring",
+// a nested array is "must include any of these", a RegExp is tested.
+if (passed && beat.codeMustContain) {
+  const __strippedCode = code.split('\n').map(__line => {
+    const __i = __line.indexOf('#');
+    return __i >= 0 ? __line.slice(0, __i) : __line;
+  }).join('\n');
+  let __missingPattern = null;
+  for (const __p of beat.codeMustContain) {
+    let __hit;
+    if (Array.isArray(__p)) {
+      __hit = __p.some(__s => __strippedCode.includes(__s));
+    } else if (__p instanceof RegExp) {
+      __hit = __p.test(__strippedCode);
+    } else {
+      __hit = __strippedCode.includes(__p);
+    }
+    if (!__hit) { __missingPattern = __p; break; }
+  }
+  if (__missingPattern !== null) {
+    passed = false;
+    const __fmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+      : (__missingPattern instanceof RegExp
+          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    return;
+  }
 }
 
 if (passed) {
