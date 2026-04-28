@@ -2309,6 +2309,7 @@ function renderBeat(beat, isActive) {
 }
 
 function renderEmailView(beat, isActive) {
+  if (isActive && window.Sounds) Sounds.playOnce('email-new', 'mail:' + beat.id);
   const w = document.createElement('div');
   w.className = 'email-window';
   const email = beat.email;
@@ -2434,6 +2435,7 @@ function renderMultiplatformArchive(beat, isActive) {
 // ===========================================================================
 
 function renderHotmailView(beat, isActive) {
+  if (isActive && window.Sounds) Sounds.playOnce('email-new', 'mail:' + beat.id);
   const w = document.createElement('div');
   w.className = 'hotmail-window';
   const h = beat.headers || {};
@@ -2757,6 +2759,7 @@ function camilleSubmit(stage) {
   const st = window._camilleState;
   if (!st || st.stage !== stage) return;  // ignore stale clicks
   st.log.push({ who: 'you', text: text });
+  if (window.Sounds) Sounds.play('aim-message-out');
 
   if (stage === 'opening') {
     // Player told Camille how they found her
@@ -2833,6 +2836,7 @@ function camilleSubmit(stage) {
       st.log.push({ who: 'camille_m_88', text: 'tegan i mean' });
       st.log.push({ who: 'camille_m_88', text: 'tell me when u find her' });
       st.log.push({ who: 'system', text: 'camille_m_88 has signed off.' });
+      if (window.Sounds) Sounds.play('aim-buddy-out');
       st.stage = 'closed';
       // Save full log so we can replay it later if player revisits
       window._camilleFullLog = st.log.slice();
@@ -2854,6 +2858,8 @@ function camilleSubmit(stage) {
       // Stay in same stage so they can try again
     }
   }
+  // Camille's incoming reply batch — skip on the signoff turn so aim-buddy-out lands clean
+  if (window.Sounds && st.stage !== 'closed') Sounds.play('aim-message-in');
   renderStory();
 }
 
@@ -2874,13 +2880,20 @@ function renderAimCompose(beat, isActive) {
     </div>
     <div class="aim-compose-body">${beat.body}</div>
     ${isActive ? `<div class="aim-send-bar">
-      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
+      <button class="aim-send-btn" onclick="if(window.Sounds)Sounds.play('aim-message-out');advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
     </div>` : `<div class="aim-send-bar" style="text-align: right; color: var(--bg-deep); font-family: 'Silkscreen', monospace; font-size: 9px;">✓ sent</div>`}
   `;
   storyContainer.appendChild(w);
 }
 
 function renderAimLog(beat, isActive) {
+  if (isActive && window.Sounds) {
+    Sounds.playOnce('aim-message-in', 'log:' + beat.id);
+    const items = beat.messages || beat.log || [];
+    if (items.some(m => (m.from === 'system' || m.who === 'system') && /signed off/i.test(m.text || ''))) {
+      Sounds.playOnce('aim-buddy-out', 'off:' + beat.id);
+    }
+  }
   const w = document.createElement('div');
   w.className = 'aim-window';
   const items = beat.messages || beat.log || [];
@@ -3088,6 +3101,7 @@ storyContainer.appendChild(w);
 
 function renderWrap(beat, isActive) {
 if (window.Caseboard) Caseboard.recordWrap(8);
+if (isActive && window.Sounds) Sounds.playOnceEver('aim-drop', 'aim-drop-ch8');
 const w = document.createElement('div');
 w.className = 'window story-window';
 w.style.maxWidth = '640px';
@@ -3202,6 +3216,10 @@ location.reload();
 // BUDDY POPUP
 // ===========================================================================
 function showBuddy(name, msg) {
+if (window.Sounds) {
+  Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
+  Sounds.play('aim-message-in');
+}
 document.getElementById('buddyName').textContent = name + ' :: incoming message';
 document.getElementById('buddyMessage').innerHTML = msg;
 const popup = document.getElementById('buddyPopup');
@@ -3233,5 +3251,6 @@ renderStory();
 <script src="caseboard.js"></script>
 <script src="clutter.js"></script>
 <script src="study_notes.js"></script>
+<script src="sounds.js"></script>
 </body>
 </html>

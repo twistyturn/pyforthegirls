@@ -1304,6 +1304,9 @@ storyContainer.appendChild(w);
 }
 
 function renderDiary(beat, isActive) {
+if (isActive && window.Sounds && /\.eml|email_archive|\bfrom:\s*\S+@/i.test((beat.title || '') + ' ' + (beat.meta || ''))) {
+  Sounds.playOnce('email-new', 'mail:' + beat.id);
+}
 const w = document.createElement('div');
 w.className = 'window story-window';
 w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div class="diary-entry"> <div class="diary-meta">${beat.meta}</div> ${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
@@ -1452,6 +1455,10 @@ location.reload();
 // BUDDY POPUP
 // ===========================================================================
 function showBuddy(name, msg) {
+if (window.Sounds) {
+  Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
+  Sounds.play('aim-message-in');
+}
 document.getElementById('buddyName').textContent = name + ' :: incoming message';
 document.getElementById('buddyMessage').innerHTML = msg;
 const popup = document.getElementById('buddyPopup');
@@ -1483,5 +1490,6 @@ renderStory();
 <script src="caseboard.js"></script>
 <script src="clutter.js"></script>
 <script src="study_notes.js"></script>
+<script src="sounds.js"></script>
 </body>
 </html>
