@@ -26,6 +26,7 @@ jobs:
           set -euo pipefail
           mkdir -p public
           cp -v *.html public/
+          cp -v favicon.png public/
           cp -v caseboard.js clutter.js study_notes.js sounds.js public/
           cp -rv cursors public/
           mkdir -p public/sounds
