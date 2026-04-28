@@ -1525,6 +1525,7 @@ function renderBeat(beat, isActive) {
 }
 
 function renderAimLog(beat, isActive) {
+  if (isActive && window.Sounds) Sounds.playOnce('aim-message-in', 'log:' + beat.id);
   const selfUser = beat.selfUser || '';
   // Parse body line-by-line into structured chat events.
   const lines = beat.body.split('\n');
