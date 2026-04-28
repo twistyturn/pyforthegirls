@@ -985,33 +985,62 @@ i have her laptop and she left tools. start digging.`,
     nextBtn: 'open the zip prompt ▸'
   },
 
-  // ---- BEAT 1: comparison + if/else ----
+  // ---- BEAT 1a: comparison + if/else — practice fill-in ----
   {
-    id: 'task_comparison',
+    id: 'task_comparison_a',
     type: 'task',
-    title: 'python.exe :: zip_prompt.py',
-    meta: 'tegan was experimenting with password validation.',
-    storyAbove: `the zip file asks for a password. you don't have it. but tegan was learning python by writing little practice scripts, including one that simulates checking a password. it's a starting point. you can study how comparison works, then come back to the real lock.`,
+    title: 'python.exe :: zip_prompt_practice.py',
+    meta: 'tegan was learning password validation. this is her practice scratchpad.',
+    storyAbove: `the zip file asks for a password. you don't have it. but tegan was learning python by writing little practice scripts, including one that simulates checking a password. she left a practice version with most of it filled in — start there. the real one is next.`,
     skill: 'COMPARISON & IF/ELSE',
-    instructions: `<p>python compares values with <code>==</code> (equal) and <code>!=</code> (not equal). you can branch your code based on a comparison using <code>if</code> and <code>else</code>:</p>
+    instructions: `<p>python compares values with <code>==</code> (equal) and <code>!=</code> (not equal). these return <code>True</code> or <code>False</code>:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"hello" == "hello"   # → True
+"hello" == "world"   # → False
+5 != 5               # → False</pre>
+                   <p>you can branch your code based on a comparison using <code>if</code> and <code>else</code>:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if guess == "open sesame":
     print("UNLOCKED")
 else:
     print("denied")</pre>
-
-               <p><strong>your task:</strong> the variable <code>guess</code> is set to <code>"hemlock"</code> (tegan's cabin name). the scaffold below runs but doesn't check anything yet. change <code>True</code> to a comparison that's true when <code>guess</code> equals <code>"hemlock"</code>, and change the print messages so it prints <code>ACCESS GRANTED</code> when matching and <code>denied</code> otherwise.</p>`,
-starter: `guess = "hemlock"
-
-# change True to a comparison. change the prints to the right messages.
-
-if True:
-    print("placeholder")
+                   <p>the indented line under <code>if</code> runs only when the comparison is <code>True</code>. the indented line under <code>else</code> runs in every other case.</p>
+                   <p><strong>your task:</strong> the script below is mostly written. replace the <code>???</code> with the right comparison, and fill in the two empty <code>print()</code> statements so it prints <code>ACCESS GRANTED</code> when guess equals <code>"hemlock"</code> and <code>denied</code> otherwise.</p>`,
+    starter: `guess = "hemlock"
+# replace ??? with a comparison that checks if guess equals "hemlock"
+if ???:
+    print("")
 else:
-    print("placeholder")`, expectedOutput: 'ACCESS GRANTED', matchType: 'exact', hint: `replace <code>True</code> with <code>guess == "hemlock"</code>. replace the if-branch print with <code>print("ACCESS GRANTED")</code> and the else-branch with <code>print("denied")</code>. the indentation in the scaffold is already correct, so leave it alone.`, onComplete: { diary: `// hemlock was the obvious first guess. didn't work on the real zip. but the script runs.`,
-buddy: { name: 'tegan_a87', msg: "hemlock was my cabin. it was never going to be my password. that's lazy. i wasn't lazy." }
-},
-charms: 2
-},
+    print("")`,
+    expectedOutput: 'ACCESS GRANTED',
+    matchType: 'exact',
+    hint: `the comparison is <code>guess == "hemlock"</code>. the first <code>print()</code> needs <code>"ACCESS GRANTED"</code> in the quotes. the second needs <code>"denied"</code>.`,
+    onComplete: {
+      diary: `// practice script runs. comparison is just == ("equal to"). got it.`
+    },
+    charms: 1
+  },
+
+  // ---- BEAT 1b: comparison + if/else — write it yourself ----
+  {
+    id: 'task_comparison',
+    type: 'task',
+    title: 'python.exe :: zip_prompt.py',
+    meta: 'the actual practice script. tegan only left the variable.',
+    storyAbove: `now the real version. same logic, but you write the whole if/else from scratch. the starter has just the variable; the rest is yours.`,
+    skill: 'COMPARISON & IF/ELSE (writing branches)',
+    instructions: `<p>same idea as the practice round. the variable <code>guess</code> is set to <code>"hemlock"</code> (tegan's cabin name). complete the script so it prints <code>ACCESS GRANTED</code> when the guess equals <code>"hemlock"</code> and <code>denied</code> otherwise.</p>
+                   <p>you'll need an <code>if</code> line with a comparison, an indented <code>print()</code> for the match, an <code>else:</code> line, and another indented <code>print()</code> for the fallback.</p>`,
+    starter: `guess = "hemlock"
+# write the if/else below
+`,
+    expectedOutput: 'ACCESS GRANTED',
+    matchType: 'exact',
+    hint: `four lines: <code>if guess == "hemlock":</code>, then indented (4 spaces) <code>print("ACCESS GRANTED")</code>, then unindented <code>else:</code>, then indented <code>print("denied")</code>. python is picky about indentation — use exactly 4 spaces for the indented lines.`,
+    onComplete: {
+      diary: `// hemlock was the obvious first guess. didn't work on the real zip. but the script runs.`,
+      buddy: { name: 'tegan_a87', msg: "hemlock was my cabin. it was never going to be my password. that's lazy. i wasn't lazy." }
+    },
+    charms: 1
+  },
 
 // –– BEAT 2: AIM log fragment + elif chain ––
 {
