@@ -204,6 +204,20 @@
   }
 
   .hidden { display: none !important; }
+
+  /* ============ Y2K WINDOWS CURSORS ============ */
+  html, body {
+    cursor: url('cursors/default/arrow.cur'), default;
+  }
+  input, textarea, [contenteditable], [contenteditable="true"] {
+    cursor: text;
+  }
+  button:disabled, .btn:disabled, button[disabled], input[disabled], [disabled] {
+    cursor: not-allowed;
+  }
+  body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
+    cursor: url('cursors/default/wait.cur'), wait !important;
+  }
 </style>
 </head>
 <body>
