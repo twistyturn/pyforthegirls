@@ -1366,13 +1366,14 @@ function renderAimCompose(beat, isActive) {
     </div>
     <div class="aim-compose-body">${beat.body}</div>
     ${isActive ? `<div class="aim-send-bar">
-      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
+      <button class="aim-send-btn" onclick="if(window.Sounds)Sounds.play('aim-message-out');advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
     </div>` : `<div class="aim-send-bar" style="text-align: right; color: var(--bg-deep); font-family: 'Silkscreen', monospace; font-size: 9px;">✓ sent</div>`}
   `;
   storyContainer.appendChild(w);
 }
 
 function renderAimLog(beat, isActive) {
+  if (isActive && window.Sounds) Sounds.playOnce('aim-message-in', 'log:' + beat.id);
   const w = document.createElement('div');
   w.className = 'aim-window';
   const messagesHtml = beat.messages.map(m => {
@@ -1659,6 +1660,10 @@ location.reload();
 // BUDDY POPUP
 // ===========================================================================
 function showBuddy(name, msg) {
+if (window.Sounds) {
+  Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
+  Sounds.play('aim-message-in');
+}
 document.getElementById('buddyName').textContent = name + ' :: incoming message';
 document.getElementById('buddyMessage').innerHTML = msg;
 const popup = document.getElementById('buddyPopup');
@@ -1690,5 +1695,6 @@ renderStory();
 <script src="caseboard.js"></script>
 <script src="clutter.js"></script>
 <script src="study_notes.js"></script>
+<script src="sounds.js"></script>
 </body>
 </html>

@@ -707,6 +707,10 @@ function startGame() {
   document.getElementById('taskbar').classList.remove('hidden');
   makeSparkles();
   startClock();
+  if (window.Sounds) {
+    Sounds.installToggle();
+    Sounds.playOnceEver('aim-welcome', 'aim-welcome-ch1');
+  }
   renderStory();
 }
 
@@ -1204,6 +1208,10 @@ location.reload();
 // BUDDY POPUP
 // ===========================================================================
 function showBuddy(name, msg) {
+if (window.Sounds) {
+  Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
+  Sounds.play('aim-message-in');
+}
 document.getElementById('buddyName').textContent = name + ' :: incoming message';
 document.getElementById('buddyMessage').innerHTML = msg;
 const popup = document.getElementById('buddyPopup');
@@ -1227,6 +1235,10 @@ document.getElementById('desktop').classList.remove('hidden');
 document.getElementById('taskbar').classList.remove('hidden');
 makeSparkles();
 startClock();
+if (window.Sounds) {
+  Sounds.installToggle();
+  Sounds.playOnceEver('aim-welcome', 'aim-welcome-ch1');
+}
 renderStory();
 }, 100);
 }
@@ -1235,6 +1247,7 @@ renderStory();
 <script src="caseboard.js"></script>
 <script src="clutter.js"></script>
 <script src="study_notes.js"></script>
+<script src="sounds.js"></script>
 
 </body>
 </html>
