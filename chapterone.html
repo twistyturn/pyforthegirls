@@ -33,11 +33,11 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-min-height: 100vh;
+height: 100vh;
 font-family: 'VT323', 'Courier New', monospace;
 color: var(--silver);
 background: var(--bg-deep);
-overflow-x: hidden;
+overflow: hidden;
 cursor: url('cursors/default/arrow.cur'), default;
 }
 
@@ -77,9 +77,17 @@ animation: twinkle 3s ease-in-out infinite;
 
 /* ============ DESKTOP / TASKBAR ============ */
 .desktop {
-min-height: 100vh;
-padding: 16px 16px 56px 16px;
+height: 100vh;
+padding: 16px 16px 56px 112px;
 position: relative;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+@media (max-width: 900px) {
+.desktop {
+padding: 16px 16px 56px 16px;
+}
 }
 .taskbar {
 position: fixed; bottom: 0; left: 0; right: 0;
@@ -131,6 +139,45 @@ animation: blink 1.5s steps(2) infinite;
 cursor: pointer;
 }
 @keyframes blink { 50% { opacity: 0.4; } }
+
+
+/* ============ CHAPTER WINDOW (the persistent 'app' window the player reads in) ============ */
+.chapter-window {
+flex: 1;
+align-self: center;
+width: 100%;
+max-width: 820px;
+display: flex;
+flex-direction: column;
+background: var(--bg-mid);
+border: 2px solid var(--bg-deep);
+box-shadow: 4px 4px 0 var(--bg-deep), 0 0 24px rgba(255, 102, 196, 0.4);
+overflow: hidden;
+min-height: 0;
+}
+.chapter-titlebar {
+background: linear-gradient(90deg, var(--pink-hot) 0%, var(--lavender) 100%);
+color: white;
+padding: 4px 8px;
+font-family: 'Silkscreen', monospace;
+font-size: 10px;
+letter-spacing: 1px;
+text-transform: uppercase;
+display: flex;
+align-items: center;
+justify-content: space-between;
+border-bottom: 2px solid var(--bg-deep);
+text-shadow: 1px 1px 0 var(--bg-deep);
+flex-shrink: 0;
+}
+.chapter-titlebar-buttons { display: flex; gap: 4px; }
+.chapter-window-body {
+flex: 1;
+overflow-y: auto;
+overflow-x: hidden;
+padding: 16px 16px 24px 16px;
+background: var(--bg-deep);
+}
 
 /* ============ DESKTOP ICONS ============ */
 .icon-grid {
@@ -713,13 +760,27 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
     </div>
   </div>
 
+  <!-- chapter window: persistent "app window" containing story content -->
+  <div class="chapter-window">
+    <div class="chapter-titlebar">
+      <span>pyforthegirls :: chapter 1 :: pinecrest_summer.zip</span>
+      <div class="chapter-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="chapter-window-body" id="chapterWindowBody">
+
   <!-- Marquee -->
 
   <div class="marquee-strip"><span>★ now playing: avril lavigne — i'm with you ★ AIM status: away ★ 14 unread emails ★ trash bin: 1.3 GB ★ last login: aug 14 2004, 11:47 PM ★ now playing: avril lavigne — i'm with you ★</span></div>
 
   <!-- ============ STORY WINDOWS RENDERED HERE ============ -->
 
-  <div id="storyContainer"></div>
+      <div id="storyContainer"></div>
+    </div>
+  </div>
 
   <!-- ============ BUDDY POPUP ============ -->
 
@@ -1018,30 +1079,55 @@ i can't sleep.`,
     charms: 1
   },
 
-  // ---- BEAT 4: diary — toxic begins ----
+  // ---- BEAT 4: diary — the swoon (first boathouse visit) ----
   {
-    id: 'diary_4',
+    id: 'diary_swoon',
     type: 'diary',
-    title: 'open file: diary/07_boathouse.txt',
+    title: 'open file: diary/10_idk.txt',
     meta: 'last modified: july 3, 2004 — 2:30 am',
     body: `july 3
 
-the boathouse smells like algae and sun-warm wood. she had a flashlight.
-she said: "i could get fired for this. you know that, right?"
-i said i knew.
-she said: "but it's worse for you than it is for me. tegan, look at me.
-your mom doesn't know about you. does she."
-i didn't answer. i didn't have to.
-she said: "so we're going to be careful. for you. ok?"
-i said ok.
-she said good girl.
-she kissed me.
-later, walking back, she said: "you can't tell anyone. not your camp
-friends. not whoever it is you write to at night. nobody."
-i said i wouldn't. i'm not even sure i breathed.
+something is happening that i don't have words for yet. i'm going to
+try.
 
-she's exhilarating.`,
-    nextBtn: 'keep reading ▸'
+i went to the boathouse with her tonight. she had a flashlight and she
+brought a blanket and we sat against the wall by the door and i swear
+to god the whole world went quiet. afterwards we walked back through
+the trees and i could hear myself breathing for the first time in
+maybe my whole life.
+
+she has a tattoo on her ribs of a swallow. she got it when she was 17
+in vancouver, illegal!!! she has another one on her hipbone i haven't
+asked about yet because the way she covers it when she changes is its
+own kind of question.
+
+she laughs at things i didn't know were funny. she plays tegan and sara
+on her cd player in the boathouse, low, and the first time the music
+came on i made a face and she said "what" and i said "my name is tegan,
+han-" and i stopped because i'd almost said something i can't say,
+and she looked at me a long time and didn't push.
+
+she asked me about my mom tonight. how strict, what kind of strict,
+whether mom checks the phone bills, whether i'd told anyone at school.
+i told her everything. i wanted to. she listened the way camille sits
+with crying campers. she just LISTENS. that made me want
+to tell her more.
+
+she's nineteen. she's out! she's been out since she was fifteen which
+is a thing i can't even imagine. she has a sister in vancouver who
+sends her zines. she's read the same books i have but she read them
+to feel less alone. i read them to feel more alone. i hadn't put that
+together before tonight.
+
+i don't know how to write this without sounding like i lost my mind.
+i think i lost my mind. i think it's been gone since june 26 and i'm
+only now noticing. she chose me. SHE chose ME. she's the kind of girl
+who could choose anyone and she walked over to MY cabin and looked at
+my hands when i was tying my shoe and asked if i wanted to come find
+her tomorrow and i did and now i can't see anything else.
+
+i should be scared. i'm not scared. i'm so far past scared.`,
+    nextBtn: 'next file ▸'
   },
 
   // ---- BEAT 5: f-strings / concatenation ----
@@ -1098,55 +1184,32 @@ i don't have a better plan.`,
     nextBtn: 'next file ▸'
   },
 
-  // ---- BEAT 5.6: NEW — the swoon ----
+  // ---- BEAT 5.6: diary — toxic turn (recurring boathouse visit) ----
   {
-    id: 'diary_swoon',
+    id: 'diary_4',
     type: 'diary',
-    title: 'open file: diary/10_idk.txt',
+    title: 'open file: diary/07_boathouse.txt',
     meta: 'last modified: july 15, 2004 — 1:22 am',
     body: `july 15
 
-something is happening that i don't have words for yet. i'm going to
-try.
+the boathouse smells like algae and sun-warm wood. she had a flashlight,
+like always. tonight was different though. she said it like she meant it
+this time:
+"i could get fired for this. you know that, right?"
+i said i knew.
+she said: "but it's worse for you than it is for me. tegan, look at me.
+your mom doesn't know about you. does she."
+i didn't answer. i didn't have to.
+she said: "so we're going to be careful. for you. ok?"
+i said ok.
+she said good girl.
+she kissed me.
+later, walking back, she said: "you can't tell anyone. not your camp
+friends. not whoever it is you write to at night. nobody."
+i said i wouldn't. i'm not even sure i breathed.
 
-we've been at the boathouse four times now. the first time was the
-worst-best thing i've ever done. the second time was easier. the third
-time we just talked for an hour before we did anything. the fourth time
-was tonight and she brought a blanket and we sat against the wall by
-the door and i swear to god the whole world went quiet.
-
-she has a tattoo on her ribs of a swallow. she got it when she was 17
-in vancouver, illegal!!! she has another one on her hipbone i haven't
-asked about yet because the way she covers it when she changes is its
-own kind of question.
-
-she laughs at things i didn't know were funny. she plays tegan and sara
-on her cd player in the boathouse, low, and the first time the music
-came on i made a face and she said "what" and i said "my name is tegan,
-han-" and i stopped because i'd almost said something i can't say,
-and she looked at me a long time and didn't push.
-
-she asked me about my mom tonight. how strict, what kind of strict,
-whether mom checks the phone bills, whether i'd told anyone at school.
-i told her everything. i wanted to. she listened the way camille sits
-with crying campers. she just LISTENS. that made me want
-to tell her more.
-
-she's nineteen. she's out! she's been out since she was fifteen which
-is a thing i can't even imagine. she has a sister in vancouver who
-sends her zines. she's read the same books i have but she read them
-to feel less alone. i read them to feel more alone. i hadn't put that
-together before tonight.
-
-i don't know how to write this without sounding like i lost my mind.
-i think i lost my mind. i think it's been gone since june 26 and i'm
-only now noticing. she chose me. SHE chose ME. she's the kind of girl
-who could choose anyone and she walked over to MY cabin and looked at
-my hands when i was tying my shoe and asked if i wanted to come find
-her tomorrow and i did and now i can't see anything else.
-
-i should be scared. i'm not scared. i'm so far past scared.`,
-    nextBtn: 'next file ▸'
+she's exhilarating.`,
+    nextBtn: 'keep reading ▸'
   },
 
   // ---- BEAT 6: diary — tightening ----
@@ -1292,7 +1355,7 @@ function renderStory() {
     renderBeat(BEATS[i], i === upTo);
   }
   // scroll to bottom
-  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 100);
+  setTimeout(() => { const cw = document.getElementById('chapterWindowBody'); if (cw) cw.scrollTo({ top: cw.scrollHeight, behavior: 'smooth' }); }, 100);
 }
 
 function renderBeat(beat, isActive) {
