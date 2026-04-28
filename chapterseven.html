@@ -2552,6 +2552,52 @@ storyContainer.appendChild(w);
 // ===========================================================================
 // TASK EXECUTION
 // ===========================================================================
+
+
+// Tab in code editors: insert 4 spaces (Python convention) instead of
+// moving focus to the next element. Without this, hitting Tab to indent
+// kicks the player out of the textarea — a real blocker for any task
+// where they write code from scratch instead of filling in a blank.
+document.addEventListener('keydown', function(__tabEv) {
+  if (__tabEv.key !== 'Tab') return;
+  const __ta = __tabEv.target;
+  if (!__ta || !__ta.classList || !__ta.classList.contains('code-area')) return;
+  __tabEv.preventDefault();
+  const __start = __ta.selectionStart;
+  const __end = __ta.selectionEnd;
+  __ta.value = __ta.value.substring(0, __start) + '    ' + __ta.value.substring(__end);
+  __ta.selectionStart = __ta.selectionEnd = __start + 4;
+});
+// Diagnostic layer: check player's code against a list of known wrong patterns
+// and surface a specific tip if any match. Patterns: string (substring),
+// RegExp, or function. First match wins. Used by runTask() when the task is
+// failing — never when it's passing — to turn each task's failure modes into
+// a teaching moment instead of a generic 'try again'.
+function checkCommonMistakes(code, mistakes) {
+  if (!mistakes || !Array.isArray(mistakes)) return null;
+  // Strip Python line comments — same convention as codeMustContain.
+  const stripped = code.replace(/#.*$/gm, '');
+  for (const mistake of mistakes) {
+    let matched = false;
+    const p = mistake.pattern;
+    if (typeof p === 'string') {
+      matched = stripped.includes(p);
+    } else if (p instanceof RegExp) {
+      matched = p.test(stripped);
+    } else if (typeof p === 'function') {
+      matched = !!p(stripped);
+    }
+    if (matched) return mistake.tip;
+  }
+  return null;
+}
+
+function appendCommonMistakeTip(outEl, code, mistakes) {
+  const tip = checkCommonMistakes(code, mistakes);
+  if (!tip) return;
+  outEl.innerHTML += '<span class="info" style="margin-top:8px;display:block;border-left:3px solid var(--pink-hot, #ff66c4);padding-left:10px;">// looks like a common slip:<br>' + tip + '</span>';
+}
+
 async function runTask(beatId) {
 const beat = BEATS.find(b => b.id === beatId);
 const codeEl = document.getElementById('code-' + beatId);
@@ -2631,6 +2677,7 @@ if (passed && beat.codeMustContain) {
           ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
           : '<code>' + escapeHtml(__missingPattern) + '</code>');
     outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    appendCommonMistakeTip(outEl, code, beat.commonMistakes);
     return;
   }
 }
@@ -2653,6 +2700,7 @@ showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 setTimeout(() => renderStory(), 600);
 } else {
 outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
+appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 }
 }
 
