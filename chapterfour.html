@@ -1129,11 +1129,13 @@ Looking forward to seeing you on the 21st.
     skill: 'FILE I/O :: open() AND .readlines()',
     hint: `<code>with open("outlook/inbox/attachments/roster_2004.txt") as f:</code> indented <code>lines = f.readlines()</code>. then three lines: <code>print(lines[0].strip())</code>, <code>print(lines[1].strip())</code>, <code>print(lines[2].strip())</code>.`,
     storyAbove: `at orientation, pinecrest emailed every staffer a roster as a text attachment. tegan saved hers. you need to learn how to make python read a file. <code>open()</code> opens it. <code>.readlines()</code> gets every line as a list of strings. <code>with</code> blocks make sure the file gets closed properly when you're done.`,
-    instructions: `the <code>with</code> block opens a file, gives you a handle, and closes it for you when you exit the block:
-<pre>with open("filename.txt") as f:
+    instructions: `<p>the <code>with</code> block opens a file, gives you a handle (<code>f</code>), and automatically closes it when you exit the block. <code>.readlines()</code> reads the file and gives you a list with one item per line:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">with open("filename.txt") as f:
     lines = f.readlines()</pre>
-
-your task: open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. each line ends with a newline character (\n) so use <code>.strip()</code> on each line to avoid double-spacing.`, starter: `with open("outlook/inbox/attachments/roster_2004.txt") as f:
+                   <p>each line in the list still has its newline character (<code>\\n</code>) attached at the end, which makes <code>print()</code> add an extra blank line. <code>.strip()</code> removes whitespace (spaces, tabs, newlines) from both ends of a string:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"hello\\n".strip()    # → "hello"
+"  spaced  ".strip()  # → "spaced"</pre>
+                   <p><strong>your task:</strong> open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. use <code>.strip()</code> on each line to remove the trailing newline before printing.</p>`, starter: `with open("outlook/inbox/attachments/roster_2004.txt") as f:
     lines = f.readlines()
 
 # print lines[0], lines[1], lines[2] using .strip()
@@ -1144,37 +1146,69 @@ head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact',
 }
 },
 
-// –– BEAT 2: task_string_parse — split, strip, build dicts ––
+// –– BEAT 2a: task_string_parse_a — parse one sample line ––
+{
+id: 'task_string_parse_a',
+type: 'task',
+charms: 1,
+title: 'python.exe :: parse_one_line.py',
+meta: 'before parsing all 16 lines, get one to work.',
+skill: 'STRING PARSING :: PRACTICE ON ONE LINE',
+storyAbove: `each line of the roster looks like <code>director|Marcia|Deveraux|admin|on-site</code>. fields separated by pipes (<code>|</code>). before looping over all of them, get the parsing right on one sample line.`,
+instructions: `<p>the string method <code>.split(separator)</code> breaks a string into a list, splitting on whatever character you give it:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"a|b|c".split("|")    # → ["a", "b", "c"]
+"red,blue,green".split(",")
+# → ["red", "blue", "green"]</pre>
+               <p>you can combine that with the <code>.strip()</code> you saw in the previous task to clean up extra spaces. and lists have <code>.append()</code> for adding items, which you'll need next.</p>
+               <p><strong>your task:</strong> the variable <code>sample_line</code> holds one line from the roster. split it on <code>"|"</code>, build a dict with keys <code>"role"</code>, <code>"first"</code>, <code>"last"</code>, <code>"cabin"</code>, <code>"status"</code>, and print the dict.</p>
+               <p>expected output: <code>{'role': 'director', 'first': 'Marcia', 'last': 'Deveraux', 'cabin': 'admin', 'status': 'on-site'}</code></p>`,
+starter: `sample_line = "director|Marcia|Deveraux|admin|on-site"
+
+# split sample_line on "|"
+# build a dict using the resulting list (parts[0], parts[1], ...)
+# print the dict
+`,
+expectedOutput: `{'role': 'director', 'first': 'Marcia', 'last': 'Deveraux', 'cabin': 'admin', 'status': 'on-site'}`,
+matchType: 'exact',
+hint: `<code>parts = sample_line.split("|")</code>. then <code>person = {"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]}</code>. then <code>print(person)</code>.`,
+onComplete: {
+  diary: `// one line parsed. now do all 15.`
+}
+},
+
+// –– BEAT 2b: task_string_parse — loop and build list ––
 {
 id: 'task_string_parse',
 type: 'task',
-charms: 2,
+charms: 1,
 title: 'python.exe :: parse_roster.py',
-meta: 'turn each line into structured data.',
-skill: 'STRING PARSING :: .split() AND .strip()',
-hint: `<code>for line in lines[1:]:</code> indented <code>parts = [p.strip() for p in line.split("|")]</code> then <code>staff.append({"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]})</code>. then unindented <code>print(len(staff))</code>.`,
-storyAbove: `each line is fields separated by pipes (<code>|</code>). to get structured data, you split each line on the pipe character and strip whitespace from each piece. then you can build a list of dictionaries, one per staffer, where each dict has keys like <code>first</code>, <code>last</code>, <code>role</code>, <code>cabin</code>, <code>status</code>.`,
-instructions: `string method <code>.split(separator)</code> breaks a string into a list:
-
-<pre>"a|b|c".split("|") returns ["a", "b", "c"]</pre>
-
-combine with <code>.strip()</code> to clean each piece. skip the header (line 0). for each remaining line, split on <code>|</code>, strip each piece, and build a dict with keys: role, first, last, cabin, status. append each dict to a list called <code>staff</code>. then print <code>len(staff)</code>.`, starter: `staff = []
+meta: 'apply the parsing to the whole roster.',
+skill: 'STRING PARSING :: LOOP AND BUILD LIST',
+storyAbove: `you got it working on one line. now do all of them. the file has a header line on top (<code>ROLE|FIRST|LAST|...</code>) that you want to skip — it's labels, not data.`,
+instructions: `<p>to skip the first item of a list, use <strong>slicing</strong>:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">items = ["a", "b", "c", "d"]
+items[1:]   # → ["b", "c", "d"]</pre>
+               <p><code>list[1:]</code> gives you everything from index 1 onward — i.e. everything except the first item.</p>
+               <p><strong>your task:</strong> loop through <code>lines[1:]</code> (skipping the header). for each line, do the same parsing you just did, and append the resulting dict to a list called <code>staff</code>. then print <code>len(staff)</code>.</p>`,
+starter: `staff = []
 with open("outlook/inbox/attachments/roster_2004.txt") as f:
     lines = f.readlines()
 
-# skip header (lines[0]). for each line in lines[1:]:
-
-# - split on "|"
-
-# - strip each piece
-
-# - build a dict with keys: role, first, last, cabin, status
-
-# - append to staff
+# loop through lines[1:] (skipping the header).
+# for each line:
+#   - strip and split on "|"
+#   - build a dict (same shape as in the practice task)
+#   - append it to staff
 
 # then print len(staff)
-
-`, expectedOutput: `15`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// 15 staffers parsed. fourteen of them are not tegan. now i can filter.`, buddy: { name: 'camille.j.89', msg: `i used to read that roster like it was the social hierarchy. wren at the top. tegan near the bottom because of the alphabet, even though everyone knew where she really was.` }
+`,
+expectedOutput: `15`,
+matchType: 'exact',
+fileInjection: true,
+hint: `<code>for line in lines[1:]:</code> indented <code>parts = line.strip().split("|")</code>, then <code>staff.append({"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]})</code>. then unindented <code>print(len(staff))</code>.`,
+onComplete: {
+  diary: `// 15 staffers parsed. fourteen of them are not tegan. now i can filter.`,
+  buddy: { name: 'camille.j.89', msg: `i used to read that roster like it was the social hierarchy. wren at the top. tegan near the bottom because of the alphabet, even though everyone knew where she really was.` }
 }
 },
 
@@ -1229,23 +1263,28 @@ charms: 3,
 title: 'python.exe :: alibis.py',
 meta: 'three of these four were demonstrably not at the boathouse.',
 skill: 'COMPOUND FILTERING :: any() AND SUBSTRING in',
-hint: `<code>for m in staff:</code> indented: <code>if not m["first"].lower().startswith("h"): continue</code>. then <code>if any(term in m["status"] for term in exclude_terms): continue</code>. then <code>print(f"{m[\'first\']} {m[\'last\']}")</code>.`,
+hint: `<code>for m in staff:</code> indented <code>if m["first"].lower().startswith("h") and not any(term in m["status"] for term in exclude_terms):</code> double-indented <code>print(f"{m['first']} {m['last']}")</code>. the <code>not any(...)</code> means "none of the exclude terms appear in this person's status."`,
 storyAbove: `the roster's status field tells you where each person was on aug 14. helen drove home aug 13. hank was in the kitchen area with the asst cook. henry was on a multi-day overnight at lac la biche, three hours from camp. that leaves hattie. write a filter that returns only H-staff who could plausibly have been at the boathouse. exclude anyone whose status mentions a disqualifying location.`,
-instructions: `string substring check: <code>"lac la biche" in member["status"]</code> returns <code>True</code> if the substring appears anywhere in the status field. you can also use <code>any()</code> across a list of terms:
+instructions: `<p>you've used <code>in</code> to check if one string appears inside another. <code>any()</code> checks if <em>any</em> item in a list passes a check:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">words = ["red", "blue", "green"]
+any(w == "blue" for w in words)
+# → True
 
-<pre>any(term in text for term in ["a", "b", "c"])</pre>
-
-your task: filter the four h-candidates down to those whose status does NOT mention any of <code>"off-site"</code>, <code>"lac la biche"</code>, or <code>"kitchen"</code>. print <code>"first last"</code> for each remaining match.`, starter: `# staff is loaded
+any(w == "purple" for w in words)
+# → False</pre>
+               <p>combined with substring <code>in</code>, you can check if a string contains any of several phrases:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">text = "off-site (drove home aug 13)"
+exclude = ["off-site", "lac la biche", "kitchen"]
+any(term in text for term in exclude)
+# → True (because "off-site" is in the text)</pre>
+               <p><strong>your task:</strong> filter the H-staff down to those whose status does <strong>NOT</strong> mention any of <code>"off-site"</code>, <code>"lac la biche"</code>, or <code>"kitchen"</code>. for each remaining match, print <code>"first last"</code>.</p>`,
+starter: `# staff is loaded
 exclude_terms = ["off-site", "lac la biche", "kitchen"]
 
 # for each member in staff:
-
-# - skip unless first name starts with "h"
-
-# - skip if any exclude_term is in member["status"]
-
-# - otherwise, print "first last"
-
+#   if their first name starts with "h"
+#   AND none of the exclude_terms is in their status
+#   then print "first last"
 `, expectedOutput: `Hattie Whitlock`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// helen was home in town. henry was three hours out at lac la biche with eight boys and another counsellor. hank was in the kitchen at 11:44 PM, greg can confirm. only hattie was on-site, no alibi anyone has confirmed yet. she left two days later. it has to be her.`, buddy: { name: 'wren_h', msg: `i saw the account log on. i thought it was you. it's never you. i don't know who you are. i don't actually want to know.` }
 }
 },
@@ -1330,15 +1369,22 @@ charms: 4,
 title: 'python.exe :: who_didnt_return.py',
 meta: "four people from 2003 aren't in 2004. who?",
 skill: 'SETS :: set() AND SET DIFFERENCE',
-hint: `<code>set_2003 = {(s["first"], s["last"]) for s in staff_2003}</code>. <code>set_2004 = {(s["first"], s["last"]) for s in staff}</code>. <code>didnt_return = set_2003 - set_2004</code>. then <code>for first, last in sorted(didnt_return): print(f"{first} {last}")</code>.`,
+hint: `<code>list_2003 = [(s["first"], s["last"]) for s in staff_2003]</code>. <code>list_2004 = [(s["first"], s["last"]) for s in staff]</code>. then <code>set_2003 = set(list_2003)</code> and <code>set_2004 = set(list_2004)</code>. then <code>didnt_return = set_2003 - set_2004</code>. finally <code>for first, last in sorted(didnt_return):</code> indented <code>print(f"{first} {last}")</code>.`,
 storyAbove: `if H wasn't a counsellor with a first name starting H in either year, maybe the answer isn't an H at all. maybe somebody quit between 2003 and 2004 for a reason. python sets let you compute differences between two collections quickly.`,
-instructions: `<code>set()</code> turns a list into a set (unordered, no duplicates):
-
-<pre>a = set([1, 2, 3])
+instructions: `<p>a <strong>set</strong> is like a list, but unordered and with no duplicates. you can compute differences between sets:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">a = set([1, 2, 3])
 b = set([2, 3, 4])
-a - b  # gives {1}: items in a but not in b</pre>
-
-build a set of <code>(first, last)</code> tuples for each roster. compute the set difference: who's in 2003 but not in 2004? for each person, print <code>"first last"</code>. use <code>sorted()</code> so the order is deterministic.`, starter: `# staff (2004) and staff_2003 are both loaded.
+a - b   # → {1}    (in a but not in b)
+b - a   # → {4}    (in b but not in a)</pre>
+               <p>to compare people across rosters, you need each person represented as a single value. python has <strong>tuples</strong> for this — like a list, but written with parentheses instead of square brackets, and you can put them inside a set:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">("Marcia", "Deveraux")
+# a tuple of two strings — first and last name together</pre>
+               <p>tuples can be unpacked back into separate variables in a for loop:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">pair = ("Marcia", "Deveraux")
+first, last = pair
+print(first)   # → Marcia
+print(last)    # → Deveraux</pre>
+               <p><strong>your task:</strong> for each roster, build a list of <code>(first, last)</code> tuples, then turn each list into a set. compute the difference (2003 minus 2004) — the people who were on staff in 2003 but not 2004. print each one as <code>"first last"</code>, sorted alphabetically.</p>`, starter: `# staff (2004) and staff_2003 are both loaded.
 # sets are like lists but unordered, no duplicates, and you can
 # subtract them. set_a - set_b is "everything in a that isn't in b."
 # i kept needing this for "who was here last year but not this year"

@@ -1208,7 +1208,19 @@ title: 'python.exe :: alibi_filter.py',
 meta: 'find every message that mentions "cabin".',
 storyAbove: `wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains that word. use <code>.lower()</code> to make the search case-insensitive (in case wren ever capitalized it). collect the IDs of matching fragments into a list called <code>matches</code> and print it.`,
 skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
-instructions: `<p>strings have <strong>methods</strong>. built-in tools you call with a dot:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"HELLO".lower()       # → "hello" "i love python".split()  # → ["i", "love", "python"] "  hi  ".strip()      # → "hi"</pre> <p>you can also check substrings with <code>in</code>:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "cabin" in some_text.lower(): print("match")</pre> <p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. collect matching <code>id</code> values into a list called <code>matches</code> and print it.</p>`,
+instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"HELLO".lower()       # → "hello"
+"  hi  ".strip()      # → "hi"</pre>
+<p>you can also check whether one string appears <em>inside</em> another with <code>in</code>:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "cabin" in "i'm in my cabin":
+    print("match")</pre>
+<p>that prints <code>match</code>. the <code>in</code> check returns <code>True</code> if the left string appears anywhere in the right string.</p>
+<p>and one more thing you'll need: lists have a method called <code>.append()</code> that adds a new item to the end:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">my_list = [1, 2, 3]
+my_list.append(4)
+print(my_list)
+# → [1, 2, 3, 4]</pre>
+<p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. collect matching <code>id</code> values into a list called <code>matches</code> using <code>.append()</code>, and print the list.</p>`,
 starter: `# fragments is already loaded for you
 matches = []
 
