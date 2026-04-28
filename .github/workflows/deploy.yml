@@ -1,0 +1,44 @@
+name: Deploy to Neocities
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-to-neocities
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Stage only the files that should be on the public site.
+      # Excludes CANON (spoilers), NEOCITIES.md, HOW TO INSTALL.txt,
+      # desktop/ (in-game source-of-truth, mirrored inside clutter.js),
+      # sounds/_unused/, and the vestigial root-level kawaii-*.cur/.ani
+      # duplicates that already live under cursors/kawaii/.
+      - name: Stage site files into public/
+        run: |
+          set -euo pipefail
+          mkdir -p public
+          cp -v *.html public/
+          cp -v caseboard.js clutter.js study_notes.js sounds.js public/
+          cp -rv cursors public/
+          mkdir -p public/sounds
+          # Copy sound files but skip the _unused/ subfolder.
+          find sounds -maxdepth 1 -type f -exec cp -v {} public/sounds/ \;
+          echo "--- staged tree ---"
+          find public -type f | sort
+
+      - name: Deploy to Neocities
+        uses: bcomnes/deploy-to-neocities@v3
+        with:
+          api_key: ${{ secrets.NEOCITIES_API_TOKEN }}
+          dist_dir: public
+          cleanup: false
+          neocities_supporter: false
+          preview_before_deploy: true
