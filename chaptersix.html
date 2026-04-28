@@ -3161,11 +3161,15 @@ monthly_counts = {}
     title: 'python.exe :: search_camp_names.py',
     meta: 'regex. find every camp counsellor by name.',
     skill: 'REGEX :: ALTERNATION AND IGNORECASE',
-    hint: `<code>for msg in parsed:</code> indented <code>for name in names:</code> double-indented <code>if re.search(name, msg["content"], re.IGNORECASE): counts[name] += 1</code>. then <code>sorted_names = sorted(names, key=lambda n: -counts[n])</code> then <code>for name in sorted_names: print(f"{name}: {counts[name]}")</code>.`,
-    storyAbove: `you have parsed messages. now find which messages mention camp counsellors. <code>re.search()</code> looks for a pattern anywhere in the string (vs <code>re.match()</code> which only looks at the start). add <code>re.IGNORECASE</code> as a flag to match regardless of case.`,
-    instructions: `your task: for each parsed message, search the content for any of these names: wren, briar, camille, hattie, melissa, marcia, tyler. for each name, count how many messages mention it. print each name and its count, sorted by count descending.`,
+    storyAbove: `you have parsed messages — each one is a dict with date, sender, content. now you need to find which messages mention camp counsellors, and which counsellor gets named most. tegan was thinking about who she'd named in her chats with hannah. it might tell us who she trusted, who she was scared of, who didn't matter.<br><br>two new pieces:<br><br><strong>1. <code>re.search</code> with <code>re.IGNORECASE</code></strong> — like <code>re.match</code>, but searches anywhere in the string, and the flag makes it match regardless of capitalization.<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">re.search("wren", "I saw Wren at the lake")
+# returns None (case mismatch)
+
+re.search("wren", "I saw Wren at the lake", re.IGNORECASE)
+# returns a match object (truthy)</pre><strong>2. sorting a dict by value.</strong> if you have <code>counts = {"wren": 11, "tyler": 4, "briar": 3}</code>, you can turn it into a sorted list of pairs:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">pairs = sorted(counts.items(), key=lambda p: p[1], reverse=True)
+# pairs is now [("wren", 11), ("tyler", 4), ("briar", 3)]</pre>that <code>key=lambda p: p[1]</code> looks scary. it's just python's way of saying "sort by the second item in each pair" — the count, not the name. <code>p[1]</code> picks out the count from each <code>(name, count)</code> pair.`,
+    instructions: `<p><strong>your task:</strong> for each parsed message, search the content for any of these names: wren, briar, camille, hattie, melissa, marcia, tyler. count how many messages mention each. print each name and its count, sorted by count descending.</p>
+                   <p>the starter gives you the parsed messages and the names list. you build the counts dict and the sorted output.</p>`,
     starter: `import re
-import collections
 
 with open("hannah_archive.txt") as f:
     messages = f.readlines()
@@ -3176,12 +3180,14 @@ for line in messages:
     if m:
         parsed.append({"date": m.group(1), "sender": m.group(2), "content": m.group(3)})
 
-counts = collections.Counter()
 names = ["wren", "briar", "camille", "hattie", "melissa", "marcia", "tyler"]
+counts = {name: 0 for name in names}
 
-# for each message, check which names appear and count
+# for each message, check which names appear in the content (case-insensitive)
+# add 1 to counts[name] when there's a match
 
-# print each name and count, sorted by count descending
+# sort counts by value descending and print "name: count" for each
+
 `,
     expectedOutput: `wren: 18
 tyler: 7
@@ -3190,6 +3196,7 @@ briar: 3
 marcia: 2
 camille: 0
 melissa: 0`,
+    hint: `<strong>first loop:</strong> <code>for msg in parsed:</code>, then indented <code>for name in names:</code>, then double-indented <code>if re.search(name, msg["content"], re.IGNORECASE):</code> followed by <code>counts[name] = counts[name] + 1</code>.<br><br><strong>second part:</strong> <code>sorted_pairs = sorted(counts.items(), key=lambda p: p[1], reverse=True)</code>, then <code>for name, count in sorted_pairs:</code> with <code>print(f"{name}: {count}")</code>.`,
     matchType: 'exact',
     fileInjection: true,
     onComplete: {
