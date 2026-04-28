@@ -295,6 +295,30 @@
     return win;
   }
 
+  function buildImage(name, file) {
+    const win = document.createElement('div');
+    win.className = 'cl-win cl-win-image';
+    win.appendChild(makeTitlebar(name + ' - Image Viewer'));
+    const body = document.createElement('div');
+    body.className = 'cl-image-body';
+    body.style.background = '#3a3a3a';
+    body.style.padding = '12px';
+    body.style.maxHeight = '70vh';
+    body.style.overflow = 'auto';
+    body.style.textAlign = 'center';
+    // file.content is a string of inline SVG markup. It's a static asset
+    // we ship in the bundle, so innerHTML is fine here (no user input).
+    body.innerHTML = file.content;
+    // Make the SVG scale to the window width.
+    const svg = body.querySelector('svg');
+    if (svg) {
+      svg.style.maxWidth = '100%';
+      svg.style.height = 'auto';
+    }
+    win.appendChild(body);
+    return win;
+  }
+
   function buildEmail(name, file) {
     const win = document.createElement('div');
     win.className = 'cl-win cl-win-email';
@@ -376,6 +400,7 @@
     if (f.type === 'txt')           node = buildNotepad(name, f);
     else if (f.type === 'word')     node = buildWord(name, f);
     else if (f.type === 'email')    node = buildEmail(name, f);
+    else if (f.type === 'image')    node = buildImage(name, f);
     else return;
     pushWindow(node);
   }
@@ -395,6 +420,7 @@
     if (f.type === 'txt') return '📝';
     if (f.type === 'email') return '✉️';
     if (f.type === 'word') return '📄';
+    if (f.type === 'image') return '🖼️';
     return '📄';
   }
 
@@ -624,9 +650,9 @@ MAYBE??:
     content: `2005 CABIN NAMES — pitching to marcia
 
 CURRENT CABINS:
-- pinewood (mine!)
-- hemlock
-- birchwood
+- pinewood (boys — tyler/brendan/jon next year if they all come back)
+- hemlock (mine!! still!! see below!!)
+- birchwood (hattie's)
 - spruce
 - cedar
 - juniper
@@ -646,7 +672,9 @@ ASK MARCIA:
   no kid wants to be in poison cabin.
 - proposing: hemlock → fireweed
 - or hemlock → aspen
-- (she will say no. she has said no for 3 years.)
+- i was 14 when i first told her. i'm 17 now. some of those campers
+  ARE 14. they're going to ask the same question i did. she's going
+  to give them the same answer. it's still a stupid name.
 `
   };
 
@@ -861,39 +889,297 @@ SEX-LINKED INHERITANCE:
   // ---- camp 2004/ .doc ----
 
   FILES['MASS EMAIL TO PARENTS - week 3.doc'] = {
-    type: 'word',
-    content: `Dear Pinewood Cabin Families,
+    type: 'email',
+    content: {
+      to: 'Wren Halloway <wren.halloway@camppinecrest.ca>',
+      from: 'Tegan Ashby <tegan.ashby@camppinecrest.ca>',
+      subject: 'hemlock parent update week 3 — for you to send tomorrow',
+      date: 'Thu, 15 Jul 2004 22:14:00 -0600',
+      body: `Wren,
 
-Hello from Camp Pinecrest! We've had a wonderful week three at
-camp, and I wanted to share some highlights with you all.
+Here's the draft!!!! Marcia wanted these out by Friday morning.
+You can edit anything, obviously. i tried to match how you
+wrote the week 2 one. Sign it from yourself when you send.
+
+— T
+
+----- BEGIN DRAFT -----
+
+Dear Hemlock Cabin Families,
+
+Hello from Camp Pinecrest! We've had a wonderful week three
+at camp, and I wanted to share some highlights with you all.
 
 This week, the girls completed the high ropes course alongside
-Hemlock cabin, and I am so proud of every single one of them.
+Birchwood cabin, and I am so proud of every single one of them.
 Special shout-out to Maddie, who was nervous at the start but
 made it across the entire course, and to Ellie, who encouraged
 her teammates the whole way through.
 
-We had our annual Talent Show on Saturday, and Pinewood put on
+We had our annual Talent Show on Saturday, and Hemlock put on
 an incredible group dance number to "Hey Ya!" by Outkast. Ask
 your daughters to show you the choreography when they get home.
 They worked very hard on it!
 
-Coming up this week: nature hike with bug identification (please
-remind your campers to bring their journals if they have them),
-ghost story night (don't worry, age-appropriate!), and we begin
-preparing for Pinecrest Olympics, the highlight of the summer.
+Coming up this week: nature hike with bug identification (we'll
+provide journals to anyone who needs one), ghost story night
+(don't worry, age-appropriate!), and we begin preparing for
+Pinecrest Olympics, the highlight of the summer.
 
 Reminder: parent visiting day is this coming Saturday, July 17,
 from 12-4 PM. Lunch will be served at 1 PM in the main lodge.
 Please RSVP to the camp office if you haven't already.
 
-If you have any questions or concerns, please don't hesitate to
-contact me through the camp office.
+If you have any questions or concerns, please don't hesitate
+to contact me through the camp office.
 
 Warmly,
-Tegan Ashby
-Pinewood Cabin Counsellor
+Wren Halloway
+Hemlock Cabin Senior Counsellor
 Camp Pinecrest 2004
+
+----- END DRAFT -----`
+    }
+  };
+
+  FILES['pinecrest_map.svg'] = {
+    type: 'image',
+    content: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Georgia, serif">
+  <rect width="800" height="600" fill="#f4ead5"/>
+  <g stroke="#d4c8a8" stroke-width="0.5" opacity="0.4">
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="0" y1="500" x2="800" y2="500"/>
+  </g>
+  <text x="400" y="40" text-anchor="middle" font-size="22" fill="#3a2820" font-style="italic">Camp Pinecrest</text>
+  <text x="400" y="60" text-anchor="middle" font-size="12" fill="#6a5848">Whitecourt, Alberta &middot; est. 1962</text>
+  <ellipse cx="600" cy="180" rx="160" ry="90" fill="#a8c8d8" stroke="#4a6a7a" stroke-width="2"/>
+  <text x="600" y="180" text-anchor="middle" font-size="16" fill="#2a4a5a" font-style="italic">Lake Pinecrest</text>
+  <g stroke="#4a6a7a" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M 510 170 Q 520 165 530 170"/>
+    <path d="M 560 200 Q 570 195 580 200"/>
+    <path d="M 620 160 Q 630 155 640 160"/>
+    <path d="M 660 200 Q 670 195 680 200"/>
+  </g>
+  <rect x="470" y="240" width="40" height="30" fill="#8b6a4a" stroke="#3a2820" stroke-width="1.5"/>
+  <text x="490" y="290" text-anchor="middle" font-size="11" fill="#3a2820">boathouse</text>
+  <line x1="510" y1="255" x2="540" y2="220" stroke="#3a2820" stroke-width="2"/>
+  <rect x="340" y="270" width="120" height="70" fill="#c8a878" stroke="#3a2820" stroke-width="2"/>
+  <polygon points="340,270 460,270 400,250" fill="#8b6a4a" stroke="#3a2820" stroke-width="1.5"/>
+  <text x="400" y="310" text-anchor="middle" font-size="13" fill="#3a2820" font-weight="bold">Main Lodge</text>
+  <text x="400" y="325" text-anchor="middle" font-size="10" fill="#3a2820">mess hall &middot; office</text>
+  <rect x="100" y="280" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>
+  <polygon points="100,280 160,280 130,265" fill="#8b6a4a" stroke="#3a2820" stroke-width="1"/>
+  <text x="130" y="305" text-anchor="middle" font-size="11" fill="#3a2820">Pinewood</text>
+  <text x="130" y="335" text-anchor="middle" font-size="9" fill="#6a5848" font-style="italic">boys</text>
+  <rect x="180" y="380" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>
+  <polygon points="180,380 240,380 210,365" fill="#8b6a4a" stroke="#3a2820" stroke-width="1"/>
+  <text x="210" y="405" text-anchor="middle" font-size="11" fill="#3a2820">Hemlock</text>
+  <rect x="290" y="420" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>
+  <polygon points="290,420 350,420 320,405" fill="#8b6a4a" stroke="#3a2820" stroke-width="1"/>
+  <text x="320" y="445" text-anchor="middle" font-size="11" fill="#3a2820">Birchwood</text>
+  <rect x="410" y="420" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>
+  <polygon points="410,420 470,420 440,405" fill="#8b6a4a" stroke="#3a2820" stroke-width="1"/>
+  <text x="440" y="445" text-anchor="middle" font-size="11" fill="#3a2820">Spruce</text>
+  <rect x="520" y="380" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>
+  <polygon points="520,380 580,380 550,365" fill="#8b6a4a" stroke="#3a2820" stroke-width="1"/>
+  <text x="550" y="405" text-anchor="middle" font-size="11" fill="#3a2820">Cedar</text>
+  <rect x="660" y="320" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>
+  <polygon points="660,320 720,320 690,305" fill="#8b6a4a" stroke="#3a2820" stroke-width="1"/>
+  <text x="690" y="345" text-anchor="middle" font-size="11" fill="#3a2820">Juniper</text>
+  <rect x="500" y="100" width="50" height="35" fill="#e8d8c8" stroke="#3a2820" stroke-width="1.5"/>
+  <text x="525" y="122" text-anchor="middle" font-size="10" fill="#3a2820">Infirmary</text>
+  <text x="525" y="150" text-anchor="middle" font-size="9" fill="#a04848" font-style="italic">+</text>
+  <circle cx="400" cy="510" r="30" fill="#c8a878" stroke="#3a2820" stroke-width="1.5"/>
+  <text x="400" y="513" text-anchor="middle" font-size="10" fill="#3a2820">Fire Pit</text>
+  <rect x="80" y="460" width="60" height="30" fill="none" stroke="#3a2820" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="110" y="480" text-anchor="middle" font-size="10" fill="#3a2820">Archery</text>
+  <g stroke="#6a5848" stroke-width="1.5" fill="none" stroke-dasharray="4,3" opacity="0.7">
+    <path d="M 460 290 Q 470 280 490 270"/>
+    <path d="M 400 340 L 400 480"/>
+    <path d="M 340 300 L 160 300"/>
+    <path d="M 350 335 L 240 390"/>
+    <path d="M 380 340 L 320 420"/>
+    <path d="M 420 340 L 440 420"/>
+    <path d="M 460 325 L 520 390"/>
+    <path d="M 460 290 L 660 330"/>
+    <path d="M 420 270 L 510 135"/>
+    <path d="M 140 470 L 320 440"/>
+  </g>
+  <g transform="translate(60, 80)">
+    <circle r="20" fill="none" stroke="#3a2820" stroke-width="1"/>
+    <polygon points="0,-18 -4,0 0,18 4,0" fill="#3a2820"/>
+    <text y="-25" text-anchor="middle" font-size="10" fill="#3a2820" font-weight="bold">N</text>
+  </g>
+  <g fill="#4a6a3a" opacity="0.5">
+    <circle cx="50" cy="200" r="8"/>
+    <circle cx="65" cy="220" r="6"/>
+    <circle cx="730" cy="450" r="8"/>
+    <circle cx="750" cy="500" r="7"/>
+    <circle cx="700" cy="500" r="6"/>
+    <circle cx="40" cy="400" r="7"/>
+    <circle cx="60" cy="430" r="6"/>
+  </g>
+  <text x="210" y="370" text-anchor="middle" font-size="11" fill="#a04848" font-family="cursive" font-style="italic">&#9733; me &#9733;</text>
+</svg>`
+  };
+
+  FILES['song_list_2004.txt'] = {
+    type: 'txt',
+    content: `PINECREST 2004 — APPROVED & PROHIBITED SONGS
+Maintained by: Briar W. (last updated July 8 2004)
+
+CHAPEL / MORNING (no bops, please)
+- "Lean on Me" — Bill Withers ✓
+- "Stand By Me" — Ben E. King ✓
+- "Bridge Over Troubled Water" — Simon & Garfunkel ✓
+- "Country Roads" — John Denver ✓ (the campers love this one)
+- "Circle of Life" — Lion King ✓ (yes, fine)
+
+CABIN TIME / ACTIVITIES (anything radio-clean)
+- "Complicated" — Avril Lavigne ✓
+- "A Thousand Miles" — Vanessa Carlton ✓
+- "Underneath It All" — No Doubt ✓ (clean version only)
+- "1, 2 Step" — Ciara ✓
+- "Since U Been Gone" — Kelly Clarkson ✓
+- "Toxic" — Britney Spears ✓ (counsellor's discretion; the song is fine, the dancing is what gets out of hand)
+- "Mr. Brightside" — The Killers ✓
+- "Dragostea Din Tei" — O-Zone ✓ (the numa numa song. the campers will not stop)
+
+TALENT SHOW ONLY (too suggestive for general rotation)
+- "Hey Ya!" — Outkast ✓ talent show
+- "Yeah!" — Usher ✓ talent show, group choreo only
+- "Hollaback Girl" — Gwen Stefani ✓ talent show — and ONLY if they edit the b-word
+
+PROHIBITED — DO NOT PLAY OVER CAMP SPEAKERS
+- anything by Eminem (asked and answered, Tyler)
+- "My Humps" — Black Eyed Peas
+- "Get Low" — Lil Jon
+- "Milkshake" — Kelis
+- "Dirty" — Christina Aguilera
+
+NOTES FROM COUNSELLORS:
+> Tyler keeps requesting Eminem. The answer remains no.
+  — Briar
+> can we add "Such Great Heights" by The Postal Service to chapel?
+  the campers would love it. it's about the sky. it counts.
+  — Tegan A.
+> approved. add it to chapel. — Briar
+> can we add "Hide and Seek" by Imogen Heap?
+  — Tegan A.
+> ?? — Briar
+> trust me — Tegan A.
+> ok — Briar
+
+PARENT'S DAY PLAYLIST: ASK MARCIA. she's particular.
+`
+  };
+
+  FILES['olympics_2004_planning.txt'] = {
+    type: 'txt',
+    content: `PINECREST OLYMPICS 2004 — PLANNING DOC
+Lead organizer: Wren Halloway
+Co-organizer: Briar Whelan
+Date: Saturday Aug 7 (week 5)
+
+TEAMS (assigned by cabin pairings):
+  TEAM RED: Pinewood + Spruce
+    captains: Tyler Hughes, Olivia M.
+  TEAM BLUE: Hemlock + Birchwood
+    captains: Wren Halloway, Hattie Whitlock
+  TEAM GREEN: Cedar + Juniper
+    captains: Marcia Deveraux (subbing), Henry Pham
+
+EVENTS:
+  09:00 — opening ceremony (mess hall)
+  09:30 — relay race (track)
+  10:30 — canoe race (lake — boathouse start)
+  11:30 — archery contest (range)
+  12:30 — lunch
+  13:30 — talent showcase (mess hall)
+  14:30 — capture the flag (north field)
+  16:00 — egg-and-spoon, sack race, three-legged race (south field)
+  17:30 — dinner
+  19:00 — closing ceremony, awards (fire pit)
+
+SCORING:
+  1st place: 5 points
+  2nd place: 3 points
+  3rd place: 1 point
+  participation: 1 point per team member who tries
+
+SUPPLY LIST (Briar handling):
+  - 18 eggs (extras for breakage)
+  - burlap sacks (12)
+  - rope for three-legged
+  - colored bandanas — red blue green, 30 each
+  - first aid kit doubled at every event
+  - sunscreen station
+
+NOTES FROM WREN:
+- T-shirts ordered from Edmonton, arriving Aug 4. Confirm with Marcia.
+- Tegan, you're handling the relay race timing. Use the stopwatches
+  from the gym closet. Check they all work BEFORE the morning of.
+- Henry running point on canoe race safety. Two lifeguards minimum
+  on the dock at all times.
+- Camille will MC the talent showcase.
+- I'll do opening + closing. Don't volunteer me for anything else,
+  Briar. I have enough.
+
+ASK MARCIA:
+- can we have prizes? she said no last year. asking again.
+- can the kitchen do team-color frosting on cupcakes for closing?
+  helen will say yes if asked nicely.
+
+(handwritten in margin, blue pen — Tegan's:
+"team blue is going to win. wren is so competitive about this.
+she practiced the canoe race in june.")
+`
+  };
+
+  FILES['ghost_story_draft.txt'] = {
+    type: 'txt',
+    content: `ghost story for friday night — DRAFT 3
+
+age range: 8-12. nothing too scary. marcia will fire me if a kid
+has a nightmare.
+
+CONCEPT: a girl gets lost on the trail near her cabin. she follows
+what she thinks is the path back. it's actually being shown to her by
+a ghost. the ghost is helpful, she's leading the girl home. but
+the girl realizes at the end the ghost was her grandmother who
+died last year and never met her.
+
+NO. too sad. parents will write letters.
+
+CONCEPT 2: there's a cabin on a hill nobody talks about. the door
+is always open. the campers dare each other to go in. one girl does.
+inside the cabin is empty except for a journal on the table. she
+reads it. it's her own handwriting. it's diary entries she hasn't
+written yet.
+
+WAIT. that's a good one but it's actually scary. for me. let me
+think about why.
+
+i think i write things i'm scared of having written, sometimes.
+i think if i opened a notebook and saw entries from a future me i
+would be relieved because at least i'd know i was still here to
+write them. but i don't know if any kid feels that way and it's not
+their job to.
+
+CONCEPT 3 (probably this one): the lake has a story. a girl swam
+out too far and got tired and the water held her up. she's still
+there, but she's nice. she helps swimmers who get scared. when
+you're too far from the dock and you feel something brush your leg,
+that's her. she's reminding you to turn around.
+
+ending: the kids will ask if it's true. you say "i don't know. but
+swim with a buddy."
+
+that's the move. it's a ghost story but the lesson is buddy system.
+marcia will love it.
 `
   };
 
@@ -971,7 +1257,10 @@ are you okay though? if you ever want to talk
 
   FOLDERS['camp 2004'] = {
     items: [
-      'MASS EMAIL TO PARENTS - week 3.doc'
+      'MASS EMAIL TO PARENTS - week 3.doc',
+      'pinecrest_map.svg',
+      'song_list_2004.txt',
+      'olympics_2004_planning.txt'
     ]
   };
 
@@ -991,6 +1280,7 @@ are you okay though? if you ever want to talk
     'songs to download.txt',
     'summer reading list.txt',
     'new cabin name ideas.txt',
+    'ghost_story_draft.txt',
     'SUMMER PACKING LIST 2004.txt',
     'birthday wishlist.txt',
     { folder: 'drafts' },
