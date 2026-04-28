@@ -138,6 +138,26 @@ display: grid;
 grid-template-columns: 80px;
 gap: 12px;
 margin-bottom: 24px;
+position: fixed;
+top: 16px;
+left: 16px;
+z-index: 50;
+}
+@media (max-width: 900px) {
+.icon-grid {
+display: none;
+top: auto;
+bottom: 48px;
+left: 8px;
+background: linear-gradient(180deg, var(--chrome-2) 0%, var(--chrome-1) 100%);
+border: 2px solid var(--bg-deep);
+box-shadow: 4px 4px 0 var(--bg-deep);
+padding: 8px;
+z-index: 150;
+}
+.icon-grid.start-menu-open {
+display: grid;
+}
 }
 .desktop-icon {
 text-align: center;
@@ -836,7 +856,7 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 <!-- ============ TASKBAR ============ -->
 
 <div class="taskbar hidden" id="taskbar">
-  <button class="start-btn">Start</button>
+  <button class="start-btn" onclick="toggleStartMenu()">Start</button>
   <span style="font-family: 'Silkscreen', monospace; font-size: 9px;">CHAPTER 3 :: THE NIGHT OF</span>
   <span class="taskbar-mail" id="mailIndicator">✉ 1 NEW</span>
   <span class="taskbar-time" id="taskbarTime">11:47 PM</span>
@@ -1559,6 +1579,25 @@ startClock();
 renderStory();
 }, 100);
 }
+
+// ===========================================================================
+// START MENU (icon-grid toggle for narrow screens)
+// ===========================================================================
+function toggleStartMenu() {
+  const grid = document.querySelector('.icon-grid');
+  if (grid) grid.classList.toggle('start-menu-open');
+}
+document.addEventListener('click', (e) => {
+  const grid = document.querySelector('.icon-grid');
+  const startBtn = document.querySelector('.start-btn');
+  if (!grid || !startBtn) return;
+  if (grid.classList.contains('start-menu-open') &&
+      !grid.contains(e.target) &&
+      !startBtn.contains(e.target)) {
+    grid.classList.remove('start-menu-open');
+  }
+});
+
 </script>
 
 <script src="caseboard.js"></script>
