@@ -385,7 +385,73 @@ z-index: 200;
 animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 font-family: 'VT323', monospace;
 }
+.buddy-popup { cursor: pointer; }
+.buddy-popup:hover { box-shadow: var(--shadow-hard), 0 0 32px rgba(102, 255, 255, 0.6); }
 .buddy-popup .window-titlebar { background: linear-gradient(90deg, var(--cyan-glow), var(--lavender)); }
+.buddy-cta {
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+color: #6a3d8a;
+margin-top: 8px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM MESSAGE WINDOW (modal opened from buddy popup) ============ */
+.aim-modal-overlay {
+position: fixed; inset: 0;
+background: rgba(0, 0, 0, 0.45);
+z-index: 500;
+display: flex;
+align-items: center;
+justify-content: center;
+animation: window-pop 0.25s ease-out;
+}
+.aim-modal {
+width: min(440px, calc(100% - 32px));
+background: #d8d8e8;
+border: 2px solid var(--bg-deep);
+box-shadow: 4px 4px 0 var(--bg-deep), 0 0 32px rgba(255, 102, 196, 0.5);
+font-family: 'Tahoma', 'Geneva', sans-serif;
+}
+.aim-titlebar {
+background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%) !important;
+color: var(--bg-deep) !important;
+text-shadow: none !important;
+}
+.aim-modal-body {
+background: #ffffff;
+color: #1a1a1a;
+padding: 14px 14px 16px;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 13px;
+line-height: 1.5;
+min-height: 110px;
+max-height: 60vh;
+overflow-y: auto;
+}
+.aim-modal-body .aim-msg { margin: 4px 0; word-wrap: break-word; overflow-wrap: anywhere; }
+.aim-modal-body .aim-user { font-weight: bold; }
+.aim-modal-body .aim-self .aim-user { color: #cc0000; }
+.aim-modal-body .aim-other .aim-user { color: #0000cc; }
+.aim-modal-body .aim-system {
+margin: 8px 0 4px;
+color: #777;
+font-style: italic;
+font-size: 12px;
+text-align: center;
+}
+.aim-modal-footer {
+background: #d8d8e8;
+border-top: 1px solid var(--bg-deep);
+padding: 6px 10px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 11px;
+color: #555;
+}
+.aim-modal-status { font-style: italic; }
 .buddy-content {
 padding: 12px;
 color: var(--bg-deep);
@@ -732,18 +798,38 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 
   <!-- ============ BUDDY POPUP ============ -->
 
-  <div class="buddy-popup hidden" id="buddyPopup">
-    <div class="window-titlebar">
-      <span>buddyhelper :: incoming</span>
-      <div class="window-titlebar-buttons">
-        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
-      </div>
-    </div>
-    <div class="buddy-content">
-      <div class="buddy-name" id="buddyName">tegan_a87</div>
-      <div id="buddyMessage"></div>
+<div class="buddy-popup hidden" id="buddyPopup" onclick="openBuddyAim(event)" title="click to open conversation">
+  <div class="window-titlebar">
+    <span>buddyhelper :: incoming</span>
+    <div class="window-titlebar-buttons">
+      <span class="titlebar-btn" onclick="event.stopPropagation(); closeBuddy()">×</span>
     </div>
   </div>
+  <div class="buddy-content">
+    <div class="buddy-name" id="buddyName">tegan_a87</div>
+    <div id="buddyMessage"></div>
+    <div class="buddy-cta">▸ click to open</div>
+  </div>
+</div>
+
+<!-- ============ AIM MESSAGE WINDOW (modal) ============ -->
+<div class="aim-modal-overlay hidden" id="aimModalOverlay" onclick="closeBuddyAim()">
+  <div class="aim-modal" id="aimModal" onclick="event.stopPropagation()">
+    <div class="window-titlebar aim-titlebar">
+      <span id="aimModalTitle">IM with —</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn" onclick="closeBuddyAim()">×</span>
+      </div>
+    </div>
+    <div class="aim-modal-body" id="aimModalBody"></div>
+    <div class="aim-modal-footer">
+      <span class="aim-modal-status">[ read-only — this is an archived message. ]</span>
+      <button class="btn btn-secondary" onclick="closeBuddyAim()" style="font-size: 9px; padding: 3px 10px;">close</button>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- ============ TASKBAR ============ -->
@@ -1383,22 +1469,50 @@ location.reload();
 // ===========================================================================
 // BUDDY POPUP
 // ===========================================================================
+let _lastBuddy = { name: '', msg: '' };
+
 function showBuddy(name, msg) {
-if (window.Sounds) {
-  Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
-  Sounds.play('aim-message-in');
-}
-document.getElementById('buddyName').textContent = name + ' :: incoming message';
-document.getElementById('buddyMessage').innerHTML = msg;
-const popup = document.getElementById('buddyPopup');
-popup.classList.remove('hidden');
-// play a soft chime — emulated as a CSS attention grab
-popup.style.animation = 'none';
-setTimeout(() => { popup.style.animation = ''; }, 10);
+  if (window.Sounds) {
+    Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
+    Sounds.play('aim-message-in');
+  }
+  _lastBuddy = { name, msg };
+  document.getElementById('buddyName').textContent = name + ' :: incoming message';
+  document.getElementById('buddyMessage').innerHTML = msg;
+  const popup = document.getElementById('buddyPopup');
+  popup.classList.remove('hidden');
+  popup.style.animation = 'none';
+  setTimeout(() => { popup.style.animation = ''; }, 10);
 }
 function closeBuddy() {
-document.getElementById('buddyPopup').classList.add('hidden');
+  document.getElementById('buddyPopup').classList.add('hidden');
 }
+function openBuddyAim(evt) {
+  if (evt) evt.stopPropagation();
+  const { name, msg } = _lastBuddy;
+  if (!name) return;
+  const selfUser = 'tegan_a87';
+  const isSelf = (name === selfUser);
+  const sideClass = isSelf ? 'aim-self' : 'aim-other';
+  const safeMsg = String(msg || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  document.getElementById('aimModalTitle').textContent = 'IM with ' + name;
+  document.getElementById('aimModalBody').innerHTML =
+    `<div class="aim-system">[buddy chime — ${name} sent you a message]</div>` +
+    `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${safeMsg}</span></div>`;
+  document.getElementById('aimModalOverlay').classList.remove('hidden');
+  closeBuddy();
+}
+function closeBuddyAim() {
+  document.getElementById('aimModalOverlay').classList.add('hidden');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('aimModalOverlay');
+    if (overlay && !overlay.classList.contains('hidden')) {
+      overlay.classList.add('hidden');
+    }
+  }
+});
 
 // auto-resume from save (or skip intro if name already known from another chapter)
 if (state.userName) {
