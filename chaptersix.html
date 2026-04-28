@@ -3331,7 +3331,7 @@ function renderAimCompose(beat, isActive) {
     </div>
     <div class="aim-compose-body">${beat.body}</div>
     ${isActive ? `<div class="aim-send-bar">
-      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
+      <button class="aim-send-btn" onclick="if(window.Sounds)Sounds.play('aim-message-out');advanceBeat()">${beat.nextBtn || '▸ SEND'}</button>
     </div>` : `<div class="aim-send-bar" style="text-align: right; color: var(--bg-deep); font-family: 'Silkscreen', monospace; font-size: 9px;">✓ sent</div>`}
   `;
   storyContainer.appendChild(w);
@@ -3511,6 +3511,7 @@ storyContainer.appendChild(w);
 }
 
 function renderWrap(beat, isActive) {
+  if (isActive && window.Sounds) Sounds.playOnceEver('aim-goodbye', 'aim-goodbye-ch6');
 if (window.Caseboard) Caseboard.recordWrap(6);
 const w = document.createElement('div');
 w.className = 'window story-window';
