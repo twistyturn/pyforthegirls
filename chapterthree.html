@@ -1028,8 +1028,14 @@ it's time to read them in order.`,
     storyAbove: `you load all ten fragments into a python list called <code>fragments</code>. each fragment is a dictionary. a labeled box with keys like <code>"time"</code>, <code>"from"</code>, <code>"content"</code>. the variable is set up for you. now you need to confirm you can access individual messages.`,
     skill: 'LISTS :: LENGTH & INDEXING',
     instructions: `<p>a <strong>list</strong> is an ordered collection. you've seen them already in the loops chapter, but now they hold dictionaries instead of strings.</p>
-                   <p><code>len(my_list)</code> tells you how many items are in it. <code>my_list[0]</code> is the first item; <code>my_list[-1]</code> is the last.</p>
-                   <p>each fragment is a dictionary. <code>fragment["from"]</code> gives you the sender.</p>
+                   <p><code>len(my_list)</code> tells you how many items are in it, and you can grab an item by its <strong>index</strong> (position) in square brackets:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+len(colours)     # → 3
+colours[0]       # → "red"     (first item)
+colours[-1]      # → "green"   (last item — negative indexes count from the end)</pre>
+                   <p>each fragment in this task is a dictionary. <code>fragment["from"]</code> gives you the sender:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragment = {"from": "wren_h", "content": "..."}
+fragment["from"]   # → "wren_h"</pre>
                    <p><strong>your task:</strong> print three things, each on its own line:</p>
                    <ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 22px;">
                      <li>how many fragments there are total</li>
@@ -1086,12 +1092,16 @@ i'm so scared :(
     meta: 'verifying the participant roster.',
     storyAbove: `you want to confirm something fast: was glorfindel actually a participant in any of the AIM logs? or were they only ever on the SMS side? <code>in</code> checks membership.`,
     skill: 'THE in OPERATOR (membership tests)',
-    instructions: `<p>the <code>in</code> keyword checks if something is part of a collection:</p>
+    instructions: `<p>the <code>in</code> keyword checks if something is part of a collection. it returns <code>True</code> or <code>False</code>:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">people = ["wren_h", "briar_v", "tegan_a87"]
+"wren_h" in people     # → True
+"hattie_w" in people   # → False</pre>
+                   <p>which means you can use it as the condition in an <code>if</code>:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "wren_h" in people:
-    print("found")</pre>
-
-               <p>it works on lists AND on strings (where it checks for substrings).</p>
-               <p><strong>your task:</strong> the variable <code>aim_people</code> contains everyone who appears in any AIM log. check whether <code>"glorfindel_lives"</code> is among them. print <code>"on AIM"</code> if yes, <code>"only SMS"</code> if no.</p>`,
+    print("found")
+# prints: found</pre>
+                   <p>it works on lists AND on strings (where it checks for substrings — <code>"cab" in "cabin"</code> → <code>True</code>).</p>
+                   <p><strong>your task:</strong> the variable <code>aim_people</code> contains everyone who appears in any AIM log. check whether <code>"glorfindel_lives"</code> is among them. print <code>"on AIM"</code> if yes, <code>"only SMS"</code> if no.</p>`,
 starter: `aim_people = ["wren_h", "briar_v", "tegan_a87", "camille.j.89"]
 
 target = "glorfindel_lives"
@@ -1164,7 +1174,15 @@ title: 'python.exe :: full_metadata.py',
 meta: 'before filtering, you want to see one fragment in full.',
 storyAbove: `before you filter the whole list, take one full fragment apart so you can see exactly what fields exist. <code>.items()</code> walks every key-value pair in a dict.`,
 skill: 'DICT.ITEMS() :: ITERATING KEY-VALUE PAIRS',
-instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">for key, value in person.items(): print(f"{key}: {value}")</pre> <p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
+instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">person = {"name": "tegan", "age": 17}
+for key, value in person.items():
+    print(f"{key}: {value}")</pre>
+<p>that prints:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">name: tegan
+age: 17</pre>
+<p><code>.items()</code> gives back pairs of (key, value), which is why the loop uses two variable names — one to receive each piece of the pair.</p>
+<p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
 starter: `fragment_one = {
 "id": 1,
 "time": "21:30",
