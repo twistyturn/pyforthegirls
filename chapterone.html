@@ -1062,7 +1062,9 @@ through hemlock twice instead of once. i don't know what that means.`,
     meta: 'tegan was working on this when she disappeared.',
     storyAbove: `there's a python window open. one line of code, half-typed. you can tell she was practicing. the file's called <code>untitled1.py</code> and it just sits there, blinking.`,
     skill: 'PRINTING TEXT',
-    instructions: `<p>python's <code>print()</code> function shows text on the screen. text in quotes (single <code>'</code> or double <code>"</code>) is called a <strong>string</strong>.</p>
+    instructions: `<p>python's <code>print()</code> is a <strong>function</strong> — a chunk of code that already exists, with a name on it. when you type the name followed by parentheses, python runs that chunk. that's called <strong>calling</strong> the function.</p>
+                   <p>so <code>print("hi")</code> means: call the print function, give it the text <code>"hi"</code>, and python runs print's code (which puts the text on the screen).</p>
+                   <p>text in quotes (either single <code>'</code> or double <code>"</code>) is called a <strong>string</strong>.</p>
                    <p><strong>your task:</strong> finish the line so it prints exactly: <code>tegan ashby</code></p>`,
     starter: `print("___")`,
     expectedOutput: 'tegan ashby',
@@ -1330,11 +1332,38 @@ hi ashley</pre>the script paused on line 1, waited for the person to type, store
                    </ul>
                    <p>expected output: <code>28</code></p>
                    <p>NOT <code>1414</code> — that's what you get if you skip the <code>int()</code> conversion and python repeats the string twice.</p>
+                   <p><strong>important:</strong> when you call <code>int(answer)</code>, python gives you back a new value (the number version). this returned value is not automatic — if you don't <em>catch</em> it with an <code>=</code> sign or use it directly in another expression, the value disappears. so:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">int(answer)            # the number is computed, then thrown away
+number = int(answer)   # the number is computed and stored in 'number'
+print(int(answer) * 2) # the number is computed and used right away</pre>
+                   <p>variables don't change just because you called a function on them. <code>answer</code> stays a string forever unless you overwrite it with <code>answer = int(answer)</code>.</p>
                    <p><strong>your task:</strong> write a script that asks "how many days left? " using <code>input()</code>, then prints the answer doubled. you'll need <code>input()</code>, <code>int()</code>, and one <code>print()</code>.</p>`,
     starter: `answer = input("how many days left? ")\n# convert answer to a number, then print it times 2\n`,
     expectedOutput: '28',
     matchType: 'contains',
     codeMustContain: ['int(', 'input('],
+    commonMistakes: [
+      {
+        pattern: /int\s*\(\s*"answer"\s*\)/,
+        tip: `you have quotes around <code>"answer"</code> on the int line. that makes python try to convert the literal word "answer" — which isn't a number, so it errors out. drop the quotes: <code>int(answer)</code> uses the variable.`
+      },
+      {
+        pattern: /^[ \t]*int\s*\(\s*answer\s*\)\s*$/m,
+        tip: `<code>int(answer)</code> on its own line computes the number and throws it away. variables don't change just because you called a function on them. try <code>answer = int(answer)</code> (overwrites the variable) or <code>number = int(answer)</code> (stores it under a new name) so the converted value sticks around.`
+      },
+      {
+        pattern: /print\s*\(\s*answer\s*\)\s*\*\s*2/,
+        tip: `the <code>* 2</code> is outside the <code>print()</code> parentheses. python prints <code>answer</code> first (which gives back nothing), then tries to multiply that nothing by 2. move the <code>* 2</code> inside the parens: <code>print(answer * 2)</code>.`
+      },
+      {
+        pattern: /print\s*\(\s*answer\s*\*\s*2\s*\)/,
+        tip: `you're multiplying <code>answer</code> by 2, but <code>answer</code> is still a string (the version <code>input()</code> returned). string * 2 gives "1414", not 28. you need to convert first: <code>print(int(answer) * 2)</code> or use a variable: <code>number = int(answer)</code> then <code>print(number * 2)</code>.`
+      },
+      {
+        pattern: /print\s*\(\s*28\s*\)/,
+        tip: `<code>print(28)</code> hardcodes the answer, but the point of this task is to make a script that doubles whatever number gets typed in. use <code>input()</code> to get the value, <code>int()</code> to convert it, and arithmetic to double it — that way the same script would work for any number.`
+      }
+    ],
     fakeInput: '14',
     hint: `<p>same shape as the practice round:</p>
            <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
@@ -1504,6 +1533,52 @@ storyContainer.appendChild(w);
 // ===========================================================================
 // TASK EXECUTION
 // ===========================================================================
+
+
+// Tab in code editors: insert 4 spaces (Python convention) instead of
+// moving focus to the next element. Without this, hitting Tab to indent
+// kicks the player out of the textarea — a real blocker for any task
+// where they write code from scratch instead of filling in a blank.
+document.addEventListener('keydown', function(__tabEv) {
+  if (__tabEv.key !== 'Tab') return;
+  const __ta = __tabEv.target;
+  if (!__ta || !__ta.classList || !__ta.classList.contains('code-area')) return;
+  __tabEv.preventDefault();
+  const __start = __ta.selectionStart;
+  const __end = __ta.selectionEnd;
+  __ta.value = __ta.value.substring(0, __start) + '    ' + __ta.value.substring(__end);
+  __ta.selectionStart = __ta.selectionEnd = __start + 4;
+});
+// Diagnostic layer: check player's code against a list of known wrong patterns
+// and surface a specific tip if any match. Patterns: string (substring),
+// RegExp, or function. First match wins. Used by runTask() when the task is
+// failing — never when it's passing — to turn each task's failure modes into
+// a teaching moment instead of a generic 'try again'.
+function checkCommonMistakes(code, mistakes) {
+  if (!mistakes || !Array.isArray(mistakes)) return null;
+  // Strip Python line comments — same convention as codeMustContain.
+  const stripped = code.replace(/#.*$/gm, '');
+  for (const mistake of mistakes) {
+    let matched = false;
+    const p = mistake.pattern;
+    if (typeof p === 'string') {
+      matched = stripped.includes(p);
+    } else if (p instanceof RegExp) {
+      matched = p.test(stripped);
+    } else if (typeof p === 'function') {
+      matched = !!p(stripped);
+    }
+    if (matched) return mistake.tip;
+  }
+  return null;
+}
+
+function appendCommonMistakeTip(outEl, code, mistakes) {
+  const tip = checkCommonMistakes(code, mistakes);
+  if (!tip) return;
+  outEl.innerHTML += '<span class="info" style="margin-top:8px;display:block;border-left:3px solid var(--pink-hot, #ff66c4);padding-left:10px;">// looks like a common slip:<br>' + tip + '</span>';
+}
+
 async function runTask(beatId) {
 const beat = BEATS.find(b => b.id === beatId);
 const codeEl = document.getElementById('code-' + beatId);
@@ -1585,6 +1660,7 @@ if (passed && beat.codeMustContain) {
           ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
           : '<code>' + escapeHtml(__missingPattern) + '</code>');
     outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    appendCommonMistakeTip(outEl, code, beat.commonMistakes);
     return;
   }
 }
@@ -1607,6 +1683,7 @@ showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 setTimeout(() => renderStory(), 600);
 } else {
 outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(beat.expectedOutput)}\n\n// not quite. try again.</span>`;
+appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 }
 }
 
