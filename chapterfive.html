@@ -1532,7 +1532,7 @@ function renderDiary(beat, isActive) {
     </div>
     <div class="diary-entry">
       <div class="diary-meta">${beat.meta}</div>
-${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')}
+${beat.body.split(/\n\n+/).map(p => p.replace(/\n/g, ' ').trim()).filter(Boolean).join('<br><br>')}
     </div>
     ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
       <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>

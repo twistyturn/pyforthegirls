@@ -240,6 +240,7 @@
     <h2>★ welcome back ★</h2>
     <p class="greeting">hi <span id="greetName"></span>. her laptop is right where you left it.</p>
     <div class="name-row">
+      <a class="btn btn-acid" id="continueBtn" href="chapterone.html">▸ continue</a>
       <button class="btn btn-secondary" id="changeNameBtn">change name</button>
       <button class="danger" id="clearAllBtn">clear all saved progress</button>
     </div>
@@ -310,11 +311,29 @@
     });
   }
 
+  function nextChapterFile() {
+    // Lowest-numbered chapter with progress, else chapter 1.
+    for (const ch of CHAPTERS) {
+      if (chapterStatus(ch.saveKey).state === 'progress') return ch;
+    }
+    return CHAPTERS[0];
+  }
+
+  function updateContinueBtn() {
+    const ch = nextChapterFile();
+    const btn = document.getElementById('continueBtn');
+    btn.href = ch.file;
+    const num = String(ch.num).padStart(2, '0');
+    const verb = chapterStatus(ch.saveKey).state === 'progress' ? 'continue' : 'start';
+    btn.textContent = `▸ ${verb} chapter ${num}`;
+  }
+
   function showFor(name) {
     if (name) {
       introPanel.classList.add('hidden');
       welcomePanel.classList.remove('hidden');
       greetName.textContent = name;
+      updateContinueBtn();
     } else {
       introPanel.classList.remove('hidden');
       welcomePanel.classList.add('hidden');
@@ -343,6 +362,7 @@
       try { localStorage.removeItem(ch.saveKey); } catch(e) {}
     });
     renderChapters();
+    updateContinueBtn();
   });
 
   showFor(readUser());
