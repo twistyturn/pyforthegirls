@@ -78,7 +78,7 @@ animation: twinkle 3s ease-in-out infinite;
 /* ============ DESKTOP / TASKBAR ============ */
 .desktop {
 height: 100vh;
-padding: 16px 16px 56px 112px;
+padding: 16px 16px 56px 312px;
 position: relative;
 display: flex;
 flex-direction: column;
@@ -181,14 +181,19 @@ background: var(--bg-deep);
 
 /* ============ DESKTOP ICONS ============ */
 .icon-grid {
-display: grid;
-grid-template-columns: 80px;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+align-content: flex-start;
 gap: 12px;
-margin-bottom: 24px;
+margin-bottom: 0;
 position: fixed;
 top: 16px;
 left: 16px;
+bottom: 56px;
+max-width: 280px;
 z-index: 50;
+overflow: hidden;
 }
 @media (max-width: 900px) {
 .icon-grid {
@@ -196,14 +201,18 @@ display: none;
 top: auto;
 bottom: 48px;
 left: 8px;
+right: 8px;
+max-width: none;
+max-height: 60vh;
 background: linear-gradient(180deg, var(--chrome-2) 0%, var(--chrome-1) 100%);
 border: 2px solid var(--bg-deep);
 box-shadow: 4px 4px 0 var(--bg-deep);
 padding: 8px;
 z-index: 150;
+overflow-y: auto;
 }
 .icon-grid.start-menu-open {
-display: grid;
+display: flex;
 }
 }
 .desktop-icon {
