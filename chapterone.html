@@ -955,9 +955,9 @@ she's exhilarating.`,
                    <p>...stores the text <code>hi ashley</code> in <code>greeting</code>. python sees the <code>{name}</code> and swaps in whatever the variable holds.</p>
                    <p><strong>your task:</strong> the variables <code>name</code> and <code>day</code> are already set up for you. complete the f-string on the <code>header = </code> line so that <code>print(header)</code> prints exactly: <code>=== day 5 :: tegan ===</code></p>`,
     starter: `name = "tegan"\nday = 5\nheader = f""\nprint(header)`,
-    expectedOutput: '=== day 5 :: tegan ===',
-    matchType: 'exact',
-    hint: `inside the quotes, write <code>=== day {day} :: {name} ===</code>. the curly braces around <code>day</code> and <code>name</code> are how python knows to substitute them.`,
+    expectedOutput: 'day 5',
+    matchType: 'contains',
+    hint: `inside the quotes, put <code>{day}</code> and <code>{name}</code> wherever you want the values to show up. the exact decoration around them is up to you. something like <code>=== day {day} :: {name} ===</code> works.`,
     onComplete: {
       diary: `// header generator works. she used this on every entry from july onward.`,
       buddy: { name: 'wren_h', msg: 'who is this. who is this. how did you get into this account.' }
@@ -1081,14 +1081,22 @@ to see what she'd do, and now i've seen.`,
     meta: 'a script for asking herself questions before bed.',
     storyAbove: `the last script in the folder. she was making something interactive. a script that asks a question and uses the answer. it's broken: she was trying to do math with a number she got from <code>input()</code>, but <code>input()</code> always gives back a string. you need to convert it.`,
     skill: 'INPUT & TYPE CONVERSION',
-    instructions: `<p><code>input("question? ")</code> shows a prompt and returns whatever the person typed, as a <strong>string</strong>. even if they type <code>5</code>, you get the string <code>"5"</code>.</p>
-                   <p>to do math, convert it: <code>int("5")</code> turns the string into the number 5.</p>
-                   <p><strong>your task:</strong> complete the script so it asks "how many days left? " and then prints the answer doubled. when this autograder runs, it'll feed in the answer <code>14</code>, and your script should print <code>28</code>.</p>`,
+    instructions: `<p><code>input("question? ")</code> shows a prompt and pauses while the person types. when they hit enter, you get back whatever they typed — as text, even if they typed digits.</p>
+                   <p>text-in-quotes (like <code>"5"</code> or <code>"tegan"</code>) is called a <strong>string</strong>, same as you saw in the very first task. python treats strings differently from numbers. for example:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"5" * 2  →  "55"   (python repeats the text twice)
+5 * 2    →  10     (python does the math)</pre>
+                   <p>so if you ask "how many days?" and the person types <code>5</code>, you get back the string <code>"5"</code>. if you try to multiply that by 2 you'll get <code>"55"</code>, not <code>10</code>.</p>
+                   <p>to do math on it, you have to convert it: <code>int("5")</code> turns the string <code>"5"</code> into the number <code>5</code>.</p>
+                   <p><strong>your task:</strong> complete the script so it asks "how many days left? " and then prints the answer doubled. the autograder will type <code>14</code> in response — your script should print <code>28</code>, not <code>1414</code>.</p>`,
     starter: `answer = input("how many days left? ")\n# convert answer to a number, then print it times 2\n`,
     expectedOutput: '28',
     matchType: 'contains',
     fakeInput: '14',
-    hint: `add a line like <code>print(int(answer) * 2)</code>. <code>int(...)</code> converts the string to a number, then <code>* 2</code> doubles it.`,
+    hint: `<p>the simplest version is two lines:</p>
+           <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
+print(number * 2)</pre>
+           <p>the first line uses <code>int()</code> to turn the string from input into an actual number, and stores it in a new variable called <code>number</code>. the second line multiplies <code>number</code> by 2 and prints the result.</p>
+           <p>if you want to do it in one line, you can put the <code>int()</code> call directly inside the <code>print()</code>, which gives you <code>print(int(answer) * 2)</code>. same result, fewer lines. either is fine.</p>`,
     onComplete: {
       diary: `// prompt.py executed. last input from this machine: "how many days left?" → answer: 1`,
       buddy: { name: 'tegan_a87', msg: 'i ran this script the night before, i typed 1, i was counting down. thought i had one day left to figure it out.' }

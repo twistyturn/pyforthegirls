@@ -890,28 +890,28 @@ tegan_a87: i can't
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if cabin == "rosewood":
     print("tegan")
 elif cabin == "birchwood":
-    print("wren")
+    print("hattie")
 else:
     print("unknown")</pre>
                    <p><strong>your task:</strong> the variable <code>name</code> is set to <code>"wren"</code>. complete the elif chain so it prints the correct cabin:</p>
                    <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
-                     <li>tegan → <code>rosewood cabin</code></li>
-                     <li>wren → <code>birchwood cabin</code></li>
-                     <li>camille → <code>pinewood cabin</code></li>
+                     <li>tegan → <code>hemlock cabin (JC)</code></li>
+                     <li>wren → <code>hemlock cabin (senior)</code></li>
+                     <li>camille → <code>hemlock cabin</code></li>
                      <li>anyone else → <code>not found</code></li>
                    </ul>`,
     starter: `name = "wren"
 if name == "tegan":
-    print("rosewood cabin")
+    print("hemlock cabin (JC)")
 elif name == "":
     print("")
 elif name == "":
     print("")
 else:
     print("not found")`,
-    expectedOutput: 'birchwood cabin',
+    expectedOutput: 'hemlock cabin (senior)',
     matchType: 'exact',
-    hint: `you need <code>elif name == "wren":</code> followed by <code>print("birchwood cabin")</code>, and <code>elif name == "camille":</code> followed by <code>print("pinewood cabin")</code>. fill in the empty quotes.`,
+    hint: `you need <code>elif name == "wren":</code> followed by <code>print("hemlock cabin (senior)")</code>, and <code>elif name == "camille":</code> followed by <code>print("hemlock cabin")</code>. fill in the empty quotes.`,
     onComplete: {
       diary: `// cabin assignments confirmed. wren had her own cabin. she was a senior counsellor.`,
       buddy: { name: 'camille.j.89', msg: 'is this tegan? are you on her account? please tell me she\'s ok. i never told. i swear.' }
