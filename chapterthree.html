@@ -1227,7 +1227,16 @@ target = "glorfindel_lives"
 
 # fill in the if/else:
 
-`, expectedOutput: 'only SMS', matchType: 'exact', codeMustContain: [' in '], hint: `<code>if target in aim_people:</code> then <code>print("on AIM")</code>. otherwise <code>print("only SMS")</code>.`, onComplete: { diary: `// confirmed: glorfindel never had AIM access. only SMS. only the night-of fragments. they are tegan's only outside witness.`,
+`, expectedOutput: 'only SMS', matchType: 'exact', codeMustContain: [' in '], commonMistakes: [
+  {
+    pattern: /target\s*==\s*aim_people/,
+    tip: `<code>==</code> compares two values for equality (here it'd be comparing a string to a whole list, which is always False). you want <code>in</code>, which checks <em>membership</em>: <code>if target in aim_people:</code> asks "is target somewhere inside this list?"`
+  },
+  {
+    pattern: /^[ \t]*if\s+aim_people\s+in\s+target/m,
+    tip: `you have the <code>in</code> check backwards. <code>X in Y</code> means "is X somewhere inside Y?" — so the thing you're searching FOR goes on the left, the thing you're searching IN goes on the right. flip it: <code>if target in aim_people:</code>.`
+  }
+], hint: `<code>if target in aim_people:</code> then <code>print("on AIM")</code>. otherwise <code>print("only SMS")</code>.`, onComplete: { diary: `// confirmed: glorfindel never had AIM access. only SMS. only the night-of fragments. they are tegan's only outside witness.`,
 buddy: { name: 'glorfindel_lives', msg: "i never knew her last name. i never met her family. i couldn't go to the funeral. i didn't even know there was one :(" }
 },
 charms: 2
@@ -1597,6 +1606,7 @@ const actualOutput = (result.output || '').trimEnd();
 
 if (!result.ok) {
 outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 return;
 }
 
