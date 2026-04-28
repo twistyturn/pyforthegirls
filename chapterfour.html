@@ -1260,7 +1260,7 @@ Looking forward to seeing you on the 21st.
 
 `, expectedOutput: `ROLE|FIRST|LAST|CABIN|STATUS_AUG_14
 director|Marcia|Deveraux|admin|on-site
-head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// 16 lines loaded. one for the header, fifteen staff including tegan.`, buddy: { name: 'tegan_a87', msg: `ashby comes before halloway and vance. that's how i learned to alphabetize a name.` }
+head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact', codeMustContain: ['open(', '.strip('], fileInjection: true, onComplete: { diary: `// 16 lines loaded. one for the header, fifteen staff including tegan.`, buddy: { name: 'tegan_a87', msg: `ashby comes before halloway and vance. that's how i learned to alphabetize a name.` }
 }
 },
 
@@ -1288,6 +1288,7 @@ starter: `sample_line = "director|Marcia|Deveraux|admin|on-site"
 `,
 expectedOutput: `{'role': 'director', 'first': 'Marcia', 'last': 'Deveraux', 'cabin': 'admin', 'status': 'on-site'}`,
 matchType: 'exact',
+codeMustContain: ['.split('],
 hint: `<code>parts = sample_line.split("|")</code>. then <code>person = {"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]}</code>. then <code>print(person)</code>.`,
 onComplete: {
   diary: `// one line parsed. now do all 15.`
@@ -1322,6 +1323,7 @@ with open("outlook/inbox/attachments/roster_2004.txt") as f:
 `,
 expectedOutput: `15`,
 matchType: 'exact',
+codeMustContain: ['.split(', '.append(', 'lines[1:]'],
 fileInjection: true,
 hint: `<code>for line in lines[1:]:</code> indented <code>parts = line.strip().split("|")</code>, then <code>staff.append({"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]})</code>. then unindented <code>print(len(staff))</code>.`,
 onComplete: {
@@ -1354,7 +1356,7 @@ your task: filter <code>staff</code> for any member whose first name (lowercased
 `, expectedOutput: `Helen Sokol (head cook)
 Hank Tobias (maintenance)
 Henry Pham (lifeguard)
-Hattie Whitlock (junior counsellor)`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// 4 candidates. somebody on this list came up the boathouse path at 11:44 PM and tegan started typing their name.`, buddy: { name: 'tegan_a87', msg: `i knew all four of them. hank fixed my window screen the second week and didn't even tell me i'd been opening it wrong.` }
+Hattie Whitlock (junior counsellor)`, matchType: 'exact', codeMustContain: ['.startswith('], staffPreload: true, onComplete: { diary: `// 4 candidates. somebody on this list came up the boathouse path at 11:44 PM and tegan started typing their name.`, buddy: { name: 'tegan_a87', msg: `i knew all four of them. hank fixed my window screen the second week and didn't even tell me i'd been opening it wrong.` }
 }
 },
 
@@ -1403,7 +1405,7 @@ exclude_terms = ["off-site", "lac la biche", "kitchen"]
 #   if their first name starts with "h"
 #   AND none of the exclude_terms is in their status
 #   then print "first last"
-`, expectedOutput: `Hattie Whitlock`, matchType: 'exact', staffPreload: true, onComplete: { diary: `// helen was home in town. henry was three hours out at lac la biche with eight boys and another counsellor. hank was in the kitchen at 11:44 PM, greg can confirm. only hattie was on-site, no alibi anyone has confirmed yet. she left two days later. it has to be her.`, buddy: { name: 'wren_h', msg: `i saw the account log on. i thought it was you. it's never you. i don't know who you are. i don't actually want to know.` }
+`, expectedOutput: `Hattie Whitlock`, matchType: 'exact', codeMustContain: ['any('], staffPreload: true, onComplete: { diary: `// helen was home in town. henry was three hours out at lac la biche with eight boys and another counsellor. hank was in the kitchen at 11:44 PM, greg can confirm. only hattie was on-site, no alibi anyone has confirmed yet. she left two days later. it has to be her.`, buddy: { name: 'wren_h', msg: `i saw the account log on. i thought it was you. it's never you. i don't know who you are. i don't actually want to know.` }
 }
 },
 
@@ -1475,7 +1477,7 @@ with open("outlook/inbox/attachments/roster_2003.txt") as f:
 
 `, expectedOutput: `Helen Sokol
 Hank Tobias
-Henry Pham`, matchType: 'exact', fileInjection: true, onComplete: { diary: `// same three. helen, hank, henry. all returning. no new H. the thread is dead.`, buddy: { name: 'tegan_a87', msg: `my first summer here. tyler was a JC for the boys' cabin. melissa worked hemlock. i barely knew either of them. counsellors mostly stayed in their own buildings.` }
+Henry Pham`, matchType: 'exact', codeMustContain: ['open(', '.startswith('], fileInjection: true, onComplete: { diary: `// same three. helen, hank, henry. all returning. no new H. the thread is dead.`, buddy: { name: 'tegan_a87', msg: `my first summer here. tyler was a JC for the boys' cabin. melissa worked hemlock. i barely knew either of them. counsellors mostly stayed in their own buildings.` }
 }
 },
 
@@ -1516,7 +1518,7 @@ print(last)    # → Deveraux</pre>
 `, expectedOutput: `Caitlin Wiebe
 Daniel Sinclair
 Melissa Klassen
-Tara Friesen`, matchType: 'exact', bothStaffPreload: true, onComplete: { diary: `// four people from 2003 who didn't come back. caitlin wiebe. daniel sinclair. melissa klassen. tara friesen. one of those names matters.`, buddy: { name: 'camille.j.89', msg: `i tracked which counsellors didn't come back. melissa was the biggest mystery of last year. i wondered all summer. nobody mentioned her this year.` }
+Tara Friesen`, matchType: 'exact', codeMustContain: ['set('], bothStaffPreload: true, onComplete: { diary: `// four people from 2003 who didn't come back. caitlin wiebe. daniel sinclair. melissa klassen. tara friesen. one of those names matters.`, buddy: { name: 'camille.j.89', msg: `i tracked which counsellors didn't come back. melissa was the biggest mystery of last year. i wondered all summer. nobody mentioned her this year.` }
 }
 },
 
@@ -1700,6 +1702,41 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
+}
+
+// codeMustContain: ensure the player actually used the skill the task is
+// teaching, not just produced the right output. (A learner who hardcodes
+// the answer and gets a green checkmark has been failed by the autograder,
+// not helped by it.) Per-task patterns live on each beat as
+// `codeMustContain: [...]` — a string is "must include this substring",
+// a nested array is "must include any of these", a RegExp is tested.
+if (passed && beat.codeMustContain) {
+  const __strippedCode = code.split('\n').map(__line => {
+    const __i = __line.indexOf('#');
+    return __i >= 0 ? __line.slice(0, __i) : __line;
+  }).join('\n');
+  let __missingPattern = null;
+  for (const __p of beat.codeMustContain) {
+    let __hit;
+    if (Array.isArray(__p)) {
+      __hit = __p.some(__s => __strippedCode.includes(__s));
+    } else if (__p instanceof RegExp) {
+      __hit = __p.test(__strippedCode);
+    } else {
+      __hit = __strippedCode.includes(__p);
+    }
+    if (!__hit) { __missingPattern = __p; break; }
+  }
+  if (__missingPattern !== null) {
+    passed = false;
+    const __fmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+      : (__missingPattern instanceof RegExp
+          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    return;
+  }
 }
 
 if (passed) {

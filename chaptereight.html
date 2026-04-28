@@ -2237,6 +2237,7 @@ summarize_person(example)
 `,
     expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 1 school papers`,
     matchType: 'exact',
+    codeMustContain: ['def ', 'summarize_person'],
     fileInjection: false,
     hint: `inside the function, build the line as one print statement. f-strings are the cleanest way: <code>print(f"{result_dict['name']}: {len(result_dict['nexopia'])} nexopia, {len(result_dict['livejournals'])} livejournals, {len(result_dict['school_papers'])} school papers")</code>. you can also build it with string concatenation if you prefer, but you'll need to convert the lengths with <code>str()</code>.`,
     onComplete: {
@@ -2263,6 +2264,7 @@ summarize_person(result)
     expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 0 school papers
 camille_m_88`,
     matchType: 'exact',
+    codeMustContain: ['find_person(', 'summarize_person('],
     fileInjection: true,
     onComplete: {
       diary: `// camille_m_88. nexopia profile, public, low traffic.
@@ -2335,6 +2337,7 @@ summarize_person(result)
     expectedOutput: `Melissa Klassen: 0 nexopia, 1 livejournals, 0 school papers
 mel_k_lights`,
     matchType: 'exact',
+    codeMustContain: ['find_person(', 'summarize_person('],
     fileInjection: true,
     onComplete: {
       diary: `// mel_k_lights. she still posts.
@@ -3427,6 +3430,41 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
+}
+
+// codeMustContain: ensure the player actually used the skill the task is
+// teaching, not just produced the right output. (A learner who hardcodes
+// the answer and gets a green checkmark has been failed by the autograder,
+// not helped by it.) Per-task patterns live on each beat as
+// `codeMustContain: [...]` — a string is "must include this substring",
+// a nested array is "must include any of these", a RegExp is tested.
+if (passed && beat.codeMustContain) {
+  const __strippedCode = code.split('\n').map(__line => {
+    const __i = __line.indexOf('#');
+    return __i >= 0 ? __line.slice(0, __i) : __line;
+  }).join('\n');
+  let __missingPattern = null;
+  for (const __p of beat.codeMustContain) {
+    let __hit;
+    if (Array.isArray(__p)) {
+      __hit = __p.some(__s => __strippedCode.includes(__s));
+    } else if (__p instanceof RegExp) {
+      __hit = __p.test(__strippedCode);
+    } else {
+      __hit = __strippedCode.includes(__p);
+    }
+    if (!__hit) { __missingPattern = __p; break; }
+  }
+  if (__missingPattern !== null) {
+    passed = false;
+    const __fmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+      : (__missingPattern instanceof RegExp
+          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    return;
+  }
 }
 
 if (passed) {

@@ -1130,6 +1130,7 @@ else:
     print("")`,
     expectedOutput: 'ACCESS GRANTED',
     matchType: 'exact',
+    codeMustContain: ['=='],
     hint: `the comparison is <code>guess == "hemlock"</code>. the first <code>print()</code> needs <code>"ACCESS GRANTED"</code> in the quotes. the second needs <code>"denied"</code>.`,
     onComplete: {
       diary: `// practice script runs. comparison is just == ("equal to"). got it.`
@@ -1152,6 +1153,7 @@ else:
 `,
     expectedOutput: 'ACCESS GRANTED',
     matchType: 'exact',
+    codeMustContain: ['==', 'if', 'else'],
     hint: `four lines: <code>if guess == "hemlock":</code>, then indented (4 spaces) <code>print("ACCESS GRANTED")</code>, then unindented <code>else:</code>, then indented <code>print("denied")</code>. python is picky about indentation — use exactly 4 spaces for the indented lines.`,
     onComplete: {
       diary: `// hemlock was the obvious first guess. didn't work on the real zip. but the script runs.`,
@@ -1243,6 +1245,7 @@ else:
     print("not found")`,
     expectedOutput: 'hemlock cabin (senior)',
     matchType: 'exact',
+    codeMustContain: ['elif'],
     hint: `the two empty <code>elif</code>s need <code>"wren"</code> and <code>"camille"</code> in the quotes. their <code>print()</code> statements need <code>"hemlock cabin (senior)"</code> and <code>"hemlock cabin"</code> respectively. the order matters less than the matching — python checks top to bottom.`,
     onComplete: {
       diary: `// practice script runs. wren had her own corner of hemlock as senior. camille was in the bunks with the campers and the JC.`
@@ -1273,6 +1276,7 @@ if name == "tegan":
 `,
     expectedOutput: 'hemlock cabin',
     matchType: 'exact',
+    codeMustContain: ['elif', 'else'],
     hint: `you need three more lines (well, six counting the indented prints). pattern: <code>elif name == "...":</code> on one line, then <code>    print("...")</code> on the next, indented with four spaces. then the same shape for camille. then <code>else:</code> with <code>    print("not found")</code>.`,
     onComplete: {
       diary: `// cabin assignments confirmed. wren had her own cabin. she was a senior counsellor.`,
@@ -1343,6 +1347,7 @@ else:
     print("")`,
     expectedOutput: 'ADULT_COUNSELOR',
     matchType: 'exact',
+    codeMustContain: [/\b(and|or)\b/],
     hint: `the answer is <code>and</code> — both conditions need to be true to identify an adult counsellor (the right name AND old enough). then fill in <code>"ADULT_COUNSELOR"</code> in the first print and <code>"camper_or_minor"</code> in the else print.`,
     onComplete: {
       diary: `// practice script passes. and: both conditions true. got it.`
@@ -1369,6 +1374,7 @@ else:
     print("")`,
     expectedOutput: 'ADULT_COUNSELOR',
     matchType: 'exact',
+    codeMustContain: [/\b(and|or)\b/, 'if'],
     hint: `the condition is <code>name == "wren" and age >= 18</code>. it goes right after <code>if</code> and before the colon. then put <code>"ADULT_COUNSELOR"</code> in the first print, <code>"camper_or_minor"</code> in the second.`,
     onComplete: {
       diary: `// boolean check passes. wren halloway, 19, adult counsellor. tegan, 17, minor.`,
@@ -1468,6 +1474,7 @@ count = 0
 `,
     expectedOutput: '3',
     matchType: 'exact',
+    codeMustContain: ['for ', ['+ 1', '+= 1']],
     hint: `add these lines: <code>for f in fragments:</code> then indented <code>if f == "her name is wren halloway":</code> then double-indented <code>count = count + 1</code>. then unindented <code>print(count)</code>.`,
     onComplete: {
       diary: `// 3 occurrences across 8 fragments. tegan repeated it on purpose. it has to mean something.`,
@@ -1550,6 +1557,7 @@ i = 0
 `,
     expectedOutput: 'birchwoodcounsellor1985',
     matchType: 'exact',
+    codeMustContain: ['while ', 'len('],
     hint: `<code>while i &lt; len(keywords):</code> then indented <code>password = password + keywords[i]</code> then <code>i = i + 1</code>. then unindented <code>print(password)</code>. <code>len()</code> tells you how long a list is.`,
     onComplete: {
       diary: `// password constructed. typing it into the zip prompt now.`,
@@ -1873,6 +1881,41 @@ builtins.input = __patched_input
     passed = actualOutput.includes(beat.expectedOutput);
   }
 
+  // codeMustContain: ensure the player actually used the skill the task is
+  // teaching, not just produced the right output. (A learner who hardcodes
+  // the answer and gets a green checkmark has been failed by the autograder,
+  // not helped by it.) Per-task patterns live on each beat as
+  // `codeMustContain: [...]` — a string is "must include this substring",
+  // a nested array is "must include any of these", a RegExp is tested.
+  if (passed && beat.codeMustContain) {
+    const __strippedCode = code.split('\n').map(__line => {
+      const __i = __line.indexOf('#');
+      return __i >= 0 ? __line.slice(0, __i) : __line;
+    }).join('\n');
+    let __missingPattern = null;
+    for (const __p of beat.codeMustContain) {
+      let __hit;
+      if (Array.isArray(__p)) {
+        __hit = __p.some(__s => __strippedCode.includes(__s));
+      } else if (__p instanceof RegExp) {
+        __hit = __p.test(__strippedCode);
+      } else {
+        __hit = __strippedCode.includes(__p);
+      }
+      if (!__hit) { __missingPattern = __p; break; }
+    }
+    if (__missingPattern !== null) {
+      passed = false;
+      const __fmt = Array.isArray(__missingPattern)
+        ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
+        : (__missingPattern instanceof RegExp
+            ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
+            : '<code>' + escapeHtml(__missingPattern) + '</code>');
+      outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+      return;
+    }
+  }
+  
   if (passed) {
     outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
     // mark complete
