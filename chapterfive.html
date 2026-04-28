@@ -78,7 +78,7 @@ animation: twinkle 3s ease-in-out infinite;
 /* ============ DESKTOP / TASKBAR ============ */
 .desktop {
 height: 100vh;
-padding: 16px 16px 56px 312px;
+padding: 16px 16px 56px calc(var(--rail-width, 200px) + 32px);
 position: relative;
 display: flex;
 flex-direction: column;
@@ -1966,6 +1966,34 @@ renderStory();
 function toggleStartMenu() {
   const grid = document.querySelector('.icon-grid');
   if (grid) grid.classList.toggle('start-menu-open');
+}
+
+// Measure the icon rail's actual rendered width and expose it as
+// --rail-width so .desktop padding-left tracks it. This avoids the
+// magic number that overshot when the rail was narrower than its
+// max-width allowance.
+function syncRailWidth() {
+  const rail = document.querySelector('.icon-grid');
+  if (!rail) return;
+  const w = rail.offsetWidth;
+  if (w > 0) {
+    document.documentElement.style.setProperty('--rail-width', w + 'px');
+  }
+}
+function watchRailWidth() {
+  const rail = document.querySelector('.icon-grid');
+  if (!rail) return;
+  syncRailWidth();
+  if (window.ResizeObserver) {
+    new ResizeObserver(syncRailWidth).observe(rail);
+  } else {
+    window.addEventListener('resize', syncRailWidth);
+  }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', watchRailWidth);
+} else {
+  watchRailWidth();
 }
 document.addEventListener('click', (e) => {
   const grid = document.querySelector('.icon-grid');
