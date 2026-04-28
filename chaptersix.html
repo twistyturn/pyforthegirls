@@ -832,6 +832,39 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
   cursor: url('cursors/default/wait.cur'), wait !important;
 }
 
+/* ============ KAWAII CURSORS — Tegan's diary windows ============ */
+/* Scoped to .story-window (her handwritten-style diary entries + chapter
+   wrap-up). The cousin sees the Y2K Windows arrow everywhere else; entering
+   one of Tegan's pages flips the cursor to her old kawaii pack. */
+.story-window {
+  cursor: url('cursors/kawaii/alt.cur'), default;
+}
+.story-window button,
+.story-window .btn,
+.story-window .titlebar-btn,
+.story-window [role="button"],
+.story-window [onclick] {
+  cursor: url('cursors/kawaii/pointer.cur'), pointer;
+}
+.story-window a,
+.story-window a:link,
+.story-window a:visited {
+  cursor: url('cursors/kawaii/link.ani'), pointer;
+}
+.story-window input,
+.story-window textarea,
+.story-window [contenteditable],
+.story-window [contenteditable="true"] {
+  cursor: text;
+}
+.story-window button:disabled,
+.story-window .btn:disabled,
+.story-window button[disabled],
+.story-window input[disabled],
+.story-window [disabled] {
+  cursor: not-allowed;
+}
+
 /* small mobile adjustments */
 @media (max-width: 600px) {
 .intro-logo { font-size: 18px; }
