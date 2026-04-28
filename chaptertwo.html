@@ -6,6 +6,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>pyforthegirls :: chapter 2 :: cracking the lock</title>
 <link rel="icon" type="image/png" href="favicon.png">
+<script>
+// Pre-paint: if we already know this player's name (from this chapter's
+// save or from the cross-chapter shared key), mark the document so the
+// CSS below hides the intro before first paint. Avoids the flash where
+// the intro is visible for a beat before the script-side hide runs.
+try {
+  var hasUser = false;
+  if (localStorage.getItem('pyforthegirls_user')) { hasUser = true; }
+  if (!hasUser) {
+    var saved = localStorage.getItem('pyforthegirls_save_v1');
+    if (saved) {
+      try {
+        var obj = JSON.parse(saved);
+        if (obj && obj.userName) { hasUser = true; }
+      } catch(e) {}
+    }
+  }
+  if (hasUser) {
+    document.documentElement.setAttribute('data-skip-intro', '1');
+  }
+} catch(e) {}
+</script>
+<style>
+html[data-skip-intro="1"] #introScreen { display: none !important; }
+html[data-skip-intro="1"] #desktop,
+html[data-skip-intro="1"] #taskbar { display: flex !important; }
+</style>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
@@ -1948,17 +1976,16 @@ document.addEventListener('keydown', e => {
 
 // auto-resume from save (or skip intro if name already known from another chapter)
 if (state.userName) {
-  // skip intro
-  document.getElementById('userNameInput').value = state.userName;
-  // keep intro visible but offer continue — simpler: go straight in
-  setTimeout(() => {
-    document.getElementById('introScreen').classList.add('hidden');
-    document.getElementById('desktop').classList.remove('hidden');
-    document.getElementById('taskbar').classList.remove('hidden');
-    makeSparkles();
-    startClock();
-    renderStory();
-  }, 100);
+// skip intro — CSS in <head> already suppresses paint of #introScreen
+// for returning players; this hides it for sessions where the script
+// runs without the head-script having fired (defensive).
+document.getElementById('userNameInput').value = state.userName;
+document.getElementById('introScreen').classList.add('hidden');
+document.getElementById('desktop').classList.remove('hidden');
+document.getElementById('taskbar').classList.remove('hidden');
+makeSparkles();
+startClock();
+renderStory();
 }
 </script>
 <script src="caseboard.js"></script>
