@@ -8,7 +8,7 @@ If you get stuck on any step, the troubleshooting section at the bottom probably
 
 ## What you're uploading
 
-The repository now contains exactly eleven files that need to go to Neocities:
+The repository now contains exactly eleven files plus one folder that need to go to Neocities:
 
 - `index.html` — the landing page (the player sees this first)
 - `chapterone.html`
@@ -21,8 +21,9 @@ The repository now contains exactly eleven files that need to go to Neocities:
 - `chaptereight.html`
 - `caseboard.js` — the corkboard module shared by every chapter
 - `clutter.js` — the desktop-clutter module (Tegan's loose files and folders), shared by every chapter
+- `cursors/` — the custom-cursor folder (Y2K Windows pixel arrow + hourglass for the OS layer, kawaii set reserved for in-game personal sites). Upload the whole folder so its inner structure (`cursors/default/`, `cursors/kawaii/`) is preserved.
 
-That's it. Nothing else. If you skip `caseboard.js` the chapter pages still work, but the caseboard icon won't open anything. If you skip `clutter.js` the chapter pages still work, but the desktop will be missing all the loose files and folders (birthday wishlist, AIM buddy list, drafts/, school/, etc.).
+That's it. Nothing else. If you skip `caseboard.js` the chapter pages still work, but the caseboard icon won't open anything. If you skip `clutter.js` the chapter pages still work, but the desktop will be missing all the loose files and folders (birthday wishlist, AIM buddy list, drafts/, school/, etc.). If you skip `cursors/`, the game still works, but you'll see your browser's normal cursor instead of the Y2K pixel arrow.
 
 ### Files you must NOT upload
 
@@ -61,7 +62,8 @@ If you've been editing in GitHub directly, you'll need them locally:
 3. You'll see a file list. There's already an `index.html` Neocities made for you. **Delete it.** (Click it, then the trash icon. You're going to replace it with your own.)
 4. Click **Upload** (often a button at the top of the file list, sometimes it's drag-and-drop directly into the page).
 5. Select all nine `.html` files plus `caseboard.js` and `clutter.js` and upload them.
-6. Wait for the green checkmarks.
+6. Create a folder called `cursors` (Neocities has a "new folder" button in the file manager), open it, then create `default` and `kawaii` subfolders inside it. Upload `arrow.cur` and `wait.cur` into `cursors/default/`, and the kawaii `.cur` / `.ani` files into `cursors/kawaii/`. The path layout has to match what's in the repo or the cursors won't load.
+7. Wait for the green checkmarks.
 
 That's the whole upload. The site is now live.
 

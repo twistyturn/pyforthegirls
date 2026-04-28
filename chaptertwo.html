@@ -37,7 +37,7 @@ font-family: 'VT323', 'Courier New', monospace;
 color: var(--silver);
 background: var(--bg-deep);
 overflow-x: hidden;
-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff66c4' stroke='%23fff' stroke-width='1' d='M2 2 L2 18 L7 14 L10 21 L13 20 L10 13 L17 13 Z'/%3E%3C/svg%3E") 2 2, auto;
+cursor: url('cursors/default/arrow.cur'), default;
 }
 
 /* ============ ANIMATED BACKGROUND ============ */
@@ -517,6 +517,50 @@ letter-spacing: 8px;
 /* hidden by default */
 .hidden { display: none !important; }
 
+/* ============ Y2K WINDOWS CURSORS (default + loading) ============ */
+input, textarea, [contenteditable], [contenteditable="true"] {
+  cursor: text;
+}
+button:disabled, .btn:disabled, button[disabled], input[disabled], [disabled] {
+  cursor: not-allowed;
+}
+body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
+  cursor: url('cursors/default/wait.cur'), wait !important;
+}
+
+/* ============ KAWAII CURSORS — Tegan's diary windows ============ */
+/* Scoped to .story-window (her handwritten-style diary entries + chapter
+   wrap-up). The cousin sees the Y2K Windows arrow everywhere else; entering
+   one of Tegan's pages flips the cursor to her old kawaii pack. */
+.story-window {
+  cursor: url('cursors/kawaii/alt.cur'), default;
+}
+.story-window button,
+.story-window .btn,
+.story-window .titlebar-btn,
+.story-window [role="button"],
+.story-window [onclick] {
+  cursor: url('cursors/kawaii/pointer.cur'), pointer;
+}
+.story-window a,
+.story-window a:link,
+.story-window a:visited {
+  cursor: url('cursors/kawaii/link.ani'), pointer;
+}
+.story-window input,
+.story-window textarea,
+.story-window [contenteditable],
+.story-window [contenteditable="true"] {
+  cursor: text;
+}
+.story-window button:disabled,
+.story-window .btn:disabled,
+.story-window button[disabled],
+.story-window input[disabled],
+.story-window [disabled] {
+  cursor: not-allowed;
+}
+
 /* small mobile adjustments */
 @media (max-width: 600px) {
 .intro-logo { font-size: 18px; }
@@ -639,15 +683,20 @@ async function loadPyodideOnce() {
 }
 
 async function runPython(code) {
-  const py = await loadPyodideOnce();
-  let stdout = '';
-  py.setStdout({ batched: (s) => { stdout += s + '\n'; } });
-  py.setStderr({ batched: (s) => { stdout += s + '\n'; } });
+  document.body.classList.add('is-loading');
   try {
-    await py.runPythonAsync(code);
-    return { ok: true, output: stdout };
-  } catch (err) {
-    return { ok: false, output: stdout, error: String(err.message || err) };
+    const py = await loadPyodideOnce();
+    let stdout = '';
+    py.setStdout({ batched: (s) => { stdout += s + '\n'; } });
+    py.setStderr({ batched: (s) => { stdout += s + '\n'; } });
+    try {
+      await py.runPythonAsync(code);
+      return { ok: true, output: stdout };
+    } catch (err) {
+      return { ok: false, output: stdout, error: String(err.message || err) };
+    }
+  } finally {
+    document.body.classList.remove('is-loading');
   }
 }
 
