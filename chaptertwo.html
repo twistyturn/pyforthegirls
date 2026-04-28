@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>pyforthegirls :: chapter 2 :: cracking the lock</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
@@ -472,7 +473,73 @@ z-index: 200;
 animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 font-family: 'VT323', monospace;
 }
+.buddy-popup { cursor: pointer; }
+.buddy-popup:hover { box-shadow: var(--shadow-hard), 0 0 32px rgba(102, 255, 255, 0.6); }
 .buddy-popup .window-titlebar { background: linear-gradient(90deg, var(--cyan-glow), var(--lavender)); }
+.buddy-cta {
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+color: #6a3d8a;
+margin-top: 8px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM MESSAGE WINDOW (modal opened from buddy popup) ============ */
+.aim-modal-overlay {
+position: fixed; inset: 0;
+background: rgba(0, 0, 0, 0.45);
+z-index: 500;
+display: flex;
+align-items: center;
+justify-content: center;
+animation: window-pop 0.25s ease-out;
+}
+.aim-modal {
+width: min(440px, calc(100% - 32px));
+background: #d8d8e8;
+border: 2px solid var(--bg-deep);
+box-shadow: 4px 4px 0 var(--bg-deep), 0 0 32px rgba(255, 102, 196, 0.5);
+font-family: 'Tahoma', 'Geneva', sans-serif;
+}
+.aim-titlebar {
+background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%) !important;
+color: var(--bg-deep) !important;
+text-shadow: none !important;
+}
+.aim-modal-body {
+background: #ffffff;
+color: #1a1a1a;
+padding: 14px 14px 16px;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 13px;
+line-height: 1.5;
+min-height: 110px;
+max-height: 60vh;
+overflow-y: auto;
+}
+.aim-modal-body .aim-msg { margin: 4px 0; word-wrap: break-word; overflow-wrap: anywhere; }
+.aim-modal-body .aim-user { font-weight: bold; }
+.aim-modal-body .aim-self .aim-user { color: #cc0000; }
+.aim-modal-body .aim-other .aim-user { color: #0000cc; }
+.aim-modal-body .aim-system {
+margin: 8px 0 4px;
+color: #777;
+font-style: italic;
+font-size: 12px;
+text-align: center;
+}
+.aim-modal-footer {
+background: #d8d8e8;
+border-top: 1px solid var(--bg-deep);
+padding: 6px 10px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 11px;
+color: #555;
+}
+.aim-modal-status { font-style: italic; }
 .buddy-content {
 padding: 12px;
 color: var(--bg-deep);
@@ -731,18 +798,38 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 
   <!-- ============ BUDDY POPUP ============ -->
 
-  <div class="buddy-popup hidden" id="buddyPopup">
-    <div class="window-titlebar">
-      <span>buddyhelper :: incoming</span>
-      <div class="window-titlebar-buttons">
-        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
-      </div>
-    </div>
-    <div class="buddy-content">
-      <div class="buddy-name" id="buddyName">tegan_a87</div>
-      <div id="buddyMessage"></div>
+<div class="buddy-popup hidden" id="buddyPopup" onclick="openBuddyAim(event)" title="click to open conversation">
+  <div class="window-titlebar">
+    <span>buddyhelper :: incoming</span>
+    <div class="window-titlebar-buttons">
+      <span class="titlebar-btn" onclick="event.stopPropagation(); closeBuddy()">×</span>
     </div>
   </div>
+  <div class="buddy-content">
+    <div class="buddy-name" id="buddyName">tegan_a87</div>
+    <div id="buddyMessage"></div>
+    <div class="buddy-cta">▸ click to open</div>
+  </div>
+</div>
+
+<!-- ============ AIM MESSAGE WINDOW (modal) ============ -->
+<div class="aim-modal-overlay hidden" id="aimModalOverlay" onclick="closeBuddyAim()">
+  <div class="aim-modal" id="aimModal" onclick="event.stopPropagation()">
+    <div class="window-titlebar aim-titlebar">
+      <span id="aimModalTitle">IM with —</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn" onclick="closeBuddyAim()">×</span>
+      </div>
+    </div>
+    <div class="aim-modal-body" id="aimModalBody"></div>
+    <div class="aim-modal-footer">
+      <span class="aim-modal-status">[ read-only — this is an archived message. ]</span>
+      <button class="btn btn-secondary" onclick="closeBuddyAim()" style="font-size: 9px; padding: 3px 10px;">close</button>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- ============ TASKBAR ============ -->
@@ -898,33 +985,62 @@ i have her laptop and she left tools. start digging.`,
     nextBtn: 'open the zip prompt ▸'
   },
 
-  // ---- BEAT 1: comparison + if/else ----
+  // ---- BEAT 1a: comparison + if/else — practice fill-in ----
   {
-    id: 'task_comparison',
+    id: 'task_comparison_a',
     type: 'task',
-    title: 'python.exe :: zip_prompt.py',
-    meta: 'tegan was experimenting with password validation.',
-    storyAbove: `the zip file asks for a password. you don't have it. but tegan was learning python by writing little practice scripts, including one that simulates checking a password. it's a starting point. you can study how comparison works, then come back to the real lock.`,
+    title: 'python.exe :: zip_prompt_practice.py',
+    meta: 'tegan was learning password validation. this is her practice scratchpad.',
+    storyAbove: `the zip file asks for a password. you don't have it. but tegan was learning python by writing little practice scripts, including one that simulates checking a password. she left a practice version with most of it filled in — start there. the real one is next.`,
     skill: 'COMPARISON & IF/ELSE',
-    instructions: `<p>python compares values with <code>==</code> (equal) and <code>!=</code> (not equal). you can branch your code based on a comparison using <code>if</code> and <code>else</code>:</p>
+    instructions: `<p>python compares values with <code>==</code> (equal) and <code>!=</code> (not equal). these return <code>True</code> or <code>False</code>:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"hello" == "hello"   # → True
+"hello" == "world"   # → False
+5 != 5               # → False</pre>
+                   <p>you can branch your code based on a comparison using <code>if</code> and <code>else</code>:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if guess == "open sesame":
     print("UNLOCKED")
 else:
     print("denied")</pre>
-
-               <p><strong>your task:</strong> the variable <code>guess</code> is set to <code>"hemlock"</code> (tegan's cabin name). the scaffold below runs but doesn't check anything yet. change <code>True</code> to a comparison that's true when <code>guess</code> equals <code>"hemlock"</code>, and change the print messages so it prints <code>ACCESS GRANTED</code> when matching and <code>denied</code> otherwise.</p>`,
-starter: `guess = "hemlock"
-
-# change True to a comparison. change the prints to the right messages.
-
-if True:
-    print("placeholder")
+                   <p>the indented line under <code>if</code> runs only when the comparison is <code>True</code>. the indented line under <code>else</code> runs in every other case.</p>
+                   <p><strong>your task:</strong> the script below is mostly written. replace the <code>???</code> with the right comparison, and fill in the two empty <code>print()</code> statements so it prints <code>ACCESS GRANTED</code> when guess equals <code>"hemlock"</code> and <code>denied</code> otherwise.</p>`,
+    starter: `guess = "hemlock"
+# replace ??? with a comparison that checks if guess equals "hemlock"
+if ???:
+    print("")
 else:
-    print("placeholder")`, expectedOutput: 'ACCESS GRANTED', matchType: 'exact', hint: `replace <code>True</code> with <code>guess == "hemlock"</code>. replace the if-branch print with <code>print("ACCESS GRANTED")</code> and the else-branch with <code>print("denied")</code>. the indentation in the scaffold is already correct, so leave it alone.`, onComplete: { diary: `// hemlock was the obvious first guess. didn't work on the real zip. but the script runs.`,
-buddy: { name: 'tegan_a87', msg: "hemlock was my cabin. it was never going to be my password. that's lazy. i wasn't lazy." }
-},
-charms: 2
-},
+    print("")`,
+    expectedOutput: 'ACCESS GRANTED',
+    matchType: 'exact',
+    hint: `the comparison is <code>guess == "hemlock"</code>. the first <code>print()</code> needs <code>"ACCESS GRANTED"</code> in the quotes. the second needs <code>"denied"</code>.`,
+    onComplete: {
+      diary: `// practice script runs. comparison is just == ("equal to"). got it.`
+    },
+    charms: 1
+  },
+
+  // ---- BEAT 1b: comparison + if/else — write it yourself ----
+  {
+    id: 'task_comparison',
+    type: 'task',
+    title: 'python.exe :: zip_prompt.py',
+    meta: 'the actual practice script. tegan only left the variable.',
+    storyAbove: `now the real version. same logic, but you write the whole if/else from scratch. the starter has just the variable; the rest is yours.`,
+    skill: 'COMPARISON & IF/ELSE (writing branches)',
+    instructions: `<p>same idea as the practice round. the variable <code>guess</code> is set to <code>"hemlock"</code> (tegan's cabin name). complete the script so it prints <code>ACCESS GRANTED</code> when the guess equals <code>"hemlock"</code> and <code>denied</code> otherwise.</p>
+                   <p>you'll need an <code>if</code> line with a comparison, an indented <code>print()</code> for the match, an <code>else:</code> line, and another indented <code>print()</code> for the fallback.</p>`,
+    starter: `guess = "hemlock"
+# write the if/else below
+`,
+    expectedOutput: 'ACCESS GRANTED',
+    matchType: 'exact',
+    hint: `four lines: <code>if guess == "hemlock":</code>, then indented (4 spaces) <code>print("ACCESS GRANTED")</code>, then unindented <code>else:</code>, then indented <code>print("denied")</code>. python is picky about indentation — use exactly 4 spaces for the indented lines.`,
+    onComplete: {
+      diary: `// hemlock was the obvious first guess. didn't work on the real zip. but the script runs.`,
+      buddy: { name: 'tegan_a87', msg: "hemlock was my cabin. it was never going to be my password. that's lazy. i wasn't lazy." }
+    },
+    charms: 1
+  },
 
 // –– BEAT 2: AIM log fragment + elif chain ––
 {
@@ -969,28 +1085,35 @@ tegan_a87: i can't
     nextBtn: 'next file ▸'
   },
 
-  // ---- BEAT 3: elif chain — the cabin lookup ----
+  // ---- BEAT 3a: elif chain — practice fill-in ----
   {
-    id: 'task_elif',
+    id: 'task_elif_a',
     type: 'task',
-    title: 'python.exe :: cabin_lookup.py',
-    meta: 'a utility script tegan wrote for her clipboard.',
-    storyAbove: `tegan kept a script on hand to remind herself which counsellor was assigned to which cabin. you can study the structure to learn <code>elif</code>, then use the same pattern later when you need to check multiple possibilities at once, like when guessing a password from a list of candidates.`,
+    title: 'python.exe :: cabin_lookup_practice.py',
+    meta: 'tegan kept this script to remind herself who slept where.',
+    storyAbove: `tegan was learning <code>elif</code> ("else if") — a way to check more than two possibilities in a row. she left a practice version of the cabin-lookup script with most of it filled in. start with this one; the real version is next.`,
     skill: 'ELIF CHAINS (multiple branches)',
-    instructions: `<p>when you have more than two options, use <code>elif</code> ("else if") to chain checks:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if cabin == "rosewood":
-    print("tegan")
-elif cabin == "birchwood":
-    print("hattie")
+    instructions: `<p>so far you've seen <code>if</code> and <code>else</code>. <code>elif</code> goes between them and lets you check more than one condition:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colour = "blue"
+if colour == "red":
+    print("stop")
+elif colour == "yellow":
+    print("slow")
+elif colour == "blue":
+    print("go")
 else:
     print("unknown")</pre>
-                   <p><strong>your task:</strong> the variable <code>name</code> is set to <code>"wren"</code>. complete the elif chain so it prints the correct cabin:</p>
+                   <p>that prints:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">go</pre>
+                   <p>python checks each branch top to bottom and runs the first one that matches. it skips the rest.</p>
+                   <p><strong>your task:</strong> the script below is mostly written. fill in the two empty <code>elif</code> conditions and their <code>print()</code> statements so that:</p>
                    <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
                      <li>tegan → <code>hemlock cabin (JC)</code></li>
                      <li>wren → <code>hemlock cabin (senior)</code></li>
                      <li>camille → <code>hemlock cabin</code></li>
                      <li>anyone else → <code>not found</code></li>
-                   </ul>`,
+                   </ul>
+                   <p>the variable <code>name</code> is set to <code>"wren"</code>, so the correct branch is wren's.</p>`,
     starter: `name = "wren"
 if name == "tegan":
     print("hemlock cabin (JC)")
@@ -1002,12 +1125,42 @@ else:
     print("not found")`,
     expectedOutput: 'hemlock cabin (senior)',
     matchType: 'exact',
-    hint: `you need <code>elif name == "wren":</code> followed by <code>print("hemlock cabin (senior)")</code>, and <code>elif name == "camille":</code> followed by <code>print("hemlock cabin")</code>. fill in the empty quotes.`,
+    hint: `the two empty <code>elif</code>s need <code>"wren"</code> and <code>"camille"</code> in the quotes. their <code>print()</code> statements need <code>"hemlock cabin (senior)"</code> and <code>"hemlock cabin"</code> respectively. the order matters less than the matching — python checks top to bottom.`,
+    onComplete: {
+      diary: `// practice script runs. wren had her own corner of hemlock as senior. camille was in the bunks with the campers and the JC.`
+    },
+    charms: 1
+  },
+
+  // ---- BEAT 3b: elif chain — write it yourself ----
+  {
+    id: 'task_elif_b',
+    type: 'task',
+    title: 'python.exe :: cabin_lookup.py',
+    meta: 'the real version. tegan only left the variables.',
+    storyAbove: `now the actual cabin-lookup script — the one tegan kept open on her clipboard. same logic, but you write the whole chain this time. the starter has the variable and an opening <code>if</code>; the rest is yours.`,
+    skill: 'ELIF CHAINS (writing branches)',
+    instructions: `<p>same lookup as before:</p>
+                   <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
+                     <li>tegan → <code>hemlock cabin (JC)</code></li>
+                     <li>wren → <code>hemlock cabin (senior)</code></li>
+                     <li>camille → <code>hemlock cabin</code></li>
+                     <li>anyone else → <code>not found</code></li>
+                   </ul>
+                   <p>the variable <code>name</code> is set to <code>"camille"</code> this time. complete the chain so it prints the right cabin. you'll need an <code>elif</code> for wren, an <code>elif</code> for camille, and an <code>else</code> for the fallback.</p>`,
+    starter: `name = "camille"
+if name == "tegan":
+    print("hemlock cabin (JC)")
+# write the elif and else branches below
+`,
+    expectedOutput: 'hemlock cabin',
+    matchType: 'exact',
+    hint: `you need three more lines (well, six counting the indented prints). pattern: <code>elif name == "...":</code> on one line, then <code>    print("...")</code> on the next, indented with four spaces. then the same shape for camille. then <code>else:</code> with <code>    print("not found")</code>.`,
     onComplete: {
       diary: `// cabin assignments confirmed. wren had her own cabin. she was a senior counsellor.`,
       buddy: { name: 'camille.j.89', msg: 'is this tegan? are you on her account? please tell me she\'s ok. i never told. i swear.' }
     },
-    charms: 2
+    charms: 1
   },
 
   // ---- BEAT 4: Wren's email — the threat ----
@@ -1247,8 +1400,28 @@ in case there are more files. in case there's a fourth.`,
 while i < 5:
     print(i)
     i = i + 1</pre>
-                   <p>you can grab an item from a list by its index: <code>my_list[0]</code> is the first item, <code>my_list[1]</code> is the second.</p>
-                   <p><strong>your task:</strong> walk through <code>keywords</code> with a <code>while</code> loop, building up <code>password</code> by concatenating each keyword onto it. then print the result. expected output: <code>birchwoodcounsellor1985</code>.</p>`,
+                   <p>that prints:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">0
+1
+2
+3
+4</pre>
+                   <p>the variable <code>i</code> starts at 0. each loop iteration prints it and adds 1. when <code>i</code> reaches 5, the condition <code>i &lt; 5</code> becomes false and the loop stops.</p>
+                   <p>you can grab an item from a list by its <strong>index</strong> (position, starting at 0):</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+colours[0]   # → "red"
+colours[1]   # → "blue"
+colours[2]   # → "green"</pre>
+                   <p>and <code>len()</code> tells you how many items are in a list:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">len(colours)   # → 3</pre>
+                   <p>combining all three to walk through every item:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+i = 0
+while i < len(colours):
+    print(colours[i])
+    i = i + 1</pre>
+                   <p>that prints each colour on its own line. the loop visits each index from 0 up to (but not including) <code>len(colours)</code>.</p>
+                   <p><strong>your task:</strong> walk through <code>keywords</code> with a <code>while</code> loop, building up <code>password</code> by sticking each keyword onto the end of it (this is called <strong>concatenation</strong> — you can combine strings with <code>+</code>, like <code>"hello" + "world"</code> → <code>"helloworld"</code>). then print the result. expected output: <code>birchwoodcounsellor1985</code>.</p>`,
     starter: `keywords = ["birchwood", "counsellor", "1985"]
 password = ""
 i = 0
@@ -1636,11 +1809,14 @@ function resetGame() {
 // ===========================================================================
 // BUDDY POPUP
 // ===========================================================================
+let _lastBuddy = { name: '', msg: '' };
+
 function showBuddy(name, msg) {
   if (window.Sounds) {
     Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
     Sounds.play('aim-message-in');
   }
+  _lastBuddy = { name, msg };
   document.getElementById('buddyName').textContent = name + ' :: incoming message';
   document.getElementById('buddyMessage').innerHTML = msg;
   const popup = document.getElementById('buddyPopup');
@@ -1652,6 +1828,32 @@ function showBuddy(name, msg) {
 function closeBuddy() {
   document.getElementById('buddyPopup').classList.add('hidden');
 }
+function openBuddyAim(evt) {
+  if (evt) evt.stopPropagation();
+  const { name, msg } = _lastBuddy;
+  if (!name) return;
+  const selfUser = 'tegan_a87';
+  const isSelf = (name === selfUser);
+  const sideClass = isSelf ? 'aim-self' : 'aim-other';
+  const safeMsg = String(msg || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  document.getElementById('aimModalTitle').textContent = 'IM with ' + name;
+  document.getElementById('aimModalBody').innerHTML =
+    `<div class="aim-system">[buddy chime — ${name} sent you a message]</div>` +
+    `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${safeMsg}</span></div>`;
+  document.getElementById('aimModalOverlay').classList.remove('hidden');
+  closeBuddy();
+}
+function closeBuddyAim() {
+  document.getElementById('aimModalOverlay').classList.add('hidden');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('aimModalOverlay');
+    if (overlay && !overlay.classList.contains('hidden')) {
+      overlay.classList.add('hidden');
+    }
+  }
+});
 
 // auto-resume from save (or skip intro if name already known from another chapter)
 if (state.userName) {

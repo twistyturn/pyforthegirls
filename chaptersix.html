@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>pyforthegirls :: chapter 6 :: fourteen months</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
@@ -385,7 +386,73 @@ z-index: 200;
 animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 font-family: 'VT323', monospace;
 }
+.buddy-popup { cursor: pointer; }
+.buddy-popup:hover { box-shadow: var(--shadow-hard), 0 0 32px rgba(102, 255, 255, 0.6); }
 .buddy-popup .window-titlebar { background: linear-gradient(90deg, var(--cyan-glow), var(--lavender)); }
+.buddy-cta {
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+color: #6a3d8a;
+margin-top: 8px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM MESSAGE WINDOW (modal opened from buddy popup) ============ */
+.aim-modal-overlay {
+position: fixed; inset: 0;
+background: rgba(0, 0, 0, 0.45);
+z-index: 500;
+display: flex;
+align-items: center;
+justify-content: center;
+animation: window-pop 0.25s ease-out;
+}
+.aim-modal {
+width: min(440px, calc(100% - 32px));
+background: #d8d8e8;
+border: 2px solid var(--bg-deep);
+box-shadow: 4px 4px 0 var(--bg-deep), 0 0 32px rgba(255, 102, 196, 0.5);
+font-family: 'Tahoma', 'Geneva', sans-serif;
+}
+.aim-titlebar {
+background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%) !important;
+color: var(--bg-deep) !important;
+text-shadow: none !important;
+}
+.aim-modal-body {
+background: #ffffff;
+color: #1a1a1a;
+padding: 14px 14px 16px;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 13px;
+line-height: 1.5;
+min-height: 110px;
+max-height: 60vh;
+overflow-y: auto;
+}
+.aim-modal-body .aim-msg { margin: 4px 0; word-wrap: break-word; overflow-wrap: anywhere; }
+.aim-modal-body .aim-user { font-weight: bold; }
+.aim-modal-body .aim-self .aim-user { color: #cc0000; }
+.aim-modal-body .aim-other .aim-user { color: #0000cc; }
+.aim-modal-body .aim-system {
+margin: 8px 0 4px;
+color: #777;
+font-style: italic;
+font-size: 12px;
+text-align: center;
+}
+.aim-modal-footer {
+background: #d8d8e8;
+border-top: 1px solid var(--bg-deep);
+padding: 6px 10px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 11px;
+color: #555;
+}
+.aim-modal-status { font-style: italic; }
 .buddy-content {
 padding: 12px;
 color: var(--bg-deep);
@@ -945,18 +1012,38 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 
   <!-- ============ BUDDY POPUP ============ -->
 
-  <div class="buddy-popup hidden" id="buddyPopup">
-    <div class="window-titlebar">
-      <span>buddyhelper :: incoming</span>
-      <div class="window-titlebar-buttons">
-        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
-      </div>
-    </div>
-    <div class="buddy-content">
-      <div class="buddy-name" id="buddyName">tegan_a87</div>
-      <div id="buddyMessage"></div>
+<div class="buddy-popup hidden" id="buddyPopup" onclick="openBuddyAim(event)" title="click to open conversation">
+  <div class="window-titlebar">
+    <span>buddyhelper :: incoming</span>
+    <div class="window-titlebar-buttons">
+      <span class="titlebar-btn" onclick="event.stopPropagation(); closeBuddy()">×</span>
     </div>
   </div>
+  <div class="buddy-content">
+    <div class="buddy-name" id="buddyName">tegan_a87</div>
+    <div id="buddyMessage"></div>
+    <div class="buddy-cta">▸ click to open</div>
+  </div>
+</div>
+
+<!-- ============ AIM MESSAGE WINDOW (modal) ============ -->
+<div class="aim-modal-overlay hidden" id="aimModalOverlay" onclick="closeBuddyAim()">
+  <div class="aim-modal" id="aimModal" onclick="event.stopPropagation()">
+    <div class="window-titlebar aim-titlebar">
+      <span id="aimModalTitle">IM with —</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn" onclick="closeBuddyAim()">×</span>
+      </div>
+    </div>
+    <div class="aim-modal-body" id="aimModalBody"></div>
+    <div class="aim-modal-footer">
+      <span class="aim-modal-status">[ read-only — this is an archived message. ]</span>
+      <button class="btn btn-secondary" onclick="closeBuddyAim()" style="font-size: 9px; padding: 3px 10px;">close</button>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- ============ TASKBAR ============ -->
@@ -2543,7 +2630,7 @@ const HANNAH_ARCHIVE = `[2003-06-15 21:33] glorfindel_lives: are you the tegan f
 [2004-07-13 22:49] glorfindel_lives: it's quiet on this side without you yelling at me about strokes albums
 [2004-07-15 22:38] tegan_a87: hattie cried at the staff meeting today
 [2004-07-15 22:38] glorfindel_lives: who's hattie
-[2004-07-15 22:39] tegan_a87: my co-JC for pinewood. she's nice. she's just very 16
+[2004-07-15 22:39] tegan_a87: JC for birchwood. she's nice. she's just very 16
 [2004-07-15 22:39] tegan_a87: marcia made some comment about her schedule and she just. went
 [2004-07-19 21:48] tegan_a87: ok so today's drama
 [2004-07-19 21:49] tegan_a87: briar made everyone do a TRUST FALL
@@ -2934,7 +3021,12 @@ i'm going to ask her for everything she has.`,
     meta: 'regex. break each line into date, sender, content.',
     skill: 'REGEX :: re.match() AND CAPTURE GROUPS',
     hint: `<code>for line in messages:</code> indented <code>m = re.match(pattern, line.strip())</code> then <code>if m: parsed.append({"date": m.group(1), "sender": m.group(2), "content": m.group(3)})</code>. then <code>print(parsed[0])</code> and <code>print(parsed[-1])</code>.`,
-    storyAbove: `each line looks like <code>[2004-08-12 23:14] tegan_a87: i'm so tired of this</code>. the <code>re</code> module lets you match patterns and pull out the parts you want. <code>re.match(pattern, string)</code> returns a Match object whose <code>.group(n)</code> returns the n-th captured group. parentheses in the pattern create capture groups.`,
+    storyAbove: `each line in <code>messages</code> looks like <code>[2004-08-12 23:14] tegan_a87: i'm so tired of this</code>. you want to break that into three pieces — date, sender, content — so each message is a structured dict you can search.<br><br>python's <code>re</code> module does pattern matching with <strong>regular expressions</strong> — a tiny language for describing the shape of text. you don't need to learn it deeply right now; the pattern is provided in the starter. just know what it does.<br><br>parentheses in a regex pattern create <strong>capture groups</strong> — pieces of the matched text you can pull out individually. <code>re.match(pattern, line)</code> returns a Match object (or <code>None</code> if no match), and <code>m.group(n)</code> gets the n-th captured group:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
+line = "[2004-08-12 23:14] tegan_a87: i'm so tired of this"
+m = re.match(pattern, line)
+m.group(1)   # → "2004-08-12 23:14"      (date)
+m.group(2)   # → "tegan_a87"             (sender)
+m.group(3)   # → "i'm so tired of this"  (content)</pre>three groups, three pieces. the order matches the parentheses left-to-right in the pattern.`,
     instructions: `your task: import re. for each line in <code>messages</code>, use the regex pattern (already provided) with three capture groups (date, sender, content) to parse it. store each parsed message as a dict with keys "date", "sender", "content" in a list called <code>parsed</code>. print the first parsed message and the last parsed message.`,
     starter: `import re
 
@@ -2973,7 +3065,20 @@ parsed = []
     skill: 'AGGREGATION :: dict-of-counts AND ASCII BAR CHARTS',
     hint: `<code>for msg in parsed:</code> indented <code>month = msg["date"][:7]</code> then <code>monthly_counts[month] = monthly_counts.get(month, 0) + 1</code>. then <code>for month in sorted(monthly_counts.keys()):</code> indented <code>count = monthly_counts[month]</code> then <code>print(f"{month}: {'\u2588' * count} {count}")</code>.`,
     storyAbove: `you have parsed messages with structured dates. now ask: how often did tegan and hannah talk over fourteen months? the first 7 characters of each date string (<code>2004-08-12 23:14</code>) gives you <code>2004-08</code>. group messages by year-month, count each group, then print a sorted ASCII bar chart.`,
-    instructions: `your task: build a dict called <code>monthly_counts</code> where keys are year-month strings (<code>"2003-06"</code>, etc) and values are the count of messages in that month. print each month and count in chronological order, with an ASCII bar made of <code>\u2588</code> characters (one per message).`,
+    instructions: `<p>two pieces you'll need:</p>
+                   <p><strong>1. string slicing.</strong> like list slicing, but for strings. <code>s[:7]</code> gives the first 7 characters:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">date = "2004-08-12 23:14"
+date[:7]   # \u2192 "2004-08"</pre>
+                   <p><strong>2. <code>.get()</code> for dicts.</strong> normally <code>my_dict[key]</code> errors if the key doesn't exist. <code>my_dict.get(key, default)</code> returns the default value instead:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">counts = {"a": 5}
+counts["a"]              # \u2192 5
+counts.get("a", 0)       # \u2192 5
+counts.get("b", 0)       # \u2192 0   (no error \u2014 falls back to default)</pre>
+                   <p>that lets you build counts incrementally without checking if the key exists yet:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">counts[month] = counts.get(month, 0) + 1
+# if month is new, this becomes 0 + 1 = 1
+# if month already exists, this becomes (current count) + 1</pre>
+                   <p><strong>your task:</strong> build a dict called <code>monthly_counts</code> where keys are year-month strings (<code>"2003-06"</code>, etc) and values are the count of messages in that month. then print each month and count in chronological order, with an ASCII bar made of <code>\u2588</code> characters (one per message).</p>`,
     starter: `import re
 
 with open("hannah_archive.txt") as f:
@@ -3074,11 +3179,15 @@ monthly_counts = {}
     title: 'python.exe :: search_camp_names.py',
     meta: 'regex. find every camp counsellor by name.',
     skill: 'REGEX :: ALTERNATION AND IGNORECASE',
-    hint: `<code>for msg in parsed:</code> indented <code>for name in names:</code> double-indented <code>if re.search(name, msg["content"], re.IGNORECASE): counts[name] += 1</code>. then <code>sorted_names = sorted(names, key=lambda n: -counts[n])</code> then <code>for name in sorted_names: print(f"{name}: {counts[name]}")</code>.`,
-    storyAbove: `you have parsed messages. now find which messages mention camp counsellors. <code>re.search()</code> looks for a pattern anywhere in the string (vs <code>re.match()</code> which only looks at the start). add <code>re.IGNORECASE</code> as a flag to match regardless of case.`,
-    instructions: `your task: for each parsed message, search the content for any of these names: wren, briar, camille, hattie, melissa, marcia, tyler. for each name, count how many messages mention it. print each name and its count, sorted by count descending.`,
+    storyAbove: `you have parsed messages — each one is a dict with date, sender, content. now you need to find which messages mention camp counsellors, and which counsellor gets named most. tegan was thinking about who she'd named in her chats with hannah. it might tell us who she trusted, who she was scared of, who didn't matter.<br><br>two new pieces:<br><br><strong>1. <code>re.search</code> with <code>re.IGNORECASE</code></strong> — like <code>re.match</code>, but searches anywhere in the string, and the flag makes it match regardless of capitalization.<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">re.search("wren", "I saw Wren at the lake")
+# returns None (case mismatch)
+
+re.search("wren", "I saw Wren at the lake", re.IGNORECASE)
+# returns a match object (truthy)</pre><strong>2. sorting a dict by value.</strong> if you have <code>counts = {"wren": 11, "tyler": 4, "briar": 3}</code>, you can turn it into a sorted list of pairs:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">pairs = sorted(counts.items(), key=lambda p: p[1], reverse=True)
+# pairs is now [("wren", 11), ("tyler", 4), ("briar", 3)]</pre>that <code>key=lambda p: p[1]</code> looks scary. it's just python's way of saying "sort by the second item in each pair" — the count, not the name. <code>p[1]</code> picks out the count from each <code>(name, count)</code> pair.`,
+    instructions: `<p><strong>your task:</strong> for each parsed message, search the content for any of these names: wren, briar, camille, hattie, melissa, marcia, tyler. count how many messages mention each. print each name and its count, sorted by count descending.</p>
+                   <p>the starter gives you the parsed messages and the names list. you build the counts dict and the sorted output.</p>`,
     starter: `import re
-import collections
 
 with open("hannah_archive.txt") as f:
     messages = f.readlines()
@@ -3089,12 +3198,14 @@ for line in messages:
     if m:
         parsed.append({"date": m.group(1), "sender": m.group(2), "content": m.group(3)})
 
-counts = collections.Counter()
 names = ["wren", "briar", "camille", "hattie", "melissa", "marcia", "tyler"]
+counts = {name: 0 for name in names}
 
-# for each message, check which names appear and count
+# for each message, check which names appear in the content (case-insensitive)
+# add 1 to counts[name] when there's a match
 
-# print each name and count, sorted by count descending
+# sort counts by value descending and print "name: count" for each
+
 `,
     expectedOutput: `wren: 18
 tyler: 7
@@ -3103,6 +3214,7 @@ briar: 3
 marcia: 2
 camille: 0
 melissa: 0`,
+    hint: `<strong>first loop:</strong> <code>for msg in parsed:</code>, then indented <code>for name in names:</code>, then double-indented <code>if re.search(name, msg["content"], re.IGNORECASE):</code> followed by <code>counts[name] = counts[name] + 1</code>.<br><br><strong>second part:</strong> <code>sorted_pairs = sorted(counts.items(), key=lambda p: p[1], reverse=True)</code>, then <code>for name, count in sorted_pairs:</code> with <code>print(f"{name}: {count}")</code>.`,
     matchType: 'exact',
     fileInjection: true,
     onComplete: {
@@ -3513,22 +3625,50 @@ location.reload();
 // ===========================================================================
 // BUDDY POPUP
 // ===========================================================================
+let _lastBuddy = { name: '', msg: '' };
+
 function showBuddy(name, msg) {
-if (window.Sounds) {
-  Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
-  Sounds.play('aim-message-in');
-}
-document.getElementById('buddyName').textContent = name + ' :: incoming message';
-document.getElementById('buddyMessage').innerHTML = msg;
-const popup = document.getElementById('buddyPopup');
-popup.classList.remove('hidden');
-// play a soft chime — emulated as a CSS attention grab
-popup.style.animation = 'none';
-setTimeout(() => { popup.style.animation = ''; }, 10);
+  if (window.Sounds) {
+    Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
+    Sounds.play('aim-message-in');
+  }
+  _lastBuddy = { name, msg };
+  document.getElementById('buddyName').textContent = name + ' :: incoming message';
+  document.getElementById('buddyMessage').innerHTML = msg;
+  const popup = document.getElementById('buddyPopup');
+  popup.classList.remove('hidden');
+  popup.style.animation = 'none';
+  setTimeout(() => { popup.style.animation = ''; }, 10);
 }
 function closeBuddy() {
-document.getElementById('buddyPopup').classList.add('hidden');
+  document.getElementById('buddyPopup').classList.add('hidden');
 }
+function openBuddyAim(evt) {
+  if (evt) evt.stopPropagation();
+  const { name, msg } = _lastBuddy;
+  if (!name) return;
+  const selfUser = 'tegan_a87';
+  const isSelf = (name === selfUser);
+  const sideClass = isSelf ? 'aim-self' : 'aim-other';
+  const safeMsg = String(msg || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  document.getElementById('aimModalTitle').textContent = 'IM with ' + name;
+  document.getElementById('aimModalBody').innerHTML =
+    `<div class="aim-system">[buddy chime — ${name} sent you a message]</div>` +
+    `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${safeMsg}</span></div>`;
+  document.getElementById('aimModalOverlay').classList.remove('hidden');
+  closeBuddy();
+}
+function closeBuddyAim() {
+  document.getElementById('aimModalOverlay').classList.add('hidden');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('aimModalOverlay');
+    if (overlay && !overlay.classList.contains('hidden')) {
+      overlay.classList.add('hidden');
+    }
+  }
+});
 
 // auto-resume from save (or skip intro if name already known from another chapter)
 if (state.userName) {

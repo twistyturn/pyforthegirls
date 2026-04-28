@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>pyforthegirls :: chapter 3 :: the night of</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&family=Silkscreen&family=Press+Start+2P&family=Nanum+Pen+Script&family=Special+Elite&display=swap" rel="stylesheet">
@@ -385,7 +386,73 @@ z-index: 200;
 animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 font-family: 'VT323', monospace;
 }
+.buddy-popup { cursor: pointer; }
+.buddy-popup:hover { box-shadow: var(--shadow-hard), 0 0 32px rgba(102, 255, 255, 0.6); }
 .buddy-popup .window-titlebar { background: linear-gradient(90deg, var(--cyan-glow), var(--lavender)); }
+.buddy-cta {
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+color: #6a3d8a;
+margin-top: 8px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM MESSAGE WINDOW (modal opened from buddy popup) ============ */
+.aim-modal-overlay {
+position: fixed; inset: 0;
+background: rgba(0, 0, 0, 0.45);
+z-index: 500;
+display: flex;
+align-items: center;
+justify-content: center;
+animation: window-pop 0.25s ease-out;
+}
+.aim-modal {
+width: min(440px, calc(100% - 32px));
+background: #d8d8e8;
+border: 2px solid var(--bg-deep);
+box-shadow: 4px 4px 0 var(--bg-deep), 0 0 32px rgba(255, 102, 196, 0.5);
+font-family: 'Tahoma', 'Geneva', sans-serif;
+}
+.aim-titlebar {
+background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%) !important;
+color: var(--bg-deep) !important;
+text-shadow: none !important;
+}
+.aim-modal-body {
+background: #ffffff;
+color: #1a1a1a;
+padding: 14px 14px 16px;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 13px;
+line-height: 1.5;
+min-height: 110px;
+max-height: 60vh;
+overflow-y: auto;
+}
+.aim-modal-body .aim-msg { margin: 4px 0; word-wrap: break-word; overflow-wrap: anywhere; }
+.aim-modal-body .aim-user { font-weight: bold; }
+.aim-modal-body .aim-self .aim-user { color: #cc0000; }
+.aim-modal-body .aim-other .aim-user { color: #0000cc; }
+.aim-modal-body .aim-system {
+margin: 8px 0 4px;
+color: #777;
+font-style: italic;
+font-size: 12px;
+text-align: center;
+}
+.aim-modal-footer {
+background: #d8d8e8;
+border-top: 1px solid var(--bg-deep);
+padding: 6px 10px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 11px;
+color: #555;
+}
+.aim-modal-status { font-style: italic; }
 .buddy-content {
 padding: 12px;
 color: var(--bg-deep);
@@ -732,18 +799,38 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 
   <!-- ============ BUDDY POPUP ============ -->
 
-  <div class="buddy-popup hidden" id="buddyPopup">
-    <div class="window-titlebar">
-      <span>buddyhelper :: incoming</span>
-      <div class="window-titlebar-buttons">
-        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
-      </div>
-    </div>
-    <div class="buddy-content">
-      <div class="buddy-name" id="buddyName">tegan_a87</div>
-      <div id="buddyMessage"></div>
+<div class="buddy-popup hidden" id="buddyPopup" onclick="openBuddyAim(event)" title="click to open conversation">
+  <div class="window-titlebar">
+    <span>buddyhelper :: incoming</span>
+    <div class="window-titlebar-buttons">
+      <span class="titlebar-btn" onclick="event.stopPropagation(); closeBuddy()">×</span>
     </div>
   </div>
+  <div class="buddy-content">
+    <div class="buddy-name" id="buddyName">tegan_a87</div>
+    <div id="buddyMessage"></div>
+    <div class="buddy-cta">▸ click to open</div>
+  </div>
+</div>
+
+<!-- ============ AIM MESSAGE WINDOW (modal) ============ -->
+<div class="aim-modal-overlay hidden" id="aimModalOverlay" onclick="closeBuddyAim()">
+  <div class="aim-modal" id="aimModal" onclick="event.stopPropagation()">
+    <div class="window-titlebar aim-titlebar">
+      <span id="aimModalTitle">IM with —</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn" onclick="closeBuddyAim()">×</span>
+      </div>
+    </div>
+    <div class="aim-modal-body" id="aimModalBody"></div>
+    <div class="aim-modal-footer">
+      <span class="aim-modal-status">[ read-only — this is an archived message. ]</span>
+      <button class="btn btn-secondary" onclick="closeBuddyAim()" style="font-size: 9px; padding: 3px 10px;">close</button>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- ============ TASKBAR ============ -->
@@ -941,8 +1028,14 @@ it's time to read them in order.`,
     storyAbove: `you load all ten fragments into a python list called <code>fragments</code>. each fragment is a dictionary. a labeled box with keys like <code>"time"</code>, <code>"from"</code>, <code>"content"</code>. the variable is set up for you. now you need to confirm you can access individual messages.`,
     skill: 'LISTS :: LENGTH & INDEXING',
     instructions: `<p>a <strong>list</strong> is an ordered collection. you've seen them already in the loops chapter, but now they hold dictionaries instead of strings.</p>
-                   <p><code>len(my_list)</code> tells you how many items are in it. <code>my_list[0]</code> is the first item; <code>my_list[-1]</code> is the last.</p>
-                   <p>each fragment is a dictionary. <code>fragment["from"]</code> gives you the sender.</p>
+                   <p><code>len(my_list)</code> tells you how many items are in it, and you can grab an item by its <strong>index</strong> (position) in square brackets:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+len(colours)     # → 3
+colours[0]       # → "red"     (first item)
+colours[-1]      # → "green"   (last item — negative indexes count from the end)</pre>
+                   <p>each fragment in this task is a dictionary. <code>fragment["from"]</code> gives you the sender:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragment = {"from": "wren_h", "content": "..."}
+fragment["from"]   # → "wren_h"</pre>
                    <p><strong>your task:</strong> print three things, each on its own line:</p>
                    <ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 22px;">
                      <li>how many fragments there are total</li>
@@ -999,12 +1092,16 @@ i'm so scared :(
     meta: 'verifying the participant roster.',
     storyAbove: `you want to confirm something fast: was glorfindel actually a participant in any of the AIM logs? or were they only ever on the SMS side? <code>in</code> checks membership.`,
     skill: 'THE in OPERATOR (membership tests)',
-    instructions: `<p>the <code>in</code> keyword checks if something is part of a collection:</p>
+    instructions: `<p>the <code>in</code> keyword checks if something is part of a collection. it returns <code>True</code> or <code>False</code>:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">people = ["wren_h", "briar_v", "tegan_a87"]
+"wren_h" in people     # → True
+"hattie_w" in people   # → False</pre>
+                   <p>which means you can use it as the condition in an <code>if</code>:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "wren_h" in people:
-    print("found")</pre>
-
-               <p>it works on lists AND on strings (where it checks for substrings).</p>
-               <p><strong>your task:</strong> the variable <code>aim_people</code> contains everyone who appears in any AIM log. check whether <code>"glorfindel_lives"</code> is among them. print <code>"on AIM"</code> if yes, <code>"only SMS"</code> if no.</p>`,
+    print("found")
+# prints: found</pre>
+                   <p>it works on lists AND on strings (where it checks for substrings — <code>"cab" in "cabin"</code> → <code>True</code>).</p>
+                   <p><strong>your task:</strong> the variable <code>aim_people</code> contains everyone who appears in any AIM log. check whether <code>"glorfindel_lives"</code> is among them. print <code>"on AIM"</code> if yes, <code>"only SMS"</code> if no.</p>`,
 starter: `aim_people = ["wren_h", "briar_v", "tegan_a87", "camille.j.89"]
 
 target = "glorfindel_lives"
@@ -1077,7 +1174,15 @@ title: 'python.exe :: full_metadata.py',
 meta: 'before filtering, you want to see one fragment in full.',
 storyAbove: `before you filter the whole list, take one full fragment apart so you can see exactly what fields exist. <code>.items()</code> walks every key-value pair in a dict.`,
 skill: 'DICT.ITEMS() :: ITERATING KEY-VALUE PAIRS',
-instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">for key, value in person.items(): print(f"{key}: {value}")</pre> <p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
+instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">person = {"name": "tegan", "age": 17}
+for key, value in person.items():
+    print(f"{key}: {value}")</pre>
+<p>that prints:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">name: tegan
+age: 17</pre>
+<p><code>.items()</code> gives back pairs of (key, value), which is why the loop uses two variable names — one to receive each piece of the pair.</p>
+<p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
 starter: `fragment_one = {
 "id": 1,
 "time": "21:30",
@@ -1103,7 +1208,19 @@ title: 'python.exe :: alibi_filter.py',
 meta: 'find every message that mentions "cabin".',
 storyAbove: `wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains that word. use <code>.lower()</code> to make the search case-insensitive (in case wren ever capitalized it). collect the IDs of matching fragments into a list called <code>matches</code> and print it.`,
 skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
-instructions: `<p>strings have <strong>methods</strong>. built-in tools you call with a dot:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"HELLO".lower()       # → "hello" "i love python".split()  # → ["i", "love", "python"] "  hi  ".strip()      # → "hi"</pre> <p>you can also check substrings with <code>in</code>:</p> <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "cabin" in some_text.lower(): print("match")</pre> <p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. collect matching <code>id</code> values into a list called <code>matches</code> and print it.</p>`,
+instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"HELLO".lower()       # → "hello"
+"  hi  ".strip()      # → "hi"</pre>
+<p>you can also check whether one string appears <em>inside</em> another with <code>in</code>:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "cabin" in "i'm in my cabin":
+    print("match")</pre>
+<p>that prints <code>match</code>. the <code>in</code> check returns <code>True</code> if the left string appears anywhere in the right string.</p>
+<p>and one more thing you'll need: lists have a method called <code>.append()</code> that adds a new item to the end:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">my_list = [1, 2, 3]
+my_list.append(4)
+print(my_list)
+# → [1, 2, 3, 4]</pre>
+<p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. collect matching <code>id</code> values into a list called <code>matches</code> using <code>.append()</code>, and print the list.</p>`,
 starter: `# fragments is already loaded for you
 matches = []
 
@@ -1383,22 +1500,50 @@ location.reload();
 // ===========================================================================
 // BUDDY POPUP
 // ===========================================================================
+let _lastBuddy = { name: '', msg: '' };
+
 function showBuddy(name, msg) {
-if (window.Sounds) {
-  Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
-  Sounds.play('aim-message-in');
-}
-document.getElementById('buddyName').textContent = name + ' :: incoming message';
-document.getElementById('buddyMessage').innerHTML = msg;
-const popup = document.getElementById('buddyPopup');
-popup.classList.remove('hidden');
-// play a soft chime — emulated as a CSS attention grab
-popup.style.animation = 'none';
-setTimeout(() => { popup.style.animation = ''; }, 10);
+  if (window.Sounds) {
+    Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
+    Sounds.play('aim-message-in');
+  }
+  _lastBuddy = { name, msg };
+  document.getElementById('buddyName').textContent = name + ' :: incoming message';
+  document.getElementById('buddyMessage').innerHTML = msg;
+  const popup = document.getElementById('buddyPopup');
+  popup.classList.remove('hidden');
+  popup.style.animation = 'none';
+  setTimeout(() => { popup.style.animation = ''; }, 10);
 }
 function closeBuddy() {
-document.getElementById('buddyPopup').classList.add('hidden');
+  document.getElementById('buddyPopup').classList.add('hidden');
 }
+function openBuddyAim(evt) {
+  if (evt) evt.stopPropagation();
+  const { name, msg } = _lastBuddy;
+  if (!name) return;
+  const selfUser = 'tegan_a87';
+  const isSelf = (name === selfUser);
+  const sideClass = isSelf ? 'aim-self' : 'aim-other';
+  const safeMsg = String(msg || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  document.getElementById('aimModalTitle').textContent = 'IM with ' + name;
+  document.getElementById('aimModalBody').innerHTML =
+    `<div class="aim-system">[buddy chime — ${name} sent you a message]</div>` +
+    `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${safeMsg}</span></div>`;
+  document.getElementById('aimModalOverlay').classList.remove('hidden');
+  closeBuddy();
+}
+function closeBuddyAim() {
+  document.getElementById('aimModalOverlay').classList.add('hidden');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('aimModalOverlay');
+    if (overlay && !overlay.classList.contains('hidden')) {
+      overlay.classList.add('hidden');
+    }
+  }
+});
 
 // auto-resume from save (or skip intro if name already known from another chapter)
 if (state.userName) {
