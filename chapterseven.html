@@ -1589,7 +1589,15 @@ i'm going to look.`,
     skill: 'HTTP REQUESTS :: urllib.request AND READING RESPONSES',
     hint: `<code>response = urllib.request.urlopen(url)</code> then <code>content = response.read().decode("utf-8")</code> then <code>print(content[:500])</code>.`,
     storyAbove: `the camp's URL is <code>camppinecrest.ca</code>. the public site is at the root. but websites are just folders of files on a server. some folders are linked from the home page; some folders are sitting there unmentioned. you can ask the server for a folder by name and see what comes back. if the server is set up to allow it, asking for a folder shows you a list of every file inside. this is called a "directory listing." it shouldn't be exposed but it often is, because people forget to turn it off.`,
-    instructions: `your task: import urllib.request. fetch <code>https://camppinecrest.ca/staff/</code>. read the response. print the first 500 characters.`,
+    instructions: `<p>fetching a webpage from python:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">import urllib.request
+
+response = urllib.request.urlopen("https://example.com")
+raw_bytes = response.read()
+text = raw_bytes.decode("utf-8")
+print(text[:100])    # first 100 chars</pre>
+                   <p>three steps. <code>urlopen()</code> opens the connection. <code>.read()</code> downloads what's there as raw bytes. <code>.decode("utf-8")</code> turns those bytes into a regular string you can work with. <code>text[:100]</code> uses string slicing (same shape as list slicing) to grab the first 100 characters.</p>
+                   <p><strong>your task:</strong> import <code>urllib.request</code>. fetch <code>https://camppinecrest.ca/staff/</code>. read the response, decode it, and print the first 500 characters.</p>`,
     starter: `import urllib.request
 
 url = "https://camppinecrest.ca/staff/"
@@ -1680,7 +1688,11 @@ Re: lifeguard rotation update`,
     meta: 'narrow the corpus. four days.',
     skill: 'DATETIME PARSING :: email.utils.parsedate_to_datetime',
     hint: `<code>for em in emails:</code> indented <code>dt = parsedate_to_datetime(em["date"])</code> then <code>if start <= dt < end: aug_emails.append(em)</code>. then print count, then loop again printing <code>f"[{dt.strftime('%b %d, %H:%M')}] {em['subject']}"</code>.`,
-    storyAbove: `the date headers in emails are formatted like <code>Sun, 15 Aug 2004 09:14:22 -0600</code>. python's <code>email.utils.parsedate_to_datetime</code> parses these into datetime objects. once you have datetimes, you can compare them with <code>&lt;</code>, <code>&gt;=</code>, etc. you want emails from August 13 through August 16, 2004.`,
+    storyAbove: `the date headers in emails are formatted like <code>Sun, 15 Aug 2004 09:14:22 -0600</code>. python's <code>email.utils.parsedate_to_datetime</code> turns those into <strong>datetime</strong> objects you can compare and format:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">from email.utils import parsedate_to_datetime
+dt = parsedate_to_datetime("Sun, 15 Aug 2004 09:14:22 -0600")
+print(dt)
+# → 2004-08-15 09:14:22-06:00</pre>once you have a datetime, you can compare it with <code>&lt;</code>, <code>&gt;=</code>, etc. you can also format it as a string with <code>.strftime()</code> using format codes:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">dt.strftime("%b %d, %H:%M")
+# → "Aug 15, 09:14"</pre><code>%b</code> is the abbreviated month, <code>%d</code> is the day-of-month, <code>%H:%M</code> is hours:minutes. you don't need to memorize these — just know they exist and you can look them up.<br><br>you want emails from August 13 through August 16, 2004. the starter pre-builds the start and end datetime objects for you, in mountain-time (UTC-6).`,
     instructions: `your task: import datetime and email.utils. for each email, parse its date header into a datetime. filter to those between Aug 13, 2004 and Aug 17, 2004 (start inclusive, end exclusive) using a UTC-6 timezone. store in <code>aug_emails</code>. print the count and the subject + abbreviated date of each one.`,
     starter: `import datetime
 from email.utils import parsedate_to_datetime
@@ -1818,7 +1830,17 @@ i have a lot to find out about tyler hughes.`,
     skill: 'TIMEDELTAS :: SUBTRACTING DATETIMES',
     hint: `<code>gap = infirmary - boathouse</code>. then <code>total_seconds = int(gap.total_seconds())</code>, <code>hours = total_seconds // 3600</code>, <code>minutes = (total_seconds % 3600) // 60</code>. <code>print(f"{hours} hours, {minutes} minutes")</code>.`,
     storyAbove: `hannah told you tegan was meeting her ride at the boathouse at 11 PM. tyler showed up at the infirmary at 9:14 AM the next morning. how long is between them.`,
-    instructions: `your task: build two datetime objects \u2014 one for Aug 14 23:00:00 (when tegan was meeting her ride at the boathouse), one for Aug 15 09:14:22 (the timestamp on tyler's nurse visit). subtract them. print the result formatted as hours and minutes.`,
+    instructions: `<p>subtracting two datetimes gives you a <strong>timedelta</strong> \u2014 a duration. you can pull the total seconds out of it:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">gap = end - start                     # a timedelta
+total_seconds = int(gap.total_seconds())
+# total_seconds is now an integer like 36862</pre>
+                   <p>to convert that into hours and minutes, you need two new operators:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">7 // 2     # \u2192 3   (floor division \u2014 drops the remainder)
+7 % 2      # \u2192 1   (modulo \u2014 gives only the remainder)
+
+36862 // 3600        # \u2192 10  (whole hours in 36862 seconds)
+(36862 % 3600) // 60 # \u2192 14  (leftover seconds, converted to minutes)</pre>
+                   <p><strong>your task:</strong> build two datetime objects \u2014 one for Aug 14 23:00:00 (when tegan was meeting her ride at the boathouse) and one for Aug 15 09:14:22 (the timestamp on tyler's nurse visit). subtract them. print the result formatted as <code>"X hours, Y minutes"</code>.</p>`,
     starter: `import datetime
 
 # subtracting two datetimes gives you a timedelta, not a number.

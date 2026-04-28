@@ -1325,7 +1325,15 @@ i think i know who.`,
     skill: 'STRING ITERATION :: CHARACTER MAPPING',
     hint: `<code>for c in encoded:</code> indented <code>if c.isalpha():</code> then <code>decoded_char = decode_map[c.lower()]</code> then <code>if c.isupper(): decoded_char = decoded_char.upper()</code> then <code>decoded += decoded_char</code> else <code>decoded += c</code>.`,
     storyAbove: `you've built the decode_map. now apply it: read the encrypted letter, walk through it character by character, look up each letter in the map, build the decoded output. preserve case (uppercase letters stay uppercase). preserve everything that isn't a letter (spaces, punctuation, newlines).`,
-    instructions: `your task: open <code>diary/.hidden/letter.txt</code>. for each character: if it's a letter, look it up in <code>decode_map</code> (lowercase) and preserve the original case. otherwise leave it as-is. print the decoded text. use <code>key = "glorfindel"</code>.`,
+    instructions: `<p>two new string methods you'll need:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"a".isalpha()    # → True   (a is a letter)
+"7".isalpha()    # → False  (7 is a digit)
+" ".isalpha()    # → False  (space isn't a letter)
+
+"A".isupper()    # → True
+"a".isupper()    # → False</pre>
+                   <p>you can call <code>.upper()</code> on a string to uppercase it: <code>"a".upper()</code> → <code>"A"</code>.</p>
+                   <p><strong>your task:</strong> open <code>diary/.hidden/letter.txt</code>. for each character: if it's a letter, look it up in <code>decode_map</code> using the lowercase version, and preserve the original case in the output. if it's not a letter (space, punctuation, newline), leave it as-is. print the decoded text.</p>`,
     starter: `from decoder import build_cipher_alpha, build_decode_map
 
 key = "glorfindel"

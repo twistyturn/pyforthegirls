@@ -1371,8 +1371,28 @@ in case there are more files. in case there's a fourth.`,
 while i < 5:
     print(i)
     i = i + 1</pre>
-                   <p>you can grab an item from a list by its index: <code>my_list[0]</code> is the first item, <code>my_list[1]</code> is the second.</p>
-                   <p><strong>your task:</strong> walk through <code>keywords</code> with a <code>while</code> loop, building up <code>password</code> by concatenating each keyword onto it. then print the result. expected output: <code>birchwoodcounsellor1985</code>.</p>`,
+                   <p>that prints:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">0
+1
+2
+3
+4</pre>
+                   <p>the variable <code>i</code> starts at 0. each loop iteration prints it and adds 1. when <code>i</code> reaches 5, the condition <code>i &lt; 5</code> becomes false and the loop stops.</p>
+                   <p>you can grab an item from a list by its <strong>index</strong> (position, starting at 0):</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+colours[0]   # → "red"
+colours[1]   # → "blue"
+colours[2]   # → "green"</pre>
+                   <p>and <code>len()</code> tells you how many items are in a list:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">len(colours)   # → 3</pre>
+                   <p>combining all three to walk through every item:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+i = 0
+while i < len(colours):
+    print(colours[i])
+    i = i + 1</pre>
+                   <p>that prints each colour on its own line. the loop visits each index from 0 up to (but not including) <code>len(colours)</code>.</p>
+                   <p><strong>your task:</strong> walk through <code>keywords</code> with a <code>while</code> loop, building up <code>password</code> by sticking each keyword onto the end of it (this is called <strong>concatenation</strong> — you can combine strings with <code>+</code>, like <code>"hello" + "world"</code> → <code>"helloworld"</code>). then print the result. expected output: <code>birchwoodcounsellor1985</code>.</p>`,
     starter: `keywords = ["birchwood", "counsellor", "1985"]
 password = ""
 i = 0
