@@ -146,6 +146,9 @@ font-size: 9px;
 cursor: pointer;
 padding: 4px;
 text-shadow: 1px 1px 0 var(--bg-deep);
+width: 80px;
+overflow-wrap: anywhere;
+line-height: 1.3;
 }
 .desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
 .desktop-icon-img {
@@ -232,6 +235,93 @@ color: #999;
 margin-bottom: 8px;
 text-transform: uppercase;
 letter-spacing: 1px;
+}
+
+/* ============ AIM CHAT LOG (period chrome) ============ */
+.aim-window {
+  max-width: 540px;
+  margin: 24px auto;
+  background: #d8d8e8;
+  border: 2px solid var(--bg-deep);
+  box-shadow: var(--shadow-hard), var(--shadow-soft);
+  animation: window-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.aim-titlebar {
+  background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%) !important;
+  color: var(--bg-deep) !important;
+  text-shadow: none !important;
+}
+.aim-meta {
+  background: #ffffaa;
+  color: #553300;
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--bg-deep);
+}
+.aim-body {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 10px 12px 14px;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.aim-divider {
+  text-align: center;
+  margin: 10px 0 8px;
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #999;
+  position: relative;
+}
+.aim-divider::before,
+.aim-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  border-top: 1px dashed #cccccc;
+}
+.aim-divider::before { left: 0; }
+.aim-divider::after { right: 0; }
+.aim-divider span {
+  display: inline-block;
+  padding: 2px 10px;
+  background: #ffffff;
+  text-transform: lowercase;
+}
+.aim-msg {
+  margin: 1px 0;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.aim-msg .aim-user {
+  font-weight: bold;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+}
+.aim-self .aim-user { color: #cc0000; }
+.aim-other .aim-user { color: #0000cc; }
+.aim-self .aim-text,
+.aim-other .aim-text { color: #1a1a1a; }
+.aim-system {
+  margin: 6px 0;
+  color: #777;
+  font-style: italic;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+.aim-gap { height: 8px; }
+.aim-plain {
+  margin: 2px 0;
+  color: #444;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
 }
 
 /* ============ TERMINAL / CODE EDITOR ============ */
@@ -822,16 +912,16 @@ i have her laptop and she left tools. start digging.`,
 else:
     print("denied")</pre>
 
-               <p><strong>your task:</strong> the variable <code>guess</code> is set to <code>"rosewood"</code> (tegan's cabin name). the scaffold below runs but doesn't check anything yet. change <code>True</code> to a comparison that's true when <code>guess</code> equals <code>"rosewood"</code>, and change the print messages so it prints <code>ACCESS GRANTED</code> when matching and <code>denied</code> otherwise.</p>`,
-starter: `guess = "rosewood"
+               <p><strong>your task:</strong> the variable <code>guess</code> is set to <code>"hemlock"</code> (tegan's cabin name). the scaffold below runs but doesn't check anything yet. change <code>True</code> to a comparison that's true when <code>guess</code> equals <code>"hemlock"</code>, and change the print messages so it prints <code>ACCESS GRANTED</code> when matching and <code>denied</code> otherwise.</p>`,
+starter: `guess = "hemlock"
 
 # change True to a comparison. change the prints to the right messages.
 
 if True:
     print("placeholder")
 else:
-    print("placeholder")`, expectedOutput: 'ACCESS GRANTED', matchType: 'exact', hint: `replace <code>True</code> with <code>guess == "rosewood"</code>. replace the if-branch print with <code>print("ACCESS GRANTED")</code> and the else-branch with <code>print("denied")</code>. the indentation in the scaffold is already correct, so leave it alone.`, onComplete: { diary: `// rosewood was the obvious first guess. didn't work on the real zip. but the script runs.`,
-buddy: { name: 'tegan_a87', msg: "rosewood was my cabin. it was never going to be my password. that's lazy. i wasn't lazy." }
+    print("placeholder")`, expectedOutput: 'ACCESS GRANTED', matchType: 'exact', hint: `replace <code>True</code> with <code>guess == "hemlock"</code>. replace the if-branch print with <code>print("ACCESS GRANTED")</code> and the else-branch with <code>print("denied")</code>. the indentation in the scaffold is already correct, so leave it alone.`, onComplete: { diary: `// hemlock was the obvious first guess. didn't work on the real zip. but the script runs.`,
+buddy: { name: 'tegan_a87', msg: "hemlock was my cabin. it was never going to be my password. that's lazy. i wasn't lazy." }
 },
 charms: 2
 },
@@ -839,10 +929,11 @@ charms: 2
 // –– BEAT 2: AIM log fragment + elif chain ––
 {
 id: 'aim_log_1',
-type: 'diary',
+type: 'aim_log',
 title: 'open file: AIM_archives/camille_summer04.txt',
-meta: 'aim log :: tegan_a87 ↔ camille.j.89 :: jul 4 - aug 1 2004',
-body: `~~~ jul 4 2004 :: 11:23 pm ~~~
+meta: 'aim log :: tegan_a87 ↔ camille.j.89 :: jul 9 - aug 1 2004',
+selfUser: 'tegan_a87',
+body: `~~~ jul 9 2004 :: 11:23 pm ~~~
 camille.j.89: hey are you ok
 camille.j.89: like genuinely
 camille.j.89: i saw you guys yesterday at the boathouse
@@ -890,28 +981,28 @@ tegan_a87: i can't
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if cabin == "rosewood":
     print("tegan")
 elif cabin == "birchwood":
-    print("wren")
+    print("hattie")
 else:
     print("unknown")</pre>
                    <p><strong>your task:</strong> the variable <code>name</code> is set to <code>"wren"</code>. complete the elif chain so it prints the correct cabin:</p>
                    <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
-                     <li>tegan → <code>rosewood cabin</code></li>
-                     <li>wren → <code>birchwood cabin</code></li>
-                     <li>camille → <code>pinewood cabin</code></li>
+                     <li>tegan → <code>hemlock cabin (JC)</code></li>
+                     <li>wren → <code>hemlock cabin (senior)</code></li>
+                     <li>camille → <code>hemlock cabin</code></li>
                      <li>anyone else → <code>not found</code></li>
                    </ul>`,
     starter: `name = "wren"
 if name == "tegan":
-    print("rosewood cabin")
+    print("hemlock cabin (JC)")
 elif name == "":
     print("")
 elif name == "":
     print("")
 else:
     print("not found")`,
-    expectedOutput: 'birchwood cabin',
+    expectedOutput: 'hemlock cabin (senior)',
     matchType: 'exact',
-    hint: `you need <code>elif name == "wren":</code> followed by <code>print("birchwood cabin")</code>, and <code>elif name == "camille":</code> followed by <code>print("pinewood cabin")</code>. fill in the empty quotes.`,
+    hint: `you need <code>elif name == "wren":</code> followed by <code>print("hemlock cabin (senior)")</code>, and <code>elif name == "camille":</code> followed by <code>print("hemlock cabin")</code>. fill in the empty quotes.`,
     onComplete: {
       diary: `// cabin assignments confirmed. wren had her own cabin. she was a senior counsellor.`,
       buddy: { name: 'camille.j.89', msg: 'is this tegan? are you on her account? please tell me she\'s ok. i never told. i swear.' }
@@ -927,56 +1018,92 @@ else:
     meta: 'from: wren.halloway@camppinecrest.ca :: to: tegan_a87@hotmail.com :: aug 12 2004 — 9:14 pm',
     body: `subject: (no subject)
 
-camille talked to laurie. i don't know what she said but laurie pulled me
-aside today and asked if everything was "appropriate" with my cabin.
+camille talked to laurie. i don't know what she said but laurie pulled
+me aside today and asked if everything was "appropriate" with my cabin.
 that's the word she used. appropriate.
 
-i told her of course it was appropriate, and i reminded her camille has issues. you know she does.
-remember what you told me about her at the bonfire.
+i told her of course it was appropriate, and i reminded her camille
+has issues. you know she does. remember what you told me about her
+at the bonfire.
 
-i need you to do something for me. talk to camille tomorrow and
+i need you to do something for me, baby. talk to camille tomorrow and
 remind her how things went for melissa last summer. you don't even
-need to use her name. just imply. i don't care how. you're good with people.
+need to use her name. just imply. i don't care how. you're good with
+people. you handle me.
+
+i know you can do this for me. you've done harder things. you walked
+into the boathouse the first time even though you were shaking. i
+watched you. you were SO brave. that's the tegan i'm asking for now.
 
 if you don't, i'll have to. and you don't want me to have to.
 
 i'm not okay tegan. i thought i was. i'm typing this in my cabin with
 my hands shaking and i keep thinking about you on the dock the night
-you got here. you didn't even know me yet.
+you got here. you didn't even know me yet. i could have left you alone.
+i'm so glad i didn't. you're the only thing this summer that's been
+real to me.
 
 handle camille. i love you.
+i love you the way i told you i did. don't forget that part.
 
 — W.`,
     nextBtn: 'jesus christ ▸'
   },
 
-  // ---- BEAT 5: boolean logic — and / or ----
+  // ---- BEAT 5a: boolean logic — practice fill-in ----
   {
-    id: 'task_boolean',
+    id: 'task_boolean_a',
     type: 'task',
-    title: 'python.exe :: access_check.py',
-    meta: 'tegan was teaching herself boolean logic.',
-    storyAbove: `wren's email proves she had access to tegan's account, or knew tegan would show her this. either way, your problem is bigger than one password. anyone snooping needs to be able to tell, fast, who could've sent this. that's a job for boolean logic. <code>and</code> requires both conditions to be true; <code>or</code> requires at least one.`,
+    title: 'python.exe :: access_check_practice.py',
+    meta: 'tegan was teaching herself boolean logic. this is her practice scratchpad.',
+    storyAbove: `wren's email proves she had access to tegan's account. anyone snooping needs to figure out, fast, who could've been logged in at any given moment. that's a job for boolean logic. <code>and</code> requires both conditions to be true; <code>or</code> requires at least one.<br><br>tegan left two practice scripts. start with the easier one — she filled in most of it.`,
     skill: 'BOOLEAN LOGIC (and / or / not)',
     instructions: `<p>combine conditions with <code>and</code>, <code>or</code>, <code>not</code>:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if age >= 18 and role == "counselor":
     print("ADULT_STAFF")</pre>
                    <p>you also have comparisons: <code>&gt;=</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&lt;</code>.</p>
-                   <p><strong>your task:</strong> a person is described by <code>name</code> and <code>age</code>. print <code>ADULT_COUNSELOR</code> if their name is <code>"wren"</code> AND their age is 18 or older. otherwise print <code>camper_or_minor</code>. the variables are set to <code>"wren"</code> and <code>19</code>.</p>`,
+                   <p><strong>your task:</strong> the script below is mostly written. replace the <code>???</code> with the correct boolean operator, and fill in the two empty <code>print()</code> statements. when name is <code>"wren"</code> and age is <code>19</code>, the script should print <code>ADULT_COUNSELOR</code>.</p>`,
     starter: `name = "wren"
 age = 19
-if name == "wren" ___ age >= 18:
+# replace ??? with the right boolean operator (and / or)
+if name == "wren" ??? age >= 18:
     print("")
 else:
     print("")`,
     expectedOutput: 'ADULT_COUNSELOR',
     matchType: 'exact',
-    hint: `between <code>name == "wren"</code> and <code>age >= 18</code>, type <code>and</code>. then fill in the print statements with <code>"ADULT_COUNSELOR"</code> and <code>"camper_or_minor"</code>.`,
+    hint: `the answer is <code>and</code> — both conditions need to be true to identify an adult counsellor (the right name AND old enough). then fill in <code>"ADULT_COUNSELOR"</code> in the first print and <code>"camper_or_minor"</code> in the else print.`,
+    onComplete: {
+      diary: `// practice script passes. and: both conditions true. got it.`
+    },
+    charms: 1
+  },
+
+  // ---- BEAT 5b: boolean logic — write it yourself ----
+  {
+    id: 'task_boolean_b',
+    type: 'task',
+    title: 'python.exe :: access_check.py',
+    meta: 'the actual script. tegan was using this to filter staff by role and age.',
+    storyAbove: `now the real one. same idea, but you write the whole condition yourself this time. tegan only left the variables and an empty <code>if</code> — the boolean logic is up to you.`,
+    skill: 'BOOLEAN LOGIC (writing conditions)',
+    instructions: `<p>same rules as before — <code>and</code> / <code>or</code> / <code>not</code>, plus comparisons (<code>==</code>, <code>!=</code>, <code>&gt;=</code>, etc).</p>
+                   <p><strong>your task:</strong> a person is described by <code>name</code> and <code>age</code>. write the condition that prints <code>ADULT_COUNSELOR</code> if their name is <code>"wren"</code> AND their age is 18 or older. otherwise print <code>camper_or_minor</code>. the variables are set to <code>"wren"</code> and <code>19</code>.</p>
+                   <p>fill in the <code>if</code> condition and both <code>print()</code> statements yourself.</p>`,
+    starter: `name = "wren"
+age = 19
+if :
+    print("")
+else:
+    print("")`,
+    expectedOutput: 'ADULT_COUNSELOR',
+    matchType: 'exact',
+    hint: `the condition is <code>name == "wren" and age >= 18</code>. it goes right after <code>if</code> and before the colon. then put <code>"ADULT_COUNSELOR"</code> in the first print, <code>"camper_or_minor"</code> in the second.`,
     onComplete: {
       diary: `// boolean check passes. wren halloway, 19, adult counsellor. tegan, 17, minor.`,
       buddy: { name: 'wren_h', msg: 'whoever you are. i know that account is being used. i can see when it logs on. stop opening her files.' }
     },
-    charms: 3
+    charms: 2
   },
 
   // ---- BEAT 6: the realization — the repeated line ----
@@ -1002,7 +1129,12 @@ i need to look at every file on this disk and count
 how many times that exact phrase appears.
 
 if it shows up in places it shouldn't...
-tegan was leaving a trail.`,
+tegan was leaving a trail.
+
+(also. tegan's diary mentioned wren knew about someone tegan
+was writing to at night. wren named it specifically. tegan never
+told her. wren had been watching. who is the person tegan was
+writing to.)`,
     nextBtn: '▸ open python'
   },
 
@@ -1014,16 +1146,41 @@ tegan was leaving a trail.`,
     meta: 'you\'re writing this one yourself.',
     storyAbove: `you load every line of text on the disk into a python list called <code>fragments</code>. now you need to loop through it and count how many times the exact phrase <code>"her name is wren halloway"</code> appears. <code>for</code> loops walk through every item in a list, one at a time. inside the loop, you check each item with an <code>if</code>, and add to a counter when it matches.`,
     skill: 'FOR LOOPS + COUNTERS',
-    instructions: `<p>a <code>for</code> loop walks a list:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">for item in my_list:
-    print(item)</pre>
-                   <p>combine with a counter variable to count matches:</p>
+    instructions: `<p>three new ideas in this one. taking them slow.</p>
+
+                   <p><strong>1. lists.</strong> a <strong>list</strong> is a bunch of values stored in one variable, written with square brackets and commas:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "green"]</pre>
+                   <p>that's one variable (<code>colors</code>) holding three strings. you've seen this shape already in the starter code below — <code>fragments</code> is a list of text snippets.</p>
+
+                   <p><strong>2. for loops.</strong> a <code>for</code> loop lets you do something with every item in a list, one at a time:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "green"]
+for color in colors:
+    print(color)</pre>
+                   <p>that prints:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">red
+blue
+green</pre>
+                   <p>python ran the indented <code>print(color)</code> line three times — once for each item in <code>colors</code>.</p>
+
+                   <p><strong>3. the loop variable.</strong> in <code>for color in colors:</code>, the word <code>color</code> is a temporary variable that holds each item one at a time. you pick the name yourself — <code>for c in colors:</code> or <code>for item in colors:</code> would work the same way. just pick something readable.</p>
+
+                   <p><strong>4. counters.</strong> a <strong>counter</strong> is just a regular variable you increase by 1 every time something happens:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">count = 0
-for item in my_list:
-    if item == "target":
+count = count + 1
+count = count + 1
+print(count)</pre>
+                   <p>that prints <code>2</code>. each <code>count = count + 1</code> means "take whatever count is right now, add 1, and store that back into count."</p>
+
+                   <p><strong>5. putting it together.</strong> a <code>for</code> loop with an <code>if</code> inside lets you count only the items that match:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "red", "green", "red"]
+count = 0
+for color in colors:
+    if color == "red":
         count = count + 1
 print(count)</pre>
-                   <p><strong>your task:</strong> the list <code>fragments</code> is set up for you with text from across the disk. count how many times the exact string <code>"her name is wren halloway"</code> appears, and print the count.</p>`,
+                   <p>that prints <code>3</code> — three reds in the list. the <code>if</code> only fires on red items, so the counter only goes up for those.</p>
+
+                   <p><strong>your task:</strong> the list <code>fragments</code> is set up for you below with text from across the disk. count how many times the exact string <code>"her name is wren halloway"</code> appears, and print the count.</p>`,
     starter: `fragments = [
     "june 21",
     "her name is wren halloway",
@@ -1191,6 +1348,70 @@ function renderBeat(beat, isActive) {
   if (beat.type === 'diary') return renderDiary(beat, isActive);
   if (beat.type === 'task') return renderTask(beat, isActive);
   if (beat.type === 'wrap') return renderWrap(beat, isActive);
+  if (beat.type === 'aim_log') return renderAimLog(beat, isActive);
+}
+
+function renderAimLog(beat, isActive) {
+  const selfUser = beat.selfUser || '';
+  // Parse body line-by-line into structured chat events.
+  const lines = beat.body.split('\n');
+  let html = '';
+  for (let raw of lines) {
+    const line = raw.trimEnd();
+    if (line === '') {
+      html += '<div class="aim-gap"></div>';
+      continue;
+    }
+    // Section divider: ~~~ jul 9 2004 :: 11:23 pm ~~~
+    let m = line.match(/^~+\s*(.+?)\s*~+$/);
+    if (m) {
+      html += `<div class="aim-divider"><span>${escapeHtmlForAim(m[1])}</span></div>`;
+      continue;
+    }
+    // System event in [brackets]: [user tegan_a87 has gone idle.]
+    m = line.match(/^\[(.+)\]$/);
+    if (m) {
+      html += `<div class="aim-system">${escapeHtmlForAim(m[1])}</div>`;
+      continue;
+    }
+    // Username message: "username: text..."
+    m = line.match(/^([a-zA-Z0-9._]+):\s?(.*)$/);
+    if (m) {
+      const user = m[1];
+      const msg = m[2];
+      const isSelf = (user === selfUser);
+      html += `<div class="aim-msg ${isSelf ? 'aim-self' : 'aim-other'}">`
+            +    `<span class="aim-user">${escapeHtmlForAim(user)}:</span> `
+            +    `<span class="aim-text">${escapeHtmlForAim(msg)}</span>`
+            + `</div>`;
+      continue;
+    }
+    // Fallback: any other line, render as plain.
+    html += `<div class="aim-plain">${escapeHtmlForAim(line)}</div>`;
+  }
+
+  const w = document.createElement('div');
+  w.className = 'window aim-window';
+  w.innerHTML = `
+    <div class="window-titlebar aim-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="aim-meta">${beat.meta}</div>
+    <div class="aim-body">${html}</div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: #d8d8e8; border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+}
+
+function escapeHtmlForAim(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 function renderDiary(beat, isActive) {

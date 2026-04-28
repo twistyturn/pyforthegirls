@@ -147,8 +147,7 @@ cursor: pointer;
 padding: 4px;
 text-shadow: 1px 1px 0 var(--bg-deep);
 width: 80px;
-word-wrap: break-word;
-overflow-wrap: break-word;
+overflow-wrap: anywhere;
 line-height: 1.3;
 }
 .desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
@@ -386,6 +385,8 @@ z-index: 200;
 animation: window-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 font-family: 'VT323', monospace;
 }
+.buddy-popup { cursor: pointer; }
+.buddy-popup:hover { box-shadow: var(--shadow-hard), 0 0 32px rgba(102, 255, 255, 0.6); }
 .buddy-popup .window-titlebar { background: linear-gradient(90deg, var(--cyan-glow), var(--lavender)); }
 .buddy-content {
 padding: 12px;
@@ -400,6 +401,70 @@ color: var(--pink-hot);
 margin-bottom: 6px;
 letter-spacing: 1px;
 }
+.buddy-cta {
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+color: #6a3d8a;
+margin-top: 8px;
+letter-spacing: 1px;
+}
+
+/* ============ AIM MESSAGE WINDOW (modal opened from buddy popup) ============ */
+.aim-modal-overlay {
+position: fixed; inset: 0;
+background: rgba(0, 0, 0, 0.45);
+z-index: 500;
+display: flex;
+align-items: center;
+justify-content: center;
+animation: window-pop 0.25s ease-out;
+}
+.aim-modal {
+width: min(440px, calc(100% - 32px));
+background: #d8d8e8;
+border: 2px solid var(--bg-deep);
+box-shadow: 4px 4px 0 var(--bg-deep), 0 0 32px rgba(255, 102, 196, 0.5);
+font-family: 'Tahoma', 'Geneva', sans-serif;
+}
+.aim-titlebar {
+background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%) !important;
+color: var(--bg-deep) !important;
+text-shadow: none !important;
+}
+.aim-modal-body {
+background: #ffffff;
+color: #1a1a1a;
+padding: 14px 14px 16px;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 13px;
+line-height: 1.5;
+min-height: 110px;
+max-height: 60vh;
+overflow-y: auto;
+}
+.aim-modal-body .aim-msg { margin: 4px 0; word-wrap: break-word; overflow-wrap: anywhere; }
+.aim-modal-body .aim-user { font-weight: bold; }
+.aim-modal-body .aim-self .aim-user { color: #cc0000; }
+.aim-modal-body .aim-other .aim-user { color: #0000cc; }
+.aim-modal-body .aim-system {
+margin: 8px 0 4px;
+color: #777;
+font-style: italic;
+font-size: 12px;
+text-align: center;
+}
+.aim-modal-footer {
+background: #d8d8e8;
+border-top: 1px solid var(--bg-deep);
+padding: 6px 10px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-family: 'Tahoma', 'Geneva', sans-serif;
+font-size: 11px;
+color: #555;
+}
+.aim-modal-status { font-style: italic; }
 
 /* ============ INTRO SCREEN ============ */
 .intro-screen {
@@ -637,16 +702,36 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 
   <!-- ============ BUDDY POPUP ============ -->
 
-  <div class="buddy-popup hidden" id="buddyPopup">
+  <div class="buddy-popup hidden" id="buddyPopup" onclick="openBuddyAim(event)" title="click to open conversation">
     <div class="window-titlebar">
       <span>buddyhelper :: incoming</span>
       <div class="window-titlebar-buttons">
-        <span class="titlebar-btn" onclick="closeBuddy()">×</span>
+        <span class="titlebar-btn" onclick="event.stopPropagation(); closeBuddy()">×</span>
       </div>
     </div>
     <div class="buddy-content">
       <div class="buddy-name" id="buddyName">tegan_a87</div>
       <div id="buddyMessage"></div>
+      <div class="buddy-cta">▸ click to open</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ AIM MESSAGE WINDOW (modal) ============ -->
+<div class="aim-modal-overlay hidden" id="aimModalOverlay" onclick="closeBuddyAim(event)">
+  <div class="aim-modal" id="aimModal" onclick="event.stopPropagation()">
+    <div class="window-titlebar aim-titlebar">
+      <span id="aimModalTitle">IM with —</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn" onclick="closeBuddyAim()">×</span>
+      </div>
+    </div>
+    <div class="aim-modal-body" id="aimModalBody"></div>
+    <div class="aim-modal-footer">
+      <span class="aim-modal-status">[ read-only — this is an archived message. ]</span>
+      <button class="btn btn-secondary" onclick="closeBuddyAim()" style="font-size: 9px; padding: 3px 10px;">close</button>
     </div>
   </div>
 </div>
@@ -796,11 +881,13 @@ const BEATS = [
 
 day one. counsellors all got here yesterday for orientation. campers tomorrow.
 mom cried at the bus stop again. i was the one who begged to come back.
-my cabin (rosewood) has 8 girls in it, ages 11–13. i'm a junior counsellor so
+my cabin (hemlock) has 8 girls in it, ages 11–13. i'm a junior counsellor so
 i have a senior co-counsellor. they pair us up with someone who's done this before.
-mine is wren halloway. she's 19. she's been here for four summers. her own
-cabin is birchwood, two over from us, but she sleeps there, not with us.
-seniors get their own quarters. she comes by rosewood twice a day for checks.
+mine is wren halloway. she's 19. she's been here for four summers. she's
+the senior counsellor for hemlock, which means she runs the cabin and i
+assist. seniors get their own quarters in the back so it's basically
+just me with the campers, with wren in and out all day for checks
+and meals and lights-out.
 her hair is the colour of wet pinecones and she has a tattoo on her ribs that
 i'm not supposed to have seen. i saw it.
 this is going to be a long six weeks :/`,
@@ -824,8 +911,8 @@ so today during free swim i pulled out the laptop on the dock and
 laila looked at me like i had a third eye opening. "who brings a
 LAPTOP to camp." i don't know laila, the same number of girls who
 bring hair straighteners and you brought TWO. also literally the same
-girls. wren has hers in birchwood and camille has one and so does
-briar i think. nobody at this camp who matters cares.
+girls. wren has hers stashed in her senior quarters and camille has one
+and so does briar i think. nobody at this camp who matters cares.
 
 it's also for python which i am ACTUALLY going to learn this summer.
 i made some kind of deal with myself in march and i don't exactly
@@ -843,8 +930,8 @@ hopefully this means when i'm AT CAMP nobody AT HOME can snoop and
 when i'm AT HOME nobody at camp will somehow have followed me there.
 which now that i type it sounds paranoid lol. but. you know.
 
-going to bed. wren did cabin checks early tonight. she came by
-rosewood twice instead of once. i don't know what that means.`,
+going to bed. wren did cabin checks early tonight. she came back
+through hemlock twice instead of once. i don't know what that means.`,
     nextBtn: 'next file ▸'
   },
 
@@ -921,17 +1008,18 @@ i can't sleep.`,
 the boathouse smells like algae and sun-warm wood. she had a flashlight.
 she said: "i could get fired for this. you know that, right?"
 i said i knew.
-she said: "say it back to me. say what you'd do if anyone asked."
-i said i'd say nothing. i'd never said anything. i'd never even been there.
-she said good girl and kissed me like she was proving a point.
-later, walking back, she said: "if you tell anyone i swear to god tegan
-i will end you. like, i'm not joking. i need you to understand that."
-i said i understood.
-i don't think i did.
+she said: "but it's worse for you than it is for me. tegan, look at me.
+your mom doesn't know about you. does she."
+i didn't answer. i didn't have to.
+she said: "so we're going to be careful. for you. ok?"
+i said ok.
+she said good girl.
+she kissed me.
+later, walking back, she said: "you can't tell anyone. not your camp
+friends. not whoever it is you write to at night. nobody."
+i said i wouldn't. i'm not even sure i breathed.
 
-i'm telling this diary i didn't want it. i don't know if that's the
-whole truth. that might be the worst part. i went on my own legs.
-nobody dragged me anywhere.`,
+she's exhilarating.`,
     nextBtn: 'keep reading ▸'
   },
 
@@ -941,7 +1029,7 @@ nobody dragged me anywhere.`,
     type: 'task',
     title: 'python.exe :: header.py',
     meta: 'she was making a "diary header" generator.',
-    storyAbove: `tegan was trying to write a script to auto-format her entries: a header line with her name and the day count, like she was being professional about it.`,
+    storyAbove: `you close the boathouse file. you sit there for a minute. then you open the next thing because if you stop you won't start again. tegan was trying to write a script to auto-format her entries: a header line with her name and the day count, like she was being professional about it.`,
     skill: 'F-STRINGS (string formatting)',
     instructions: `<p>so far you've printed plain words. an <strong>f-string</strong> lets you mix words AND variables into the same line of text, so the variable's value shows up in the printed output instead of just its name.</p>
                    <p>two things make a string into an f-string:</p>
@@ -952,14 +1040,92 @@ nobody dragged me anywhere.`,
                    <p>...stores the text <code>hi ashley</code> in <code>greeting</code>. python sees the <code>{name}</code> and swaps in whatever the variable holds.</p>
                    <p><strong>your task:</strong> the variables <code>name</code> and <code>day</code> are already set up for you. complete the f-string on the <code>header = </code> line so that <code>print(header)</code> prints exactly: <code>=== day 5 :: tegan ===</code></p>`,
     starter: `name = "tegan"\nday = 5\nheader = f""\nprint(header)`,
-    expectedOutput: '=== day 5 :: tegan ===',
-    matchType: 'exact',
-    hint: `inside the quotes, write <code>=== day {day} :: {name} ===</code>. the curly braces around <code>day</code> and <code>name</code> are how python knows to substitute them.`,
+    expectedOutput: 'day 5',
+    matchType: 'contains',
+    hint: `inside the quotes, put <code>{day}</code> and <code>{name}</code> wherever you want the values to show up. the exact decoration around them is up to you. something like <code>=== day {day} :: {name} ===</code> works.`,
     onComplete: {
       diary: `// header generator works. she used this on every entry from july onward.`,
       buddy: { name: 'wren_h', msg: 'who is this. who is this. how did you get into this account.' }
     },
     charms: 2
+  },
+
+  // ---- BEAT 5.5: NEW — Camille from across camp ----
+  {
+    id: 'diary_camille',
+    type: 'diary',
+    title: 'open file: diary/09_camille.txt',
+    meta: 'last modified: july 12, 2004 — 11:38 pm',
+    body: `july 12
+
+camille has hemlock. i passed her cabin on the way back from the office
+this morning. one of her campers was sitting on the front step crying
+about something. camille was sitting on the step next to her, NOT
+hugging her. she just stayed there, like she knew the kid wasn't ready for hugs yet.
+they sat there for ten minutes. i watched from the path. eventually
+the kid leaned into her. camille just kept sitting.
+
+it made me want to cry.
+
+i can't be friends with camille. i can't sit next to her at staff meals.
+i can't let her ask me questions. she's the kind of person who would
+notice if i wasn't okay and i can't be noticed right now. so i smile
+at her at flag and i go sit with hattie's table.
+
+i feel like i'm punishing her for being kind. i can hear how that sounds.
+i don't have a better plan.`,
+    nextBtn: 'next file ▸'
+  },
+
+  // ---- BEAT 5.6: NEW — the swoon ----
+  {
+    id: 'diary_swoon',
+    type: 'diary',
+    title: 'open file: diary/10_idk.txt',
+    meta: 'last modified: july 15, 2004 — 1:22 am',
+    body: `july 15
+
+something is happening that i don't have words for yet. i'm going to
+try.
+
+we've been at the boathouse four times now. the first time was the
+worst-best thing i've ever done. the second time was easier. the third
+time we just talked for an hour before we did anything. the fourth time
+was tonight and she brought a blanket and we sat against the wall by
+the door and i swear to god the whole world went quiet.
+
+she has a tattoo on her ribs of a swallow. she got it when she was 17
+in vancouver, illegal!!! she has another one on her hipbone i haven't
+asked about yet because the way she covers it when she changes is its
+own kind of question.
+
+she laughs at things i didn't know were funny. she plays tegan and sara
+on her cd player in the boathouse, low, and the first time the music
+came on i made a face and she said "what" and i said "my name is tegan,
+han-" and i stopped because i'd almost said something i can't say,
+and she looked at me a long time and didn't push.
+
+she asked me about my mom tonight. how strict, what kind of strict,
+whether mom checks the phone bills, whether i'd told anyone at school.
+i told her everything. i wanted to. she listened the way camille sits
+with crying campers. she just LISTENS. that made me want
+to tell her more.
+
+she's nineteen. she's out! she's been out since she was fifteen which
+is a thing i can't even imagine. she has a sister in vancouver who
+sends her zines. she's read the same books i have but she read them
+to feel less alone. i read them to feel more alone. i hadn't put that
+together before tonight.
+
+i don't know how to write this without sounding like i lost my mind.
+i think i lost my mind. i think it's been gone since june 26 and i'm
+only now noticing. she chose me. SHE chose ME. she's the kind of girl
+who could choose anyone and she walked over to MY cabin and looked at
+my hands when i was tying my shoe and asked if i wanted to come find
+her tomorrow and i did and now i can't see anything else.
+
+i should be scared. i'm not scared. i'm so far past scared.`,
+    nextBtn: 'next file ▸'
   },
 
   // ---- BEAT 6: diary — tightening ----
@@ -976,8 +1142,8 @@ asking if i was okay. i lied. i told wren camille's "issues" were nothing.
 i didn't know how to say that someone had seen us without it sounding like
 a betrayal of camille.
 but tonight wren cornered me about why i'd been weird and it just came out.
-i told her camille saw us on july 3rd. that camille had been kind about it.
-that i'd been carrying it.
+i told her camille saw us on july 8. camille had been kind about it.
+i'd been carrying it alone for three weeks.
 wren went so still she stopped breathing.
 then she said okay. then she said i'll handle it. then she said
 "if camille tells anyone, it'll be your fault, you know that right?
@@ -1000,14 +1166,22 @@ to see what she'd do, and now i've seen.`,
     meta: 'a script for asking herself questions before bed.',
     storyAbove: `the last script in the folder. she was making something interactive. a script that asks a question and uses the answer. it's broken: she was trying to do math with a number she got from <code>input()</code>, but <code>input()</code> always gives back a string. you need to convert it.`,
     skill: 'INPUT & TYPE CONVERSION',
-    instructions: `<p><code>input("question? ")</code> shows a prompt and returns whatever the person typed, as a <strong>string</strong>. even if they type <code>5</code>, you get the string <code>"5"</code>.</p>
-                   <p>to do math, convert it: <code>int("5")</code> turns the string into the number 5.</p>
-                   <p><strong>your task:</strong> complete the script so it asks "how many days left? " and then prints the answer doubled. when this autograder runs, it'll feed in the answer <code>14</code>, and your script should print <code>28</code>.</p>`,
+    instructions: `<p><code>input("question? ")</code> shows a prompt and pauses while the person types. when they hit enter, you get back whatever they typed — as text, even if they typed digits.</p>
+                   <p>text-in-quotes (like <code>"5"</code> or <code>"tegan"</code>) is called a <strong>string</strong>, same as you saw in the very first task. python treats strings differently from numbers. for example:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"5" * 2  →  "55"   (python repeats the text twice)
+5 * 2    →  10     (python does the math)</pre>
+                   <p>so if you ask "how many days?" and the person types <code>5</code>, you get back the string <code>"5"</code>. if you try to multiply that by 2 you'll get <code>"55"</code>, not <code>10</code>.</p>
+                   <p>to do math on it, you have to convert it: <code>int("5")</code> turns the string <code>"5"</code> into the number <code>5</code>.</p>
+                   <p><strong>your task:</strong> complete the script so it asks "how many days left? " and then prints the answer doubled. the autograder will type <code>14</code> in response — your script should print <code>28</code>, not <code>1414</code>.</p>`,
     starter: `answer = input("how many days left? ")\n# convert answer to a number, then print it times 2\n`,
     expectedOutput: '28',
     matchType: 'contains',
     fakeInput: '14',
-    hint: `add a line like <code>print(int(answer) * 2)</code>. <code>int(...)</code> converts the string to a number, then <code>* 2</code> doubles it.`,
+    hint: `<p>the simplest version is two lines:</p>
+           <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
+print(number * 2)</pre>
+           <p>the first line uses <code>int()</code> to turn the string from input into an actual number, and stores it in a new variable called <code>number</code>. the second line multiplies <code>number</code> by 2 and prints the result.</p>
+           <p>if you want to do it in one line, you can put the <code>int()</code> call directly inside the <code>print()</code>, which gives you <code>print(int(answer) * 2)</code>. same result, fewer lines. either is fine.</p>`,
     onComplete: {
       diary: `// prompt.py executed. last input from this machine: "how many days left?" → answer: 1`,
       buddy: { name: 'tegan_a87', msg: 'i ran this script the night before, i typed 1, i was counting down. thought i had one day left to figure it out.' }
@@ -1023,12 +1197,18 @@ to see what she'd do, and now i've seen.`,
     meta: 'last modified: aug 14, 2004 — 9:31 pm',
     body: `august 14
 
-i told her i was going to leave camp. i told her i was going to tell my mom.
-not about us. just. that i wanted to go home early. that i was scared.
+i told her i was going to leave camp. i told her i was going to tell my mom —
+not about us, just that i wanted to go home early.
 she went so quiet. then she said "meet me at the boathouse tonight.
 we'll talk it out. just you and me. don't tell anyone you're coming."
-that was twenty minutes ago.
-if you're reading this and i'm not back by morning
+
+i'm going. i don't have a choice. i can't say no to her without
+making her suspicious, and i need her to not be suspicious tonight
+of all nights.
+
+i'm hiding this file in the diary folder before i go.
+
+if you're reading this, i need you to know where i was.
 her name is wren halloway
 her name is wren halloway
 her name is wren halloway`,
@@ -1159,7 +1339,7 @@ if (window.StudyNotes) StudyNotes.refreshIcon();
 const w = document.createElement('div');
 w.className = 'window story-window';
 w.style.maxWidth = '640px';
-w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 2 :: not yet available<br> > thank you for playing the demo, ${state.userName}. </div> <div style="margin-top: 16px; text-align: center;"> <a href="chaptertwo.html" class="btn btn-acid" style="margin-right: 8px; text-decoration: none; display: inline-block;">▸ continue to chapter 2</a> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
+w.innerHTML = `<div class="window-titlebar" style="background: linear-gradient(90deg, var(--lime-acid), var(--cyan-glow)); color: var(--bg-deep); text-shadow: none;"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">×</span> </div> </div> <div style="padding: 24px; background: var(--window-bg); color: var(--bg-deep);"> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Nanum Pen Script', cursive; font-size: 22px; line-height: 1.5; white-space: pre-line; margin-bottom: 20px;">${beat.body}</div> <div class="glitter-divider">✦ ✧ ✦ ✧ ✦</div> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 16px 0 8px;">SKILLS UNLOCKED:</div> <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 24px;"> ${beat.skillsLearned.map(s =>`<li style="margin-bottom: 4px;">✦ ${s}</li>`).join('')} </ul> <div style="font-family: 'Silkscreen', monospace; font-size: 11px; color: var(--pink-hot); margin: 20px 0 8px;">CHARMS COLLECTED:</div> <div style="font-family: 'VT323', monospace; font-size: 22px; color: var(--bg-deep);">✿ ${state.charms} ✿</div> <div class="progress-bar-outer"><div class="progress-bar-inner" style="width: 100%;"></div></div> <div style="margin-top: 24px; padding: 14px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; border: 1px dashed var(--pink-hot);"> > save_state.dat written to localStorage<br> > chapter 2 :: ready<br> > continue when you're ready, ${state.userName}. </div> <div style="margin-top: 16px; text-align: center;"> <a href="chaptertwo.html" class="btn btn-acid" style="margin-right: 8px; text-decoration: none; display: inline-block;">▸ continue to chapter 2</a> <button class="btn btn-secondary" onclick="resetGame()">↺ restart from beginning</button> </div> </div> `;
 storyContainer.appendChild(w);
 }
 
@@ -1271,11 +1451,14 @@ location.reload();
 // ===========================================================================
 // BUDDY POPUP
 // ===========================================================================
+let _lastBuddy = { name: '', msg: '' };
+
 function showBuddy(name, msg) {
 if (window.Sounds) {
   Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
   Sounds.play('aim-message-in');
 }
+_lastBuddy = { name, msg };
 document.getElementById('buddyName').textContent = name + ' :: incoming message';
 document.getElementById('buddyMessage').innerHTML = msg;
 const popup = document.getElementById('buddyPopup');
@@ -1287,6 +1470,33 @@ setTimeout(() => { popup.style.animation = ''; }, 10);
 function closeBuddy() {
 document.getElementById('buddyPopup').classList.add('hidden');
 }
+function openBuddyAim(evt) {
+if (evt) evt.stopPropagation();
+const { name, msg } = _lastBuddy;
+if (!name) return;
+const selfUser = 'tegan_a87'; // her account on this machine
+const isSelf = (name === selfUser);
+const sideClass = isSelf ? 'aim-self' : 'aim-other';
+const safeMsg = String(msg || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+document.getElementById('aimModalTitle').textContent = 'IM with ' + name;
+document.getElementById('aimModalBody').innerHTML =
+  `<div class="aim-system">[buddy chime — ${name} sent you a message]</div>` +
+  `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${safeMsg}</span></div>`;
+document.getElementById('aimModalOverlay').classList.remove('hidden');
+// hide the small toaster popup once the full window is open
+closeBuddy();
+}
+function closeBuddyAim() {
+document.getElementById('aimModalOverlay').classList.add('hidden');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const overlay = document.getElementById('aimModalOverlay');
+    if (overlay && !overlay.classList.contains('hidden')) {
+      overlay.classList.add('hidden');
+    }
+  }
+});
 
 // auto-resume from save (or skip intro if name already known from another chapter)
 if (state.userName) {
