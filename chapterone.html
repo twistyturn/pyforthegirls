@@ -1112,6 +1112,16 @@ i can't sleep.`,
     expectedOutput: 'tegan\n5',
     matchType: 'exact',
     codeMustContain: ['name =', 'day ='],
+    commonMistakes: [
+      {
+        pattern: /day\s*=\s*['"]5['"]/,
+        tip: `<code>"5"</code> in quotes is a string, not a number. drop the quotes: <code>day = 5</code>. (the difference matters because python treats numbers and strings differently — you can do math on numbers but not on strings.)`
+      },
+      {
+        pattern: /^[ \t]*(name|day)\s*==\s/m,
+        tip: `<code>==</code> compares two values (returns True or False). <code>=</code> assigns a value to a variable. for assignment, use one <code>=</code>: <code>name = "tegan"</code>, not <code>name == "tegan"</code>.`
+      }
+    ],
     hint: `change <code>"your name"</code> to <code>"tegan"</code>. change <code>"today"</code> to <code>5</code>. (5 is a number, no quotes around it.)`,
     onComplete: {
       diary: `// log_entry.py running. day 5 of camp.`,
@@ -1191,6 +1201,16 @@ i should be scared. i'm not scared. i'm so far past scared.`,
     expectedOutput: 'day 5',
     matchType: 'contains',
     codeMustContain: ['{day}', '{name}'],
+    commonMistakes: [
+      {
+        pattern: /header\s*=\s*"[^"]*\{(day|name)\}[^"]*"/,
+        tip: `you have <code>{day}</code> or <code>{name}</code> in the string, but the <code>f</code> before the opening quote is missing. without the <code>f</code>, python treats the curly braces as literal text and prints them as-is. add <code>f</code> right before the quote: <code>header = f"..."</code>.`
+      },
+      {
+        pattern: /f\s*"[^"]*\bday\s+5[^"]*"|f\s*"[^"]*\btegan\b[^"]*"/,
+        tip: `the values are hardcoded into the f-string. the point is to <em>substitute</em> the variables — write <code>{day}</code> and <code>{name}</code> in curly braces inside the f-string, and python will plug in the values for you. that way the same code works when day or name changes.`
+      }
+    ],
     hint: `inside the quotes, put <code>{day}</code> and <code>{name}</code> wherever you want the values to show up. the exact decoration around them is up to you. something like <code>=== day {day} :: {name} ===</code> works.`,
     onComplete: {
       diary: `// header generator works. she used this on every entry from july onward.`,
@@ -1618,6 +1638,7 @@ const actualOutput = (result.output || '').trimEnd();
 
 if (!result.ok) {
 outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 return;
 }
 

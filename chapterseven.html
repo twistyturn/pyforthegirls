@@ -2633,6 +2633,7 @@ const actualOutput = (result.output || '').trimEnd();
 
 if (!result.ok) {
 outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 return;
 }
 

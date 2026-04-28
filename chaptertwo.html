@@ -1131,6 +1131,16 @@ else:
     expectedOutput: 'ACCESS GRANTED',
     matchType: 'exact',
     codeMustContain: ['=='],
+    commonMistakes: [
+      {
+        pattern: /^[ \t]*if\s+\w+\s*=\s*['"]/m,
+        tip: `you have a single <code>=</code> inside the <code>if</code>. that's assignment, not comparison — and python won't allow assignment in an <code>if</code> condition (you'll get a syntax error). use double <code>==</code> to compare: <code>if guess == "hemlock":</code>.`
+      },
+      {
+        pattern: /^[ \t]*if\s+\w+\s*==\s*['"][^'"]*['"]\s*$/m,
+        tip: `the <code>if</code> line is missing the colon at the end. python uses the colon to know where the condition stops and the body begins: <code>if guess == "hemlock":</code> (with the <code>:</code>).`
+      }
+    ],
     hint: `the comparison is <code>guess == "hemlock"</code>. the first <code>print()</code> needs <code>"ACCESS GRANTED"</code> in the quotes. the second needs <code>"denied"</code>.`,
     onComplete: {
       diary: `// practice script runs. comparison is just == ("equal to"). got it.`
@@ -1475,6 +1485,16 @@ count = 0
     expectedOutput: '3',
     matchType: 'exact',
     codeMustContain: ['for ', ['+ 1', '+= 1']],
+    commonMistakes: [
+      {
+        pattern: /print\s*\(\s*3\s*\)/,
+        tip: `<code>print(3)</code> hardcodes the answer. the point is to count by looping — let the for loop walk through fragments, increment <code>count</code> each time it finds a match, and print <code>count</code> at the end. that way the same code works no matter how many times the phrase appears.`
+      },
+      {
+        pattern: /^[ \t]+count\s*\+\s*1\s*$/m,
+        tip: `<code>count + 1</code> on its own computes a number but doesn't save it anywhere. you need to store the result back: <code>count = count + 1</code> (or the shortcut <code>count += 1</code>). without the <code>=</code>, the count never actually changes.`
+      }
+    ],
     hint: `add these lines: <code>for f in fragments:</code> then indented <code>if f == "her name is wren halloway":</code> then double-indented <code>count = count + 1</code>. then unindented <code>print(count)</code>.`,
     onComplete: {
       diary: `// 3 occurrences across 8 fragments. tegan repeated it on purpose. it has to mean something.`,
@@ -1558,6 +1578,16 @@ i = 0
     expectedOutput: 'birchwoodcounsellor1985',
     matchType: 'exact',
     codeMustContain: ['while ', 'len('],
+    commonMistakes: [
+      {
+        pattern: /while\s+i\s*<=\s*len\s*\(/,
+        tip: `<code>&lt;=</code> goes one step too far. when iterating up to <code>len(list)</code>, the last valid index is <code>len(list) - 1</code> — index <code>len(list)</code> doesn't exist and would crash. use <code>&lt;</code> not <code>&lt;=</code>: <code>while i &lt; len(keywords):</code>.`
+      },
+      {
+        pattern: /print\s*\(\s*['"]birchwoodcounsellor1985['"]\s*\)/,
+        tip: `<code>print("birchwoodcounsellor1985")</code> hardcodes the password. the point is to <em>build</em> it from the keywords list with a while loop, so the same code would work for any list of keywords. walk through the list with an index, concatenate each keyword onto <code>password</code>, then print <code>password</code> at the end.`
+      }
+    ],
     hint: `<code>while i &lt; len(keywords):</code> then indented <code>password = password + keywords[i]</code> then <code>i = i + 1</code>. then unindented <code>print(password)</code>. <code>len()</code> tells you how long a list is.`,
     onComplete: {
       diary: `// password constructed. typing it into the zip prompt now.`,
@@ -1916,6 +1946,7 @@ builtins.input = __patched_input
 
   if (!result.ok) {
     outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+    appendCommonMistakeTip(outEl, code, beat.commonMistakes);
     return;
   }
 
