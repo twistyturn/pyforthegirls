@@ -342,6 +342,34 @@ text-transform: uppercase;
 letter-spacing: 1px;
 }
 
+
+/* ============ EMAIL CHROME (renders email-shaped diary beats with
+   period-Outlook-Express styling instead of notebook paper) ============ */
+.diary-entry[data-email="1"] {
+  background: #ffffff;
+  background-image: none;
+  color: #1a0628;
+  padding: 0 16px 16px 16px;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  border-left-color: #36589f;
+}
+.diary-entry[data-email="1"]::before {
+  display: none;
+}
+.diary-entry[data-email="1"] .diary-meta {
+  background: #ece9d8;
+  color: #36589f;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: bold;
+  margin: 0 -16px 12px -16px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #888;
+}
 /* ============ AIM CHAT LOG (period chrome) ============ */
 .aim-window {
   max-width: 540px;
@@ -1299,6 +1327,7 @@ if name == "tegan":
   {
     id: 'wren_email',
     type: 'diary',
+    subtype: 'email',
     title: 'open file: outlook/inbox/2004-08-12.eml',
     meta: 'from: wren.halloway@camppinecrest.ca :: to: tegan_a87@hotmail.com :: aug 12 2004 — 9:14 pm',
     body: `subject: (no subject)
@@ -1370,14 +1399,14 @@ else:
     id: 'task_boolean_b',
     type: 'task',
     title: 'python.exe :: access_check.py',
-    meta: 'the actual script. tegan was using this to filter staff by role and age.',
+    meta: 'the actual script. tegan was using this to filter staff by name and role.',
     storyAbove: `now the real one. same idea, but you write the whole condition yourself this time. tegan only left the variables and an empty <code>if</code> — the boolean logic is up to you.`,
     skill: 'BOOLEAN LOGIC (writing conditions)',
-    instructions: `<p>same rules as before — <code>and</code> / <code>or</code> / <code>not</code>, plus comparisons (<code>==</code>, <code>!=</code>, <code>&gt;=</code>, etc).</p>
-                   <p><strong>your task:</strong> a person is described by <code>name</code> and <code>age</code>. write the condition that prints <code>ADULT_COUNSELOR</code> if their name is <code>"wren"</code> AND their age is 18 or older. otherwise print <code>camper_or_minor</code>. the variables are set to <code>"wren"</code> and <code>19</code>.</p>
+    instructions: `<p>same rules as before — <code>and</code> / <code>or</code> / <code>not</code>, plus the <code>==</code> and <code>!=</code> comparisons you already know. (the <code>&gt;=</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&lt;</code> operators also exist for numbers, but you won't need them here.)</p>
+                   <p><strong>your task:</strong> a person is described by <code>name</code> and <code>role</code>. write the condition that prints <code>ADULT_COUNSELOR</code> if their name is <code>"wren"</code> AND their role is <code>"counsellor"</code>. otherwise print <code>camper_or_minor</code>. the variables are set to <code>"wren"</code> and <code>"counsellor"</code>.</p>
                    <p>fill in the <code>if</code> condition and both <code>print()</code> statements yourself.</p>`,
     starter: `name = "wren"
-age = 19
+role = "counsellor"
 if :
     print("")
 else:
@@ -1385,9 +1414,9 @@ else:
     expectedOutput: 'ADULT_COUNSELOR',
     matchType: 'exact',
     codeMustContain: [/\b(and|or)\b/, 'if'],
-    hint: `the condition is <code>name == "wren" and age >= 18</code>. it goes right after <code>if</code> and before the colon. then put <code>"ADULT_COUNSELOR"</code> in the first print, <code>"camper_or_minor"</code> in the second.`,
+    hint: `the condition is <code>name == "wren" and role == "counsellor"</code>. it goes right after <code>if</code> and before the colon. then put <code>"ADULT_COUNSELOR"</code> in the first print, <code>"camper_or_minor"</code> in the second.`,
     onComplete: {
-      diary: `// boolean check passes. wren halloway, 19, adult counsellor. tegan, 17, minor.`,
+      diary: `// boolean check passes. wren halloway, the senior counsellor. that's the access pattern.`,
       buddy: { name: 'wren_h', msg: 'whoever you are. i know that account is being used. i can see when it logs on. stop opening her files.' }
     },
     charms: 2
@@ -1760,7 +1789,7 @@ function renderDiary(beat, isActive) {
         <span class="titlebar-btn">×</span>
       </div>
     </div>
-    <div class="diary-entry">
+    <div class="diary-entry" data-email="${beat.subtype === 'email' ? '1' : ''}">
       <div class="diary-meta">${beat.meta}</div>
 ${beat.body.split(/\n\n+/).map(p => p.replace(/\n/g, ' ').trim()).filter(Boolean).join('<br><br>')}
     </div>
