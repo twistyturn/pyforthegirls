@@ -2082,33 +2082,45 @@ def find_person(name, region):
     nextBtn: '\u25b8 python.exe'
   },
 
-  // ---- BEAT 4: task_define_function — first function, def + return ----
+  // ---- BEAT 4: task_define_function — first function, def + parameters ----
   {
     id: 'task_define_function',
     type: 'task',
     charms: 3,
     title: 'python.exe :: summarize.py',
     meta: 'your turn. write a function.',
-    skill: 'FUNCTIONS :: def AND RETURN VALUES',
-    storyAbove: `functions in python start with \`def\`, then a name, then parentheses with parameters, then a colon. inside the function you can do anything you'd do anywhere else. when you want to give back a value, use \`return\`. then anywhere else in your code you can call the function by name and use whatever it returns.`,
-    instructions: `define a function called \`summarize_person(result_dict)\` that takes a dict like the one Hannah's \`find_person\` returns. it should print one line: the name, then the count of nexopia profiles, livejournals, and school papers.`,
+    skill: 'FUNCTIONS :: def AND PARAMETERS',
+    storyAbove: `tegan was learning to write functions. a <strong>function</strong> is a chunk of code with a name on it — you write the code once, give it a name, and then you can run that chunk later just by writing the name. it's how programmers stop themselves from typing the same thing over and over.<br><br>here's the smallest possible example:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">def greet():
+    print("hi")
+
+greet()</pre>that prints:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">hi</pre>two parts: <code>def greet():</code> defines (creates) the function. the indented lines are what the function does. then <code>greet()</code> on its own line <em>calls</em> the function — runs the indented code.<br><br>functions can also take inputs, called <strong>parameters</strong>, in the parentheses:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">def greet(name):
+    print("hi " + name)
+
+greet("camille")</pre>that prints:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">hi camille</pre>`,
+    instructions: `<p><strong>your task:</strong> write a function called <code>summarize_person</code> that takes a result dict (like the one Hannah's <code>find_person</code> returns) and prints a summary line.</p>
+                   <p>the line should be the person's name, then counts of their nexopia, livejournal, and school paper hits — exactly in this format:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">Camille McCleod: 1 nexopia, 0 livejournals, 1 school papers</pre>
+                   <p>the dict has keys <code>"name"</code>, <code>"nexopia"</code>, <code>"livejournals"</code>, and <code>"school_papers"</code>. the last three are lists — you can use <code>len()</code> on them to get the count.</p>
+                   <p>after defining the function, the starter calls it on a sample dict so you can see if it works.</p>`,
     starterCode: `example = {
     "name": "Camille McCleod",
     "region": "edmonton",
     "nexopia": ["camille_m"],
     "livejournals": [],
-    "school_papers": []
+    "school_papers": ["uofaeditorial.com/news/2005-09-12"]
 }
 
 def summarize_person(result_dict):
-    # your code here
-    pass
+    # ??? replace this with code that prints the summary line
+    # use result_dict["name"], len(result_dict["nexopia"]), etc.
+    print("???")
 
 summarize_person(example)
 `,
-    expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 0 school papers`,
+    expectedOutput: `Camille McCleod: 1 nexopia, 0 livejournals, 1 school papers`,
     matchType: 'exact',
     fileInjection: false,
+    hint: `inside the function, build the line as one print statement. f-strings are the cleanest way: <code>print(f"{result_dict['name']}: {len(result_dict['nexopia'])} nexopia, {len(result_dict['livejournals'])} livejournals, {len(result_dict['school_papers'])} school papers")</code>. you can also build it with string concatenation if you prefer, but you'll need to convert the lengths with <code>str()</code>.`,
     onComplete: {
       diary: `// first function. it's just code with a name on it.
 // ok. now camille.`
