@@ -17,15 +17,8 @@
   // CSS
   // ===========================================================================
   const CSS = `
-.icon-grid {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  grid-template-columns: unset !important;
-  align-items: flex-start !important;
-  gap: 14px !important;
-  max-width: 880px;
-}
+/* Icon-grid layout is governed by per-chapter CSS — desktop frame redesign
+   pins it as a vertical left rail. We intentionally don't override it here. */
 .icon-grid .desktop-icon { width: 80px; flex-shrink: 0; }
 
 .cl-overlay {
