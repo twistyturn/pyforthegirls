@@ -146,6 +146,10 @@ font-size: 9px;
 cursor: pointer;
 padding: 4px;
 text-shadow: 1px 1px 0 var(--bg-deep);
+width: 80px;
+word-wrap: break-word;
+overflow-wrap: break-word;
+line-height: 1.3;
 }
 .desktop-icon:hover { background: rgba(255, 102, 196, 0.2); }
 .desktop-icon-img {
@@ -789,6 +793,7 @@ const BEATS = [
     title: 'open file: diary/01_first_day.txt',
     meta: 'last modified: june 21, 2004 — 10:42 pm',
     body: `june 21
+
 day one. counsellors all got here yesterday for orientation. campers tomorrow.
 mom cried at the bus stop again. i was the one who begged to come back.
 my cabin (rosewood) has 8 girls in it, ages 11–13. i'm a junior counsellor so
@@ -809,6 +814,7 @@ this is going to be a long six weeks :/`,
     title: 'open file: diary/02_why_im_typing.txt',
     meta: 'last modified: june 22, 2004 — 11:14 pm',
     body: `june 22
+
 hi future me. hopefully when you read this you're someone interesting
 and not just an older version of someone who spent the summer of '04
 losing her mind at a kids camp on kettle lake. don't publish this.
@@ -871,6 +877,7 @@ rosewood twice instead of once. i don't know what that means.`,
     title: 'open file: diary/03_wren.txt',
     meta: 'last modified: june 26, 2004 — 1:14 am',
     body: `june 26
+
 wren caught me looking. tonight, after lights-out, walking back from the lake.
 she didn't say anything. she just smiled, slow, like she'd been waiting for it.
 "come find me at the boathouse tomorrow," she said. "after dinner. before flag."
@@ -910,6 +917,7 @@ i can't sleep.`,
     title: 'open file: diary/07_boathouse.txt',
     meta: 'last modified: july 3, 2004 — 2:30 am',
     body: `july 3
+
 the boathouse smells like algae and sun-warm wood. she had a flashlight.
 she said: "i could get fired for this. you know that, right?"
 i said i knew.
@@ -935,9 +943,14 @@ nobody dragged me anywhere.`,
     meta: 'she was making a "diary header" generator.',
     storyAbove: `tegan was trying to write a script to auto-format her entries: a header line with her name and the day count, like she was being professional about it.`,
     skill: 'F-STRINGS (string formatting)',
-    instructions: `<p>an <strong>f-string</strong> lets you drop variables into a string. put an <code>f</code> before the quote and use <code>{}</code> around the variable name:</p>
+    instructions: `<p>so far you've printed plain words. an <strong>f-string</strong> lets you mix words AND variables into the same line of text, so the variable's value shows up in the printed output instead of just its name.</p>
+                   <p>two things make a string into an f-string:</p>
+                   <p>1. put the letter <code>f</code> right before the opening quote.<br>
+                   2. wrap any variable name in curly braces <code>{ }</code> inside the string.</p>
+                   <p>example: if <code>name = "ashley"</code>, then</p>
                    <p><code>greeting = f"hi {name}"</code></p>
-                   <p><strong>your task:</strong> the variables are set up for you. complete the f-string so it prints exactly: <code>=== day 5 :: tegan ===</code></p>`,
+                   <p>...stores the text <code>hi ashley</code> in <code>greeting</code>. python sees the <code>{name}</code> and swaps in whatever the variable holds.</p>
+                   <p><strong>your task:</strong> the variables <code>name</code> and <code>day</code> are already set up for you. complete the f-string on the <code>header = </code> line so that <code>print(header)</code> prints exactly: <code>=== day 5 :: tegan ===</code></p>`,
     starter: `name = "tegan"\nday = 5\nheader = f""\nprint(header)`,
     expectedOutput: '=== day 5 :: tegan ===',
     matchType: 'exact',
@@ -956,6 +969,7 @@ nobody dragged me anywhere.`,
     title: 'open file: diary/12_she_knows.txt',
     meta: 'last modified: july 22, 2004 — 11:55 pm',
     body: `july 22
+
 i finally told wren what camille saw three weeks ago. i'd been holding onto it
 since right after our first night at the boathouse. camille AIMed me the next day
 asking if i was okay. i lied. i told wren camille's "issues" were nothing.
@@ -1008,6 +1022,7 @@ to see what she'd do, and now i've seen.`,
     title: 'open file: diary/14_LAST.txt',
     meta: 'last modified: aug 14, 2004 — 9:31 pm',
     body: `august 14
+
 i told her i was going to leave camp. i told her i was going to tell my mom.
 not about us. just. that i wanted to go home early. that i was scared.
 she went so quiet. then she said "meet me at the boathouse tonight.
@@ -1077,7 +1092,7 @@ function renderDiary(beat, isActive) {
     </div>
     <div class="diary-entry">
       <div class="diary-meta">${beat.meta}</div>
-${beat.body.split('\n').map(l => l || '&nbsp;').join('<br>')}
+${beat.body.split(/\n\n+/).map(p => p.replace(/\n/g, ' ').trim()).filter(Boolean).join('<br><br>')}
     </div>
     ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
       <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
