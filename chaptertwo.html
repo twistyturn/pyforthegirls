@@ -1050,33 +1050,60 @@ i love you the way i told you i did. don't forget that part.
     nextBtn: 'jesus christ ▸'
   },
 
-  // ---- BEAT 5: boolean logic — and / or ----
+  // ---- BEAT 5a: boolean logic — practice fill-in ----
   {
-    id: 'task_boolean',
+    id: 'task_boolean_a',
     type: 'task',
-    title: 'python.exe :: access_check.py',
-    meta: 'tegan was teaching herself boolean logic.',
-    storyAbove: `wren's email proves she had access to tegan's account, or knew tegan would show her this. either way, your problem is bigger than one password. anyone snooping needs to be able to tell, fast, who could've sent this. that's a job for boolean logic. <code>and</code> requires both conditions to be true; <code>or</code> requires at least one.`,
+    title: 'python.exe :: access_check_practice.py',
+    meta: 'tegan was teaching herself boolean logic. this is her practice scratchpad.',
+    storyAbove: `wren's email proves she had access to tegan's account. anyone snooping needs to figure out, fast, who could've been logged in at any given moment. that's a job for boolean logic. <code>and</code> requires both conditions to be true; <code>or</code> requires at least one.<br><br>tegan left two practice scripts. start with the easier one — she filled in most of it.`,
     skill: 'BOOLEAN LOGIC (and / or / not)',
     instructions: `<p>combine conditions with <code>and</code>, <code>or</code>, <code>not</code>:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if age >= 18 and role == "counselor":
     print("ADULT_STAFF")</pre>
                    <p>you also have comparisons: <code>&gt;=</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&lt;</code>.</p>
-                   <p><strong>your task:</strong> a person is described by <code>name</code> and <code>age</code>. print <code>ADULT_COUNSELOR</code> if their name is <code>"wren"</code> AND their age is 18 or older. otherwise print <code>camper_or_minor</code>. the variables are set to <code>"wren"</code> and <code>19</code>.</p>`,
+                   <p><strong>your task:</strong> the script below is mostly written. replace the <code>???</code> with the correct boolean operator, and fill in the two empty <code>print()</code> statements. when name is <code>"wren"</code> and age is <code>19</code>, the script should print <code>ADULT_COUNSELOR</code>.</p>`,
     starter: `name = "wren"
 age = 19
-if name == "wren" ___ age >= 18:
+# replace ??? with the right boolean operator (and / or)
+if name == "wren" ??? age >= 18:
     print("")
 else:
     print("")`,
     expectedOutput: 'ADULT_COUNSELOR',
     matchType: 'exact',
-    hint: `between <code>name == "wren"</code> and <code>age >= 18</code>, type <code>and</code>. then fill in the print statements with <code>"ADULT_COUNSELOR"</code> and <code>"camper_or_minor"</code>.`,
+    hint: `the answer is <code>and</code> — both conditions need to be true to identify an adult counsellor (the right name AND old enough). then fill in <code>"ADULT_COUNSELOR"</code> in the first print and <code>"camper_or_minor"</code> in the else print.`,
+    onComplete: {
+      diary: `// practice script passes. and: both conditions true. got it.`
+    },
+    charms: 1
+  },
+
+  // ---- BEAT 5b: boolean logic — write it yourself ----
+  {
+    id: 'task_boolean_b',
+    type: 'task',
+    title: 'python.exe :: access_check.py',
+    meta: 'the actual script. tegan was using this to filter staff by role and age.',
+    storyAbove: `now the real one. same idea, but you write the whole condition yourself this time. tegan only left the variables and an empty <code>if</code> — the boolean logic is up to you.`,
+    skill: 'BOOLEAN LOGIC (writing conditions)',
+    instructions: `<p>same rules as before — <code>and</code> / <code>or</code> / <code>not</code>, plus comparisons (<code>==</code>, <code>!=</code>, <code>&gt;=</code>, etc).</p>
+                   <p><strong>your task:</strong> a person is described by <code>name</code> and <code>age</code>. write the condition that prints <code>ADULT_COUNSELOR</code> if their name is <code>"wren"</code> AND their age is 18 or older. otherwise print <code>camper_or_minor</code>. the variables are set to <code>"wren"</code> and <code>19</code>.</p>
+                   <p>fill in the <code>if</code> condition and both <code>print()</code> statements yourself.</p>`,
+    starter: `name = "wren"
+age = 19
+if :
+    print("")
+else:
+    print("")`,
+    expectedOutput: 'ADULT_COUNSELOR',
+    matchType: 'exact',
+    hint: `the condition is <code>name == "wren" and age >= 18</code>. it goes right after <code>if</code> and before the colon. then put <code>"ADULT_COUNSELOR"</code> in the first print, <code>"camper_or_minor"</code> in the second.`,
     onComplete: {
       diary: `// boolean check passes. wren halloway, 19, adult counsellor. tegan, 17, minor.`,
       buddy: { name: 'wren_h', msg: 'whoever you are. i know that account is being used. i can see when it logs on. stop opening her files.' }
     },
-    charms: 3
+    charms: 2
   },
 
   // ---- BEAT 6: the realization — the repeated line ----
@@ -1119,16 +1146,41 @@ writing to.)`,
     meta: 'you\'re writing this one yourself.',
     storyAbove: `you load every line of text on the disk into a python list called <code>fragments</code>. now you need to loop through it and count how many times the exact phrase <code>"her name is wren halloway"</code> appears. <code>for</code> loops walk through every item in a list, one at a time. inside the loop, you check each item with an <code>if</code>, and add to a counter when it matches.`,
     skill: 'FOR LOOPS + COUNTERS',
-    instructions: `<p>a <code>for</code> loop walks a list:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">for item in my_list:
-    print(item)</pre>
-                   <p>combine with a counter variable to count matches:</p>
+    instructions: `<p>three new ideas in this one. taking them slow.</p>
+
+                   <p><strong>1. lists.</strong> a <strong>list</strong> is a bunch of values stored in one variable, written with square brackets and commas:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "green"]</pre>
+                   <p>that's one variable (<code>colors</code>) holding three strings. you've seen this shape already in the starter code below — <code>fragments</code> is a list of text snippets.</p>
+
+                   <p><strong>2. for loops.</strong> a <code>for</code> loop lets you do something with every item in a list, one at a time:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "green"]
+for color in colors:
+    print(color)</pre>
+                   <p>that prints:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">red
+blue
+green</pre>
+                   <p>python ran the indented <code>print(color)</code> line three times — once for each item in <code>colors</code>.</p>
+
+                   <p><strong>3. the loop variable.</strong> in <code>for color in colors:</code>, the word <code>color</code> is a temporary variable that holds each item one at a time. you pick the name yourself — <code>for c in colors:</code> or <code>for item in colors:</code> would work the same way. just pick something readable.</p>
+
+                   <p><strong>4. counters.</strong> a <strong>counter</strong> is just a regular variable you increase by 1 every time something happens:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">count = 0
-for item in my_list:
-    if item == "target":
+count = count + 1
+count = count + 1
+print(count)</pre>
+                   <p>that prints <code>2</code>. each <code>count = count + 1</code> means "take whatever count is right now, add 1, and store that back into count."</p>
+
+                   <p><strong>5. putting it together.</strong> a <code>for</code> loop with an <code>if</code> inside lets you count only the items that match:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "red", "green", "red"]
+count = 0
+for color in colors:
+    if color == "red":
         count = count + 1
 print(count)</pre>
-                   <p><strong>your task:</strong> the list <code>fragments</code> is set up for you with text from across the disk. count how many times the exact string <code>"her name is wren halloway"</code> appears, and print the count.</p>`,
+                   <p>that prints <code>3</code> — three reds in the list. the <code>if</code> only fires on red items, so the counter only goes up for those.</p>
+
+                   <p><strong>your task:</strong> the list <code>fragments</code> is set up for you below with text from across the disk. count how many times the exact string <code>"her name is wren halloway"</code> appears, and print the count.</p>`,
     starter: `fragments = [
     "june 21",
     "her name is wren halloway",
