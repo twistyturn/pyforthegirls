@@ -1458,6 +1458,7 @@ else:
     expectedOutput: 'ADULT_COUNSELOR',
     matchType: 'exact',
     codeMustContain: [/\b(and|or)\b/],
+    codeMustContainDescription: `the <code>and</code> or <code>or</code> keyword to combine the two conditions`,
     hint: `the answer is <code>and</code> — both conditions need to be true to identify an adult counsellor (the right name AND old enough). then fill in <code>"ADULT_COUNSELOR"</code> in the first print and <code>"camper_or_minor"</code> in the else print.`,
     onComplete: {
       diary: `// practice script passes. and: both conditions true. got it.`
@@ -1485,6 +1486,7 @@ else:
     expectedOutput: 'ADULT_COUNSELOR',
     matchType: 'exact',
     codeMustContain: [/\b(and|or)\b/, 'if'],
+    codeMustContainDescription: `the <code>and</code> or <code>or</code> keyword inside an <code>if</code> statement`,
     hint: `the condition is <code>name == "wren" and role == "counsellor"</code>. it goes right after <code>if</code> and before the colon. then put <code>"ADULT_COUNSELOR"</code> in the first print, <code>"camper_or_minor"</code> in the second.`,
     onComplete: {
       diary: `// boolean check passes. wren halloway, the senior counsellor. that's the access pattern.`,
@@ -2134,11 +2136,14 @@ builtins.input = __patched_input
     }
     if (__missingPattern !== null) {
       passed = false;
-      const __fmt = Array.isArray(__missingPattern)
-        ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
-        : (__missingPattern instanceof RegExp
-            ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
-            : '<code>' + escapeHtml(__missingPattern) + '</code>');
+      const __formatPattern = (__p) => {
+        if (__p instanceof RegExp) return 'the technique this task is teaching';
+        return '<code>' + escapeHtml(__p) + '</code>';
+      };
+      const __autoFmt = Array.isArray(__missingPattern)
+        ? __missingPattern.map(__formatPattern).join(' or ')
+        : __formatPattern(__missingPattern);
+      const __fmt = beat.codeMustContainDescription || __autoFmt;
       const __defaultMsg = `the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.`;
       const __overrideMsg = beat.codeMustContainMessage;
       const __msg = __overrideMsg || __defaultMsg;
