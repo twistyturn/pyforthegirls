@@ -323,10 +323,8 @@
       // title text
       '<text x="400" y="38" text-anchor="middle" font-size="22" fill="#3a2820" font-style="italic" letter-spacing="2.5">Camp Pinecrest</text>' +
       '<line x1="320" y1="44" x2="480" y2="44" stroke="#8a6a4a" stroke-width="0.5"/>' +
-      '<text x="400" y="55" text-anchor="middle" font-size="9" fill="#6a5848" letter-spacing="2">WHITECOURT, ALBERTA &middot; EST. 1962</text>' +
+      '<text x="400" y="55" text-anchor="middle" font-size="9" fill="#6a5848" letter-spacing="2">WHITECOURT, ALBERTA &middot; EST. 1962 &middot; FAMILY HANDBOOK 2004</text>' +
     '</g>' +
-    // diegetic subtitle below the cartouche
-    '<text x="400" y="80" text-anchor="middle" font-size="9" fill="#3a2820" letter-spacing="2.5" font-style="italic" stroke="#fcf5e0" stroke-width="2" paint-order="stroke">~ from the family handbook, summer 2004 ~</text>' +
     // ==== compass rose ====
     '<g transform="translate(70, 90)">' +
       '<circle r="22" fill="#fbf3df" stroke="#3a2820" stroke-width="1"/>' +
