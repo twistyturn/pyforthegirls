@@ -2702,6 +2702,168 @@ i'm not going to message her.`,
 // wren was a piece of shit. wren also isn't the killer. both can be true at once.
 // she gave me the bonfire and the gravel and the timing. i'll use it. we both want this guy caught and i'll work with anyone who can get me there. that isn't the same as liking her or being grateful to her. she manipulated a seventeen-year-old for an entire summer. it's hers to live with.
 // she signed off. i'm letting her be done.`,
+    nextBtn: '\u25b8 open notes'
+  },
+
+  // ---- BEAT 10.5: ch8_timeline_open \u2014 cousin starts the gravel-acoustics deduction ----
+  {
+    id: 'ch8_timeline_open',
+    type: 'diary',
+    title: 'open file: notes/the_gravel.txt',
+    meta: 'after wren signed off you stopped typing for a long time.',
+    body: `wren said the gravel makes noise. anyone walking near the
+boathouse would have been heard.
+
+she heard nothing while she was on the dock with tegan from
+about 11 until she left at 11:25.
+
+tegan was alone after that, watching the path, texting "she's
+not here yet" and "STILL not here." nothing arrived from the
+gravel until 11:44 \u2014 when tegan typed "someone's coming up the path."
+
+so the only times anyone could have walked the gravel without
+being heard were before 11 or right at 11:44. nothing in the
+middle.
+
+i'm going to write that out as a function and see what falls out.`,
+    nextBtn: '\u25b8 python.exe'
+  },
+
+  // ---- BEAT 10.6: task_reconstruct_timeline ----
+  {
+    id: 'task_reconstruct_timeline',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: gravel_check.py',
+    meta: 'wren gave you a constraint. write it as a function. see what falls out.',
+    skill: 'FUNCTIONS :: PARAMETERS, RETURN, REUSE',
+    storyAbove: `you have wren's silent windows on the gravel path. you have a list of candidate times tyler could have walked it. write a function that takes a time and returns whether that walk would have been heard.`,
+    instructions: `<p>your task: implement <code>could_walk_gravel(time)</code>.</p>
+                   <p>the function should return <code>True</code> if walking the gravel path at <code>time</code> would NOT have been heard \u2014 i.e., the time falls outside every silent window in <code>SILENT_WINDOWS</code>. otherwise, return <code>False</code>.</p>
+                   <p>then call the function on each candidate time and print the result, one per line.</p>
+                   <p>since timestamps are in <code>"HH:MM"</code> format with leading zeros, string comparison works: <code>"23:00" &lt;= "23:10" &lt;= "23:25"</code> is True. you don't need to parse them.</p>`,
+    starter: `# wren's acoustic testimony plus what tegan reported
+# (silent gravel, then "someone's coming" at 11:44):
+SILENT_WINDOWS = [
+    ("23:00", "23:25"),  # wren on the dock with tegan
+    ("23:26", "23:43"),  # tegan alone, hearing nothing
+]
+
+candidates = [
+    ("21:30", "before wren and tegan met"),
+    ("23:10", "during wren+tegan"),
+    ("23:30", "after wren left, while tegan was alone"),
+    ("23:44", "the moment tegan heard 'someone's coming'"),
+]
+
+# implement could_walk_gravel below.
+# return True if \`time\` is OUTSIDE every silent window.
+# (string comparison works on HH:MM strings.)
+
+def could_walk_gravel(time):
+    pass
+
+# call it on each candidate
+for t, label in candidates:
+    print(f"{t} ({label}): {could_walk_gravel(t)}")
+`,
+    expectedOutput: `21:30 (before wren and tegan met): True
+23:10 (during wren+tegan): False
+23:30 (after wren left, while tegan was alone): False
+23:44 (the moment tegan heard 'someone's coming'): True`,
+    matchType: 'exact',
+    codeMustContain: ['def could_walk_gravel', 'return'],
+    hint: `<p>loop through <code>SILENT_WINDOWS</code>. for each <code>(start, end)</code> pair, check if <code>start &lt;= time &lt;= end</code>. if so, return <code>False</code>. if the loop finishes without returning, return <code>True</code>.</p><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">def could_walk_gravel(time):
+    for start, end in SILENT_WINDOWS:
+        if start &lt;= time &lt;= end:
+            return False
+    return True</pre>`,
+    onComplete: {
+      diary: `// only two windows. before they met, or at the exact moment of approach. nothing in between.`
+    }
+  },
+
+  // ---- BEAT 10.7: ch8_map_timeline ----
+  {
+    id: 'ch8_map_timeline',
+    type: 'timeline_map',
+    title: 'investigation board :: pinecrest, aug 14',
+    meta: 'who was where. drag the slider.',
+    frames: [
+      {
+        time: '22:00',
+        caption: 'tegan and wren both in hemlock. tyler not on the path yet.',
+        pins: [
+          { person: 'tegan', location: 'hemlock' },
+          { person: 'wren',  location: 'hemlock' }
+        ]
+      },
+      {
+        time: '23:00',
+        caption: 'wren and tegan at the boathouse. wren says the gravel was silent.',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'wren',  location: 'boathouse_dock' },
+          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+        ]
+      },
+      {
+        time: '23:25',
+        caption: 'wren walks back up the gravel. tegan stays. nothing audible from the bushes.',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'wren',  location: 'gravel_path' },
+          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+        ]
+      },
+      {
+        time: '23:31',
+        caption: 'wren back in cabin (AIMs briar at 23:42). tegan alone. \"she is not here yet.\"',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'wren',  location: 'hemlock' },
+          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+        ]
+      },
+      {
+        time: '23:44',
+        caption: 'tyler emerges. tegan: "someone is coming up the path. it is not her."',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'tyler', location: 'gravel_path' }
+        ]
+      },
+      {
+        time: '23:50',
+        caption: 'camille saw tyler walking out from behind the boathouse.',
+        pins: [
+          { person: 'tyler', location: 'behind_boathouse' }
+        ]
+      }
+    ],
+    nextBtn: '\u25b8 what it means'
+  },
+
+  // ---- BEAT 10.8: ch8_motive_lands ----
+  {
+    id: 'ch8_motive_lands',
+    type: 'diary',
+    title: 'open file: notes/he_was_already_there.txt',
+    meta: 'you typed this slowly.',
+    body: `he wasn't following her down. he was already there.
+
+he was in the bushes by 11, before wren walked down the gravel path.
+he sat there while they talked. he sat there while she kissed her on
+the dock. he heard her tell wren she was done at camp. he heard wren
+leave at 11:25 and waited nineteen minutes to be sure she wasn't
+coming back.
+
+he thought the kiss at the bonfire had been for him. he thought she'd
+been performing for him. he watched the actual answer happen at the
+boathouse two weeks later, and then he came down the path and made
+sure no one would ever know what he'd seen.
+
+he came out of the bushes at 11:44.`,
     nextBtn: '\u25b8 AIM hannah'
   },
 
