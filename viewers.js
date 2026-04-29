@@ -583,11 +583,11 @@
       blurb: 'aug 13 → 14, 2004. only contact: glorfindel_lives. last 10 outgoing texts before the line went cold.',
       messages: [
         ['21:48', 'tegan_a87', 'wren\'s asking weird questions about briar today'],
-        ['22:15', 'tegan_a87', 'she wants me to meet her at the boathouse at 11. i think i\'m gonna do it :/'],
+        ['22:15', 'tegan_a87', 'wren wants me to meet her at the boathouse at 11. i think i\'m gonna do it :/'],
         ['22:30', 'glorfindel_lives', 'tegan don\'t go alone please'],
-        ['23:03', 'tegan_a87', 'ok done. just me and the lake now.'],
-        ['23:18', 'tegan_a87', 'she\'s not here yet'],
-        ['23:31', 'tegan_a87', 'she\'s STILL not here'],
+        ['23:28', 'tegan_a87', 'ok done. just me and the lake now.'],
+        ['23:31', 'tegan_a87', 'she\'s not here yet'],
+        ['23:40', 'tegan_a87', 'she\'s STILL not here'],
         ['23:44', 'tegan_a87', 'wait. someone\'s coming up the path. it\'s not her.'],
         ['23:46', 'tegan_a87', 'h']
       ]
