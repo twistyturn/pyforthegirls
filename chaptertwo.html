@@ -1640,9 +1640,35 @@ in case there are more files. in case there's a fourth.`,
     meta: 'the final crack.',
     storyAbove: `you've extracted the keywords into a list: <code>["birchwood", "counsellor", "1985"]</code>. now you need to walk through them and stick them together into one string — the password.`,
     skill: 'FOR LOOPS + STRING CONCATENATION',
-    instructions: `<p>two pieces you need: <strong>walking through a list with a <code>for</code> loop</strong>, and <strong>string concatenation</strong>.</p>
+    instructions: `<p>this task uses two new ideas: <strong>walking through a list with a <code>for</code> loop</strong>, and <strong>building up a string by sticking pieces onto it as you go</strong>. let's start with the second one because it's the conceptually trickier of the two.</p>
 
-                   <p><strong>walking a list with <code>for</code>.</strong> a <code>for</code> loop runs once per item in a list, with the item available as a variable inside the loop:</p>
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">the shopping bag idea</h4>
+                   <p>imagine you're walking through a store with an empty shopping bag. as you walk past each item you want, you pick it up and drop it in the bag. by the time you've walked through the whole store, the bag has everything in it.</p>
+                   <p>three things to notice about that:</p>
+                   <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
+                     <li>the bag starts <em>empty</em>. you don't start with a full bag.</li>
+                     <li>the bag <em>grows</em> as you walk. each item gets added to whatever's already in it.</li>
+                     <li>you don't look in the bag until the end. checking after each item would be silly — you want to see the final collection.</li>
+                   </ul>
+                   <p>code does the same thing. you have a variable that starts empty, you have a loop that adds to it each pass, and at the end you print it (look in the bag).</p>
+
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">in python</h4>
+                   <p>the bag is just a variable. you start it empty:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">bag = ""</pre>
+                   <p>that's a string with nothing in it. (two quotes with nothing between them.)</p>
+                   <p>then you add to it. python uses <code>+</code> to stick strings together:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"hello" + "world"   # → "helloworld"</pre>
+                   <p>so to add "apple" to the bag, you write <code>bag = bag + "apple"</code>. read it left to right: "the new bag is the current bag with 'apple' stuck onto it." that overwrites <code>bag</code> with the longer version.</p>
+                   <p>here's the bag growing one item at a time:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">bag = ""
+bag = bag + "apple"     # bag is now "apple"
+bag = bag + "banana"    # bag is now "applebanana"
+bag = bag + "cherry"    # bag is now "applebananacherry"
+print(bag)              # → "applebananacherry"</pre>
+                   <p>each line takes whatever was in the bag, adds the next thing, and stores the result back in <code>bag</code>. the print at the end shows the final bag.</p>
+
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">walking with a for loop</h4>
+                   <p>doing it three lines at a time is fine for three items, but if you had a hundred items you'd want a loop. python's <code>for</code> loop runs once per item in a list, with the item available as a variable inside the loop:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
 for colour in colours:
     print(colour)</pre>
@@ -1650,22 +1676,27 @@ for colour in colours:
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">red
 blue
 green</pre>
-                   <p>the variable name (<code>colour</code> in this example) can be anything you want — it's just a label for "the current item." python sets it to each item in turn, runs the indented code, and moves on. when there are no more items, the loop stops.</p>
+                   <p>the variable name <code>colour</code> can be anything — it's just a label python sets to each item in turn. when there are no more items, the loop stops.</p>
 
-                   <p><strong>string concatenation.</strong> you can stick two strings together with <code>+</code>:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"hello" + "world"   # → "helloworld"</pre>
-                   <p>and you can build up a string in a loop by adding to it each pass:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">word = ""
-word = word + "hi"
-word = word + "there"
-print(word)   # → "hithere"</pre>
-                   <p>each <code>word = word + "..."</code> overwrites <code>word</code> with the longer version. just like <code>number = int(answer)</code> overwrote <code>number</code> with the converted value, you have to actually <em>assign</em> the result back to the variable. <code>word + "hi"</code> by itself just computes the new string and throws it away.</p>
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">putting them together</h4>
+                   <p>combine the bag and the loop. start with an empty bag. each pass through the loop, add the current item to the bag:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fruits = ["apple", "banana", "cherry"]
+bag = ""
+for fruit in fruits:
+    bag = bag + fruit
+print(bag)</pre>
+                   <p>that prints:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">applebananacherry</pre>
+                   <p>the loop runs three times — once for each fruit. each pass, the bag gets longer. after the loop ends, the bag has all three. the print is OUTSIDE the loop because you only want to see the final result, not the bag at every step.</p>
 
-                   <p><strong>your task:</strong> walk through <code>keywords</code> with a <code>for</code> loop, building up <code>password</code> by adding each keyword onto the end of it. then print <code>password</code>. expected output: <code>birchwoodcounsellor1985</code>.</p>`,
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">your task</h4>
+                   <p>same idea, but with the keywords. <code>keywords</code> is a list of three strings: <code>["birchwood", "counsellor", "1985"]</code>. the password variable starts empty. walk through the keywords with a for loop, adding each one to <code>password</code>. then print <code>password</code>.</p>
+                   <p>expected output: <code>birchwoodcounsellor1985</code></p>`,
     starter: `keywords = ["birchwood", "counsellor", "1985"]
 password = ""
 
 # write a for loop here that adds each keyword to password
+# (this is the bag-growing pattern from the instructions)
 
 print(password)
 `,
@@ -1673,6 +1704,14 @@ print(password)
     matchType: 'exact',
     codeMustContain: ['for ', ' in keywords', 'password ='],
     commonMistakes: [
+      {
+        pattern: /for\s+\w+\s+in\s+keywords\s*:[^]*?print\s*\(\s*\w+\s*\)/,
+        tip: `your for loop is printing each keyword, but not adding them to <code>password</code>. the loop should build up <code>password</code> instead of (or in addition to) printing. inside the loop, you want <code>password = password + word</code> — that's how each keyword gets stuck onto the end. then <code>print(password)</code> at the bottom shows the final result.`
+      },
+      {
+        pattern: /^[ \t]*password\s*=\s*keywords\s*$/m,
+        tip: `<code>password = keywords</code> sets <code>password</code> to the whole list (so <code>print(password)</code> shows the list with brackets and quotes). you want <code>password</code> to be a single string that's all three keywords stuck together. start with <code>password = ""</code> (empty string), then use a for loop to add each keyword onto it.`
+      },
       {
         pattern: /^[ \t]*password\s*\+\s*\w+\s*$/m,
         tip: `you have <code>password + word</code> but it's not stored anywhere — same problem as <code>int(answer)</code> in the input task. you need <code>password = password + word</code> to actually update <code>password</code>. without the <code>=</code>, python computes the new string and throws it away.`
