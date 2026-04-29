@@ -435,20 +435,29 @@
       svg.appendChild(makePath(0, 1));
     }
 
-    // optional label on the string, rendered as DOM (so it picks up real fonts)
+    // optional label on the string, rendered as DOM (so it picks up real fonts).
+    // normalise the rotation so the label is never upside-down: if the line's
+    // angle would flip the text past vertical, swing it back by 180° so it
+    // still reads left-to-right while staying parallel to the string.
     if (str.label) {
+      let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      if (angle > 90) angle -= 180;
+      else if (angle < -90) angle += 180;
       const lab = document.createElement('div');
       lab.style.position = 'absolute';
       lab.style.left = mx + '%';
       lab.style.top = (my + sag * 1.4) + '%';
-      lab.style.transform = 'translate(-50%, -50%) rotate(' + ((Math.atan2(dy, dx) * 180 / Math.PI) | 0) + 'deg)';
+      lab.style.transform = 'translate(-50%, -50%) rotate(' + (angle | 0) + 'deg)';
       lab.style.fontFamily = "'Nanum Pen Script', cursive";
-      lab.style.fontSize = '14px';
+      lab.style.fontSize = '15px';
+      lab.style.fontWeight = 'bold';
       lab.style.color = thickness === 'loose' ? '#8b0e2e' : color;
       lab.style.pointerEvents = 'none';
       lab.style.whiteSpace = 'nowrap';
       lab.style.zIndex = '6';
-      lab.style.textShadow = '1px 1px 0 rgba(255,248,214,0.7)';
+      // pale cream halo so red marker stays legible on dark cork
+      lab.style.textShadow =
+        '1px 1px 0 #fff8e1, -1px 1px 0 #fff8e1, 1px -1px 0 #fff8e1, -1px -1px 0 #fff8e1, 0 0 6px #fff8e1';
       lab.textContent = str.label;
       board.appendChild(lab);
     }
@@ -1488,7 +1497,9 @@
       injectCSS();
       injectModal();
       highestUnlocked = Math.max(1, Caseboard.progress());
-      if (currentView > highestUnlocked) currentView = highestUnlocked;
+      // default to the latest unlocked snapshot every time the board opens —
+      // the player expects the most recent state, not the oldest.
+      currentView = highestUnlocked;
       renderScrubber();
       renderBoard();
       document.getElementById('cb-overlay').classList.add('cb-open');
