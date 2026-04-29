@@ -1935,12 +1935,35 @@ location.reload();
 // ===========================================================================
 let _lastBuddy = { name: '', msg: '' };
 
+// pyforthegirls_buddy_threads: per-buddy message history persisted across
+// chapters. only non-archived senders accumulate; tegan_a87's pre-recorded
+// messages stay single-shot ghost notes.
+const BUDDY_THREAD_KEY = 'pyforthegirls_buddy_threads';
+function appendBuddyThread(name, msg) {
+  if (name === 'tegan_a87') return;
+  try {
+    const all = JSON.parse(localStorage.getItem(BUDDY_THREAD_KEY) || '{}');
+    if (!all[name]) all[name] = [];
+    if (!all[name].some(m => m.msg === msg)) {
+      all[name].push({ msg });
+      localStorage.setItem(BUDDY_THREAD_KEY, JSON.stringify(all));
+    }
+  } catch (e) {}
+}
+function getBuddyThread(name) {
+  try {
+    const all = JSON.parse(localStorage.getItem(BUDDY_THREAD_KEY) || '{}');
+    return all[name] || [];
+  } catch (e) { return []; }
+}
+
 function showBuddy(name, msg) {
   if (window.Sounds) {
     Sounds.playOnceEver('aim-buddy-in', 'buddy-on:' + name);
     Sounds.play('aim-message-in');
   }
   _lastBuddy = { name, msg };
+  appendBuddyThread(name, msg);
   document.getElementById('buddyName').textContent = name + ' :: incoming message';
   document.getElementById('buddyMessage').innerHTML = msg;
   const popup = document.getElementById('buddyPopup');
@@ -1955,14 +1978,28 @@ function openBuddyAim(evt) {
   if (evt) evt.stopPropagation();
   const { name, msg } = _lastBuddy;
   if (!name) return;
-  const selfUser = 'tegan_a87';
-  const isSelf = (name === selfUser);
-  const sideClass = isSelf ? 'aim-self' : 'aim-other';
-  const safeMsg = String(msg || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const isArchived = (name === 'tegan_a87');
+  const sideClass = isArchived ? 'aim-self' : 'aim-other';
+  const esc = s => String(s || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
   document.getElementById('aimModalTitle').textContent = 'IM with ' + name;
-  document.getElementById('aimModalBody').innerHTML =
-    `<div class="aim-system">[buddy chime — ${name} sent you a message]</div>` +
-    `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${safeMsg}</span></div>`;
+  let body;
+  if (isArchived) {
+    body = `<div class="aim-system">[buddy chime — ${name} sent you a message]</div>` +
+           `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${esc(msg)}</span></div>`;
+  } else {
+    const thread = getBuddyThread(name);
+    body = `<div class="aim-system">[live thread — ${name} has been messaging this account]</div>`;
+    for (const m of thread) {
+      body += `<div class="aim-msg ${sideClass}"><span class="aim-user">${name}:</span> <span class="aim-text">${esc(m.msg)}</span></div>`;
+    }
+  }
+  document.getElementById('aimModalBody').innerHTML = body;
+  const status = document.querySelector('#aimModalOverlay .aim-modal-status');
+  if (status) {
+    status.textContent = isArchived
+      ? '[ read-only — this is an archived message. ]'
+      : '[ live message — you can\'t reply from this archive. ]';
+  }
   document.getElementById('aimModalOverlay').classList.remove('hidden');
   closeBuddy();
 }
