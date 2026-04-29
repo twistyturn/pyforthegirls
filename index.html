@@ -313,9 +313,12 @@
   }
 
   function nextChapterFile() {
-    // Lowest-numbered chapter with progress, else chapter 1.
-    for (const ch of CHAPTERS) {
-      if (chapterStatus(ch.saveKey).state === 'progress') return ch;
+    // Highest-numbered chapter with progress (the furthest the player has
+    // reached), else chapter 1. Saves are never auto-cleared, so iterating
+    // forwards would always pin "continue" to ch1 once the player had
+    // finished it.
+    for (let i = CHAPTERS.length - 1; i >= 0; i--) {
+      if (chapterStatus(CHAPTERS[i].saveKey).state === 'progress') return CHAPTERS[i];
     }
     return CHAPTERS[0];
   }
