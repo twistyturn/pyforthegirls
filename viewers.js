@@ -751,7 +751,7 @@
       'Beautiful is better than ugly.\nExplicit is better than implicit.\nSimple is better than complex.\n' +
       '...</span>\n' +
       '<span class="vw-repl-prompt">>>> </span><span class="vw-repl-err"># note from the cousin: this is a transcript. tegan saved\n' +
-      '# her favorite REPL session as a screenshot once. i found\n' +
+      '# her favourite REPL session as a screenshot once. i found\n' +
       '# it in the camp 2004/ folder. the "real" interpreter is\n' +
       '# the one running her chapter scripts.</span>\n' +
       '<span class="vw-repl-prompt">>>> </span><span class="vw-repl-input-cursor">_</span>';

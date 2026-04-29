@@ -18,11 +18,11 @@
 
 
 # ---- exercise 1: ask a question, echo the answer ----
-# ask "what's your favorite color? " and then print
+# ask "what's your favourite colour? " and then print
 # "you said: <whatever they typed>"
 
 # ---- ANSWER ----
-# answer = input("what's your favorite color? ")
+# answer = input("what's your favourite colour? ")
 # print(f"you said: {answer}")
 
 
@@ -81,7 +81,7 @@
 #
 # // when you add the int versions you get math.
 # // when you add the string versions you get text-glue.
-# // SAME + OPERATOR. different behavior based on type.
+# // SAME + OPERATOR. different behaviour based on type.
 # // python is doing a lot under the hood.
 
 
