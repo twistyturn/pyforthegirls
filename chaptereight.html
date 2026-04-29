@@ -1801,27 +1801,27 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
   <!-- Desktop icons -->
 
   <div class="icon-grid">
-    <div class="desktop-icon">
+    <div class="desktop-icon" onclick="if(window.Viewers)Viewers.open('mycomputer')">
       <div class="desktop-icon-img">💾</div>
       My Computer
     </div>
-    <div class="desktop-icon">
+    <div class="desktop-icon" onclick="if(window.Viewers)Viewers.open('pinecrest')">
       <div class="desktop-icon-img">📂</div>
       pinecrest_summer/
     </div>
-    <div class="desktop-icon">
+    <div class="desktop-icon" onclick="if(window.Viewers)Viewers.open('python')">
       <div class="desktop-icon-img">🐍</div>
       python.exe
     </div>
-    <div class="desktop-icon">
+    <div class="desktop-icon" onclick="if(window.Viewers)Viewers.open('diary')">
       <div class="desktop-icon-img">📔</div>
       diary/
     </div>
-    <div class="desktop-icon">
+    <div class="desktop-icon" onclick="if(window.Viewers)Viewers.open('aim')">
       <div class="desktop-icon-img">💬</div>
       AIM_archives/
     </div>
-    <div class="desktop-icon">
+    <div class="desktop-icon" onclick="if(window.Viewers)Viewers.open('sms')">
       <div class="desktop-icon-img">📱</div>
       SMS_dumps/
     </div>
@@ -3760,6 +3760,7 @@ document.addEventListener('click', (e) => {
 <script src="clutter.js"></script>
 <script src="study_notes.js"></script>
 <script src="practice.js"></script>
+<script src="viewers.js"></script>
 <script src="sounds.js"></script>
 </body>
 </html>
