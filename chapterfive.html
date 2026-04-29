@@ -1976,11 +1976,14 @@ if (passed && beat.codeMustContain) {
   }
   if (__missingPattern !== null) {
     passed = false;
-    const __fmt = Array.isArray(__missingPattern)
-      ? __missingPattern.map(__s => '<code>' + escapeHtml(__s) + '</code>').join(' or ')
-      : (__missingPattern instanceof RegExp
-          ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
-          : '<code>' + escapeHtml(__missingPattern) + '</code>');
+    const __formatPattern = (__p) => {
+      if (__p instanceof RegExp) return 'the technique this task is teaching';
+      return '<code>' + escapeHtml(__p) + '</code>';
+    };
+    const __autoFmt = Array.isArray(__missingPattern)
+      ? __missingPattern.map(__formatPattern).join(' or ')
+      : __formatPattern(__missingPattern);
+    const __fmt = beat.codeMustContainDescription || __autoFmt;
     const __defaultMsg = `the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.`;
     const __overrideMsg = beat.codeMustContainMessage;
     const __msg = __overrideMsg || __defaultMsg;
