@@ -342,6 +342,34 @@ text-transform: uppercase;
 letter-spacing: 1px;
 }
 
+
+/* ============ EMAIL CHROME (renders email-shaped diary beats with
+   period-Outlook-Express styling instead of notebook paper) ============ */
+.diary-entry[data-email="1"] {
+  background: #ffffff;
+  background-image: none;
+  color: #1a0628;
+  padding: 0 16px 16px 16px;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  border-left-color: #36589f;
+}
+.diary-entry[data-email="1"]::before {
+  display: none;
+}
+.diary-entry[data-email="1"] .diary-meta {
+  background: #ece9d8;
+  color: #36589f;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: bold;
+  margin: 0 -16px 12px -16px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #888;
+}
 /* ============ TERMINAL / CODE EDITOR ============ */
 .terminal-window { max-width: 760px; margin: 24px auto; }
 .terminal-window .window-titlebar {
@@ -1753,7 +1781,7 @@ function renderDiary(beat, isActive) {
         <span class="titlebar-btn">×</span>
       </div>
     </div>
-    <div class="diary-entry">
+    <div class="diary-entry" data-email="${beat.subtype === 'email' ? '1' : ''}">
       <div class="diary-meta">${beat.meta}</div>
 ${beat.body.split(/\n\n+/).map(p => p.replace(/\n/g, ' ').trim()).filter(Boolean).join('<br><br>')}
     </div>
