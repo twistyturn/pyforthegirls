@@ -763,6 +763,57 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
   cursor: not-allowed;
 }
 
+
+/* ============ LOCKED-ZIP ALERT (clicking pinecrest_summer.zip while
+   it's still password-protected) ============ */
+.lock-alert-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 600;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: window-pop 0.2s ease-out;
+}
+.lock-alert-overlay.shown { display: flex; }
+.lock-alert {
+  background: var(--window-bg);
+  border: 2px solid var(--bg-deep);
+  box-shadow: 4px 4px 0 var(--bg-deep), 0 0 24px rgba(255, 102, 196, 0.4);
+  width: min(360px, calc(100% - 40px));
+  font-family: 'VT323', 'Courier New', monospace;
+}
+.lock-alert-title {
+  background: linear-gradient(90deg, var(--pink-hot) 0%, var(--lavender) 100%);
+  color: white;
+  padding: 4px 8px;
+  font-family: 'Silkscreen', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--bg-deep);
+  text-shadow: 1px 1px 0 var(--bg-deep);
+}
+.lock-alert-body {
+  padding: 16px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: var(--bg-deep);
+  font-size: 17px;
+  line-height: 1.35;
+}
+.lock-alert-icon { font-size: 36px; flex-shrink: 0; }
+.lock-alert-buttons {
+  background: var(--chrome-1);
+  border-top: 2px solid var(--bg-deep);
+  padding: 8px;
+  text-align: center;
+}
+
 /* small mobile adjustments */
 @media (max-width: 600px) {
 .intro-logo { font-size: 18px; }
@@ -803,7 +854,7 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
       <div class="desktop-icon-img">💾</div>
       My Computer
     </div>
-    <div class="desktop-icon">
+    <div class="desktop-icon" onclick="showLockedZip()">
       <div class="desktop-icon-img">🔒</div>
       pinecrest_summer.zip
     </div>
@@ -882,6 +933,26 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
     </div>
   </div>
 </div>
+
+
+  <!-- ============ LOCKED-ZIP ALERT ============ -->
+  <div class="lock-alert-overlay" id="lockAlertOverlay" onclick="closeLockAlert()">
+    <div class="lock-alert" onclick="event.stopPropagation()">
+      <div class="lock-alert-title">
+        <span>winzip :: password required</span>
+        <div class="window-titlebar-buttons">
+          <span class="titlebar-btn" onclick="closeLockAlert()">×</span>
+        </div>
+      </div>
+      <div class="lock-alert-body">
+        <span class="lock-alert-icon">🔒</span>
+        <span>this archive is password protected. you don't have the password yet — keep going through tegan's files.</span>
+      </div>
+      <div class="lock-alert-buttons">
+        <button class="btn btn-secondary" onclick="closeLockAlert()" style="font-size: 9px; padding: 4px 14px;">OK</button>
+      </div>
+    </div>
+  </div>
 
 <!-- ============ TASKBAR ============ -->
 
@@ -1914,6 +1985,27 @@ if (window.Sounds) {
 }
 renderStory();
 }
+
+
+// Locked-zip alert: clicking the pinecrest_summer.zip icon while it's
+// still password-protected shows a Y2K-style WinZip dialog and (on
+// mobile) a tiny haptic buzz so the click feels acknowledged.
+function showLockedZip() {
+  try { if (navigator.vibrate) navigator.vibrate(60); } catch(e) {}
+  const overlay = document.getElementById('lockAlertOverlay');
+  if (overlay) overlay.classList.add('shown');
+}
+function closeLockAlert() {
+  const overlay = document.getElementById('lockAlertOverlay');
+  if (overlay) overlay.classList.remove('shown');
+}
+document.addEventListener('keydown', function(__lockKey) {
+  if (__lockKey.key !== 'Escape') return;
+  const __overlay = document.getElementById('lockAlertOverlay');
+  if (__overlay && __overlay.classList.contains('shown')) {
+    __overlay.classList.remove('shown');
+  }
+});
 
 // ===========================================================================
 // START MENU (icon-grid toggle for narrow screens)
