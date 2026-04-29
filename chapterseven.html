@@ -1430,6 +1430,10 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
       <div class="desktop-icon-img">📄</div>
       study_notes.docx
     </div>
+    <div class="desktop-icon" id="icon-practice" onclick="if(window.PythonPractice)PythonPractice.open()">
+      <div class="desktop-icon-img">📁</div>
+      python_practice
+    </div>
   </div>
 
   <!-- chapter window: persistent "app window" containing story content -->
@@ -2923,6 +2927,7 @@ document.addEventListener('click', (e) => {
 <script src="caseboard.js"></script>
 <script src="clutter.js"></script>
 <script src="study_notes.js"></script>
+<script src="practice.js"></script>
 <script src="sounds.js"></script>
 </body>
 </html>

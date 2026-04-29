@@ -874,6 +874,10 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
       <div class="desktop-icon-img">📄</div>
       study_notes.docx
     </div>
+    <div class="desktop-icon" id="icon-practice" onclick="if(window.PythonPractice)PythonPractice.open()" style="display:none;">
+      <div class="desktop-icon-img">📁</div>
+      python_practice
+    </div>
   </div>
 
   <!-- chapter window: persistent "app window" containing story content -->
@@ -1722,6 +1726,7 @@ storyContainer.appendChild(w);
 function renderWrap(beat, isActive) {
 if (window.Caseboard) Caseboard.recordWrap(1);
 if (window.StudyNotes) StudyNotes.refreshIcon();
+if (window.PythonPractice) PythonPractice.refreshIcon();
 const w = document.createElement('div');
 w.className = 'window story-window';
 w.style.maxWidth = '640px';
@@ -2104,6 +2109,7 @@ document.addEventListener('click', (e) => {
 <script src="caseboard.js"></script>
 <script src="clutter.js"></script>
 <script src="study_notes.js"></script>
+<script src="practice.js"></script>
 <script src="sounds.js"></script>
 
 </body>
