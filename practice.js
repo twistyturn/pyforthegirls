@@ -718,12 +718,20 @@
   // PUBLIC API
   // ===========================================================================
   function open() {
-    injectCSS();
-    injectModal();
-    renderFileList();
-    const list = unlockedFiles();
-    if (list.length && !currentFile) loadFile(list[0].filename);
-    document.getElementById('pr-overlay').classList.add('pr-open');
+    try {
+      injectCSS();
+      injectModal();
+      renderFileList();
+      const list = unlockedFiles();
+      if (list.length && !currentFile) loadFile(list[0].filename);
+      const overlay = document.getElementById('pr-overlay');
+      if (overlay) overlay.classList.add('pr-open');
+      else throw new Error('pr-overlay element not found after injectModal');
+    } catch (e) {
+      console.error('[PythonPractice] open failed:', e);
+      alert('python_practice failed to open: ' + (e && e.message ? e.message : e) +
+            '\n\n(check the browser console for details. screenshot it and send to claude.)');
+    }
   }
   function close() {
     const o = document.getElementById('pr-overlay');
@@ -733,9 +741,20 @@
     const el = document.getElementById('icon-practice');
     if (!el) return;
     el.style.display = isUnlocked() ? '' : 'none';
+    // belt-and-suspenders: also bind click here in case the inline onclick
+    // got stripped or evaluated when window.PythonPractice was not yet set.
+    if (!el.dataset.prBound) {
+      el.dataset.prBound = '1';
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        open();
+      });
+    }
   }
 
   window.PythonPractice = { open, close, refreshIcon, isUnlocked, progress };
+  console.log('[PythonPractice] loaded. files:', FILES.length, 'unlocked:', unlockedFiles().length, 'progress:', progress());
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', refreshIcon);
