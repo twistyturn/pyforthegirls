@@ -19,8 +19,7 @@ jobs:
       # Stage only the files that should be on the public site.
       # Excludes CANON (spoilers), NEOCITIES.md, HOW TO INSTALL.txt,
       # desktop/ (in-game source-of-truth, mirrored inside clutter.js),
-      # sounds/_unused/, and the vestigial root-level kawaii-*.cur/.ani
-      # duplicates that already live under cursors/kawaii/.
+      # and sounds/_unused/.
       - name: Stage site files into public/
         run: |
           set -euo pipefail
