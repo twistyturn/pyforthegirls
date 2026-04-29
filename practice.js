@@ -799,7 +799,6 @@
   }
 
   window.PythonPractice = { open, close, refreshIcon, isUnlocked, progress };
-  console.log('[PythonPractice] loaded. files:', FILES.length, 'unlocked:', unlockedFiles().length, 'progress:', progress());
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', refreshIcon);

@@ -1539,24 +1539,6 @@
     }
   };
 
-  // make renderBoard read through cache
-  const _originalRenderBoard = renderBoard;
-  renderBoard = function() {
-    const board = document.getElementById('cb-board');
-    if (!board) return;
-    const snap = getSnapshot(currentView);
-    if (!snap) {
-      board.innerHTML = '<div class="cb-empty">no snapshot yet for ch' + currentView + '</div>';
-      return;
-    }
-    board.innerHTML = '';
-    renderStrings(board, snap);
-    (snap.cards || []).forEach(function(c) {
-      board.appendChild(renderCard(c, currentView));
-    });
-    renderMarginalia(board, snap);
-  };
-
   // auto-init: refresh icon visibility on load if the page has one
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { Caseboard.refreshIcon(); });
