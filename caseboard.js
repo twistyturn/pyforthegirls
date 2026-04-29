@@ -1488,7 +1488,9 @@
       injectCSS();
       injectModal();
       highestUnlocked = Math.max(1, Caseboard.progress());
-      if (currentView > highestUnlocked) currentView = highestUnlocked;
+      // default to the latest unlocked snapshot every time the board opens —
+      // the player expects the most recent state, not the oldest.
+      currentView = highestUnlocked;
       renderScrubber();
       renderBoard();
       document.getElementById('cb-overlay').classList.add('cb-open');
