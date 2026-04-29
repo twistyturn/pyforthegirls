@@ -907,7 +907,7 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
       <div class="desktop-icon-img">💬</div>
       AIM_archives/
     </div>
-    <div class="desktop-icon">
+    <div class="desktop-icon" id="icon-sms-dumps" style="display:none;">
       <div class="desktop-icon-img">📱</div>
       SMS_dumps/
     </div>
@@ -1539,8 +1539,19 @@ const upTo = Math.min(state.currentBeat, BEATS.length - 1);
 for (let i = 0; i <= upTo; i++) {
 renderBeat(BEATS[i], i === upTo);
 }
+refreshDesktopIcons();
 // scroll to bottom
 setTimeout(() => { const cw = document.getElementById('chapterWindowBody'); if (cw) cw.scrollTo({ top: cw.scrollHeight, behavior: 'smooth' }); }, 100);
+}
+
+// SMS_dumps/ icon stays hidden until beat 0 (ch3_open) is read — that's the
+// beat where the player "discovers" the SMS dumps in tegan's archive.
+function refreshDesktopIcons() {
+  const sms = document.getElementById('icon-sms-dumps');
+  if (sms) {
+    const discovered = state.completedBeats.includes('ch3_open') || state.currentBeat > 0;
+    sms.style.display = discovered ? '' : 'none';
+  }
 }
 
 function renderBeat(beat, isActive) {
