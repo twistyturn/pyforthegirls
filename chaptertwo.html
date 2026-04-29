@@ -1465,20 +1465,20 @@ writing to.)`,
     instructions: `<p>three new ideas in this one. taking them slow.</p>
 
                    <p><strong>1. lists.</strong> a <strong>list</strong> is a bunch of values stored in one variable, written with square brackets and commas:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "green"]</pre>
-                   <p>that's one variable (<code>colors</code>) holding three strings. you've seen this shape already in the starter code below — <code>fragments</code> is a list of text snippets.</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]</pre>
+                   <p>that's one variable (<code>colours</code>) holding three strings. you've seen this shape already in the starter code below — <code>fragments</code> is a list of text snippets.</p>
 
                    <p><strong>2. for loops.</strong> a <code>for</code> loop lets you do something with every item in a list, one at a time:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "green"]
-for color in colors:
-    print(color)</pre>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+for colour in colours:
+    print(colour)</pre>
                    <p>that prints:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">red
 blue
 green</pre>
-                   <p>python ran the indented <code>print(color)</code> line three times — once for each item in <code>colors</code>.</p>
+                   <p>python ran the indented <code>print(colour)</code> line three times — once for each item in <code>colours</code>.</p>
 
-                   <p><strong>3. the loop variable.</strong> in <code>for color in colors:</code>, the word <code>color</code> is a temporary variable that holds each item one at a time. you pick the name yourself — <code>for c in colors:</code> or <code>for item in colors:</code> would work the same way. just pick something readable.</p>
+                   <p><strong>3. the loop variable.</strong> in <code>for colour in colours:</code>, the word <code>colour</code> is a temporary variable that holds each item one at a time. you pick the name yourself — <code>for c in colours:</code> or <code>for item in colours:</code> would work the same way. just pick something readable.</p>
 
                    <p><strong>4. counters.</strong> a <strong>counter</strong> is just a regular variable you increase by 1 every time something happens:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">count = 0
@@ -1488,10 +1488,10 @@ print(count)</pre>
                    <p>that prints <code>2</code>. each <code>count = count + 1</code> means "take whatever count is right now, add 1, and store that back into count."</p>
 
                    <p><strong>5. putting it together.</strong> a <code>for</code> loop with an <code>if</code> inside lets you count only the items that match:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colors = ["red", "blue", "red", "green", "red"]
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "red", "green", "red"]
 count = 0
-for color in colors:
-    if color == "red":
+for colour in colours:
+    if colour == "red":
         count = count + 1
 print(count)</pre>
                    <p>that prints <code>3</code> — three reds in the list. the <code>if</code> only fires on red items, so the counter only goes up for those.</p>
@@ -1561,63 +1561,68 @@ in case there are more files. in case there's a fourth.`,
     nextBtn: '▸ build the password'
   },
 
-  // ---- BEAT 9: while loop — search until found ----
+  // ---- BEAT 9: for loop — building the password ----
   {
-    id: 'task_while_loop',
+    id: 'task_build_password',
     type: 'task',
     title: 'python.exe :: build_password.py',
     meta: 'the final crack.',
-    storyAbove: `you've extracted the keywords into a list: <code>["birchwood", "counsellor", "1985"]</code>. now you need to walk through them and concatenate them into one string. the password. a <code>while</code> loop runs until a condition stops being true. you'll use one to walk an index through the list.`,
-    skill: 'WHILE LOOPS + INDEXING',
-    instructions: `<p>a <code>while</code> loop runs as long as a condition is true:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">i = 0
-while i < 5:
-    print(i)
-    i = i + 1</pre>
+    storyAbove: `you've extracted the keywords into a list: <code>["birchwood", "counsellor", "1985"]</code>. now you need to walk through them and stick them together into one string — the password.`,
+    skill: 'FOR LOOPS + STRING CONCATENATION',
+    instructions: `<p>two pieces you need: <strong>walking through a list with a <code>for</code> loop</strong>, and <strong>string concatenation</strong>.</p>
+
+                   <p><strong>walking a list with <code>for</code>.</strong> a <code>for</code> loop runs once per item in a list, with the item available as a variable inside the loop:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+for colour in colours:
+    print(colour)</pre>
                    <p>that prints:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">0
-1
-2
-3
-4</pre>
-                   <p>the variable <code>i</code> starts at 0. each loop iteration prints it and adds 1. when <code>i</code> reaches 5, the condition <code>i &lt; 5</code> becomes false and the loop stops.</p>
-                   <p>you can grab an item from a list by its <strong>index</strong> (position, starting at 0):</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
-colours[0]   # → "red"
-colours[1]   # → "blue"
-colours[2]   # → "green"</pre>
-                   <p>and <code>len()</code> tells you how many items are in a list:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">len(colours)   # → 3</pre>
-                   <p>combining all three to walk through every item:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
-i = 0
-while i < len(colours):
-    print(colours[i])
-    i = i + 1</pre>
-                   <p>that prints each colour on its own line. the loop visits each index from 0 up to (but not including) <code>len(colours)</code>.</p>
-                   <p><strong>your task:</strong> walk through <code>keywords</code> with a <code>while</code> loop, building up <code>password</code> by sticking each keyword onto the end of it (this is called <strong>concatenation</strong> — you can combine strings with <code>+</code>, like <code>"hello" + "world"</code> → <code>"helloworld"</code>). then print the result. expected output: <code>birchwoodcounsellor1985</code>.</p>`,
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">red
+blue
+green</pre>
+                   <p>the variable name (<code>colour</code> in this example) can be anything you want — it's just a label for "the current item." python sets it to each item in turn, runs the indented code, and moves on. when there are no more items, the loop stops.</p>
+
+                   <p><strong>string concatenation.</strong> you can stick two strings together with <code>+</code>:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"hello" + "world"   # → "helloworld"</pre>
+                   <p>and you can build up a string in a loop by adding to it each pass:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">word = ""
+word = word + "hi"
+word = word + "there"
+print(word)   # → "hithere"</pre>
+                   <p>each <code>word = word + "..."</code> overwrites <code>word</code> with the longer version. just like <code>number = int(answer)</code> overwrote <code>number</code> with the converted value, you have to actually <em>assign</em> the result back to the variable. <code>word + "hi"</code> by itself just computes the new string and throws it away.</p>
+
+                   <p><strong>your task:</strong> walk through <code>keywords</code> with a <code>for</code> loop, building up <code>password</code> by adding each keyword onto the end of it. then print <code>password</code>. expected output: <code>birchwoodcounsellor1985</code>.</p>`,
     starter: `keywords = ["birchwood", "counsellor", "1985"]
 password = ""
-i = 0
-# while i is less than the length of keywords:
-#   add keywords[i] to password
-#   add 1 to i
-# then print(password)
+
+# write a for loop here that adds each keyword to password
+
+print(password)
 `,
     expectedOutput: 'birchwoodcounsellor1985',
     matchType: 'exact',
-    codeMustContain: ['while ', 'len('],
+    codeMustContain: ['for ', ' in keywords', 'password ='],
     commonMistakes: [
       {
-        pattern: /while\s+i\s*<=\s*len\s*\(/,
-        tip: `<code>&lt;=</code> goes one step too far. when iterating up to <code>len(list)</code>, the last valid index is <code>len(list) - 1</code> — index <code>len(list)</code> doesn't exist and would crash. use <code>&lt;</code> not <code>&lt;=</code>: <code>while i &lt; len(keywords):</code>.`
+        pattern: /^[ \t]*password\s*\+\s*\w+\s*$/m,
+        tip: `you have <code>password + word</code> but it's not stored anywhere — same problem as <code>int(answer)</code> in the input task. you need <code>password = password + word</code> to actually update <code>password</code>. without the <code>=</code>, python computes the new string and throws it away.`
+      },
+      {
+        pattern: /^[ \t]*password\s*=\s*\w+\s*$/m,
+        tip: `you wrote <code>password = word</code> instead of <code>password = password + word</code>. the difference: the first version REPLACES <code>password</code> with just one keyword each pass, so at the end you only have the last one. you need the <code>+</code> to keep what's already in <code>password</code> and add to it.`
       },
       {
         pattern: /print\s*\(\s*['"]birchwoodcounsellor1985['"]\s*\)/,
-        tip: `<code>print("birchwoodcounsellor1985")</code> hardcodes the password. the point is to <em>build</em> it from the keywords list with a while loop, so the same code would work for any list of keywords. walk through the list with an index, concatenate each keyword onto <code>password</code>, then print <code>password</code> at the end.`
+        tip: `<code>print("birchwoodcounsellor1985")</code> hardcodes the password. the point of this task is to use a <code>for</code> loop to build it from the list. if the keywords were different, the hardcoded version wouldn't work. use the loop.`
+      },
+      {
+        pattern: /while\s+/,
+        tip: `you can use a <code>while</code> loop here, but <code>for</code> is much simpler for this job — no index variable, no length check, no manual increment. try <code>for word in keywords:</code> instead.`
       }
     ],
-    hint: `<code>while i &lt; len(keywords):</code> then indented <code>password = password + keywords[i]</code> then <code>i = i + 1</code>. then unindented <code>print(password)</code>. <code>len()</code> tells you how long a list is.`,
+    hint: `the structure mirrors the colour-printing example, but instead of <code>print(colour)</code> you append to <code>password</code>:
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">for word in keywords:
+    password = password + word</pre>
+the variable name <code>word</code> is up to you — could be <code>kw</code> or <code>k</code> or <code>thing</code> — it's just a label for "the current keyword."`,
     onComplete: {
       diary: `// password constructed. typing it into the zip prompt now.`,
       buddy: { name: 'tegan_a87', msg: 'you got it. you actually got it. okay. okay. brace yourself.' }
@@ -1681,7 +1686,7 @@ your hands are cold.`,
       'if / elif / else branching',
       'boolean logic (and / or / not)',
       'for loops + counters',
-      'while loops + list indexing',
+      'string concatenation with +',
       'len() for list length'
     ],
   }
