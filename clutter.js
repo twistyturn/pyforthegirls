@@ -212,10 +212,10 @@
     main_lodge:       { x: 400, y: 295, label: 'Main Lodge' },
     fire_pit:         { x: 400, y: 510, label: 'Fire Pit' },
     gravel_path:      { x: 470, y: 285, label: 'Gravel path' },
-    boathouse:        { x: 490, y: 250, label: 'Boathouse' },
-    boathouse_dock:   { x: 535, y: 215, label: 'Dock' },
-    boathouse_bushes: { x: 442, y: 268, label: 'Bushes (cover)' },
-    behind_boathouse: { x: 472, y: 232, label: 'Behind boathouse' },
+    boathouse:        { x: 540, y: 250, label: 'Boathouse' },
+    boathouse_dock:   { x: 590, y: 215, label: 'Dock' },
+    boathouse_bushes: { x: 490, y: 280, label: 'Bushes (cover)' },
+    behind_boathouse: { x: 522, y: 232, label: 'Behind boathouse' },
     infirmary:        { x: 220, y: 200, label: 'Infirmary' }
   };
 
@@ -303,28 +303,6 @@
       '<line x1="0" y1="400" x2="800" y2="400"/>' +
       '<line x1="0" y1="500" x2="800" y2="500"/>' +
     '</g>' +
-    // ==== title block — banner cartouche with diegetic subtitle ====
-    // outer ornamental frame for title
-    '<g>' +
-      '<path d="M 240 18 Q 240 12 248 12 L 552 12 Q 560 12 560 18 L 560 60 Q 560 66 552 66 L 248 66 Q 240 66 240 60 Z" fill="#fcf5e0" stroke="#3a2820" stroke-width="1.2"/>' +
-      '<path d="M 246 22 L 554 22 M 246 56 L 554 56" stroke="#8a6a4a" stroke-width="0.5"/>' +
-      // tiny ornaments at the corners
-      '<circle cx="248" cy="18" r="1.4" fill="#3a2820"/>' +
-      '<circle cx="552" cy="18" r="1.4" fill="#3a2820"/>' +
-      '<circle cx="248" cy="60" r="1.4" fill="#3a2820"/>' +
-      '<circle cx="552" cy="60" r="1.4" fill="#3a2820"/>' +
-      // tiny pine-tree flourishes flanking the title
-      '<polygon points="222,38 218,46 226,46" fill="#3e5a2a"/>' +
-      '<polygon points="222,32 216,42 228,42" fill="#4a6a3a"/>' +
-      '<rect x="221" y="44" width="2" height="3" fill="#5a3a1a"/>' +
-      '<polygon points="578,38 574,46 582,46" fill="#3e5a2a"/>' +
-      '<polygon points="578,32 572,42 584,42" fill="#4a6a3a"/>' +
-      '<rect x="577" y="44" width="2" height="3" fill="#5a3a1a"/>' +
-      // title text
-      '<text x="400" y="38" text-anchor="middle" font-size="22" fill="#3a2820" font-style="italic" letter-spacing="2.5">Camp Pinecrest</text>' +
-      '<line x1="320" y1="44" x2="480" y2="44" stroke="#8a6a4a" stroke-width="0.5"/>' +
-      '<text x="400" y="55" text-anchor="middle" font-size="9" fill="#6a5848" letter-spacing="2">WHITECOURT, ALBERTA &middot; EST. 1962 &middot; FAMILY HANDBOOK 2004</text>' +
-    '</g>' +
     // ==== compass rose ====
     '<g transform="translate(70, 90)">' +
       '<circle r="22" fill="#fbf3df" stroke="#3a2820" stroke-width="1"/>' +
@@ -379,32 +357,63 @@
       '<line x1="0" y1="-3" x2="0" y2="3" stroke="#3a2820" stroke-width="0.5"/>' +
       '<line x1="-8" y1="-3" x2="-9" y2="-7" stroke="#5a3e22" stroke-width="0.5" stroke-linecap="round"/>' +
     '</g>';
-  // ==== boathouse + dock + bushes ====
+  // ==== title block — banner cartouche with diegetic subtitle ====
+  // (drawn AFTER the lake so the cartouche always renders on top of any
+  // water that extends into the upper-middle of the map)
   PINECREST_MAP_SVG +=
-    // dock extending into lake
-    '<rect x="510" y="210" width="50" height="14" fill="#a08868" stroke="#3a2820" stroke-width="1"/>' +
-    '<line x1="518" y1="210" x2="518" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
-    '<line x1="528" y1="210" x2="528" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
-    '<line x1="538" y1="210" x2="538" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
-    '<line x1="548" y1="210" x2="548" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
-    // boathouse building (3D-ish slanted roof)
-    '<polygon points="465,238 525,238 535,228 475,228" fill="#7a5a3a" stroke="#3a2820" stroke-width="1"/>' +
-    '<rect x="465" y="238" width="60" height="34" fill="#a88858" stroke="#3a2820" stroke-width="1.5" filter="url(#softShadow)"/>' +
-    '<rect x="478" y="248" width="10" height="14" fill="#3a2820"/>' +
-    '<rect x="500" y="248" width="14" height="14" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.5"/>' +
-    '<text x="495" y="293" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold" stroke="#fcf5e0" stroke-width="2.5" paint-order="stroke">boathouse</text>' +
-    // bushes / cover area on the gravel side of boathouse
     '<g>' +
-      '<ellipse cx="442" cy="268" rx="14" ry="8" fill="#3e5a2a" opacity="0.85"/>' +
-      '<ellipse cx="436" cy="262" rx="9" ry="6" fill="#5a7a3a" opacity="0.85"/>' +
-      '<ellipse cx="450" cy="262" rx="8" ry="5" fill="#4a6a32" opacity="0.85"/>' +
-      '<text x="442" y="298" text-anchor="middle" font-size="9" fill="#4a5e2a" font-style="italic">bushes</text>' +
+      // outer ornamental frame for title
+      '<path d="M 240 18 Q 240 12 248 12 L 552 12 Q 560 12 560 18 L 560 60 Q 560 66 552 66 L 248 66 Q 240 66 240 60 Z" fill="#fcf5e0" stroke="#3a2820" stroke-width="1.2"/>' +
+      '<path d="M 246 22 L 554 22 M 246 56 L 554 56" stroke="#8a6a4a" stroke-width="0.5"/>' +
+      // tiny ornaments at the corners
+      '<circle cx="248" cy="18" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="552" cy="18" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="248" cy="60" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="552" cy="60" r="1.4" fill="#3a2820"/>' +
+      // tiny pine-tree flourishes flanking the title
+      '<polygon points="222,38 218,46 226,46" fill="#3e5a2a"/>' +
+      '<polygon points="222,32 216,42 228,42" fill="#4a6a3a"/>' +
+      '<rect x="221" y="44" width="2" height="3" fill="#5a3a1a"/>' +
+      '<polygon points="578,38 574,46 582,46" fill="#3e5a2a"/>' +
+      '<polygon points="578,32 572,42 584,42" fill="#4a6a3a"/>' +
+      '<rect x="577" y="44" width="2" height="3" fill="#5a3a1a"/>' +
+      // title text
+      '<text x="400" y="38" text-anchor="middle" font-size="22" fill="#3a2820" font-style="italic" letter-spacing="2.5">Camp Pinecrest</text>' +
+      '<line x1="320" y1="44" x2="480" y2="44" stroke="#8a6a4a" stroke-width="0.5"/>' +
+      '<text x="400" y="55" text-anchor="middle" font-size="9" fill="#6a5848" letter-spacing="2">WHITECOURT, ALBERTA &middot; EST. 1962 &middot; FAMILY HANDBOOK 2004</text>' +
+    '</g>';
+  // ==== boathouse + dock + bushes ====
+  // moved +50px east (originally at x=465; lodge ends at x=460, so the
+  // old position left only 5px of breathing room). new boathouse rect
+  // sits at x=515-575, well clear of the lodge.
+  PINECREST_MAP_SVG +=
+    // dock extending north into lake
+    '<rect x="560" y="210" width="50" height="14" fill="#a08868" stroke="#3a2820" stroke-width="1"/>' +
+    '<line x1="568" y1="210" x2="568" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
+    '<line x1="578" y1="210" x2="578" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
+    '<line x1="588" y1="210" x2="588" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
+    '<line x1="598" y1="210" x2="598" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
+    // boathouse building (3D-ish slanted roof)
+    '<polygon points="515,238 575,238 585,228 525,228" fill="#7a5a3a" stroke="#3a2820" stroke-width="1"/>' +
+    '<rect x="515" y="238" width="60" height="34" fill="#a88858" stroke="#3a2820" stroke-width="1.5" filter="url(#softShadow)"/>' +
+    '<rect x="528" y="248" width="10" height="14" fill="#3a2820"/>' +
+    '<rect x="550" y="248" width="14" height="14" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.5"/>' +
+    '<text x="545" y="285" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold" stroke="#fcf5e0" stroke-width="3" paint-order="stroke">boathouse</text>' +
+    // bushes / cover area on the gravel side of boathouse (south of building,
+    // along the gravel approach — same side as before, just shifted east)
+    '<g>' +
+      '<ellipse cx="492" cy="278" rx="14" ry="8" fill="#3e5a2a" opacity="0.85"/>' +
+      '<ellipse cx="486" cy="272" rx="9" ry="6" fill="#5a7a3a" opacity="0.85"/>' +
+      '<ellipse cx="500" cy="272" rx="8" ry="5" fill="#4a6a32" opacity="0.85"/>' +
+      '<text x="492" y="305" text-anchor="middle" font-size="9" fill="#4a5e2a" font-style="italic">bushes</text>' +
     '</g>';
   // ==== gravel path from main camp area to boathouse (the noisy approach) ====
+  // new boathouse is at x=515-575; the gravel path now angles east-northeast
+  // from the lodge's east-trail junction to the boathouse's south door.
   PINECREST_MAP_SVG +=
-    '<path d="M 460 295 Q 470 285 478 270 L 470 240" stroke="url(#gravel)" stroke-width="9" fill="none" stroke-linecap="round"/>' +
-    '<path d="M 460 295 Q 470 285 478 270 L 470 240" stroke="#3a2820" stroke-width="0.5" fill="none" opacity="0.4" stroke-dasharray="0"/>' +
-    '<text x="500" y="305" font-size="9" fill="#6a5a3a" font-style="italic">gravel</text>';
+    '<path d="M 460 295 Q 490 295 510 280 L 525 270" stroke="url(#gravel)" stroke-width="9" fill="none" stroke-linecap="round"/>' +
+    '<path d="M 460 295 Q 490 295 510 280 L 525 270" stroke="#3a2820" stroke-width="0.5" fill="none" opacity="0.4" stroke-dasharray="0"/>' +
+    '<text x="475" y="312" font-size="9" fill="#6a5a3a" font-style="italic">gravel</text>';
   // ==== dirt-trail paths (drawn BEFORE buildings so cabins overlay them) ====
   PINECREST_MAP_SVG +=
     '<g stroke="#a88858" stroke-width="2.4" fill="none" opacity="0.55" stroke-linecap="round">' +
@@ -571,15 +580,14 @@
       { x: 770, y: 320, s: 1.0, t: 'pine'  },
       { x: 760, y: 360, s: 0.9, t: 'pine'  },
       { x: 600, y: 350, s: 0.9, t: 'pine'  },
-      { x: 600, y: 410, s: 0.85, t: 'birch'},
-      // boathouse-side cover (tyler's hiding zone — between the lake and the
-      // lodge, alongside the gravel approach, west of the boathouse).
-      // these all live in the band y=235-270: south of the lake's curving
-      // shore at this x, north of the lodge's top edge at y=270.
-      { x: 415, y: 245, s: 0.95, t: 'pine' },
-      { x: 432, y: 260, s: 0.9,  t: 'pine' },
-      { x: 425, y: 270, s: 0.85, t: 'pine' },
-      { x: 405, y: 260, s: 0.8,  t: 'pine' }
+      { x: 600, y: 410, s: 0.85, t: 'birch'}
+      // boathouse-cover trees deliberately left empty: tyler's hide spot
+      // (the bushes ellipses on the gravel approach) sits at x=442, y=268,
+      // which falls inside the lodge body's x=340-460 / roof y=250-270.
+      // any pine close enough to read as "cover for the bushes" would
+      // necessarily render on top of the lodge roof. CANON treats the
+      // bushes themselves as tyler's hide, so the visual hide spot is
+      // already there without adding overlapping trees.
     ];
     return trees.map(t => (
       '<use href="#' + t.t + '" x="' + t.x + '" y="' + t.y + '" width="' + (20 * t.s) + '" height="' + (20 * t.s) + '" transform="translate(' + (-10 * t.s) + ', ' + (-4 * t.s) + ')"/>'
