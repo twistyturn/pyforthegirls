@@ -561,19 +561,19 @@
       { x: 30,  y: 380, s: 1.1, t: 'pine'  },
       { x: 50,  y: 410, s: 0.9, t: 'pine'  },
       { x: 25,  y: 440, s: 0.8, t: 'birch' },
-      { x: 60,  y: 540, s: 1.0, t: 'pine'  },
+      // (no tree at x=60,y=540 — that area is reserved for the scale bar)
+      { x: 30,  y: 510, s: 1.0, t: 'pine'  },
       // south edge (between fire pit and forest)
       { x: 220, y: 545, s: 0.9, t: 'pine'  },
       { x: 260, y: 555, s: 1.1, t: 'pine'  },
       { x: 540, y: 545, s: 0.9, t: 'pine'  },
       { x: 580, y: 555, s: 1.0, t: 'birch' },
       { x: 620, y: 542, s: 0.9, t: 'pine'  },
-      // east edge
+      // east edge (above legend — the legend lives at x=620+, y=440+, so trees here stay clear)
       { x: 770, y: 320, s: 1.0, t: 'pine'  },
-      { x: 760, y: 380, s: 0.9, t: 'pine'  },
-      { x: 720, y: 440, s: 1.2, t: 'pine'  },
-      { x: 750, y: 480, s: 1.0, t: 'pine'  },
-      { x: 700, y: 490, s: 0.9, t: 'birch' },
+      { x: 760, y: 360, s: 0.9, t: 'pine'  },
+      { x: 600, y: 350, s: 0.9, t: 'pine'  },
+      { x: 600, y: 410, s: 0.85, t: 'birch'},
       // boathouse-side cover (densest cluster — tyler's hiding zone)
       { x: 422, y: 235, s: 1.1, t: 'pine'  },
       { x: 408, y: 250, s: 0.9, t: 'pine'  },
@@ -587,7 +587,7 @@
   // ==== "tegan" pin marker on hemlock — her own red-ink annotation ====
   PINECREST_MAP_SVG +=
     '<g transform="translate(208, 370) rotate(-4)">' +
-      '<text x="0" y="0" text-anchor="middle" font-size="11" fill="#a04848" font-family="cursive" font-style="italic">&#9733; tegan &#9733;</text>' +
+      '<text x="0" y="0" text-anchor="middle" font-size="11" fill="#a04848" font-family="cursive" font-style="italic" stroke="#fcf5e0" stroke-width="2.5" paint-order="stroke">&#9733; tegan &#9733;</text>' +
     '</g>';
   // ==== legend (lower-right) ====
   PINECREST_MAP_SVG +=
