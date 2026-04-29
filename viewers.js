@@ -818,6 +818,132 @@ friends. not whoever it is you write to at night. nobody."
 i said i wouldn't. i'm not even sure i breathed.
 
 she's exhilarating.`
+    },
+    {
+      filename: '12_she_knows.txt',
+      date: 'last modified: july 22, 2004 — 11:55 pm',
+      preview: 'told wren camille saw us. she said i love you twice.',
+      body: `july 22
+
+i finally told wren what camille saw three weeks ago. i'd been holding onto it
+since right after our first night at the boathouse. camille AIMed me the next day
+asking if i was okay. i lied. i told wren camille's "issues" were nothing.
+i didn't know how to say that someone had seen us without it sounding like
+a betrayal of camille.
+but tonight wren cornered me about why i'd been weird and it just came out.
+i told her camille saw us on july 8. camille had been kind about it.
+i'd been carrying it alone for three weeks.
+wren went so still she stopped breathing.
+then she said okay. then she said i'll handle it. then she said
+"if camille tells anyone, it'll be your fault, you know that right?
+you should have been more careful. i told you to be careful."
+she said i love you twice tonight. she'd never said it before.
+both times right after she said something that made me want to cry.
+i think this is what people mean when they say someone has you.
+
+i didn't have to tell her about camille tonight. i could have lied for
+another month. i'm typing this and i can hear how it sounds. i wanted
+to see what she'd do, and now i've seen.`
+    },
+    {
+      filename: '13_what_did_i_do.txt',
+      date: 'last modified: august 1, 2004 — 4:08 am',
+      preview: 'i kissed her at the bonfire in front of tyler. she wouldn\'t look at me after.',
+      body: `august 1
+i can't sleep. i'm typing this in the bathroom with the laptop on
+my knees because the screen is too bright in the cabin.
+
+session-one closing bonfire was tonight. wren had a beer she
+opened before things even started. i had two sips off hers and
+brendan passed me one of his and i had like a third of it before
+hattie gave me a look and i put it down. i was not drunk. that
+matters because i can't blame this on being drunk.
+
+wren said something to me at dinner like "tyler is so obvious
+it's almost cute" and i laughed because i didn't know what else
+to do. he was sitting two rows behind us at the bonfire and i
+could feel him watching the back of her head. and maybe it's
+stupid of me and i'm sure it was but i had this IDEA, right,
+and i just couldn't not?
+
+so i leaned over to her and i said "play along ok" and she said
+"play along with what" and i said "just trust me" and i put my
+hand on her face and i kissed her. like really kissed her. for
+like five seconds. with tyler and all the other boys watching.
+
+i pulled back and laughed like it was a joke and said "happy
+session one" or something stupid like that and the boys LOST
+IT. tyler made a sound like he'd been hit. brendan said "OH MY
+GOD" and jon was just staring with his whole face open. i did
+this thing where i waved my hand like haha that was crazy.
+wren was very still next to me. she said "okay" really quiet,
+just to me, like a question almost. then louder for the boys
+she said "tegan that was MEAN" in this fake-scolding voice and
+the boys laughed and tyler said "do it again" and wren said
+"absolutely not" and that was it.
+
+and i. i felt POWERFUL. for like ten seconds i felt like the
+coolest girl alive. i did the thing. i made all the boys lose
+their minds. i kissed a girl in front of people and made it
+look fun and easy and like nothing.
+
+then we walked back to cabin and wren wouldn't look at me.
+
+i tried to take her hand on the path and she pulled it back
+and said "not here." which okay fine, fair, but she's never
+said it like THAT before. and at the cabin door she didn't
+say good night to me. she said good night to hattie who was
+behind us and then she went into her quarters and shut the door.
+
+i KNOW what i did. i don't need her to tell me. i made what we
+have into a joke for the boys. i took the thing she's been
+SO careful about and i put it on display all madonna and
+britney style and called it nothing so the boys would think i
+was cool. she has been protecting me all summer. et cetera et
+cetera i KNOW.
+
+i thought it was brave. when i was leaning over to her i thought
+i was being brave. i thought "this is the only way i can do
+this in public. this is the loophole. nobody will know it's
+real because i'll make it look like a joke and we'll BOTH be
+safe." but it WASN'T and this SUCKS.
+
+i don't know if i can fix this. i don't know if she'll talk to
+me tomorrow. i'm so scared she's going to be different now.
+i'm so scared i broke it.
+
+i don't even know who to tell.
+
+i think i'm going to throw up. i think i did something really
+bad and i can't take it back.`
+    },
+    {
+      filename: '14_LAST.txt',
+      date: 'last modified: aug 14, 2004 — 9:31 pm',
+      preview: 'told her i was leaving. she said meet me at the boathouse. her name is wren halloway her name is wren halloway her name is wren halloway.',
+      body: `august 14
+
+we never actually talked about the bonfire. she came back the next
+morning like nothing happened. i tried to bring it up twice and she
+shut it down both times — once with "later" and once with a look
+that meant don't. she's been a little sharper with me since. not
+mean. just. measured.
+
+i told her tonight i was going to leave camp. i told her i was going to tell my mom —
+not about us, just that i wanted to go home early.
+she went so quiet. then she said "meet me at the boathouse tonight.
+we'll talk it out. just you and me. don't tell anyone you're coming."
+
+i'm going. i don't have a choice. i can't say no to her without
+making her suspicious, and i need her to not be suspicious tonight
+of all nights.
+
+i'm hiding this file in the diary folder before i go.
+
+if you're reading this, i need you to know where i was.
+her name is wren halloway
+her name is wren halloway
+her name is wren halloway`
     }
   ]; }
 
