@@ -1667,6 +1667,12 @@ bag = bag + "cherry"    # bag is now "applebananacherry"
 print(bag)              # → "applebananacherry"</pre>
                    <p>each line takes whatever was in the bag, adds the next thing, and stores the result back in <code>bag</code>. the print at the end shows the final bag.</p>
 
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">why bother with a loop?</h4>
+                   <p>for three items, writing it out by hand works fine. so does it for the password task — you could just write three <code>password = password + ...</code> lines and you'd get the right answer.</p>
+                   <p>but imagine the keywords list had ten items. you'd need ten lines. or fifty items, fifty lines. or imagine you didn't know in advance how many keywords there'd be — what if the keywords came from a file the player hadn't opened yet, and the file might have any number of lines?</p>
+                   <p>you'd need a way to say "do this same thing for every item in the list, however many there are" without typing one line per item. that's what for loops do. <strong>one loop handles three items, fifty items, or any number you don't know yet.</strong> the code stays the same length no matter how big the list gets.</p>
+                   <p>so even though three lines works for this specific task, the loop is the version that <em>actually scales</em>. that's why this task asks you to use it — it's not about the answer (you'd get the same answer either way), it's about learning the shape that handles any size.</p>
+
                    <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">walking with a for loop</h4>
                    <p>doing it three lines at a time is fine for three items, but if you had a hundred items you'd want a loop. python's <code>for</code> loop runs once per item in a list, with the item available as a variable inside the loop:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
@@ -1703,6 +1709,7 @@ print(password)
     expectedOutput: 'birchwoodcounsellor1985',
     matchType: 'exact',
     codeMustContain: ['for ', ' in keywords', 'password ='],
+    codeMustContainMessage: `your output is correct! you got the right password. but the lesson here is the <em>shape</em>, not the answer — writing it out by hand works for three keywords, but wouldn't scale to ten, or fifty, or however many keywords might be in a different list. the for loop is the shape that handles any size. try rewriting using <code>for word in keywords:</code> so you've got the version that scales.`,
     commonMistakes: [
       {
         pattern: /for\s+\w+\s+in\s+keywords\s*:[^]*?print\s*\(\s*\w+\s*\)/,
@@ -2132,7 +2139,10 @@ builtins.input = __patched_input
         : (__missingPattern instanceof RegExp
             ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
             : '<code>' + escapeHtml(__missingPattern) + '</code>');
-      outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+      const __defaultMsg = `the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.`;
+      const __overrideMsg = beat.codeMustContainMessage;
+      const __msg = __overrideMsg || __defaultMsg;
+      outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// ${__msg}</span>`;
       appendCommonMistakeTip(outEl, code, beat.commonMistakes);
       return;
     }

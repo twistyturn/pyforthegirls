@@ -1859,7 +1859,10 @@ if (passed && beat.codeMustContain) {
       : (__missingPattern instanceof RegExp
           ? '<code>' + escapeHtml(__missingPattern.source) + '</code>'
           : '<code>' + escapeHtml(__missingPattern) + '</code>');
-    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.</span>`;
+    const __defaultMsg = `the output is right, but the script's not using ${__fmt}. this task is teaching that — try again with it included.`;
+    const __overrideMsg = beat.codeMustContainMessage;
+    const __msg = __overrideMsg || __defaultMsg;
+    outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// ${__msg}</span>`;
     appendCommonMistakeTip(outEl, code, beat.commonMistakes);
     return;
   }
