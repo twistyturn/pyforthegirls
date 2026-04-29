@@ -278,6 +278,16 @@
         '<feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>' +
         '<feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>' +
       '</filter>' +
+      // paper grain noise — feTurbulence sampled and tinted brown at low alpha
+      '<filter id="paperNoise" x="0%" y="0%" width="100%" height="100%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="noise"/>' +
+        '<feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.36   0 0 0 0 0.26   0 0 0 0 0.13   0 0 0 0.42 0"/>' +
+      '</filter>' +
+      // parchment vignette — darker at corners, lighter at center
+      '<radialGradient id="parchmentVignette" cx="50%" cy="50%" r="75%">' +
+        '<stop offset="65%" stop-color="#000" stop-opacity="0"/>' +
+        '<stop offset="100%" stop-color="#3a2820" stop-opacity="0.22"/>' +
+      '</radialGradient>' +
       // pine tree symbol: stacked triangles + trunk, reusable via <use>
       '<symbol id="pine" viewBox="-10 -16 20 20">' +
         '<polygon points="0,-16 -5,-7 5,-7" fill="#3e5a2a"/>' +
@@ -389,6 +399,8 @@
   // old position left only 5px of breathing room). new boathouse rect
   // sits at x=515-575, well clear of the lodge.
   PINECREST_MAP_SVG +=
+    // ground shadow under boathouse
+    '<ellipse cx="545" cy="275" rx="34" ry="4" fill="#1a1a1a" opacity="0.18"/>' +
     // dock extending north into lake
     '<rect x="560" y="210" width="50" height="14" fill="#a08868" stroke="#3a2820" stroke-width="1"/>' +
     '<line x1="568" y1="210" x2="568" y2="224" stroke="#3a2820" stroke-width="0.5"/>' +
@@ -417,26 +429,29 @@
     '<path d="M 460 295 Q 490 295 510 280 L 525 270" stroke="#3a2820" stroke-width="0.5" fill="none" opacity="0.4" stroke-dasharray="0"/>' +
     '<text x="475" y="312" font-size="9" fill="#6a5a3a" font-style="italic">gravel</text>';
   // ==== dirt-trail paths (drawn BEFORE buildings so cabins overlay them) ====
+  // every footpath is a gentle curve, dashed to read as a trail rather than
+  // the gravel road. each one exits the lodge at its own perimeter point so
+  // they don't pile up at a single entrance.
   PINECREST_MAP_SVG +=
-    '<g stroke="#a88858" stroke-width="2.4" fill="none" opacity="0.55" stroke-linecap="round">' +
-      // central spine: lodge to fire pit
-      '<path d="M 400 340 L 400 478"/>' +
-      // lodge to pinewood
-      '<path d="M 340 305 Q 250 305 160 300"/>' +
-      // lodge to hemlock
-      '<path d="M 350 335 Q 290 365 240 390"/>' +
-      // lodge to birchwood
-      '<path d="M 380 340 L 320 420"/>' +
-      // lodge to spruce
-      '<path d="M 420 340 L 440 420"/>' +
-      // lodge to cedar
-      '<path d="M 460 320 L 520 390"/>' +
-      // lodge to juniper
-      '<path d="M 460 290 L 660 330"/>' +
-      // lodge to infirmary
-      '<path d="M 350 270 Q 300 240 250 218"/>' +
-      // archery to birchwood
-      '<path d="M 140 470 L 320 440"/>' +
+    '<g stroke="#8a6a4a" stroke-width="2" fill="none" opacity="0.7" stroke-linecap="round" stroke-dasharray="4,3">' +
+      // lodge (NW corner) -> infirmary (NW)
+      '<path d="M 348 272 Q 295 240 250 220"/>' +
+      // lodge (W edge) -> pinewood (W)
+      '<path d="M 340 300 Q 250 297 160 300"/>' +
+      // lodge (SW corner) -> hemlock (SW)
+      '<path d="M 348 338 Q 290 380 240 395"/>' +
+      // lodge (S edge, slightly W of center) -> birchwood (S, W)
+      '<path d="M 378 340 Q 350 400 320 425"/>' +
+      // lodge (S edge, center) -> fire pit (S)
+      '<path d="M 400 340 Q 402 410 400 478"/>' +
+      // lodge (S edge, slightly E of center) -> spruce (S, E)
+      '<path d="M 422 340 Q 432 405 440 425"/>' +
+      // lodge (SE corner) -> cedar (SE)
+      '<path d="M 452 338 Q 510 380 540 395"/>' +
+      // lodge (E edge) -> juniper (E), routed south of the lake margin
+      '<path d="M 460 312 Q 560 330 660 338"/>' +
+      // archery (SW) -> birchwood (S), independent footpath
+      '<path d="M 140 470 Q 230 460 320 440"/>' +
     '</g>' +
     // footprint dots overlaid on trails for organic feel
     '<g fill="#6a5a3a" opacity="0.4">' +
@@ -460,6 +475,8 @@
       { x: 660, y: 320, label: 'Juniper',   sub: 'boys'  }
     ];
     return cabins.map(c => (
+      // soft ground shadow tucked under the cabin to ground it on the map
+      '<ellipse cx="' + (c.x + 30) + '" cy="' + (c.y + 43) + '" rx="34" ry="4" fill="#1a1a1a" opacity="0.18"/>' +
       '<g filter="url(#softShadow)">' +
         // roof — shingle pattern under, dark outline over
         '<polygon points="' + c.x + ',' + c.y + ' ' + (c.x + 60) + ',' + c.y + ' ' + (c.x + 50) + ',' + (c.y - 14) + ' ' + (c.x + 10) + ',' + (c.y - 14) + '" fill="url(#shingles)" stroke="#3a2820" stroke-width="1.2"/>' +
@@ -487,6 +504,8 @@
   })();
   // ==== main lodge (larger, two-storey feel, prominent roof) ====
   PINECREST_MAP_SVG +=
+    // ground shadow first
+    '<ellipse cx="400" cy="345" rx="68" ry="5" fill="#1a1a1a" opacity="0.20"/>' +
     '<g filter="url(#softShadow)">' +
       // roof with shingle texture
       '<polygon points="340,270 460,270 450,250 350,250" fill="url(#shingles)" stroke="#3a2820" stroke-width="1.5"/>' +
@@ -526,6 +545,8 @@
     '<text x="400" y="372" text-anchor="middle" font-size="10" fill="#3a2820" stroke="#fbf3df" stroke-width="2.5" paint-order="stroke">mess hall &middot; office</text>';
   // ==== infirmary (small white building, cross icon — central, clear of lake) ====
   PINECREST_MAP_SVG +=
+    // ground shadow
+    '<ellipse cx="220" cy="223" rx="29" ry="4" fill="#1a1a1a" opacity="0.18"/>' +
     '<g filter="url(#softShadow)">' +
       '<polygon points="195,185 245,185 240,175 200,175" fill="#a88858" stroke="#3a2820" stroke-width="1"/>' +
       '<rect x="195" y="185" width="50" height="35" fill="#f0e8d8" stroke="#3a2820" stroke-width="1.4"/>' +
@@ -651,9 +672,14 @@
       '<text x="80" y="20" text-anchor="middle" font-size="8" fill="#3a2820">200 m</text>' +
       '<text x="40" y="-4" text-anchor="middle" font-size="8" fill="#3a2820" font-style="italic" letter-spacing="1">SCALE</text>' +
     '</g>';
-  // ==== paper grain overlay (very subtle speckle across whole map) ====
+  // ==== paper grain overlays (multiple layers for tactile parchment feel) ====
+  // 1. fine speckle dots (existing pattern)
+  // 2. fractal-noise grain via feTurbulence — adds a subtle film-grain texture
+  // 3. corner vignette — darker at edges suggests aged paper
   PINECREST_MAP_SVG +=
-    '<rect x="0" y="0" width="800" height="600" fill="url(#paperGrain)" pointer-events="none"/>';
+    '<rect x="0" y="0" width="800" height="600" fill="url(#paperGrain)" pointer-events="none"/>' +
+    '<rect x="0" y="0" width="800" height="600" filter="url(#paperNoise)" opacity="0.35" pointer-events="none"/>' +
+    '<rect x="0" y="0" width="800" height="600" fill="url(#parchmentVignette)" pointer-events="none"/>';
   // ==== paper edge — outer double border + corner ornaments ====
   PINECREST_MAP_SVG +=
     '<g pointer-events="none" fill="none">' +
