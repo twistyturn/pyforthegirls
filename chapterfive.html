@@ -1902,6 +1902,44 @@ function appendCommonMistakeTip(outEl, code, mistakes) {
   outEl.innerHTML += '<span class="info" style="margin-top:8px;display:block;border-left:3px solid var(--pink-hot, #ff66c4);padding-left:10px;">// looks like a common slip:<br>' + tip + '</span>';
 }
 
+
+// Detect common Python error categories and return a tailored, friendlier
+// hint. Used by runTask's error path. Falls back to null when the error
+// doesn't match a known category — the existing generic hint kicks in.
+function friendlyErrorHint(errStr) {
+  if (!errStr) return null;
+  if (/SyntaxError.*never closed|EOL while scanning|unexpected EOF|unterminated string/i.test(errStr)) {
+    return 'this usually means a closing bracket, quote, or paren is missing somewhere. count them: every <code>(</code> needs a <code>)</code>, every <code>"</code> needs a closing <code>"</code>, every <code>[</code> needs a <code>]</code>. python errors out at the FIRST place it gives up looking, which might be a few lines after the actual missing character.';
+  }
+  if (/IndentationError/i.test(errStr)) {
+    return 'python uses indentation to know what code belongs inside a loop, an if-block, or a function. lines that go INSIDE a <code>for</code>, <code>if</code>, <code>while</code>, or <code>def</code> need to be indented further than the line with the colon. mixing tabs and spaces also causes this — pick one and use it consistently.';
+  }
+  if (/SyntaxError.*invalid syntax|SyntaxError.*expected/i.test(errStr)) {
+    return 'python found something it didn\'t expect on that line. common causes: a missing colon at the end of a <code>for</code> / <code>if</code> / <code>while</code> / <code>def</code> line, a single <code>=</code> instead of <code>==</code> in a comparison, or a typo in a keyword like <code>elif</code>.';
+  }
+  if (/NameError/i.test(errStr)) {
+    return 'python doesn\'t know what that name refers to. usually means a typo (<code>lenght</code> instead of <code>length</code>), or you\'re using a variable before defining it, or you forgot to put quotes around a string and python is reading it as a variable name.';
+  }
+  if (/IndexError/i.test(errStr)) {
+    return 'you tried to access a list position that doesn\'t exist. lists are zero-indexed, so a list with 3 items has positions 0, 1, 2 — index 3 is one too far. the last valid index is always <code>len(list) - 1</code>.';
+  }
+  if (/KeyError/i.test(errStr)) {
+    return 'the dict doesn\'t have that key. check spelling — keys are case-sensitive (<code>"Time"</code> and <code>"time"</code> are different). also check that you used the right quotes around the key.';
+  }
+  if (/TypeError.*unsupported operand type|TypeError.*can only concatenate|TypeError.*str.*int|TypeError.*int.*str|TypeError.*must be str/i.test(errStr)) {
+    return 'you mixed a string and a number in an operation that needs them to match. use <code>int(x)</code> to convert a string of digits to a number, or <code>str(x)</code> to convert a number to a string.';
+  }
+  if (/AttributeError.*has no attribute/i.test(errStr)) {
+    return 'you tried to use a method that doesn\'t exist on this kind of value. usually means you got a list back when you expected a string (or vice versa), or there\'s a typo in the method name.';
+  }
+  if (/ZeroDivisionError/i.test(errStr)) {
+    return 'you tried to divide by zero. check the value you\'re dividing by — it\'s probably a variable that hasn\'t been set the way you think it has.';
+  }
+  if (/ImportError|ModuleNotFoundError/i.test(errStr)) {
+    return 'python couldn\'t find the module you tried to import. check spelling and make sure the module exists in this task\'s setup.';
+  }
+  return null;
+}
 async function runTask(beatId) {
 const beat = BEATS.find(b => b.id === beatId);
 const codeEl = document.getElementById('code-' + beatId);
@@ -1936,7 +1974,9 @@ const result = await runPython(runCode);
 const actualOutput = (result.output || '').trimEnd();
 
 if (!result.ok) {
-outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// hint: read the error message. it usually tells you which line and what kind of mistake.</span>`;
+const __friendlyHint = friendlyErrorHint(result.error);
+const __hintText = __friendlyHint || 'hint: read the error message. it usually tells you which line and what kind of mistake.';
+outEl.innerHTML = `<span class="err">// ERROR\n${escapeHtml(result.error)}</span>${result.output ? '\n<span class="info">' + escapeHtml(actualOutput) + '</span>' : ''}\n<span class="info">// ${__hintText}</span>`;
 appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 return;
 }
