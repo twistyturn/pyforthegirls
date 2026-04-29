@@ -326,7 +326,7 @@
       '<text x="400" y="55" text-anchor="middle" font-size="9" fill="#6a5848" letter-spacing="2">WHITECOURT, ALBERTA &middot; EST. 1962</text>' +
     '</g>' +
     // diegetic subtitle below the cartouche
-    '<text x="400" y="80" text-anchor="middle" font-size="8" fill="#6a5848" letter-spacing="3" font-style="italic">~ from the family handbook, summer 2004 ~</text>' +
+    '<text x="400" y="80" text-anchor="middle" font-size="9" fill="#3a2820" letter-spacing="2.5" font-style="italic" stroke="#fcf5e0" stroke-width="2" paint-order="stroke">~ from the family handbook, summer 2004 ~</text>' +
     // ==== compass rose ====
     '<g transform="translate(70, 90)">' +
       '<circle r="22" fill="#fbf3df" stroke="#3a2820" stroke-width="1"/>' +
@@ -342,11 +342,11 @@
   // ==== lake (organic outline + ripples + reeds) ====
   PINECREST_MAP_SVG +=
     // base lake fill with depth gradient
-    '<path d="M 440 95 C 540 65, 700 55, 790 115 C 815 185, 800 280, 720 310 C 600 320, 470 285, 432 235 C 405 195, 412 130, 440 95 Z" fill="url(#lakeGrad)" stroke="#3a5a6a" stroke-width="2"/>' +
+    '<path d="M 430 60 C 555 35, 715 40, 790 95 C 830 175, 820 285, 740 305 C 605 320, 525 280, 460 235 C 400 200, 395 95, 430 60 Z" fill="url(#lakeGrad)" stroke="#3a5a6a" stroke-width="2"/>' +
     // water hatching layered on top of fill (clipped to lake shape via second path with same d)
-    '<path d="M 440 95 C 540 65, 700 55, 790 115 C 815 185, 800 280, 720 310 C 600 320, 470 285, 432 235 C 405 195, 412 130, 440 95 Z" fill="url(#waterHatch)" stroke="none" opacity="0.55"/>' +
+    '<path d="M 430 60 C 555 35, 715 40, 790 95 C 830 175, 820 285, 740 305 C 605 320, 525 280, 460 235 C 400 200, 395 95, 430 60 Z" fill="url(#waterHatch)" stroke="none" opacity="0.55"/>' +
     // shoreline shadow ring
-    '<path d="M 440 95 C 540 65, 700 55, 790 115 C 815 185, 800 280, 720 310 C 600 320, 470 285, 432 235 C 405 195, 412 130, 440 95 Z" fill="none" stroke="#3a5a6a" stroke-width="0.6" stroke-dasharray="0" opacity="0.5" transform="translate(2,2)"/>' +
+    '<path d="M 430 60 C 555 35, 715 40, 790 95 C 830 175, 820 285, 740 305 C 605 320, 525 280, 460 235 C 400 200, 395 95, 430 60 Z" fill="none" stroke="#3a5a6a" stroke-width="0.6" stroke-dasharray="0" opacity="0.5" transform="translate(2,2)"/>' +
     // lake label, hand-set serif italic
     '<text x="640" y="172" text-anchor="middle" font-size="22" fill="#1a3a4a" font-style="italic" letter-spacing="2.5" stroke="#fcf5e0" stroke-width="3" paint-order="stroke">Lake Pinecrest</text>' +
     '<text x="640" y="190" text-anchor="middle" font-size="9" fill="#3a5a6a" letter-spacing="3" stroke="#fcf5e0" stroke-width="2" paint-order="stroke">~ 14 ACRES ~</text>' +
@@ -394,7 +394,7 @@
     '<rect x="465" y="238" width="60" height="34" fill="#a88858" stroke="#3a2820" stroke-width="1.5" filter="url(#softShadow)"/>' +
     '<rect x="478" y="248" width="10" height="14" fill="#3a2820"/>' +
     '<rect x="500" y="248" width="14" height="14" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.5"/>' +
-    '<text x="495" y="285" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold">boathouse</text>' +
+    '<text x="495" y="293" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold" stroke="#fcf5e0" stroke-width="2.5" paint-order="stroke">boathouse</text>' +
     // bushes / cover area on the gravel side of boathouse
     '<g>' +
       '<ellipse cx="442" cy="268" rx="14" ry="8" fill="#3e5a2a" opacity="0.85"/>' +
@@ -574,11 +574,14 @@
       { x: 760, y: 360, s: 0.9, t: 'pine'  },
       { x: 600, y: 350, s: 0.9, t: 'pine'  },
       { x: 600, y: 410, s: 0.85, t: 'birch'},
-      // boathouse-side cover (densest cluster — tyler's hiding zone)
-      { x: 422, y: 235, s: 1.1, t: 'pine'  },
-      { x: 408, y: 250, s: 0.9, t: 'pine'  },
-      { x: 398, y: 232, s: 1.0, t: 'pine'  },
-      { x: 415, y: 222, s: 0.85, t: 'pine' }
+      // boathouse-side cover (tyler's hiding zone — between the lake and the
+      // lodge, alongside the gravel approach, west of the boathouse).
+      // these all live in the band y=235-270: south of the lake's curving
+      // shore at this x, north of the lodge's top edge at y=270.
+      { x: 415, y: 245, s: 0.95, t: 'pine' },
+      { x: 432, y: 260, s: 0.9,  t: 'pine' },
+      { x: 425, y: 270, s: 0.85, t: 'pine' },
+      { x: 405, y: 260, s: 0.8,  t: 'pine' }
     ];
     return trees.map(t => (
       '<use href="#' + t.t + '" x="' + t.x + '" y="' + t.y + '" width="' + (20 * t.s) + '" height="' + (20 * t.s) + '" transform="translate(' + (-10 * t.s) + ', ' + (-4 * t.s) + ')"/>'
