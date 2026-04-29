@@ -325,7 +325,7 @@
     '<path d="M 430 60 C 555 35, 715 40, 790 95 C 830 175, 820 285, 740 305 C 605 320, 525 280, 460 235 C 400 200, 395 95, 430 60 Z" fill="none" stroke="#3a5a6a" stroke-width="0.6" stroke-dasharray="0" opacity="0.5" transform="translate(2,2)"/>' +
     // lake label, hand-set serif italic
     '<text x="640" y="172" text-anchor="middle" font-size="22" fill="#1a3a4a" font-style="italic" letter-spacing="2.5" stroke="#fcf5e0" stroke-width="3" paint-order="stroke">Lake Pinecrest</text>' +
-    '<text x="640" y="190" text-anchor="middle" font-size="9" fill="#3a5a6a" letter-spacing="3" stroke="#fcf5e0" stroke-width="2" paint-order="stroke">~ 14 ACRES ~</text>' +
+    '<text x="640" y="190" text-anchor="middle" font-size="10" fill="#1a2a3a" font-weight="bold" letter-spacing="2.5" stroke="#fcf5e0" stroke-width="3.5" paint-order="stroke">~ 14 ACRES ~</text>' +
     // ripples — three faint arcs
     '<g stroke="#4a6a7a" stroke-width="0.7" fill="none" opacity="0.4">' +
       '<path d="M 540 165 Q 555 158 575 165"/>' +
@@ -362,24 +362,26 @@
   // water that extends into the upper-middle of the map)
   PINECREST_MAP_SVG +=
     '<g>' +
-      // outer ornamental frame for title
-      '<path d="M 240 18 Q 240 12 248 12 L 552 12 Q 560 12 560 18 L 560 60 Q 560 66 552 66 L 248 66 Q 240 66 240 60 Z" fill="#fcf5e0" stroke="#3a2820" stroke-width="1.2"/>' +
-      '<path d="M 246 22 L 554 22 M 246 56 L 554 56" stroke="#8a6a4a" stroke-width="0.5"/>' +
+      // outer ornamental frame for title (widened from x=240-560 to x=200-600
+      // so the subtitle fits inside)
+      '<path d="M 200 18 Q 200 12 208 12 L 592 12 Q 600 12 600 18 L 600 60 Q 600 66 592 66 L 208 66 Q 200 66 200 60 Z" fill="#fcf5e0" stroke="#3a2820" stroke-width="1.2"/>' +
+      '<path d="M 206 22 L 594 22 M 206 56 L 594 56" stroke="#8a6a4a" stroke-width="0.5"/>' +
       // tiny ornaments at the corners
-      '<circle cx="248" cy="18" r="1.4" fill="#3a2820"/>' +
-      '<circle cx="552" cy="18" r="1.4" fill="#3a2820"/>' +
-      '<circle cx="248" cy="60" r="1.4" fill="#3a2820"/>' +
-      '<circle cx="552" cy="60" r="1.4" fill="#3a2820"/>' +
-      // tiny pine-tree flourishes flanking the title
-      '<polygon points="222,38 218,46 226,46" fill="#3e5a2a"/>' +
-      '<polygon points="222,32 216,42 228,42" fill="#4a6a3a"/>' +
-      '<rect x="221" y="44" width="2" height="3" fill="#5a3a1a"/>' +
-      '<polygon points="578,38 574,46 582,46" fill="#3e5a2a"/>' +
-      '<polygon points="578,32 572,42 584,42" fill="#4a6a3a"/>' +
-      '<rect x="577" y="44" width="2" height="3" fill="#5a3a1a"/>' +
+      '<circle cx="208" cy="18" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="592" cy="18" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="208" cy="60" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="592" cy="60" r="1.4" fill="#3a2820"/>' +
+      // tiny pine-tree flourishes flanking the title (moved out to match
+      // the wider cartouche)
+      '<polygon points="184,38 180,46 188,46" fill="#3e5a2a"/>' +
+      '<polygon points="184,32 178,42 190,42" fill="#4a6a3a"/>' +
+      '<rect x="183" y="44" width="2" height="3" fill="#5a3a1a"/>' +
+      '<polygon points="616,38 612,46 620,46" fill="#3e5a2a"/>' +
+      '<polygon points="616,32 610,42 622,42" fill="#4a6a3a"/>' +
+      '<rect x="615" y="44" width="2" height="3" fill="#5a3a1a"/>' +
       // title text
       '<text x="400" y="38" text-anchor="middle" font-size="22" fill="#3a2820" font-style="italic" letter-spacing="2.5">Camp Pinecrest</text>' +
-      '<line x1="320" y1="44" x2="480" y2="44" stroke="#8a6a4a" stroke-width="0.5"/>' +
+      '<line x1="290" y1="44" x2="510" y2="44" stroke="#8a6a4a" stroke-width="0.5"/>' +
       '<text x="400" y="55" text-anchor="middle" font-size="9" fill="#6a5848" letter-spacing="2">WHITECOURT, ALBERTA &middot; EST. 1962 &middot; FAMILY HANDBOOK 2004</text>' +
     '</g>';
   // ==== boathouse + dock + bushes ====
@@ -398,7 +400,7 @@
     '<rect x="515" y="238" width="60" height="34" fill="#a88858" stroke="#3a2820" stroke-width="1.5" filter="url(#softShadow)"/>' +
     '<rect x="528" y="248" width="10" height="14" fill="#3a2820"/>' +
     '<rect x="550" y="248" width="14" height="14" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.5"/>' +
-    '<text x="545" y="285" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold" stroke="#fcf5e0" stroke-width="3" paint-order="stroke">boathouse</text>' +
+    '<text x="545" y="295" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold" stroke="#fcf5e0" stroke-width="4" paint-order="stroke">boathouse</text>' +
     // bushes / cover area on the gravel side of boathouse (south of building,
     // along the gravel approach — same side as before, just shifted east)
     '<g>' +
