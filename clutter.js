@@ -303,10 +303,30 @@
       '<line x1="0" y1="400" x2="800" y2="400"/>' +
       '<line x1="0" y1="500" x2="800" y2="500"/>' +
     '</g>' +
-    // ==== title block ====
-    '<text x="400" y="42" text-anchor="middle" font-size="24" fill="#3a2820" font-style="italic" letter-spacing="2">Camp Pinecrest</text>' +
-    '<line x1="280" y1="48" x2="520" y2="48" stroke="#8a6a4a" stroke-width="0.6"/>' +
-    '<text x="400" y="64" text-anchor="middle" font-size="11" fill="#6a5848" letter-spacing="1">WHITECOURT, ALBERTA &middot; EST. 1962</text>' +
+    // ==== title block — banner cartouche with diegetic subtitle ====
+    // outer ornamental frame for title
+    '<g>' +
+      '<path d="M 240 18 Q 240 12 248 12 L 552 12 Q 560 12 560 18 L 560 60 Q 560 66 552 66 L 248 66 Q 240 66 240 60 Z" fill="#fcf5e0" stroke="#3a2820" stroke-width="1.2"/>' +
+      '<path d="M 246 22 L 554 22 M 246 56 L 554 56" stroke="#8a6a4a" stroke-width="0.5"/>' +
+      // tiny ornaments at the corners
+      '<circle cx="248" cy="18" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="552" cy="18" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="248" cy="60" r="1.4" fill="#3a2820"/>' +
+      '<circle cx="552" cy="60" r="1.4" fill="#3a2820"/>' +
+      // tiny pine-tree flourishes flanking the title
+      '<polygon points="222,38 218,46 226,46" fill="#3e5a2a"/>' +
+      '<polygon points="222,32 216,42 228,42" fill="#4a6a3a"/>' +
+      '<rect x="221" y="44" width="2" height="3" fill="#5a3a1a"/>' +
+      '<polygon points="578,38 574,46 582,46" fill="#3e5a2a"/>' +
+      '<polygon points="578,32 572,42 584,42" fill="#4a6a3a"/>' +
+      '<rect x="577" y="44" width="2" height="3" fill="#5a3a1a"/>' +
+      // title text
+      '<text x="400" y="38" text-anchor="middle" font-size="22" fill="#3a2820" font-style="italic" letter-spacing="2.5">Camp Pinecrest</text>' +
+      '<line x1="320" y1="44" x2="480" y2="44" stroke="#8a6a4a" stroke-width="0.5"/>' +
+      '<text x="400" y="55" text-anchor="middle" font-size="9" fill="#6a5848" letter-spacing="2">WHITECOURT, ALBERTA &middot; EST. 1962</text>' +
+    '</g>' +
+    // diegetic subtitle below the cartouche
+    '<text x="400" y="80" text-anchor="middle" font-size="8" fill="#6a5848" letter-spacing="3" font-style="italic">~ from the family handbook, summer 2004 ~</text>' +
     // ==== compass rose ====
     '<g transform="translate(70, 90)">' +
       '<circle r="22" fill="#fbf3df" stroke="#3a2820" stroke-width="1"/>' +
@@ -564,9 +584,78 @@
       '<use href="#' + t.t + '" x="' + t.x + '" y="' + t.y + '" width="' + (20 * t.s) + '" height="' + (20 * t.s) + '" transform="translate(' + (-10 * t.s) + ', ' + (-4 * t.s) + ')"/>'
     )).join('');
   })();
-  // ==== "tegan" pin marker on hemlock (preserved from previous map) ====
+  // ==== "tegan" pin marker on hemlock — her own red-ink annotation ====
   PINECREST_MAP_SVG +=
-    '<text x="210" y="370" text-anchor="middle" font-size="11" fill="#a04848" font-family="cursive" font-style="italic">&#9733; tegan &#9733;</text>';
+    '<g transform="translate(208, 370) rotate(-4)">' +
+      '<text x="0" y="0" text-anchor="middle" font-size="11" fill="#a04848" font-family="cursive" font-style="italic">&#9733; tegan &#9733;</text>' +
+    '</g>';
+  // ==== legend (lower-right) ====
+  PINECREST_MAP_SVG +=
+    '<g transform="translate(620, 440)">' +
+      // box
+      '<rect x="0" y="0" width="160" height="142" fill="#fcf5e0" stroke="#3a2820" stroke-width="1"/>' +
+      '<rect x="3" y="3" width="154" height="136" fill="none" stroke="#8a6a4a" stroke-width="0.4"/>' +
+      // header
+      '<text x="80" y="16" text-anchor="middle" font-size="10" fill="#3a2820" font-weight="bold" letter-spacing="2">LEGEND</text>' +
+      '<line x1="14" y1="22" x2="146" y2="22" stroke="#8a6a4a" stroke-width="0.4"/>' +
+      // cabin icon
+      '<polygon points="14,38 28,38 26,32 16,32" fill="url(#shingles)" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<rect x="14" y="38" width="14" height="9" fill="#d8b888" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<text x="34" y="46" font-size="9" fill="#3a2820">cabin</text>' +
+      // infirmary
+      '<rect x="14" y="54" width="14" height="9" fill="#f0e8d8" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<rect x="20" y="56" width="2" height="5" fill="#a04848"/>' +
+      '<rect x="18.5" y="57.5" width="5" height="2" fill="#a04848"/>' +
+      '<text x="34" y="62" font-size="9" fill="#3a2820">infirmary</text>' +
+      // fire pit
+      '<circle cx="21" cy="74" r="5" fill="#a88858" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<circle cx="21" cy="74" r="2" fill="#5a3a1a"/>' +
+      '<text x="34" y="77" font-size="9" fill="#3a2820">fire pit</text>' +
+      // trail
+      '<path d="M 14 90 Q 21 86 28 90" stroke="#a88858" stroke-width="2" fill="none"/>' +
+      '<text x="34" y="92" font-size="9" fill="#3a2820">trail</text>' +
+      // gravel
+      '<rect x="14" y="98" width="14" height="6" fill="url(#gravel)" stroke="#6a5a3a" stroke-width="0.4"/>' +
+      '<text x="34" y="103" font-size="9" fill="#3a2820">gravel</text>' +
+      // dock / boathouse
+      '<rect x="14" y="111" width="14" height="6" fill="url(#woodGrain)" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<text x="34" y="116" font-size="9" fill="#3a2820">dock</text>' +
+      // archery
+      '<circle cx="21" cy="128" r="3.5" fill="#fff" stroke="#3a2820" stroke-width="0.4"/>' +
+      '<circle cx="21" cy="128" r="2" fill="#a04848"/>' +
+      '<circle cx="21" cy="128" r="0.8" fill="#fff"/>' +
+      '<text x="34" y="131" font-size="9" fill="#3a2820">archery</text>' +
+    '</g>';
+  // ==== scale bar (lower-left, beneath archery range) ====
+  PINECREST_MAP_SVG +=
+    '<g transform="translate(40, 555)">' +
+      // alternating black/white bar
+      '<rect x="0" y="0" width="20" height="6" fill="#3a2820" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<rect x="20" y="0" width="20" height="6" fill="#fcf5e0" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<rect x="40" y="0" width="20" height="6" fill="#3a2820" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<rect x="60" y="0" width="20" height="6" fill="#fcf5e0" stroke="#3a2820" stroke-width="0.5"/>' +
+      // ticks
+      '<text x="0"  y="20" text-anchor="middle" font-size="8" fill="#3a2820">0</text>' +
+      '<text x="40" y="20" text-anchor="middle" font-size="8" fill="#3a2820">100</text>' +
+      '<text x="80" y="20" text-anchor="middle" font-size="8" fill="#3a2820">200 m</text>' +
+      '<text x="40" y="-4" text-anchor="middle" font-size="8" fill="#3a2820" font-style="italic" letter-spacing="1">SCALE</text>' +
+    '</g>';
+  // ==== paper grain overlay (very subtle speckle across whole map) ====
+  PINECREST_MAP_SVG +=
+    '<rect x="0" y="0" width="800" height="600" fill="url(#paperGrain)" pointer-events="none"/>';
+  // ==== paper edge — outer double border + corner ornaments ====
+  PINECREST_MAP_SVG +=
+    '<g pointer-events="none" fill="none">' +
+      // outer thin frame
+      '<rect x="6" y="6" width="788" height="588" stroke="#3a2820" stroke-width="0.7"/>' +
+      // inner thicker frame
+      '<rect x="12" y="12" width="776" height="576" stroke="#3a2820" stroke-width="1.6"/>' +
+      // tiny dots in the corners
+      '<circle cx="12" cy="12" r="1.2" fill="#3a2820"/>' +
+      '<circle cx="788" cy="12" r="1.2" fill="#3a2820"/>' +
+      '<circle cx="12" cy="588" r="1.2" fill="#3a2820"/>' +
+      '<circle cx="788" cy="588" r="1.2" fill="#3a2820"/>' +
+    '</g>';
   PINECREST_MAP_SVG += '</svg>';
 
   // ===========================================================================
