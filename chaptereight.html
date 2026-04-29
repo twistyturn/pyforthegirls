@@ -1769,6 +1769,183 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 }
 
 /* small mobile adjustments */
+/* ============ TIMELINE MAP (Ch8 — Tyler motive deduction) ============ */
+.timeline-map-window {
+  border: 2px solid var(--bg-deep);
+  background: #fbf3df;
+  box-shadow: 4px 4px 0 var(--bg-deep);
+  margin: 16px 0;
+  font-family: 'VT323', monospace;
+}
+.timeline-map-window .window-titlebar {
+  background: linear-gradient(90deg, #8b6a4a, #5a4a2a);
+  color: #fbf3df;
+}
+.timeline-map-meta {
+  background: #ecdfbe;
+  border-bottom: 1px solid var(--bg-deep);
+  padding: 6px 10px;
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #3a2820;
+}
+.timeline-map-svg-wrap {
+  position: relative;
+  background: #fbf3df;
+  padding: 8px;
+}
+.timeline-map-svg-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 540px;
+}
+.timeline-pin {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 4;
+  transition: left 0.5s ease, top 0.5s ease, opacity 0.3s ease;
+}
+.timeline-pin .pin-dot {
+  display: block;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid #1a0628;
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  margin: 0 auto;
+}
+.timeline-pin .pin-label {
+  display: block;
+  background: rgba(26, 6, 40, 0.85);
+  padding: 1px 4px;
+  margin-top: 1px;
+  border-radius: 2px;
+}
+.timeline-pin.pin-tegan .pin-dot { background: #ff66c4; }
+.timeline-pin.pin-wren .pin-dot { background: #66ccff; }
+.timeline-pin.pin-tyler .pin-dot { background: #b22222; border-style: dashed; border-color: #4a0000; }
+.timeline-pin.pin-tyler.tyler-emerged .pin-dot { border-style: solid; }
+.timeline-pin.pin-tyler.tyler-hidden { opacity: 0.85; }
+.timeline-pin.pin-tyler.tyler-hidden .pin-dot {
+  background: rgba(178, 34, 34, 0.5);
+  box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.2);
+}
+.timeline-pin.pin-tyler.tyler-hidden .pin-label::before { content: '⌖ '; }
+.timeline-controls {
+  background: #ecdfbe;
+  border-top: 1px solid var(--bg-deep);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.timeline-controls .timeline-time {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #1a0628;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.timeline-controls .timeline-time .timeline-clock {
+  font-family: 'Silkscreen', monospace;
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: var(--pink-hot);
+  text-shadow: 1px 1px 0 var(--bg-deep);
+}
+.timeline-controls .timeline-time .timeline-source {
+  font-style: italic;
+  font-size: 11px;
+  color: #6a5848;
+  max-width: 60%;
+  text-align: right;
+}
+.timeline-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: linear-gradient(90deg, #d4c8a8, #a88858);
+  border: 1px solid var(--bg-deep);
+  outline: none;
+  cursor: pointer;
+}
+.timeline-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; height: 18px;
+  background: var(--pink-hot);
+  border: 2px solid var(--bg-deep);
+  cursor: pointer;
+  border-radius: 50%;
+}
+.timeline-slider::-moz-range-thumb {
+  width: 18px; height: 18px;
+  background: var(--pink-hot);
+  border: 2px solid var(--bg-deep);
+  cursor: pointer;
+  border-radius: 50%;
+}
+.timeline-step-buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  align-items: center;
+}
+.timeline-step-buttons .timeline-step-btn {
+  background: linear-gradient(180deg, #f6f6f6, #d4c8a8);
+  border: 1px solid var(--bg-deep);
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: #1a0628;
+}
+.timeline-step-buttons .timeline-step-btn:hover { background: linear-gradient(180deg, #fffbe6, #ecdfbe); }
+.timeline-step-buttons .timeline-step-btn:disabled { color: #888; cursor: default; }
+.timeline-step-buttons .timeline-frame-counter {
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  color: #6a5848;
+  letter-spacing: 1px;
+}
+.timeline-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 6px 10px;
+  background: #fbf3df;
+  border-top: 1px dashed #aca899;
+  font-family: 'Silkscreen', monospace;
+  font-size: 9px;
+  color: #3a2820;
+  letter-spacing: 0.5px;
+}
+.timeline-legend .legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.timeline-legend .legend-swatch {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid #1a0628;
+  display: inline-block;
+}
+.timeline-legend .legend-swatch.legend-tyler-hidden {
+  border-style: dashed;
+  background: rgba(178, 34, 34, 0.5);
+  box-shadow: 0 0 0 3px rgba(178, 34, 34, 0.18);
+}
+
 @media (max-width: 600px) {
 .intro-logo { font-size: 18px; }
 .intro-prose { font-size: 16px; padding: 16px; }
@@ -2479,7 +2656,27 @@ i'm just gonna leave that here.`,
     diaryAfter: `// melissa is alive. melissa is fine. she clocked exactly what happened to her.
 // wren did this to her. wren did it again to tegan. tegan knew the pattern and walked into it because she was already planning to leave.
 // i'm not going to message her. she did the work to get out from under it. she doesn't need me dragging her back.
-// wren is online. she always is.`,
+// one more name to check before wren.`,
+    nextBtn: '\u25b8 check briar'
+  },
+
+  // ---- BEAT 9.5: cousin_notes_briar \u2014 close briar's arc, parallel to the melissa beat ----
+  {
+    id: 'cousin_notes_briar',
+    type: 'diary',
+    title: 'open file: notes/briar.txt',
+    meta: 'you ran the same searches you ran on melissa.',
+    body: `briar vance.
+wren's alibi witness. said wren was in cabin all night.
+that part was true. wren was in cabin.
+briar didn't know what wren had done before that.
+
+she also didn't return to camp this year.
+her LJ is private. her old posts are gone.
+i don't think she did anything. i think she figured
+out what she'd been part of and walked away.
+
+i'm not going to message her.`,
     nextBtn: '\u25b8 AIM'
   },
 
@@ -2494,7 +2691,7 @@ i'm just gonna leave that here.`,
       { who: 'wren_h', text: "i wasn't with her when she died. i told you that the first time. i'm telling you again" },
       { who: 'wren_h', text: "but i thought of two things. idk if they help" },
       { who: 'wren_h', text: "the bonfire. tyler hughes was sitting two rows behind tegan. i remember bc she made a joke later and called him \"the boy with the staring problem\"" },
-      { who: 'wren_h', text: "when i left the boathouse at 11:34 the lake was completely still. dock creaks. anyone walking near it would have made noise on the gravel" },
+      { who: 'wren_h', text: "when i left the boathouse at 11:25 the lake was completely still. dock creaks. anyone walking near it would have made noise on the gravel" },
       { who: 'wren_h', text: "she was alive when i left" },
       { who: 'wren_h', text: "i'm trying to move on. i can't keep being in this" },
       { who: 'wren_h', text: "i hope you find what you need. i'm done after this" },
@@ -2502,8 +2699,171 @@ i'm just gonna leave that here.`,
     ],
     diaryAfter: `// tyler at the bonfire. tegan called him "the boy with the staring problem."
 // tegan was alive when wren left. the dock acoustics confirm camille's timing on tyler.
-// wren was a piece of shit but wren wasn't this. camille had to find that out the hard way today.
-// wren is done. i'm letting her be done.`,
+// wren was a piece of shit. wren also isn't the killer. both can be true at once.
+// she gave me the bonfire and the gravel and the timing. i'll use it. we both want this guy caught and i'll work with anyone who can get me there. that isn't the same as liking her or being grateful to her. she manipulated a seventeen-year-old for an entire summer. it's hers to live with.
+// she signed off. i'm letting her be done.`,
+    nextBtn: '\u25b8 open notes'
+  },
+
+  // ---- BEAT 10.5: ch8_timeline_open \u2014 cousin starts the gravel-acoustics deduction ----
+  {
+    id: 'ch8_timeline_open',
+    type: 'diary',
+    title: 'open file: notes/the_gravel.txt',
+    meta: 'after wren signed off you stopped typing for a long time.',
+    body: `wren said the gravel makes noise. anyone walking near the
+boathouse would have been heard.
+
+she heard nothing while she was on the dock with tegan from
+about 11 until she left at 11:25.
+
+tegan was alone after that, watching the path, texting "she's
+not here yet" and "STILL not here." nothing arrived from the
+gravel until 11:44 \u2014 when tegan typed "someone's coming up the path."
+
+so the only times anyone could have walked the gravel without
+being heard were before 11 or right at 11:44. nothing in the
+middle.
+
+i'm going to write that out as a function and see what falls out.`,
+    nextBtn: '\u25b8 python.exe'
+  },
+
+  // ---- BEAT 10.6: task_reconstruct_timeline ----
+  {
+    id: 'task_reconstruct_timeline',
+    type: 'task',
+    charms: 3,
+    title: 'python.exe :: gravel_check.py',
+    meta: 'wren gave you a constraint. write it as a function. see what falls out.',
+    skill: 'FUNCTIONS :: PARAMETERS, RETURN, REUSE',
+    storyAbove: `you have wren's silent windows on the gravel path. you have a list of candidate times tyler could have walked it. write a function that takes a time and returns whether that walk would have been heard.`,
+    instructions: `<p>your task: implement <code>could_walk_gravel(time)</code>.</p>
+                   <p>the function should return <code>True</code> if walking the gravel path at <code>time</code> would NOT have been heard \u2014 i.e., the time falls outside every silent window in <code>SILENT_WINDOWS</code>. otherwise, return <code>False</code>.</p>
+                   <p>then call the function on each candidate time and print the result, one per line.</p>
+                   <p>since timestamps are in <code>"HH:MM"</code> format with leading zeros, string comparison works: <code>"23:00" &lt;= "23:10" &lt;= "23:25"</code> is True. you don't need to parse them.</p>`,
+    starter: `# wren's acoustic testimony plus what tegan reported
+# (silent gravel, then "someone's coming" at 11:44):
+SILENT_WINDOWS = [
+    ("23:00", "23:25"),  # wren on the dock with tegan
+    ("23:26", "23:43"),  # tegan alone, hearing nothing
+]
+
+candidates = [
+    ("21:30", "before wren and tegan met"),
+    ("23:10", "during wren+tegan"),
+    ("23:30", "after wren left, while tegan was alone"),
+    ("23:44", "the moment tegan heard 'someone's coming'"),
+]
+
+# implement could_walk_gravel below.
+# return True if \`time\` is OUTSIDE every silent window.
+# (string comparison works on HH:MM strings.)
+
+def could_walk_gravel(time):
+    pass
+
+# call it on each candidate
+for t, label in candidates:
+    print(f"{t} ({label}): {could_walk_gravel(t)}")
+`,
+    expectedOutput: `21:30 (before wren and tegan met): True
+23:10 (during wren+tegan): False
+23:30 (after wren left, while tegan was alone): False
+23:44 (the moment tegan heard 'someone's coming'): True`,
+    matchType: 'exact',
+    codeMustContain: ['def could_walk_gravel', 'return'],
+    hint: `<p>loop through <code>SILENT_WINDOWS</code>. for each <code>(start, end)</code> pair, check if <code>start &lt;= time &lt;= end</code>. if so, return <code>False</code>. if the loop finishes without returning, return <code>True</code>.</p><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">def could_walk_gravel(time):
+    for start, end in SILENT_WINDOWS:
+        if start &lt;= time &lt;= end:
+            return False
+    return True</pre>`,
+    onComplete: {
+      diary: `// only two windows. before they met, or at the exact moment of approach. nothing in between.`
+    }
+  },
+
+  // ---- BEAT 10.7: ch8_map_timeline ----
+  {
+    id: 'ch8_map_timeline',
+    type: 'timeline_map',
+    title: 'investigation board :: pinecrest, aug 14',
+    meta: 'who was where. drag the slider.',
+    frames: [
+      {
+        time: '22:00',
+        caption: 'tegan and wren both in hemlock. tyler not on the path yet.',
+        pins: [
+          { person: 'tegan', location: 'hemlock' },
+          { person: 'wren',  location: 'hemlock' }
+        ]
+      },
+      {
+        time: '23:00',
+        caption: 'wren and tegan at the boathouse. wren says the gravel was silent.',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'wren',  location: 'boathouse_dock' },
+          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+        ]
+      },
+      {
+        time: '23:25',
+        caption: 'wren walks back up the gravel. tegan stays. nothing audible from the bushes.',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'wren',  location: 'gravel_path' },
+          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+        ]
+      },
+      {
+        time: '23:31',
+        caption: 'wren back in her cabin. tegan still alone at the dock. \"she is not here yet.\"',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'wren',  location: 'hemlock' },
+          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+        ]
+      },
+      {
+        time: '23:44',
+        caption: 'tyler emerges. tegan: "someone is coming up the path. it is not her."',
+        pins: [
+          { person: 'tegan', location: 'boathouse_dock' },
+          { person: 'tyler', location: 'gravel_path' }
+        ]
+      },
+      {
+        time: '23:50',
+        caption: 'camille saw tyler walking out from behind the boathouse.',
+        pins: [
+          { person: 'tyler', location: 'behind_boathouse' }
+        ]
+      }
+    ],
+    nextBtn: '\u25b8 what it means'
+  },
+
+  // ---- BEAT 10.8: ch8_motive_lands ----
+  {
+    id: 'ch8_motive_lands',
+    type: 'diary',
+    title: 'open file: notes/he_was_already_there.txt',
+    meta: 'you typed this slowly.',
+    body: `he wasn't following her down. he was already there.
+
+he was in the bushes by 11, before wren walked down the gravel path.
+he sat there while they talked. he sat there while she kissed her on
+the dock. he heard her tell wren she was done at camp. he heard wren
+leave at 11:25 and waited nineteen minutes to be sure she wasn't
+coming back.
+
+he thought the kiss at the bonfire had been for him. he thought she'd
+been performing for him. he watched the actual answer happen at the
+boathouse two weeks later, and then he came down the path and made
+sure no one would ever know what he'd seen.
+
+he came out of the bushes at 11:44.`,
     nextBtn: '\u25b8 AIM hannah'
   },
 
@@ -2516,7 +2876,7 @@ i'm just gonna leave that here.`,
     log: [
       { who: 'you', text: "camille saw tyler walking back from behind the boathouse at 11:50" },
       { who: 'glorfindel_lives', text: "\u2026\u2026" },
-      { who: 'you', text: "wren left the dock at 11:34. tyler must have been waiting in the bush" },
+      { who: 'you', text: "wren left the dock at 11:25. tyler must have been waiting in the bushes" },
       { who: 'glorfindel_lives', text: "waiting for what" },
       { who: 'you', text: "for wren to leave" },
       { who: 'glorfindel_lives', text: "ok" },
@@ -2610,6 +2970,7 @@ function renderBeat(beat, isActive) {
   if (beat.type === 'nexopia_view') return renderNexopiaView(beat, isActive);
   if (beat.type === 'livejournal_view') return renderLivejournalView(beat, isActive);
   if (beat.type === 'camille_aim') return renderCamilleAim(beat, isActive);
+  if (beat.type === 'timeline_map') return renderTimelineMap(beat, isActive);
 }
 
 function renderEmailView(beat, isActive) {
@@ -3031,6 +3392,119 @@ function renderCamilleAim(beat, isActive) {
     const inp = document.getElementById('camille-input');
     if (inp) inp.focus();
   }, 50);
+}
+
+// ===========================================================================
+// renderTimelineMap — pin overlay on the camp SVG, scrubable by timestamp.
+// beat shape:
+//   { type: 'timeline_map',
+//     title, meta,
+//     frames: [
+//       { time: '22:15',
+//         caption: 'human-readable description',
+//         pins: [{ person, location, hidden? }, ...]
+//       }, ...
+//     ],
+//     diaryAfter, nextBtn }
+// `location` is a key into window.Clutter.MAP_LOCATIONS.
+// `hidden: true` on a pin draws it with the dashed/glow "in cover" style
+// (used to convey Tyler is in the bushes, visible to the player but not
+// to the people on the map).
+// ===========================================================================
+function renderTimelineMap(beat, isActive) {
+  const w = document.createElement('div');
+  w.className = 'timeline-map-window';
+  const baseSvg = (window.Clutter && window.Clutter.MAP_SVG) || '<div style="padding:40px;text-align:center;color:#a04848;">map unavailable: clutter.js not loaded</div>';
+  const locs = (window.Clutter && window.Clutter.MAP_LOCATIONS) || {};
+  const initial = 0;
+  w.innerHTML = `
+    <div class="window-titlebar">
+      <span>${beat.title}</span>
+      <div class="window-titlebar-buttons">
+        <span class="titlebar-btn">_</span>
+        <span class="titlebar-btn">□</span>
+        <span class="titlebar-btn">×</span>
+      </div>
+    </div>
+    <div class="timeline-map-meta">${beat.meta || ''}</div>
+    <div class="timeline-map-svg-wrap" id="tmap-${beat.id}">
+      ${baseSvg}
+    </div>
+    <div class="timeline-controls">
+      <div class="timeline-time">
+        <span class="timeline-clock" id="tmap-clock-${beat.id}">--:--</span>
+        <span class="timeline-source" id="tmap-caption-${beat.id}"></span>
+      </div>
+      <input type="range" class="timeline-slider" id="tmap-slider-${beat.id}" min="0" max="${beat.frames.length - 1}" value="${initial}" step="1">
+      <div class="timeline-step-buttons">
+        <button class="timeline-step-btn" id="tmap-prev-${beat.id}">◂ back</button>
+        <span class="timeline-frame-counter" id="tmap-counter-${beat.id}"></span>
+        <button class="timeline-step-btn" id="tmap-next-${beat.id}">forward ▸</button>
+      </div>
+    </div>
+    <div class="timeline-legend">
+      <span class="legend-item"><span class="legend-swatch" style="background:#ff66c4;"></span> tegan</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:#66ccff;"></span> wren</span>
+      <span class="legend-item"><span class="legend-swatch legend-tyler-hidden"></span> tyler (hidden)</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:#b22222;"></span> tyler (emerged)</span>
+    </div>
+    ${isActive ? `<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    </div>` : ''}
+  `;
+  storyContainer.appendChild(w);
+
+  // After mount, set up the pin overlay + slider behaviour. The SVG defines a
+  // viewBox of 800x600; pins are positioned in % of the wrap so they scale
+  // with whatever rendered size the responsive SVG adopts.
+  const wrap = document.getElementById(`tmap-${beat.id}`);
+  const slider = document.getElementById(`tmap-slider-${beat.id}`);
+  const clockEl = document.getElementById(`tmap-clock-${beat.id}`);
+  const captionEl = document.getElementById(`tmap-caption-${beat.id}`);
+  const prevBtn = document.getElementById(`tmap-prev-${beat.id}`);
+  const nextBtn = document.getElementById(`tmap-next-${beat.id}`);
+  const counterEl = document.getElementById(`tmap-counter-${beat.id}`);
+  if (!wrap || !slider) return;
+
+  function renderFrame(idx) {
+    const frame = beat.frames[idx];
+    if (!frame) return;
+    clockEl.textContent = frame.time;
+    captionEl.textContent = frame.caption || '';
+    counterEl.textContent = `frame ${idx + 1} / ${beat.frames.length}`;
+    prevBtn.disabled = (idx === 0);
+    nextBtn.disabled = (idx === beat.frames.length - 1);
+    // remove previous pins
+    Array.from(wrap.querySelectorAll('.timeline-pin')).forEach(p => p.remove());
+    (frame.pins || []).forEach(pin => {
+      const loc = locs[pin.location];
+      if (!loc) return;
+      const el = document.createElement('div');
+      el.className = `timeline-pin pin-${pin.person}` + (pin.person === 'tyler' ? (pin.hidden ? ' tyler-hidden' : ' tyler-emerged') : '');
+      el.style.left = `${(loc.x / 800) * 100}%`;
+      el.style.top  = `${(loc.y / 600) * 100}%`;
+      el.innerHTML = `<span class="pin-dot"></span><span class="pin-label">${pin.person}</span>`;
+      wrap.appendChild(el);
+    });
+  }
+  renderFrame(initial);
+  slider.addEventListener('input', e => renderFrame(parseInt(e.target.value, 10)));
+  prevBtn.addEventListener('click', () => {
+    const v = Math.max(0, parseInt(slider.value, 10) - 1);
+    slider.value = v;
+    renderFrame(v);
+  });
+  nextBtn.addEventListener('click', () => {
+    const v = Math.min(beat.frames.length - 1, parseInt(slider.value, 10) + 1);
+    slider.value = v;
+    renderFrame(v);
+  });
+
+  if (beat.diaryAfter && isActive) {
+    // diary text appears INSIDE the map window after the slider (lets the
+    // cousin's voice land on the same beat as the visual reveal). it's
+    // unrelated to the typical onComplete diary pattern, so it goes inline.
+  }
 }
 
 function renderCamilleLog(log) {

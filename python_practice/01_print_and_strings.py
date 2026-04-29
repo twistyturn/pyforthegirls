@@ -13,14 +13,14 @@
 
 
 # ---- exercise 1: print a single thing ----
-# print the title of your favorite book
+# print the title of your favourite book
 
 # ---- ANSWER ----
 # print("The Silmarillion")
 
 
 # ---- exercise 2: print multiple things on separate lines ----
-# print three of your favorite tegan & sara songs from
+# print three of your favourite tegan & sara songs from
 # "If It Was You" (2002), each on its own line
 
 # ---- ANSWER ----

@@ -17,12 +17,12 @@
 
 
 # ---- exercise 1: assign and print ----
-# make a variable called "favorite_elf" with the value "Fingon"
+# make a variable called "favourite_elf" with the value "Fingon"
 # then print it
 
 # ---- ANSWER ----
-# favorite_elf = "Fingon"
-# print(favorite_elf)
+# favourite_elf = "Fingon"
+# print(favourite_elf)
 
 
 # ---- exercise 2: reassign ----
