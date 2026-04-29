@@ -1182,6 +1182,7 @@ len(colours)     # → 3
 colours[0]       # → "red"
 colours[1]       # → "blue"
 colours[2]       # → "green"</pre>
+                   <p><em>(the <code>#&nbsp;→</code> arrow in these examples shows what each expression <strong>equals</strong>. to actually display the value on screen, you'd write <code>print(len(colours))</code> or <code>print(colours[0])</code>. expressions by themselves don't print — you have to wrap them in <code>print()</code>.)</em></p>
                    <p><code>len(...)</code> tells you how many items. <code>colours[0]</code> grabs the first item. positions start at 0 (not 1) — the first item is at position 0, the second at 1, and so on.</p>
                    <p><strong>negative indexes count from the end.</strong> this is new:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours[-1]      # → "green"   (last item)
@@ -1206,14 +1207,17 @@ fragment["content"]   # → "where are you"</pre>
     {"time": "23:48", "from": "tegan_a87", "content": "the boathouse"},
     # ... eight more like this ...
 ]</pre>
-                   <p>to grab the first fragment: <code>fragments[0]</code>. that gives you back the whole dictionary. to then pull the sender out of that dictionary: <code>fragments[0]["from"]</code>. two steps in one line — first the list index, then the dict key.</p>
+                   <p>to grab the first fragment: <code>fragments[0]</code>. that gives you back the whole dictionary — something like <code>{"time": "23:46", "from": "wren_h", "content": "where are you"}</code>. you can SEE the sender in there, but to <em>extract</em> just the sender, you need a second step: index into the dictionary with the key <code>"from"</code>.</p>
+                   <p>both steps in one line:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragments[0]["from"]</pre>
+                   <p>read it left to right: <code>fragments[0]</code> → "the first fragment, which is a dict" → <code>["from"]</code> → "look up the 'from' key in that dict." the result is the sender's name as a string. wrap it in <code>print()</code> to display it.</p>
 
                    <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">your task</h4>
                    <p>print three things, each on its own line:</p>
                    <ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
-                     <li>how many fragments there are total (use <code>len(fragments)</code>)</li>
-                     <li>who sent the first message (use <code>fragments[0]</code> to get the dict, then <code>["from"]</code> to get the sender)</li>
-                     <li>who sent the last message (use <code>fragments[-1]</code> for the last item, then <code>["from"]</code>)</li>
+                     <li><strong>print</strong> how many fragments there are total — wrap <code>len(fragments)</code> in <code>print()</code>: <code>print(len(fragments))</code></li>
+                     <li><strong>print</strong> who sent the first message — get the first fragment with <code>fragments[0]</code>, get its sender with <code>["from"]</code>, and wrap it all in <code>print()</code>: <code>print(fragments[0]["from"])</code></li>
+                     <li><strong>print</strong> who sent the last message — same shape as #2, but use <code>fragments[-1]</code> for the last item</li>
                    </ol>`,
     starter: `# fragments is already loaded for you (10 messages)
 # print three things on three lines:
@@ -1224,6 +1228,16 @@ fragment["content"]   # → "where are you"</pre>
     expectedOutput: '10\nwren_h\nwren_h',
     matchType: 'exact',
     codeMustContain: [['len(', '[0]']],
+    commonMistakes: [
+      {
+        pattern: /^(len\s*\(\s*fragments\s*\)|fragments\s*\[)/m,
+        tip: `you have <code>len(fragments)</code> and <code>fragments[0]</code> in your code, but they're not wrapped in <code>print()</code>. expressions by themselves don't show up on screen — you need <code>print(len(fragments))</code> and <code>print(fragments[0]["from"])</code> to actually display the values.`
+      },
+      {
+        pattern: /print\s*\(\s*fragments\s*\[\s*-?\d+\s*\]\s*\)/,
+        tip: `<code>print(fragments[0])</code> would print the whole dictionary (with the curly braces and all the keys). to print just the sender, you need a second step: chain <code>["from"]</code> after <code>fragments[0]</code>. like this: <code>print(fragments[0]["from"])</code>. think of it as "first get the dict, then get the value out of the dict."`
+      }
+    ],
     hint: `three lines, each one a <code>print()</code>. for the count, wrap <code>fragments</code> in <code>len()</code>. for the senders, you need a chained access: <code>fragments[<em>position</em>]</code> gives you the dict, then <code>["from"]</code> pulls the value out of that dict. positions: <code>0</code> for first, <code>-1</code> for last.`,
     fragmentInjection: true,
     onComplete: {
