@@ -379,84 +379,6 @@ letter-spacing: 1px;
   box-shadow: var(--shadow-hard), var(--shadow-soft);
   animation: window-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.aim-titlebar {
-  background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%) !important;
-  color: var(--bg-deep) !important;
-  text-shadow: none !important;
-}
-.aim-meta {
-  background: #ffffaa;
-  color: #553300;
-  font-family: 'Silkscreen', monospace;
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-bottom: 1px solid var(--bg-deep);
-}
-.aim-body {
-  background: #ffffff;
-  color: #1a1a1a;
-  padding: 10px 12px 14px;
-  font-family: 'Tahoma', 'Geneva', sans-serif;
-  font-size: 13px;
-  line-height: 1.45;
-  max-height: 480px;
-  overflow-y: auto;
-}
-.aim-divider {
-  text-align: center;
-  margin: 10px 0 8px;
-  font-family: 'Silkscreen', monospace;
-  font-size: 9px;
-  letter-spacing: 1px;
-  color: #999;
-  position: relative;
-}
-.aim-divider::before,
-.aim-divider::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 30%;
-  border-top: 1px dashed #cccccc;
-}
-.aim-divider::before { left: 0; }
-.aim-divider::after { right: 0; }
-.aim-divider span {
-  display: inline-block;
-  padding: 2px 10px;
-  background: #ffffff;
-  text-transform: lowercase;
-}
-.aim-msg {
-  margin: 1px 0;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
-}
-.aim-msg .aim-user {
-  font-weight: bold;
-  font-family: 'Tahoma', 'Geneva', sans-serif;
-}
-.aim-self .aim-user { color: #cc0000; }
-.aim-other .aim-user { color: #0000cc; }
-.aim-self .aim-text,
-.aim-other .aim-text { color: #1a1a1a; }
-.aim-system {
-  margin: 6px 0;
-  color: #777;
-  font-style: italic;
-  font-family: 'Tahoma', 'Geneva', sans-serif;
-  font-size: 12px;
-  text-align: center;
-}
-.aim-gap { height: 8px; }
-.aim-plain {
-  margin: 2px 0;
-  color: #444;
-  font-family: 'Tahoma', 'Geneva', sans-serif;
-}
-
 /* ============ TERMINAL / CODE EDITOR ============ */
 .terminal-window { max-width: 760px; margin: 24px auto; }
 .terminal-window .window-titlebar {
@@ -672,6 +594,90 @@ font-size: 11px;
 color: #555;
 }
 .aim-modal-status { font-style: italic; }
+
+/* ============ AIM COMPOSE / LOG (unified — matches ch5+) ============ */
+.aim-window {
+border: 2px solid var(--bg-deep);
+background: #f0e8ff;
+box-shadow: 4px 4px 0 var(--bg-deep), inset 0 0 0 1px #fff;
+margin: 16px 0;
+font-family: 'VT323', monospace;
+}
+.aim-window .window-titlebar {
+background: linear-gradient(90deg, #6699ff, #99ccff);
+color: #fff;
+}
+.aim-buddy-strip {
+padding: 8px 12px;
+background: #ffe8f5;
+border-bottom: 1px solid var(--bg-deep);
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+color: var(--bg-deep);
+letter-spacing: 1px;
+}
+.aim-buddy-strip .online-dot {
+color: var(--lime-acid);
+font-size: 14px;
+vertical-align: middle;
+}
+.aim-log-body {
+padding: 14px;
+background: #fff;
+margin: 12px;
+border: 1px solid var(--bg-deep);
+max-height: 70vh;
+overflow-y: auto;
+}
+.aim-message {
+margin-bottom: 10px;
+font-size: 17px;
+line-height: 1.4;
+color: var(--bg-deep);
+}
+.aim-message-from {
+color: #cc3399;
+font-weight: bold;
+margin-right: 6px;
+}
+.aim-message-player .aim-message-from {
+color: #336699;
+}
+.aim-message-player {
+padding-left: 24px;
+border-left: 3px solid #336699;
+}
+.aim-message-pause {
+text-align: center;
+color: #999;
+font-size: 18px;
+margin: 14px 0;
+letter-spacing: 4px;
+animation: aim-pulse 1.4s ease-in-out infinite;
+}
+@keyframes aim-pulse {
+0%, 100% { opacity: 0.4; }
+50%      { opacity: 1; }
+}
+.aim-send-bar {
+padding: 10px 12px;
+background: var(--window-bg);
+border-top: 1px solid var(--bg-deep);
+text-align: right;
+}
+.aim-send-btn {
+background: var(--lime-acid);
+border: 2px solid var(--bg-deep);
+color: var(--bg-deep);
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+letter-spacing: 1px;
+padding: 6px 14px;
+cursor: pointer;
+text-transform: uppercase;
+}
+.aim-send-btn:hover { background: #b6e89e; }
+
 .buddy-content {
 padding: 12px;
 color: var(--bg-deep);
@@ -1281,40 +1287,40 @@ id: 'aim_log_1',
 type: 'aim_log',
 title: 'open file: AIM_archives/camille_summer04.txt',
 meta: 'aim log :: tegan_a87 ↔ camille.j.89 :: jul 9 - aug 1 2004',
-selfUser: 'tegan_a87',
-body: `~~~ jul 9 2004 :: 11:23 pm ~~~
-camille.j.89: hey are you ok
-camille.j.89: like genuinely
-camille.j.89: i saw you guys yesterday at the boathouse
-camille.j.89: i wasn't snooping i was getting my sweatshirt :/
-camille.j.89: but i saw
-tegan_a87: don't tell anyone
-camille.j.89: i wasn't going to
-camille.j.89: i'm just worried :(
-camille.j.89: she's like. a lot older than you
-camille.j.89: are you ok
-tegan_a87: i'm fine
-tegan_a87: please please please don't say anything
-tegan_a87: she'll know it was you
-camille.j.89: she'll know what was me
-camille.j.89: tegan
-camille.j.89: tegan are you SAFE :(((
-[user tegan_a87 has gone idle.]
-
-~~~ aug 1 2004 :: 1:47 am ~~~
-camille.j.89: about the bonfire
-camille.j.89: i saw what you did
-camille.j.89: i know it looked like a joke for tyler
-camille.j.89: but tegan
-camille.j.89: it wasn't a joke right
-camille.j.89: i'm not going to say anything
-camille.j.89: i would never
-camille.j.89: i just want you to know that someone saw you
-camille.j.89: and it's okay
-tegan_a87: stop messaging me
-tegan_a87: please
-tegan_a87: i can't
-[user tegan_a87 has gone idle.]`,
+messages: [
+  { from: 'system', text: '— jul 9 2004 :: 11:23 pm —' },
+  { from: 'camille.j.89', text: 'hey are you ok' },
+  { from: 'camille.j.89', text: 'like genuinely' },
+  { from: 'camille.j.89', text: 'i saw you guys yesterday at the boathouse' },
+  { from: 'camille.j.89', text: "i wasn't snooping i was getting my sweatshirt :/" },
+  { from: 'camille.j.89', text: 'but i saw' },
+  { from: 'tegan_a87', text: "don't tell anyone" },
+  { from: 'camille.j.89', text: "i wasn't going to" },
+  { from: 'camille.j.89', text: "i'm just worried :(" },
+  { from: 'camille.j.89', text: "she's like. a lot older than you" },
+  { from: 'camille.j.89', text: 'are you ok' },
+  { from: 'tegan_a87', text: "i'm fine" },
+  { from: 'tegan_a87', text: "please please please don't say anything" },
+  { from: 'tegan_a87', text: "she'll know it was you" },
+  { from: 'camille.j.89', text: "she'll know what was me" },
+  { from: 'camille.j.89', text: 'tegan' },
+  { from: 'camille.j.89', text: 'tegan are you SAFE :(((' },
+  { from: 'system', text: 'user tegan_a87 has gone idle.' },
+  { from: 'system', text: '— aug 1 2004 :: 1:47 am —' },
+  { from: 'camille.j.89', text: 'about the bonfire' },
+  { from: 'camille.j.89', text: 'i saw what you did' },
+  { from: 'camille.j.89', text: 'i know it looked like a joke for tyler' },
+  { from: 'camille.j.89', text: 'but tegan' },
+  { from: 'camille.j.89', text: "it wasn't a joke right" },
+  { from: 'camille.j.89', text: "i'm not going to say anything" },
+  { from: 'camille.j.89', text: 'i would never' },
+  { from: 'camille.j.89', text: 'i just want you to know that someone saw you' },
+  { from: 'camille.j.89', text: "and it's okay" },
+  { from: 'tegan_a87', text: 'stop messaging me' },
+  { from: 'tegan_a87', text: 'please' },
+  { from: 'tegan_a87', text: "i can't" },
+  { from: 'system', text: 'user tegan_a87 has gone idle.' }
+],
     nextBtn: 'next file ▸'
   },
 
@@ -1797,9 +1803,10 @@ your laptop chimes. an AIM window pops up.`,
     type: 'aim_log',
     title: 'AIM :: incoming from wren_h',
     meta: 'wren_h :: online',
-    selfUser: 'tegan_a87',
-    body: `wren_h: i can see you opened the zip.
-wren_h: we should talk.`,
+    messages: [
+      { from: 'wren_h', text: 'i can see you opened the zip.' },
+      { from: 'wren_h', text: 'we should talk.' }
+    ],
     nextBtn: '▸ end of chapter 2'
   },
 
@@ -1848,48 +1855,26 @@ function renderBeat(beat, isActive) {
 
 function renderAimLog(beat, isActive) {
   if (isActive && window.Sounds) Sounds.playOnce('aim-message-in', 'log:' + beat.id);
-  const selfUser = beat.selfUser || '';
-  // Parse body line-by-line into structured chat events.
-  const lines = beat.body.split('\n');
-  let html = '';
-  for (let raw of lines) {
-    const line = raw.trimEnd();
-    if (line === '') {
-      html += '<div class="aim-gap"></div>';
-      continue;
-    }
-    // Section divider: ~~~ jul 9 2004 :: 11:23 pm ~~~
-    let m = line.match(/^~+\s*(.+?)\s*~+$/);
-    if (m) {
-      html += `<div class="aim-divider"><span>${escapeHtmlForAim(m[1])}</span></div>`;
-      continue;
-    }
-    // System event in [brackets]: [user tegan_a87 has gone idle.]
-    m = line.match(/^\[(.+)\]$/);
-    if (m) {
-      html += `<div class="aim-system">${escapeHtmlForAim(m[1])}</div>`;
-      continue;
-    }
-    // Username message: "username: text..."
-    m = line.match(/^([a-zA-Z0-9._]+):\s?(.*)$/);
-    if (m) {
-      const user = m[1];
-      const msg = m[2];
-      const isSelf = (user === selfUser);
-      html += `<div class="aim-msg ${isSelf ? 'aim-self' : 'aim-other'}">`
-            +    `<span class="aim-user">${escapeHtmlForAim(user)}:</span> `
-            +    `<span class="aim-text">${escapeHtmlForAim(msg)}</span>`
-            + `</div>`;
-      continue;
-    }
-    // Fallback: any other line, render as plain.
-    html += `<div class="aim-plain">${escapeHtmlForAim(line)}</div>`;
-  }
-
   const w = document.createElement('div');
-  w.className = 'window aim-window';
+  w.className = 'aim-window';
+  const items = beat.messages || [];
+  const messagesHtml = items.map(m => {
+    const handle = m.from || '';
+    if (!m.text || m.text.trim() === '' || m.text === '…') {
+      return `<div class="aim-message-pause">. . .</div>`;
+    }
+    if (handle === 'system') {
+      return `<div class="aim-message-pause" style="color: var(--lime-acid); font-style: italic;">${escapeHtml(m.text)}</div>`;
+    }
+    if (handle === 'pause') {
+      return `<div class="aim-message-pause">[${escapeHtml(m.text)}]</div>`;
+    }
+    const isPlayer = handle === 'you';
+    const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
+    return `<div class="${cls}"><span class="aim-message-from">${escapeHtml(handle)}:</span>${escapeHtml(m.text)}</div>`;
+  }).join('');
   w.innerHTML = `
-    <div class="window-titlebar aim-titlebar">
+    <div class="window-titlebar">
       <span>${beat.title}</span>
       <div class="window-titlebar-buttons">
         <span class="titlebar-btn">_</span>
@@ -1897,17 +1882,15 @@ function renderAimLog(beat, isActive) {
         <span class="titlebar-btn">×</span>
       </div>
     </div>
-    <div class="aim-meta">${beat.meta}</div>
-    <div class="aim-body">${html}</div>
-    ${isActive ? `<div style="padding: 12px; text-align: center; background: #d8d8e8; border-top: 1px solid var(--bg-deep);">
-      <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
+    <div class="aim-buddy-strip">
+      <span class="online-dot">●</span> ${beat.meta || ''}
+    </div>
+    <div class="aim-log-body">${messagesHtml}</div>
+    ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
+      <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
     </div>` : ''}
   `;
   storyContainer.appendChild(w);
-}
-
-function escapeHtmlForAim(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 function renderDiary(beat, isActive) {

@@ -655,6 +655,13 @@ color: #cc3399;
 font-weight: bold;
 margin-right: 6px;
 }
+.aim-message-player .aim-message-from {
+color: #336699;
+}
+.aim-message-player {
+padding-left: 24px;
+border-left: 3px solid #336699;
+}
 .aim-message-pause {
 text-align: center;
 color: #999;
@@ -1684,7 +1691,9 @@ function renderAimLog(beat, isActive) {
     if (!m.text || m.text.trim() === '' || m.text === '…') {
       return `<div class="aim-message-pause">. . .</div>`;
     }
-    return `<div class="aim-message"><span class="aim-message-from">${m.from}:</span>${escapeHtml(m.text)}</div>`;
+    const isPlayer = m.from === 'you';
+    const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
+    return `<div class="${cls}"><span class="aim-message-from">${m.from}:</span>${escapeHtml(m.text)}</div>`;
   }).join('');
   w.innerHTML = `
     <div class="window-titlebar">
