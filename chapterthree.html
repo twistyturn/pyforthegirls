@@ -1171,22 +1171,53 @@ it's time to read them in order.`,
     type: 'task',
     title: 'python.exe :: load_fragments.py',
     meta: 'first script of the night.',
-    storyAbove: `you load all ten fragments into a python list called <code>fragments</code>. each fragment is a dictionary. a labeled box with keys like <code>"time"</code>, <code>"from"</code>, <code>"content"</code>. the variable is set up for you. now you need to confirm you can access individual messages.`,
+    storyAbove: `you load all ten fragments into a python list called <code>fragments</code>. each fragment has multiple pieces of information attached to it — a timestamp, a sender name, the content of the message. now you need to confirm you can pull individual pieces out.`,
     skill: 'LISTS :: LENGTH & INDEXING',
-    instructions: `<p>a <strong>list</strong> is an ordered collection. you've seen them already in the loops chapter, but now they hold dictionaries instead of strings.</p>
-                   <p><code>len(my_list)</code> tells you how many items are in it, and you can grab an item by its <strong>index</strong> (position) in square brackets:</p>
+    instructions: `<p>two ideas to get straight before the task. one is review (lists), one is brand new (dictionaries — let's build the model before you need it).</p>
+
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">a list, refresher</h4>
+                   <p>a list is an ordered collection of things. you've used these in loops:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
 len(colours)     # → 3
-colours[0]       # → "red"     (first item)
-colours[-1]      # → "green"   (last item — negative indexes count from the end)</pre>
-                   <p>each fragment in this task is a dictionary. <code>fragment["from"]</code> gives you the sender:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragment = {"from": "wren_h", "content": "..."}
-fragment["from"]   # → "wren_h"</pre>
-                   <p><strong>your task:</strong> print three things, each on its own line:</p>
-                   <ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 22px;">
-                     <li>how many fragments there are total</li>
-                     <li>who sent the very first message (use <code>fragments[0]</code>)</li>
-                     <li>who sent the very last message (use <code>fragments[-1]</code>)</li>
+colours[0]       # → "red"
+colours[1]       # → "blue"
+colours[2]       # → "green"</pre>
+                   <p><em>(the <code>#&nbsp;→</code> arrow in these examples shows what each expression <strong>equals</strong>. to actually display the value on screen, you'd write <code>print(len(colours))</code> or <code>print(colours[0])</code>. expressions by themselves don't print — you have to wrap them in <code>print()</code>.)</em></p>
+                   <p><code>len(...)</code> tells you how many items. <code>colours[0]</code> grabs the first item. positions start at 0 (not 1) — the first item is at position 0, the second at 1, and so on.</p>
+                   <p><strong>negative indexes count from the end.</strong> this is new:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours[-1]      # → "green"   (last item)
+colours[-2]      # → "blue"    (second-to-last)</pre>
+                   <p>this is handy when you want the last thing without first counting how many items there are. <code>list[-1]</code> always means "the last item, whatever that is."</p>
+
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">a dictionary</h4>
+                   <p>a list holds items by <em>position</em> — first, second, third. a <strong>dictionary</strong> holds items by <em>name</em>. each item has a label (the key) and a value attached to it.</p>
+                   <p>think of a dictionary as a <em>labeled box</em>. you don't reach in by position; you reach in by name:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragment = {"time": "23:46", "from": "wren_h", "content": "where are you"}
+
+fragment["time"]      # → "23:46"
+fragment["from"]      # → "wren_h"
+fragment["content"]   # → "where are you"</pre>
+                   <p>the curly braces <code>{}</code> hold the dictionary. each entry is <code>"key": "value"</code> — the key is the label, the value is what's stored under that label. to get something out, you write the dict name then the key in square brackets.</p>
+                   <p>(this looks similar to list indexing — both use square brackets — but the thing inside the brackets is different. lists use a number for position. dicts use a string for the label.)</p>
+
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">a list of dictionaries</h4>
+                   <p>now combine them. <code>fragments</code> is a list, but each item in the list is a dictionary, not a string:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragments = [
+    {"time": "23:46", "from": "wren_h", "content": "where are you"},
+    {"time": "23:48", "from": "tegan_a87", "content": "the boathouse"},
+    # ... eight more like this ...
+]</pre>
+                   <p>to grab the first fragment: <code>fragments[0]</code>. that gives you back the whole dictionary — something like <code>{"time": "23:46", "from": "wren_h", "content": "where are you"}</code>. you can SEE the sender in there, but to <em>extract</em> just the sender, you need a second step: index into the dictionary with the key <code>"from"</code>.</p>
+                   <p>both steps in one line:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragments[0]["from"]</pre>
+                   <p>read it left to right: <code>fragments[0]</code> → "the first fragment, which is a dict" → <code>["from"]</code> → "look up the 'from' key in that dict." the result is the sender's name as a string. wrap it in <code>print()</code> to display it.</p>
+
+                   <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">your task</h4>
+                   <p>print three things, each on its own line:</p>
+                   <ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
+                     <li><strong>print</strong> how many fragments there are total — wrap <code>len(fragments)</code> in <code>print()</code>: <code>print(len(fragments))</code></li>
+                     <li><strong>print</strong> who sent the first message — get the first fragment with <code>fragments[0]</code>, get its sender with <code>["from"]</code>, and wrap it all in <code>print()</code>: <code>print(fragments[0]["from"])</code></li>
+                     <li><strong>print</strong> who sent the last message — same shape as #2, but use <code>fragments[-1]</code> for the last item</li>
                    </ol>`,
     starter: `# fragments is already loaded for you (10 messages)
 # print three things on three lines:
@@ -1197,7 +1228,17 @@ fragment["from"]   # → "wren_h"</pre>
     expectedOutput: '10\nwren_h\nwren_h',
     matchType: 'exact',
     codeMustContain: [['len(', '[0]']],
-    hint: `three lines: <code>print(len(fragments))</code>, <code>print(fragments[0]["from"])</code>, <code>print(fragments[-1]["from"])</code>. the brackets after the dict get the value at that key.`,
+    commonMistakes: [
+      {
+        pattern: /^(len\s*\(\s*fragments\s*\)|fragments\s*\[)/m,
+        tip: `you have <code>len(fragments)</code> and <code>fragments[0]</code> in your code, but they're not wrapped in <code>print()</code>. expressions by themselves don't show up on screen — you need <code>print(len(fragments))</code> and <code>print(fragments[0]["from"])</code> to actually display the values.`
+      },
+      {
+        pattern: /print\s*\(\s*fragments\s*\[\s*-?\d+\s*\]\s*\)/,
+        tip: `<code>print(fragments[0])</code> would print the whole dictionary (with the curly braces and all the keys). to print just the sender, you need a second step: chain <code>["from"]</code> after <code>fragments[0]</code>. like this: <code>print(fragments[0]["from"])</code>. think of it as "first get the dict, then get the value out of the dict."`
+      }
+    ],
+    hint: `three lines, each one a <code>print()</code>. for the count, wrap <code>fragments</code> in <code>len()</code>. for the senders, you need a chained access: <code>fragments[<em>position</em>]</code> gives you the dict, then <code>["from"]</code> pulls the value out of that dict. positions: <code>0</code> for first, <code>-1</code> for last.`,
     fragmentInjection: true,
     onComplete: {
       diary: `// 10 fragments loaded. wren bookends the night. tegan never gets the last word.`,
