@@ -563,6 +563,48 @@
     updateSidebarProgress();
   }
 
+  // ---- COMMON-MISTAKE PATTERNS ----
+  // matched against the user's code (NOT the preamble) when something
+  // goes wrong. each pattern: a regex that signals a specific mistake
+  // shape, plus a tip the player can read in the cousin's voice.
+  // these fire as a friendly hint underneath the raw pyodide output —
+  // they don't replace it.
+  const COMMON_MISTAKES = [
+    {
+      // misplaced quotes/parens in string concatenation:
+      //   print("Maedhros )+("and ")+("Fingon" )+("are ")
+      // the player wraps each chunk in parens but ends up putting the
+      // closing quote in the wrong place; the first string runs all
+      // the way to the next quote, then "and " sits as bare identifier.
+      pattern: /print\s*\(\s*"[^"]*\)\s*\+\s*\(/,
+      tip: "it looks like you're putting parentheses around each piece of the concatenation, like <code>print(\"Maedhros )+(\"and \")+(\"Fingon\" )</code>. python reads <code>\"</code> as the start of a string and runs until the next <code>\"</code> — so <code>)+(\"</code> ends up <em>inside</em> that first string instead of joining anything. you don't need the inner parens. just glue the strings together with <code>+</code>: <code>print(\"Maedhros\" + \" and \" + \"Fingon\")</code> — or store names in variables first and concat the variables."
+    }
+  ];
+
+  function findCommonMistakeTips(userCode) {
+    const tips = [];
+    for (const m of COMMON_MISTAKES) {
+      if (m.pattern.test(userCode)) tips.push(m.tip);
+    }
+    return tips;
+  }
+
+  function appendMistakeTips(out, userCode) {
+    const tips = findCommonMistakeTips(userCode);
+    if (!tips.length) return;
+    const wrap = document.createElement('div');
+    wrap.style.marginTop = '8px';
+    wrap.style.padding = '8px 10px';
+    wrap.style.background = '#fffbe6';
+    wrap.style.border = '1px solid #d4c890';
+    wrap.style.fontFamily = "'Tahoma', sans-serif";
+    wrap.style.fontSize = '11px';
+    wrap.style.color = '#3a2820';
+    wrap.style.whiteSpace = 'normal';
+    wrap.innerHTML = '<strong>hint:</strong> ' + tips.join('<br><br><strong>hint:</strong> ');
+    out.appendChild(wrap);
+  }
+
   async function runExercise(ex, ta, out, btn) {
     if (typeof window.runPython !== 'function') {
       out.classList.add('pr-shown');
@@ -582,13 +624,16 @@
       const result = await window.runPython(fullCode);
       if (result.ok) {
         out.textContent = result.output || '(no output — did you forget print()?)';
+        appendMistakeTips(out, userCode);
       } else {
         out.classList.add('pr-error');
         out.textContent = (result.output || '') + (result.error ? '\n' + result.error : '');
+        appendMistakeTips(out, userCode);
       }
     } catch (e) {
       out.classList.add('pr-error');
       out.textContent = String(e);
+      appendMistakeTips(out, userCode);
     } finally {
       btn.disabled = false;
     }
