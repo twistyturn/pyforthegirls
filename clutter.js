@@ -224,27 +224,75 @@
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="Georgia, serif">' +
     // ==== background paper + grid wash ====
     '<defs>' +
-      '<radialGradient id="paperGlow" cx="50%" cy="40%" r="65%">' +
-        '<stop offset="0%" stop-color="#fbf3df"/>' +
-        '<stop offset="100%" stop-color="#ecdfbe"/>' +
+      // paper background — warm cream with subtle radial vignette
+      '<radialGradient id="paperGlow" cx="50%" cy="40%" r="75%">' +
+        '<stop offset="0%" stop-color="#fcf5e0"/>' +
+        '<stop offset="55%" stop-color="#f4e9c8"/>' +
+        '<stop offset="100%" stop-color="#d8c08a"/>' +
       '</radialGradient>' +
-      '<radialGradient id="lakeGrad" cx="55%" cy="40%" r="60%">' +
-        '<stop offset="0%" stop-color="#cae0ec"/>' +
-        '<stop offset="60%" stop-color="#a8c8d8"/>' +
-        '<stop offset="100%" stop-color="#7eaec3"/>' +
+      // lake depth: shallow at edge -> deeper teal toward center
+      '<radialGradient id="lakeGrad" cx="55%" cy="45%" r="55%">' +
+        '<stop offset="0%" stop-color="#5b91b0"/>' +
+        '<stop offset="60%" stop-color="#7cabc5"/>' +
+        '<stop offset="100%" stop-color="#b6d2dd"/>' +
       '</radialGradient>' +
+      // gravel pattern — speckled tan
       '<pattern id="gravel" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">' +
         '<rect width="6" height="6" fill="#d8c8a8"/>' +
         '<circle cx="1.5" cy="1.5" r="0.7" fill="#8a7a5a"/>' +
         '<circle cx="4.2" cy="3" r="0.5" fill="#6a5a3a"/>' +
         '<circle cx="2.8" cy="4.5" r="0.6" fill="#a89a7a"/>' +
       '</pattern>' +
+      // water hatching (cartographic convention) — subtle horizontal lines
+      '<pattern id="waterHatch" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">' +
+        '<line x1="0" y1="2" x2="10" y2="2" stroke="#4a6a7a" stroke-width="0.25" opacity="0.45"/>' +
+        '<line x1="0" y1="6" x2="10" y2="6" stroke="#4a6a7a" stroke-width="0.18" opacity="0.30"/>' +
+      '</pattern>' +
+      // roof shingle texture
+      '<pattern id="shingles" x="0" y="0" width="8" height="4" patternUnits="userSpaceOnUse">' +
+        '<rect width="8" height="4" fill="#7a5a3a"/>' +
+        '<line x1="0" y1="3.7" x2="8" y2="3.7" stroke="#5a3e22" stroke-width="0.4"/>' +
+        '<line x1="4" y1="0" x2="4" y2="3.7" stroke="#5a3e22" stroke-width="0.3"/>' +
+      '</pattern>' +
+      // wood grain for boathouse
+      '<pattern id="woodGrain" x="0" y="0" width="20" height="6" patternUnits="userSpaceOnUse">' +
+        '<rect width="20" height="6" fill="#a88858"/>' +
+        '<path d="M 0 1 Q 5 2.5 10 1.5 T 20 1" stroke="#7a5a3a" stroke-width="0.3" fill="none"/>' +
+        '<path d="M 0 4 Q 5 5 10 4.5 T 20 4" stroke="#7a5a3a" stroke-width="0.3" fill="none"/>' +
+      '</pattern>' +
+      // paper grain — very faint speckle, applied as overlay at end
+      '<pattern id="paperGrain" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">' +
+        '<circle cx="3" cy="7" r="0.4" fill="#8a6a4a" opacity="0.18"/>' +
+        '<circle cx="17" cy="3" r="0.3" fill="#6a4a2a" opacity="0.22"/>' +
+        '<circle cx="28" cy="14" r="0.5" fill="#7a5a3a" opacity="0.16"/>' +
+        '<circle cx="9" cy="22" r="0.3" fill="#5a3a1a" opacity="0.20"/>' +
+        '<circle cx="35" cy="29" r="0.4" fill="#8a6a4a" opacity="0.18"/>' +
+        '<circle cx="22" cy="35" r="0.3" fill="#6a4a2a" opacity="0.22"/>' +
+        '<circle cx="13" cy="33" r="0.5" fill="#7a5a3a" opacity="0.14"/>' +
+        '<circle cx="2" cy="28" r="0.3" fill="#5a3a1a" opacity="0.18"/>' +
+      '</pattern>' +
+      // soft shadow filter (used by buildings)
       '<filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">' +
         '<feGaussianBlur in="SourceAlpha" stdDeviation="1.5"/>' +
         '<feOffset dx="2" dy="2" result="offsetblur"/>' +
         '<feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>' +
         '<feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>' +
       '</filter>' +
+      // pine tree symbol: stacked triangles + trunk, reusable via <use>
+      '<symbol id="pine" viewBox="-10 -16 20 20">' +
+        '<polygon points="0,-16 -5,-7 5,-7" fill="#3e5a2a"/>' +
+        '<polygon points="0,-11 -7,-2 7,-2" fill="#4a6a3a"/>' +
+        '<polygon points="0,-6 -8,4 8,4" fill="#5a7a3a"/>' +
+        '<rect x="-1.2" y="3" width="2.4" height="3" fill="#5a3a1a"/>' +
+      '</symbol>' +
+      // birch tree symbol — paler trunk visible, used for variety
+      '<symbol id="birch" viewBox="-10 -16 20 20">' +
+        '<rect x="-0.8" y="-12" width="1.6" height="14" fill="#e8e4d4"/>' +
+        '<line x1="-0.8" y1="-9" x2="0.8" y2="-9" stroke="#3a2820" stroke-width="0.3"/>' +
+        '<line x1="-0.8" y1="-5" x2="0.8" y2="-5" stroke="#3a2820" stroke-width="0.3"/>' +
+        '<line x1="-0.8" y1="-1" x2="0.8" y2="-1" stroke="#3a2820" stroke-width="0.3"/>' +
+        '<ellipse cx="0" cy="-13" rx="6" ry="4" fill="#6a8a4a" opacity="0.85"/>' +
+      '</symbol>' +
     '</defs>' +
     '<rect width="800" height="600" fill="url(#paperGlow)"/>' +
     // tan grid lines, very faint
@@ -273,8 +321,15 @@
   );
   // ==== lake (organic outline + ripples + reeds) ====
   PINECREST_MAP_SVG +=
-    '<path d="M 470 130 C 530 100, 650 90, 730 140 C 780 190, 770 260, 700 280 C 600 300, 510 270, 460 230 C 430 195, 440 155, 470 130 Z" fill="url(#lakeGrad)" stroke="#4a6a7a" stroke-width="1.5"/>' +
-    '<text x="610" y="180" text-anchor="middle" font-size="17" fill="#1a3a4a" font-style="italic" letter-spacing="1.5">Lake Pinecrest</text>' +
+    // base lake fill with depth gradient
+    '<path d="M 440 95 C 540 65, 700 55, 790 115 C 815 185, 800 280, 720 310 C 600 320, 470 285, 432 235 C 405 195, 412 130, 440 95 Z" fill="url(#lakeGrad)" stroke="#3a5a6a" stroke-width="2"/>' +
+    // water hatching layered on top of fill (clipped to lake shape via second path with same d)
+    '<path d="M 440 95 C 540 65, 700 55, 790 115 C 815 185, 800 280, 720 310 C 600 320, 470 285, 432 235 C 405 195, 412 130, 440 95 Z" fill="url(#waterHatch)" stroke="none" opacity="0.55"/>' +
+    // shoreline shadow ring
+    '<path d="M 440 95 C 540 65, 700 55, 790 115 C 815 185, 800 280, 720 310 C 600 320, 470 285, 432 235 C 405 195, 412 130, 440 95 Z" fill="none" stroke="#3a5a6a" stroke-width="0.6" stroke-dasharray="0" opacity="0.5" transform="translate(2,2)"/>' +
+    // lake label, hand-set serif italic
+    '<text x="640" y="172" text-anchor="middle" font-size="22" fill="#1a3a4a" font-style="italic" letter-spacing="2.5" stroke="#fcf5e0" stroke-width="3" paint-order="stroke">Lake Pinecrest</text>' +
+    '<text x="640" y="190" text-anchor="middle" font-size="9" fill="#3a5a6a" letter-spacing="3" stroke="#fcf5e0" stroke-width="2" paint-order="stroke">~ 14 ACRES ~</text>' +
     // ripples — three faint arcs
     '<g stroke="#4a6a7a" stroke-width="0.7" fill="none" opacity="0.4">' +
       '<path d="M 540 165 Q 555 158 575 165"/>' +
@@ -284,12 +339,27 @@
     '</g>' +
     // reed clusters at the lake edge
     '<g stroke="#4a5e2a" stroke-width="1.2" stroke-linecap="round">' +
-      '<line x1="465" y1="160" x2="463" y2="148"/>' +
-      '<line x1="468" y1="160" x2="467" y2="146"/>' +
-      '<line x1="471" y1="160" x2="470" y2="150"/>' +
-      '<line x1="720" y1="240" x2="718" y2="226"/>' +
-      '<line x1="723" y1="240" x2="722" y2="224"/>' +
-      '<line x1="726" y1="240" x2="725" y2="228"/>' +
+      '<line x1="448" y1="155" x2="446" y2="143"/>' +
+      '<line x1="451" y1="156" x2="450" y2="141"/>' +
+      '<line x1="454" y1="155" x2="453" y2="145"/>' +
+      '<line x1="730" y1="270" x2="728" y2="256"/>' +
+      '<line x1="733" y1="271" x2="732" y2="254"/>' +
+      '<line x1="736" y1="271" x2="735" y2="258"/>' +
+    '</g>' +
+    // swim area marked off with rope-and-buoys
+    '<g>' +
+      '<line x1="555" y1="232" x2="700" y2="135" stroke="#a04848" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.7"/>' +
+      '<circle cx="580" cy="216" r="2" fill="#fff" stroke="#a04848" stroke-width="0.6"/>' +
+      '<circle cx="615" cy="195" r="2" fill="#fff" stroke="#a04848" stroke-width="0.6"/>' +
+      '<circle cx="650" cy="173" r="2" fill="#fff" stroke="#a04848" stroke-width="0.6"/>' +
+      '<circle cx="685" cy="151" r="2" fill="#fff" stroke="#a04848" stroke-width="0.6"/>' +
+      '<text x="680" y="245" font-size="8" fill="#3a5a6a" font-style="italic" letter-spacing="1">SWIM AREA</text>' +
+    '</g>' +
+    // canoe drifting near far shore (tiny illustrative detail)
+    '<g transform="translate(710, 230) rotate(-15)">' +
+      '<path d="M -12 0 Q 0 5 12 0 Q 8 -3 -8 -3 Q -10 -2 -12 0 Z" fill="#a88858" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<line x1="0" y1="-3" x2="0" y2="3" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<line x1="-8" y1="-3" x2="-9" y2="-7" stroke="#5a3e22" stroke-width="0.5" stroke-linecap="round"/>' +
     '</g>';
   // ==== boathouse + dock + bushes ====
   PINECREST_MAP_SVG +=
@@ -317,75 +387,7 @@
     '<path d="M 460 295 Q 470 285 478 270 L 470 240" stroke="url(#gravel)" stroke-width="9" fill="none" stroke-linecap="round"/>' +
     '<path d="M 460 295 Q 470 285 478 270 L 470 240" stroke="#3a2820" stroke-width="0.5" fill="none" opacity="0.4" stroke-dasharray="0"/>' +
     '<text x="500" y="305" font-size="9" fill="#6a5a3a" font-style="italic">gravel</text>';
-  // ==== buildings: cabins ====
-  PINECREST_MAP_SVG += (function() {
-    const cabins = [
-      { x: 100, y: 280, label: 'Pinewood', sub: 'boys' },
-      { x: 180, y: 380, label: 'Hemlock', sub: '' },
-      { x: 290, y: 420, label: 'Birchwood', sub: '' },
-      { x: 410, y: 420, label: 'Spruce', sub: '' },
-      { x: 520, y: 380, label: 'Cedar', sub: '' },
-      { x: 660, y: 320, label: 'Juniper', sub: '' }
-    ];
-    return cabins.map(c => (
-      '<g filter="url(#softShadow)">' +
-        // roof (slanted)
-        '<polygon points="' + c.x + ',' + c.y + ' ' + (c.x + 60) + ',' + c.y + ' ' + (c.x + 50) + ',' + (c.y - 14) + ' ' + (c.x + 10) + ',' + (c.y - 14) + '" fill="#7a5a3a" stroke="#3a2820" stroke-width="1"/>' +
-        // body
-        '<rect x="' + c.x + '" y="' + c.y + '" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.4"/>' +
-        // door
-        '<rect x="' + (c.x + 26) + '" y="' + (c.y + 22) + '" width="8" height="18" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.4"/>' +
-        // windows
-        '<rect x="' + (c.x + 8) + '" y="' + (c.y + 10) + '" width="10" height="9" fill="#cae0ec" stroke="#3a2820" stroke-width="0.4"/>' +
-        '<rect x="' + (c.x + 42) + '" y="' + (c.y + 10) + '" width="10" height="9" fill="#cae0ec" stroke="#3a2820" stroke-width="0.4"/>' +
-      '</g>' +
-      '<text x="' + (c.x + 30) + '" y="' + (c.y + 56) + '" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold">' + c.label + '</text>' +
-      (c.sub ? '<text x="' + (c.x + 30) + '" y="' + (c.y + 68) + '" text-anchor="middle" font-size="9" fill="#6a5848" font-style="italic">' + c.sub + '</text>' : '')
-    )).join('');
-  })();
-  // ==== main lodge (larger, distinct) ====
-  PINECREST_MAP_SVG +=
-    '<g filter="url(#softShadow)">' +
-      '<polygon points="340,270 460,270 450,250 350,250" fill="#7a5a3a" stroke="#3a2820" stroke-width="1.5"/>' +
-      '<rect x="340" y="270" width="120" height="70" fill="#c8a878" stroke="#3a2820" stroke-width="2"/>' +
-      '<rect x="392" y="306" width="16" height="34" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.6"/>' +
-      '<rect x="356" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
-      '<rect x="378" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
-      '<rect x="412" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
-      '<rect x="434" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
-    '</g>' +
-    '<text x="400" y="313" text-anchor="middle" font-size="13" fill="#3a2820" font-weight="bold">Main Lodge</text>' +
-    '<text x="400" y="328" text-anchor="middle" font-size="10" fill="#3a2820">mess hall &middot; office</text>';
-  // ==== infirmary (small white building, cross icon — central, clear of lake) ====
-  PINECREST_MAP_SVG +=
-    '<g filter="url(#softShadow)">' +
-      '<polygon points="195,185 245,185 240,175 200,175" fill="#a88858" stroke="#3a2820" stroke-width="1"/>' +
-      '<rect x="195" y="185" width="50" height="35" fill="#f0e8d8" stroke="#3a2820" stroke-width="1.4"/>' +
-      '<rect x="215" y="198" width="10" height="2.4" fill="#a04848"/>' +
-      '<rect x="218.8" y="194.2" width="2.4" height="10" fill="#a04848"/>' +
-    '</g>' +
-    '<text x="220" y="233" text-anchor="middle" font-size="10" fill="#3a2820">Infirmary</text>';
-  // ==== fire pit ====
-  PINECREST_MAP_SVG +=
-    '<g>' +
-      '<circle cx="400" cy="510" r="32" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>' +
-      '<circle cx="400" cy="510" r="22" fill="#a88858" stroke="#5a4a2a" stroke-width="1"/>' +
-      '<circle cx="400" cy="510" r="12" fill="#5a3a1a" stroke="#3a2820" stroke-width="0.6"/>' +
-      // log spokes
-      '<line x1="385" y1="505" x2="415" y2="515" stroke="#3a2820" stroke-width="2" stroke-linecap="round"/>' +
-      '<line x1="385" y1="515" x2="415" y2="505" stroke="#3a2820" stroke-width="2" stroke-linecap="round"/>' +
-    '</g>' +
-    '<text x="400" y="513" text-anchor="middle" font-size="10" fill="#fbf3df" font-weight="bold">Fire Pit</text>';
-  // ==== archery range (dashed outline, target icon) ====
-  PINECREST_MAP_SVG +=
-    '<rect x="80" y="460" width="60" height="30" fill="none" stroke="#3a2820" stroke-width="1.4" stroke-dasharray="3,2"/>' +
-    '<g transform="translate(110, 475)">' +
-      '<circle r="6" fill="#fff" stroke="#3a2820" stroke-width="0.6"/>' +
-      '<circle r="4" fill="#a04848"/>' +
-      '<circle r="2" fill="#fff"/>' +
-    '</g>' +
-    '<text x="110" y="503" text-anchor="middle" font-size="10" fill="#3a2820">Archery</text>';
-  // ==== dirt-trail paths (between buildings, distinct from gravel) ====
+  // ==== dirt-trail paths (drawn BEFORE buildings so cabins overlay them) ====
   PINECREST_MAP_SVG +=
     '<g stroke="#a88858" stroke-width="2.4" fill="none" opacity="0.55" stroke-linecap="round">' +
       // central spine: lodge to fire pit
@@ -418,30 +420,148 @@
       '<circle cx="270" cy="305" r="0.9"/>' +
       '<circle cx="220" cy="302" r="0.9"/>' +
     '</g>';
-  // ==== tree clusters (varied greens, scattered) ====
+  // ==== buildings: cabins ====
+  PINECREST_MAP_SVG += (function() {
+    const cabins = [
+      { x: 100, y: 280, label: 'Pinewood',  sub: 'boys'  },
+      { x: 180, y: 380, label: 'Hemlock',   sub: 'girls' },
+      { x: 290, y: 420, label: 'Birchwood', sub: 'girls' },
+      { x: 410, y: 420, label: 'Spruce',    sub: 'boys'  },
+      { x: 520, y: 380, label: 'Cedar',     sub: 'girls' },
+      { x: 660, y: 320, label: 'Juniper',   sub: 'boys'  }
+    ];
+    return cabins.map(c => (
+      '<g filter="url(#softShadow)">' +
+        // roof — shingle pattern under, dark outline over
+        '<polygon points="' + c.x + ',' + c.y + ' ' + (c.x + 60) + ',' + c.y + ' ' + (c.x + 50) + ',' + (c.y - 14) + ' ' + (c.x + 10) + ',' + (c.y - 14) + '" fill="url(#shingles)" stroke="#3a2820" stroke-width="1.2"/>' +
+        // ridgeline highlight
+        '<line x1="' + (c.x + 10) + '" y1="' + (c.y - 14) + '" x2="' + (c.x + 50) + '" y2="' + (c.y - 14) + '" stroke="#3a2820" stroke-width="1.2"/>' +
+        // body
+        '<rect x="' + c.x + '" y="' + c.y + '" width="60" height="40" fill="#d8b888" stroke="#3a2820" stroke-width="1.4"/>' +
+        // log siding hint (horizontal lines)
+        '<line x1="' + (c.x + 1) + '" y1="' + (c.y + 13) + '" x2="' + (c.x + 59) + '" y2="' + (c.y + 13) + '" stroke="#a89070" stroke-width="0.4" opacity="0.6"/>' +
+        '<line x1="' + (c.x + 1) + '" y1="' + (c.y + 26) + '" x2="' + (c.x + 59) + '" y2="' + (c.y + 26) + '" stroke="#a89070" stroke-width="0.4" opacity="0.6"/>' +
+        // door (centered)
+        '<rect x="' + (c.x + 26) + '" y="' + (c.y + 22) + '" width="8" height="18" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.4"/>' +
+        '<circle cx="' + (c.x + 32) + '" cy="' + (c.y + 31) + '" r="0.5" fill="#d4b878"/>' +
+        // windows with cross-mullion
+        '<rect x="' + (c.x + 8) + '" y="' + (c.y + 10) + '" width="10" height="9" fill="#cae0ec" stroke="#3a2820" stroke-width="0.4"/>' +
+        '<line x1="' + (c.x + 13) + '" y1="' + (c.y + 10) + '" x2="' + (c.x + 13) + '" y2="' + (c.y + 19) + '" stroke="#3a2820" stroke-width="0.3"/>' +
+        '<line x1="' + (c.x + 8) + '" y1="' + (c.y + 14.5) + '" x2="' + (c.x + 18) + '" y2="' + (c.y + 14.5) + '" stroke="#3a2820" stroke-width="0.3"/>' +
+        '<rect x="' + (c.x + 42) + '" y="' + (c.y + 10) + '" width="10" height="9" fill="#cae0ec" stroke="#3a2820" stroke-width="0.4"/>' +
+        '<line x1="' + (c.x + 47) + '" y1="' + (c.y + 10) + '" x2="' + (c.x + 47) + '" y2="' + (c.y + 19) + '" stroke="#3a2820" stroke-width="0.3"/>' +
+        '<line x1="' + (c.x + 42) + '" y1="' + (c.y + 14.5) + '" x2="' + (c.x + 52) + '" y2="' + (c.y + 14.5) + '" stroke="#3a2820" stroke-width="0.3"/>' +
+      '</g>' +
+      '<text x="' + (c.x + 30) + '" y="' + (c.y + 56) + '" text-anchor="middle" font-size="11" fill="#3a2820" font-weight="bold" stroke="#fbf3df" stroke-width="2.5" paint-order="stroke">' + c.label + '</text>' +
+      (c.sub ? '<text x="' + (c.x + 30) + '" y="' + (c.y + 68) + '" text-anchor="middle" font-size="9" fill="#6a5848" font-style="italic" stroke="#fbf3df" stroke-width="2" paint-order="stroke">' + c.sub + '</text>' : '')
+    )).join('');
+  })();
+  // ==== main lodge (larger, two-storey feel, prominent roof) ====
+  PINECREST_MAP_SVG +=
+    '<g filter="url(#softShadow)">' +
+      // roof with shingle texture
+      '<polygon points="340,270 460,270 450,250 350,250" fill="url(#shingles)" stroke="#3a2820" stroke-width="1.5"/>' +
+      // ridgeline
+      '<line x1="350" y1="250" x2="450" y2="250" stroke="#3a2820" stroke-width="1.5"/>' +
+      // chimney
+      '<rect x="425" y="248" width="6" height="12" fill="#7a5a3a" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<rect x="424" y="246" width="8" height="3" fill="#5a3e22" stroke="#3a2820" stroke-width="0.4"/>' +
+      // body
+      '<rect x="340" y="270" width="120" height="70" fill="#c8a878" stroke="#3a2820" stroke-width="2"/>' +
+      // log siding lines
+      '<line x1="341" y1="285" x2="459" y2="285" stroke="#a89070" stroke-width="0.5" opacity="0.6"/>' +
+      '<line x1="341" y1="305" x2="459" y2="305" stroke="#a89070" stroke-width="0.5" opacity="0.6"/>' +
+      '<line x1="341" y1="325" x2="459" y2="325" stroke="#a89070" stroke-width="0.5" opacity="0.6"/>' +
+      // double doors with steps
+      '<rect x="392" y="306" width="16" height="34" fill="#5a4a2a" stroke="#3a2820" stroke-width="0.6"/>' +
+      '<line x1="400" y1="306" x2="400" y2="340" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<circle cx="397" cy="324" r="0.6" fill="#d4b878"/>' +
+      '<circle cx="403" cy="324" r="0.6" fill="#d4b878"/>' +
+      // step at door base
+      '<rect x="386" y="340" width="28" height="3" fill="#a88858" stroke="#3a2820" stroke-width="0.4"/>' +
+      // four windows with cross-mullions
+      '<rect x="356" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<line x1="363" y1="288" x2="363" y2="300" stroke="#3a2820" stroke-width="0.3"/>' +
+      '<line x1="356" y1="294" x2="370" y2="294" stroke="#3a2820" stroke-width="0.3"/>' +
+      '<rect x="378" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<line x1="385" y1="288" x2="385" y2="300" stroke="#3a2820" stroke-width="0.3"/>' +
+      '<line x1="378" y1="294" x2="392" y2="294" stroke="#3a2820" stroke-width="0.3"/>' +
+      '<rect x="412" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<line x1="419" y1="288" x2="419" y2="300" stroke="#3a2820" stroke-width="0.3"/>' +
+      '<line x1="412" y1="294" x2="426" y2="294" stroke="#3a2820" stroke-width="0.3"/>' +
+      '<rect x="434" y="288" width="14" height="12" fill="#cae0ec" stroke="#3a2820" stroke-width="0.5"/>' +
+      '<line x1="441" y1="288" x2="441" y2="300" stroke="#3a2820" stroke-width="0.3"/>' +
+      '<line x1="434" y1="294" x2="448" y2="294" stroke="#3a2820" stroke-width="0.3"/>' +
+    '</g>' +
+    '<text x="400" y="358" text-anchor="middle" font-size="13" fill="#3a2820" font-weight="bold" stroke="#fbf3df" stroke-width="3" paint-order="stroke">Main Lodge</text>' +
+    '<text x="400" y="372" text-anchor="middle" font-size="10" fill="#3a2820" stroke="#fbf3df" stroke-width="2.5" paint-order="stroke">mess hall &middot; office</text>';
+  // ==== infirmary (small white building, cross icon — central, clear of lake) ====
+  PINECREST_MAP_SVG +=
+    '<g filter="url(#softShadow)">' +
+      '<polygon points="195,185 245,185 240,175 200,175" fill="#a88858" stroke="#3a2820" stroke-width="1"/>' +
+      '<rect x="195" y="185" width="50" height="35" fill="#f0e8d8" stroke="#3a2820" stroke-width="1.4"/>' +
+      '<rect x="215" y="198" width="10" height="2.4" fill="#a04848"/>' +
+      '<rect x="218.8" y="194.2" width="2.4" height="10" fill="#a04848"/>' +
+    '</g>' +
+    '<text x="220" y="233" text-anchor="middle" font-size="10" fill="#3a2820">Infirmary</text>';
+  // ==== fire pit ====
+  PINECREST_MAP_SVG +=
+    '<g>' +
+      '<circle cx="400" cy="510" r="32" fill="#d8b888" stroke="#3a2820" stroke-width="1.5"/>' +
+      '<circle cx="400" cy="510" r="22" fill="#a88858" stroke="#5a4a2a" stroke-width="1"/>' +
+      '<circle cx="400" cy="510" r="12" fill="#5a3a1a" stroke="#3a2820" stroke-width="0.6"/>' +
+      // log spokes
+      '<line x1="385" y1="505" x2="415" y2="515" stroke="#3a2820" stroke-width="2" stroke-linecap="round"/>' +
+      '<line x1="385" y1="515" x2="415" y2="505" stroke="#3a2820" stroke-width="2" stroke-linecap="round"/>' +
+    '</g>' +
+    '<text x="400" y="513" text-anchor="middle" font-size="10" fill="#fbf3df" font-weight="bold">Fire Pit</text>';
+  // ==== archery range (dashed outline, target icon) ====
+  PINECREST_MAP_SVG +=
+    '<rect x="80" y="460" width="60" height="30" fill="none" stroke="#3a2820" stroke-width="1.4" stroke-dasharray="3,2"/>' +
+    '<g transform="translate(110, 475)">' +
+      '<circle r="6" fill="#fff" stroke="#3a2820" stroke-width="0.6"/>' +
+      '<circle r="4" fill="#a04848"/>' +
+      '<circle r="2" fill="#fff"/>' +
+    '</g>' +
+    '<text x="110" y="503" text-anchor="middle" font-size="10" fill="#3a2820">Archery</text>';
+  // ==== tree clusters — pine + birch symbols, scattered ====
+  // Density representing the boreal forest around camp. Most are pines
+  // (boreal AB conifer mix); a few birches for variety. The boathouse
+  // cluster is denser — that's tyler's cover area.
   PINECREST_MAP_SVG += (function() {
     const trees = [
-      { x: 50, y: 200, r: 9, c: '#4a6a3a' },
-      { x: 65, y: 220, r: 7, c: '#5a7a3a' },
-      { x: 38, y: 230, r: 6, c: '#3e5a2a' },
-      { x: 720, y: 440, r: 9, c: '#4a6a3a' },
-      { x: 750, y: 480, r: 7, c: '#5a7a3a' },
-      { x: 700, y: 490, r: 7, c: '#3e5a2a' },
-      { x: 30, y: 380, r: 7, c: '#4a6a3a' },
-      { x: 50, y: 410, r: 6, c: '#3e5a2a' },
-      { x: 60, y: 540, r: 7, c: '#5a7a3a' },
-      { x: 250, y: 540, r: 6, c: '#4a6a3a' },
-      { x: 540, y: 540, r: 7, c: '#3e5a2a' },
-      { x: 600, y: 540, r: 6, c: '#4a6a3a' },
-      { x: 770, y: 320, r: 7, c: '#5a7a3a' },
-      { x: 30, y: 100, r: 6, c: '#4a6a3a' },
-      // boathouse-side cover (denser; this is where tyler hides)
-      { x: 420, y: 240, r: 8, c: '#3e5a2a' },
-      { x: 410, y: 258, r: 6, c: '#4a6a3a' },
-      { x: 400, y: 235, r: 7, c: '#5a7a3a' }
+      // northwest forest
+      { x: 50,  y: 200, s: 1.4, t: 'pine'  },
+      { x: 70,  y: 215, s: 1.0, t: 'pine'  },
+      { x: 40,  y: 225, s: 0.9, t: 'birch' },
+      { x: 30,  y: 100, s: 1.0, t: 'pine'  },
+      { x: 55,  y: 130, s: 0.8, t: 'pine'  },
+      { x: 25,  y: 165, s: 0.9, t: 'birch' },
+      // west edge
+      { x: 30,  y: 380, s: 1.1, t: 'pine'  },
+      { x: 50,  y: 410, s: 0.9, t: 'pine'  },
+      { x: 25,  y: 440, s: 0.8, t: 'birch' },
+      { x: 60,  y: 540, s: 1.0, t: 'pine'  },
+      // south edge (between fire pit and forest)
+      { x: 220, y: 545, s: 0.9, t: 'pine'  },
+      { x: 260, y: 555, s: 1.1, t: 'pine'  },
+      { x: 540, y: 545, s: 0.9, t: 'pine'  },
+      { x: 580, y: 555, s: 1.0, t: 'birch' },
+      { x: 620, y: 542, s: 0.9, t: 'pine'  },
+      // east edge
+      { x: 770, y: 320, s: 1.0, t: 'pine'  },
+      { x: 760, y: 380, s: 0.9, t: 'pine'  },
+      { x: 720, y: 440, s: 1.2, t: 'pine'  },
+      { x: 750, y: 480, s: 1.0, t: 'pine'  },
+      { x: 700, y: 490, s: 0.9, t: 'birch' },
+      // boathouse-side cover (densest cluster — tyler's hiding zone)
+      { x: 422, y: 235, s: 1.1, t: 'pine'  },
+      { x: 408, y: 250, s: 0.9, t: 'pine'  },
+      { x: 398, y: 232, s: 1.0, t: 'pine'  },
+      { x: 415, y: 222, s: 0.85, t: 'pine' }
     ];
     return trees.map(t => (
-      '<circle cx="' + t.x + '" cy="' + t.y + '" r="' + t.r + '" fill="' + t.c + '" opacity="0.75"/>'
+      '<use href="#' + t.t + '" x="' + t.x + '" y="' + t.y + '" width="' + (20 * t.s) + '" height="' + (20 * t.s) + '" transform="translate(' + (-10 * t.s) + ', ' + (-4 * t.s) + ')"/>'
     )).join('');
   })();
   // ==== "tegan" pin marker on hemlock (preserved from previous map) ====
