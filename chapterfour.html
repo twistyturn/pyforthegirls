@@ -1151,11 +1151,14 @@ for _line in _lines_2003[1:]:
 // Write the roster files into Pyodide's virtual FS so `with open(...)` works
 async function injectRosterFiles() {
   const py = await loadPyodideOnce();
-  try {
-    py.FS.mkdirTree('outlook/inbox/attachments');
-  } catch (e) { /* directory may already exist */ }
-  py.FS.writeFile('outlook/inbox/attachments/roster_2004.txt', ROSTER_2004);
-  py.FS.writeFile('outlook/inbox/attachments/roster_2003.txt', ROSTER_2003);
+  // Per-level mkdir matches the resilient pattern in ch5/ch7. mkdirTree is
+  // unreliable in Pyodide v0.26.2 — when it failed, the writeFile below
+  // threw ENOENT and stalled runTask with the boot bar stuck on screen.
+  try { py.FS.mkdir('outlook'); } catch (e) { /* exists */ }
+  try { py.FS.mkdir('outlook/inbox'); } catch (e) { /* exists */ }
+  try { py.FS.mkdir('outlook/inbox/attachments'); } catch (e) { /* exists */ }
+  try { py.FS.writeFile('outlook/inbox/attachments/roster_2004.txt', ROSTER_2004); } catch (e) {}
+  try { py.FS.writeFile('outlook/inbox/attachments/roster_2003.txt', ROSTER_2003); } catch (e) {}
 }
 
 function loadSave() {
