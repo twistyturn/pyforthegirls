@@ -1534,6 +1534,11 @@ async function runPython(code) {
     } catch (err) {
       return { ok: false, output: stdout, error: String(err.message || err) };
     }
+  } catch (err) {
+    // loadPyodide failure (e.g. CDN unreachable). Return a non-throwing
+    // result so runTask shows the error to the player instead of hanging on
+    // the 'booting python interpreter…' bar.
+    return { ok: false, output: '', error: 'pyodide failed to load: ' + String(err.message || err) };
   } finally {
     document.body.classList.remove('is-loading');
   }
@@ -1578,8 +1583,9 @@ async function injectChapter7Files() {
   // Monkey-patch urllib.request.urlopen to return our mock directory listing
   // for any URL containing 'camppinecrest.ca/staff'. Real network calls aren't
   // possible from in-browser Pyodide anyway, so this gives the player something
-  // realistic to work with.
-  await py.runPythonAsync(`
+  // realistic to work with. Wrapped defensively so a setup hiccup can't hang
+  // runTask the way the ch4 mkdirTree bug used to.
+  try { await py.runPythonAsync(`
 import urllib.request
 import io
 
@@ -1616,7 +1622,7 @@ def _patched_urlopen(url, *args, **kwargs):
     return _real_urlopen(url, *args, **kwargs)
 
 urllib.request.urlopen = _patched_urlopen
-`);
+`); } catch (e) { /* setup may fail; player code will surface the real error */ }
 
   // Write the 149 emails as .eml files under 2004_archive/
   const emails = JSON.parse(EMAIL_CORPUS_JSON);
@@ -2695,7 +2701,10 @@ builtins.input = __patched_input
 
 // Inject the chapter's filesystem if requested
 if (beat.fileInjection) {
-await injectChapter7Files();
+try { await injectChapter7Files(); } catch (e) {
+outEl.innerHTML = `<span class="err">// could not set up the task files: ${escapeHtml(String(e.message || e))}</span>\n<span class="info">// try refreshing the page. if it keeps happening, the python sandbox failed to load.</span>`;
+return;
+}
 }
 
 const result = await runPython(runCode);
