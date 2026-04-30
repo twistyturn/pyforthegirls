@@ -1079,6 +1079,11 @@ async function runPython(code) {
     } catch (err) {
       return { ok: false, output: stdout, error: String(err.message || err) };
     }
+  } catch (err) {
+    // loadPyodide failure (e.g. CDN unreachable). Return a non-throwing
+    // result so runTask shows the error to the player instead of hanging on
+    // the 'booting python interpreter…' bar.
+    return { ok: false, output: '', error: 'pyodide failed to load: ' + String(err.message || err) };
   } finally {
     document.body.classList.remove('is-loading');
   }
@@ -1804,7 +1809,10 @@ builtins.input = __patched_input
 
 // Inject roster files into Pyodide's virtual FS if requested
 if (beat.fileInjection) {
-await injectRosterFiles();
+try { await injectRosterFiles(); } catch (e) {
+outEl.innerHTML = `<span class="err">// could not set up the task files: ${escapeHtml(String(e.message || e))}</span>\n<span class="info">// try refreshing the page. if it keeps happening, the python sandbox failed to load.</span>`;
+return;
+}
 }
 
 // Inject pre-parsed staff list if requested
