@@ -1099,6 +1099,11 @@ async function runPython(code) {
     } catch (err) {
       return { ok: false, output: stdout, error: String(err.message || err) };
     }
+  } catch (err) {
+    // loadPyodide failure (e.g. CDN unreachable). Return a non-throwing
+    // result so runTask shows the error to the player instead of hanging on
+    // the 'booting python interpreter…' bar.
+    return { ok: false, output: '', error: 'pyodide failed to load: ' + String(err.message || err) };
   } finally {
     document.body.classList.remove('is-loading');
   }

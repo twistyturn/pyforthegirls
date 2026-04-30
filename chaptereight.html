@@ -2114,6 +2114,11 @@ async function runPython(code) {
     } catch (err) {
       return { ok: false, output: stdout, error: String(err.message || err) };
     }
+  } catch (err) {
+    // loadPyodide failure (e.g. CDN unreachable). Return a non-throwing
+    // result so runTask shows the error to the player instead of hanging on
+    // the 'booting python interpreter…' bar.
+    return { ok: false, output: '', error: 'pyodide failed to load: ' + String(err.message || err) };
   } finally {
     document.body.classList.remove('is-loading');
   }
@@ -2133,7 +2138,10 @@ const SAVE_KEY = 'pyforthegirls_save_ch8_v1';
 async function injectChapter8Files() {
   const py = await loadPyodideOnce();
 
-  await py.runPythonAsync(`
+  // Defensive try: a Python-side setup error must not hang runTask the way
+  // the ch4 mkdirTree bug did. If find_person fails to define, the player's
+  // code will surface a NameError, which runPython catches and displays.
+  try { await py.runPythonAsync(`
 # Hannah's find_person() — mocked.
 # In the real script (which the player reads in beat 3) it does an actual
 # urllib fetch and regex. Here in the test environment it returns hardcoded
@@ -2163,7 +2171,7 @@ def find_person(name, region):
         "livejournals": [],
         "school_papers": []
     })
-`);
+`); } catch (e) {}
 }
 
 function loadSave() {
@@ -4001,7 +4009,10 @@ builtins.input = __patched_input
 
 // Inject the chapter's filesystem if requested
 if (beat.fileInjection) {
-await injectChapter8Files();
+try { await injectChapter8Files(); } catch (e) {
+outEl.innerHTML = `<span class="err">// could not set up the task files: ${escapeHtml(String(e.message || e))}</span>\n<span class="info">// try refreshing the page. if it keeps happening, the python sandbox failed to load.</span>`;
+return;
+}
 }
 
 const result = await runPython(runCode);
