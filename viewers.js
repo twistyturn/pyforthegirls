@@ -801,9 +801,10 @@ i don't have a better plan.`
       preview: 'she said good girl. she kissed me.',
       body: `july 15
 
-the boathouse smells like algae and sun-warm wood. she had a flashlight,
-like always. tonight was different though. she said it like she meant it
-this time:
+the boathouse smells like algae and sun-warm wood. it sits out over the
+water on old pilings, and the floor creaks when she walks. she had a
+flashlight, like always. tonight was different though. she said it like
+she meant it this time:
 "i could get fired for this. you know that, right?"
 i said i knew.
 she said: "but it's worse for you than it is for me. tegan, look at me.
