@@ -1,4 +1,4 @@
-# tegan ashby :: python practice :: jun 18 2004
+# tegan ashby :: python practice :: jun 22 2004
 # ===========================================
 # string methods: .lower(), .strip(), .split(), .isalpha()
 # and friends

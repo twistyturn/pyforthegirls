@@ -1,4 +1,4 @@
-# tegan ashby :: python practice :: jun 4 2004
+# tegan ashby :: python practice :: jun 18 2004
 # ===========================================
 # and, or, not, and the WEIRD thing called "truthiness"
 #

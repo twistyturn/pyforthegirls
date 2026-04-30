@@ -1,4 +1,4 @@
-# tegan ashby :: python practice :: jun 24 2004
+# tegan ashby :: python practice :: jun 12 2004
 # ===========================================
 # def: writing your own functions
 #
