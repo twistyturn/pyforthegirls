@@ -1582,7 +1582,7 @@ if (isActive && window.Sounds && /\.eml|email_archive|\bfrom:\s*\S+@/i.test((bea
 }
 const w = document.createElement('div');
 w.className = 'window story-window';
-w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div class="diary-entry" data-email="${beat.subtype === 'email' ? '1' : ''}"> <div class="diary-meta">${beat.meta}</div> ${beat.body.split(/\n\n+/).map(p => p.replace(/\n/g, ' ').trim()).filter(Boolean).join('<br><br>')} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
+w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> <div class="diary-entry" data-email="${beat.subtype === 'email' ? '1' : ''}"> <div class="diary-meta">${beat.meta}</div> ${beat.body.split(/\n\n+/).map(p => p.replace(/\n/g, (m, o, s) => (/:\s*$/.test(s.slice(0, o)) || /^\s*[\*\-•]\s/.test(s.slice(o + 1)) || /^\s*[a-zA-Z][a-zA-Z0-9_]*\s+\d+\s*:/.test(s.slice(o + 1))) ? '<br>' : ' ').trim()).filter(Boolean).join('<br><br>')} </div> ${isActive ?`<div style="padding: 12px; text-align: center; background: var(--window-bg); border-top: 1px solid var(--bg-deep);">
 <button class="btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
 </div>`: ''}`;
 storyContainer.appendChild(w);
