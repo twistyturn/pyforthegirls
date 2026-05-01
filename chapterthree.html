@@ -1423,19 +1423,21 @@ title: 'python.exe :: alibi_filter.py',
 meta: 'find every message that mentions "cabin".',
 storyAbove: `wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains that word. use <code>.lower()</code> to make the search case-insensitive (in case wren ever capitalized it). collect the IDs of matching fragments into a list called <code>matches</code> and print it.`,
 skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
-instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string:</p>
+instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string (same idea as <code>.items()</code> on a dict from the previous task):</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"HELLO".lower()       # → "hello"
 "  hi  ".strip()      # → "hi"</pre>
 <p>you can also check whether one string appears <em>inside</em> another with <code>in</code>:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">if "cabin" in "i'm in my cabin":
     print("match")</pre>
 <p>that prints <code>match</code>. the <code>in</code> check returns <code>True</code> if the left string appears anywhere in the right string.</p>
-<p>and one more thing you'll need: lists have a method called <code>.append()</code> that adds a new item to the end:</p>
+<p>and one more thing you'll need: lists also have methods. <code>.append()</code> adds a new item to the end of a list:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">my_list = [1, 2, 3]
-my_list.append(4)
+my_list.append(4)        # adds 4 to the END of my_list
 print(my_list)
 # → [1, 2, 3, 4]</pre>
-<p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. collect matching <code>id</code> values into a list called <code>matches</code> using <code>.append()</code>, and print the list.</p>`,
+<p>read <code>my_list.append(4)</code> as "my_list: take this 4 and add it to yourself." the order matters — the list goes on the left, the new item goes inside the parens.</p>
+<p><strong>here's the trick that ties it together:</strong> all three of these tools work on <em>one thing at a time</em>. <code>.lower()</code> lowercases <em>one</em> string. <code>in</code> checks <em>one</em> substring against <em>one</em> string. <code>.append(x)</code> adds <em>one</em> item to <em>one</em> list. you can't call <code>.lower()</code> on the whole <code>fragments</code> list — it's a list, not a string. you have to <code>for</code>-loop through fragments first, pull out each fragment's content with <code>f["content"]</code>, and then apply the string tools to that one piece.</p>
+<p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. when it does, append that fragment's <code>id</code> into <code>matches</code>. then <code>print(matches)</code>.</p>`,
 starter: `# fragments is already loaded for you
 matches = []
 
@@ -1445,7 +1447,20 @@ matches = []
 
 # then print(matches)
 
-`, expectedOutput: '[1, 3, 10]', matchType: 'exact', codeMustContain: [['.lower(', '.casefold('], '.append('], codeMustContainDescription: `case-folding (<code>.lower()</code> or <code>.casefold()</code>) plus <code>.append(</code> to collect matches`, hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
+`, expectedOutput: '[1, 3, 10]', matchType: 'exact', codeMustContain: [['.lower(', '.casefold('], '.append('], codeMustContainDescription: `case-folding (<code>.lower()</code> or <code>.casefold()</code>) plus <code>.append(</code> to collect matches`, commonMistakes: [
+  {
+    pattern: /fragments\s*\.\s*lower\s*\(/,
+    tip: `<code>fragments.lower()</code> doesn't work because <code>fragments</code> is a list, not a string. <code>.lower()</code> is a string tool. you need to loop through fragments first, pull the content out of each one (<code>f["content"]</code>), and call <code>.lower()</code> on that one string. the shape is: <code>for f in fragments:</code>, then indented, <code>if "cabin" in f["content"].lower(): ...</code>`
+  },
+  {
+    pattern: /["']cabin["']\s+in\s+fragments\b/,
+    tip: `<code>"cabin" in fragments</code> is checking whether the literal string <code>"cabin"</code> is one of the items in the fragments list. the items are dictionaries, not strings, so this is always False. you want to check the <em>content field</em> of each fragment, one at a time. that means a loop: <code>for f in fragments:</code>, then check <code>"cabin" in f["content"].lower()</code> on each one.`
+  },
+  {
+    pattern: /fragments\s*\.\s*append\s*\(/,
+    tip: `you wrote <code>fragments.append(matches)</code>, which would add the <code>matches</code> list as a new item INTO fragments — backwards from what you want. you're collecting matches, so the call goes the other way: <code>matches.append(f["id"])</code>. read it as "matches: take this id and add it to yourself."`
+  }
+], hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
 buddy: { name: 'wren_h', msg: "whatever you think you're piecing together, you're wrong. ask briar. ask anyone. i was in my cabin." }
 },
 charms: 3
