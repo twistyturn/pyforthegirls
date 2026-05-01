@@ -883,6 +883,23 @@ background: #fff;
 .serp-result {
 margin-bottom: 14px;
 }
+.serp-result-with-thumb {
+display: flex;
+gap: 12px;
+align-items: flex-start;
+}
+.serp-thumb {
+flex-shrink: 0;
+width: 110px;
+height: auto;
+max-height: 110px;
+object-fit: cover;
+border: 1px solid #888;
+}
+.serp-result-body {
+flex: 1;
+min-width: 0;
+}
 .serp-result-title {
 color: #0000cc;
 font-family: 'Arial', sans-serif;
@@ -1028,6 +1045,17 @@ font-family: 'Courier New', monospace;
 font-size: 12px;
 border: 1px solid #888;
 font-style: italic;
+}
+.mp-photo-img {
+display: block;
+width: 100%;
+max-width: 360px;
+max-height: 360px;
+height: auto;
+object-fit: cover;
+margin: 6px 0;
+border: 1px solid #888;
+background: #d0d0c0;
 }
 .mp-caption {
 margin-top: 4px;
@@ -2059,7 +2087,9 @@ gap = infirmary - boathouse
       {
         title: 'Camp Pinecrest 2003 staff photo',
         url: 'www.camppinecrest.ca/gallery/2003.html',
-        snippet: '... back row: Briar Vance, Tyler Hughes, Marcia Deveraux ...'
+        snippet: '... top row, l-r: Wren Halloway, Briar Vance, Tyler Hughes, Marcia Deveraux ...',
+        thumbnail: 'pinecrest%20staff%20photo.png',
+        thumbnailAlt: 'Camp Pinecrest 2003 staff group photo. Top row left-to-right: Wren Halloway, Briar Vance, Tyler Hughes, Marcia Deveraux.'
       },
       {
         title: 'Whitecourt Star - Community policing feature, 2002',
@@ -2097,8 +2127,9 @@ i'm going to read every page he ever made.`,
         platform: 'MYSPACE',
         handle: 'tyler.hughes',
         date: '2004-06-29',
+        photoSrc: 'tyler%20in%20garage.png',
         photoCaption: 'AB junior leagues let\'s go',
-        photoDescription: '[photo: Tyler in a hockey jersey, garage background, throwing a fake gang sign at the camera]',
+        photoDescription: 'Tyler in a hockey jersey, garage background, throwing a fake gang sign at the camera',
         top8: ['BRENDON', 'MIKE', 'KYLER', 'JON', 'ASHLEY', 'MEGAN', 'COUSIN MATT', 'RYAN']
       },
       {
@@ -2134,8 +2165,9 @@ i'm going to read every page he ever made.`,
         platform: 'MYSPACE',
         handle: 'tyler.hughes',
         date: '2004-10-14',
+        photoSrc: 'tyler%20at%20wedding.png',
         photoCaption: 'cousin matt\'s wedding. mom looks good',
-        photoDescription: '[photo: Tyler in a suit at his cousin\'s wedding, smiling, arm around an older woman]'
+        photoDescription: 'Tyler in a suit at his cousin\'s wedding, smiling, arm around an older woman'
       },
       {
         platform: 'HOCKEY FORUM',
@@ -2277,10 +2309,13 @@ function renderSearchResults(beat, isActive) {
   const w = document.createElement('div');
   w.className = 'serp-window';
   const resultsHtml = beat.results.map(r => `
-    <div class="serp-result">
-      <div class="serp-result-title">${escapeHtml(r.title)}</div>
-      <div class="serp-result-url">${escapeHtml(r.url)}</div>
-      <div class="serp-result-snippet">${escapeHtml(r.snippet)}</div>
+    <div class="serp-result${r.thumbnail ? ' serp-result-with-thumb' : ''}">
+      ${r.thumbnail ? `<img class="serp-thumb" src="${escapeHtml(r.thumbnail)}" alt="${escapeHtml(r.thumbnailAlt || '')}">` : ''}
+      <div class="serp-result-body">
+        <div class="serp-result-title">${escapeHtml(r.title)}</div>
+        <div class="serp-result-url">${escapeHtml(r.url)}</div>
+        <div class="serp-result-snippet">${escapeHtml(r.snippet)}</div>
+      </div>
     </div>
   `).join('');
   w.innerHTML = `
@@ -2332,7 +2367,9 @@ function renderMultiplatformArchive(beat, isActive) {
     if (p.platform === 'MYSPACE') {
       return `<div class="mp-post mp-myspace">
         <div class="mp-post-header"><span class="mp-platform-tag">MYSPACE</span> ${escapeHtml(p.handle)} \u2014 ${escapeHtml(p.date)}</div>
-        ${p.photoDescription ? `<div class="mp-photo">${escapeHtml(p.photoDescription)}</div>` : ''}
+        ${p.photoSrc
+          ? `<img class="mp-photo-img" src="${escapeHtml(p.photoSrc)}" alt="${escapeHtml(p.photoDescription || '')}">`
+          : (p.photoDescription ? `<div class="mp-photo">[photo: ${escapeHtml(p.photoDescription)}]</div>` : '')}
         ${p.photoCaption ? `<div class="mp-caption">caption: ${escapeHtml(p.photoCaption)}</div>` : ''}
         ${p.statusUpdate ? `<div class="mp-status">status: ${escapeHtml(p.statusUpdate)}</div>` : ''}
         ${p.top8 ? `<div class="mp-top-friends">top 8 friends: ${p.top8.map(f => escapeHtml(f)).join(', ')}</div>` : ''}

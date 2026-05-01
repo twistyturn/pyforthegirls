@@ -754,6 +754,30 @@ box-shadow: var(--shadow-soft);
 }
 .intro-prose p { margin-bottom: 12px; }
 .intro-prose .em { color: var(--pink-hot); font-style: italic; }
+.intro-prose figure.intro-photo {
+margin: 14px auto;
+max-width: 200px;
+padding: 8px 8px 4px;
+background: #f4ecd8;
+border: 1px solid #6b5a3a;
+text-align: center;
+}
+.intro-prose figure.intro-photo img {
+display: block;
+width: 100%;
+height: auto;
+max-height: 240px;
+object-fit: cover;
+filter: contrast(0.94) saturate(0.85);
+}
+.intro-prose figure.intro-photo figcaption {
+font-family: 'Silkscreen', monospace;
+font-size: 9px;
+color: #6b5a3a;
+margin-top: 6px;
+letter-spacing: 1px;
+text-transform: uppercase;
+}
 .intro-input {
 background: var(--bg-deep);
 color: var(--lime-acid);
@@ -1030,6 +1054,10 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
   <div class="intro-prose">
     <p>Three days since chapter four.</p>
     <p>You haven't found Melissa Klassen. You searched the white pages and dug through archived yearbooks. Every mention of "klassen" you could pull from Google led nowhere. The trail is fourteen months cold and you're chasing it on a high school graduation photo and a roster line that says hemlock cabin.</p>
+    <figure class="intro-photo">
+      <img src="melissa%20grad%20photo.png" alt="Melissa Klassen, high school graduation portrait. Studio backdrop, drape and pearls, neutral smile. The only known image of her.">
+      <figcaption>klassen, m. — grad photo</figcaption>
+    </figure>
     <p>You came back to the laptop because there's nothing else. You decided to stop opening files Tegan named, and start looking for files she didn't.</p>
     <p><span class="em">wren_h</span> hasn't been on AIM in two days. Her green dot is gone. You don't know what that means.</p>
   </div>
