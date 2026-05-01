@@ -1306,8 +1306,8 @@ i should be scared. i'm not scared. i'm so far past scared.`,
                    <p>...stores the text <code>hi ashley</code> in <code>greeting</code>. python sees the <code>{name}</code> and swaps in whatever the variable holds.</p>
                    <p><strong>your task:</strong> the variables <code>name</code> and <code>day</code> are already set up for you. complete the f-string on the <code>header = </code> line so that <code>print(header)</code> prints exactly: <code>=== day 5 :: tegan ===</code></p>`,
     starter: `name = "tegan"\nday = 5\nheader = f""\nprint(header)`,
-    expectedOutput: 'day 5',
-    matchType: 'contains',
+    expectedOutput: '=== day 5 :: tegan ===',
+    matchType: 'exact',
     codeMustContain: ['{day}', '{name}'],
     commonMistakes: [
       {
@@ -1319,7 +1319,7 @@ i should be scared. i'm not scared. i'm so far past scared.`,
         tip: `the values are hardcoded into the f-string. the point is to <em>substitute</em> the variables — write <code>{day}</code> and <code>{name}</code> in curly braces inside the f-string, and python will plug in the values for you. that way the same code works when day or name changes.`
       }
     ],
-    hint: `inside the quotes, put <code>{day}</code> and <code>{name}</code> wherever you want the values to show up. the exact decoration around them is up to you. something like <code>=== day {day} :: {name} ===</code> works.`,
+    hint: `match the expected output exactly: <code>=== day 5 :: tegan ===</code>. the f-string is <code>f"=== day {day} :: {name} ==="</code> — three equals signs, a space, the word <code>day</code>, a space, <code>{day}</code>, a space, two colons, a space, <code>{name}</code>, a space, three equals signs.`,
     onComplete: {
       diary: `// header generator works. she used this on every entry from july onward.`,
       buddy: { name: 'wren_h', msg: 'who is this. who is this. how did you get into this account.' }
@@ -1506,6 +1506,12 @@ bad and i can't take it back.`,
     expectedOutput: '28',
     matchType: 'contains',
     codeMustContain: ['int('],
+    commonMistakes: [
+      {
+        pattern: /^\s*int\([^)]*\)\s*$/m,
+        tip: `you have <code>int(answer)</code> on its own line. that converts the string to a number — but the result gets thrown away because nothing catches it. <code>answer</code> itself is still <code>"14"</code> on the next line, so <code>answer * 2</code> is the string <code>"1414"</code>. either capture the converted value (<code>number = int(answer)</code> then <code>print(number * 2)</code>), or convert it inline where the math happens: <code>print(int(answer) * 2)</code>.`
+      }
+    ],
     hint: `<p>two lines work:</p>
            <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
 print(number * 2)</pre>
@@ -1810,6 +1816,9 @@ function friendlyErrorHint(errStr) {
   }
   if (/KeyError/i.test(errStr)) {
     return 'the dict doesn\'t have that key. check spelling — keys are case-sensitive (<code>"Time"</code> and <code>"time"</code> are different). also check that you used the right quotes around the key.';
+  }
+  if (/TypeError.*["\']NoneType["\']/i.test(errStr)) {
+    return 'something in the expression is <code>None</code> when you expected a value. the most common cause: you wrote <code>print(x) * n</code> (or some other math <em>around</em> a <code>print()</code> call). <code>print()</code> doesn\'t return what it printed — it returns <code>None</code> — so this asks python to compute <code>None * n</code>. the fix is to do the math <em>inside</em> the parentheses: <code>print(x * n)</code>. (same gotcha applies to your own functions that forget to <code>return</code>, or methods like <code>list.sort()</code> that change a list in place and return <code>None</code>.)';
   }
   if (/TypeError.*unsupported operand type|TypeError.*can only concatenate|TypeError.*str.*int|TypeError.*int.*str|TypeError.*must be str/i.test(errStr)) {
     return 'you mixed a string and a number in an operation that needs them to match. use <code>int(x)</code> to convert a string of digits to a number, or <code>str(x)</code> to convert a number to a string.';
