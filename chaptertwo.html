@@ -1092,17 +1092,15 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 // PYODIDE LOADING
 // ===========================================================================
 let pyodide = null;
-let pyodideLoading = false;
+let pyodideLoadingPromise = null;
 
 async function loadPyodideOnce() {
   if (pyodide) return pyodide;
-  if (pyodideLoading) {
-    while (!pyodide) await new Promise(r => setTimeout(r, 100));
-    return pyodide;
-  }
-  pyodideLoading = true;
-  pyodide = await loadPyodide();
-  return pyodide;
+  if (pyodideLoadingPromise) return pyodideLoadingPromise;
+  pyodideLoadingPromise = loadPyodide()
+    .then(p => { pyodide = p; return p; })
+    .catch(err => { pyodideLoadingPromise = null; throw err; });
+  return pyodideLoadingPromise;
 }
 
 async function runPython(code) {
