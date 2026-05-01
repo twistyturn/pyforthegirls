@@ -1316,10 +1316,13 @@ title: 'python.exe :: parse_one_line.py',
 meta: 'before parsing all 16 lines, get one to work.',
 skill: 'STRING PARSING :: PRACTICE ON ONE LINE',
 storyAbove: `each line of the roster looks like <code>director|Marcia|Deveraux|admin|on-site</code>. fields separated by pipes (<code>|</code>). before looping over all of them, get the parsing right on one sample line.`,
-instructions: `<p>the string method <code>.split(separator)</code> breaks a string into a list, splitting on whatever character you give it:</p>
-               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"a|b|c".split("|")    # → ["a", "b", "c"]
+instructions: `<p>the string method <code>.split(separator)</code> chops a string into pieces. the <code>separator</code> is the character you want to chop AT — every place that character shows up, the string gets cut, and you get back the pieces as a list (the separator itself isn't included):</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"a|b|c".split("|")    # → ["a", "b", "c"]   (cut at every "|")
 "red,blue,green".split(",")
-# → ["red", "blue", "green"]</pre>
+# → ["red", "blue", "green"]                  (cut at every ",")
+"hello world".split(" ")
+# → ["hello", "world"]                        (cut at the space)</pre>
+               <p>so on a roster line like <code>"director|Marcia|Deveraux|admin|on-site"</code>, calling <code>.split("|")</code> gives you back <code>["director", "Marcia", "Deveraux", "admin", "on-site"]</code> — five pieces, one per field.</p>
                <p>you can combine that with the <code>.strip()</code> you saw in the previous task to clean up extra spaces. and lists have <code>.append()</code> for adding items, which you'll need next.</p>
                <p><strong>your task:</strong> the variable <code>sample_line</code> holds one line from the roster. split it on <code>"|"</code>, build a dict with keys <code>"role"</code>, <code>"first"</code>, <code>"last"</code>, <code>"cabin"</code>, <code>"status"</code>, and print the dict.</p>
                <p>expected output: <code>{'role': 'director', 'first': 'Marcia', 'last': 'Deveraux', 'cabin': 'admin', 'status': 'on-site'}</code></p>`,
