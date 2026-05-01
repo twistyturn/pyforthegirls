@@ -599,97 +599,104 @@ margin-bottom: 6px;
 letter-spacing: 1px;
 }
 
-/* ============ AIM COMPOSE / LOG (Ch5) ============ */
+/* ============ AIM COMPOSE / LOG (matches buddy-popup AIM chrome) ============ */
 .aim-window {
-border: 2px solid var(--bg-deep);
-background: #f0e8ff;
-box-shadow: 4px 4px 0 var(--bg-deep), inset 0 0 0 1px #fff;
-margin: 16px 0;
-font-family: 'VT323', monospace;
+  border: 2px solid var(--bg-deep);
+  background: #d8d8e8;
+  box-shadow: 4px 4px 0 var(--bg-deep);
+  margin: 16px 0;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
 }
 .aim-window .window-titlebar {
-background: linear-gradient(90deg, #6699ff, #99ccff);
-color: #fff;
+  background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%);
+  color: var(--bg-deep);
+  text-shadow: none;
 }
 .aim-buddy-strip {
-padding: 8px 12px;
-background: #ffe8f5;
-border-bottom: 1px solid var(--bg-deep);
-font-family: 'Silkscreen', monospace;
-font-size: 9px;
-color: var(--bg-deep);
-letter-spacing: 1px;
+  padding: 6px 12px;
+  background: #d8d8e8;
+  border-bottom: 1px solid var(--bg-deep);
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 11px;
+  color: var(--bg-deep);
 }
 .aim-buddy-strip .online-dot {
-color: var(--lime-acid);
-font-size: 14px;
-vertical-align: middle;
+  color: #00aa00;
+  font-size: 14px;
+  vertical-align: middle;
 }
 .aim-compose-body {
-padding: 16px;
-background: #fff;
-color: var(--bg-deep);
-font-size: 18px;
-line-height: 1.5;
-min-height: 120px;
-border: 1px solid var(--bg-deep);
-margin: 12px;
-white-space: pre-wrap;
+  padding: 14px 14px 16px;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 110px;
+  border-top: 1px solid var(--bg-deep);
+  border-bottom: 1px solid var(--bg-deep);
+  white-space: pre-wrap;
 }
 .aim-log-body {
-padding: 14px;
-background: #fff;
-margin: 12px;
-border: 1px solid var(--bg-deep);
-max-height: 70vh;
-overflow-y: auto;
+  padding: 12px 14px;
+  background: #ffffff;
+  border-top: 1px solid var(--bg-deep);
+  border-bottom: 1px solid var(--bg-deep);
+  max-height: 70vh;
+  overflow-y: auto;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1a1a1a;
 }
 .aim-message {
-margin-bottom: 10px;
-font-size: 17px;
-line-height: 1.4;
-color: var(--bg-deep);
+  margin: 4px 0;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 .aim-message-from {
-color: #cc3399;
-font-weight: bold;
-margin-right: 6px;
+  color: #0000cc;
+  font-weight: bold;
+  margin-right: 6px;
 }
 .aim-message-player .aim-message-from {
-color: #336699;
-}
-.aim-message-player {
-padding-left: 24px;
-border-left: 3px solid #336699;
+  color: #cc0000;
 }
 .aim-message-pause {
-text-align: center;
-color: #999;
-font-size: 18px;
-margin: 14px 0;
-letter-spacing: 4px;
-animation: aim-pulse 1.4s ease-in-out infinite;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  margin: 10px 0;
+  letter-spacing: 2px;
+  animation: aim-pulse 1.4s ease-in-out infinite;
 }
 @keyframes aim-pulse {
-0%, 100% { opacity: 0.4; }
-50%      { opacity: 1; }
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+.aim-message-system {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  font-size: 12px;
+  margin: 8px 0;
 }
 .aim-send-bar {
-padding: 10px 12px;
-background: var(--window-bg);
-border-top: 1px solid var(--bg-deep);
-text-align: right;
+  padding: 8px 12px;
+  background: #d8d8e8;
+  border-top: 1px solid var(--bg-deep);
+  text-align: right;
 }
 .aim-send-btn {
-background: var(--lime-acid);
-border: 2px solid var(--bg-deep);
-color: var(--bg-deep);
-font-family: 'Silkscreen', monospace;
-font-size: 11px;
-padding: 8px 18px;
-cursor: pointer;
-box-shadow: 2px 2px 0 var(--bg-deep);
-letter-spacing: 1px;
+  background: var(--lime-acid);
+  border: 2px solid var(--bg-deep);
+  color: var(--bg-deep);
+  font-family: 'Silkscreen', monospace;
+  font-size: 11px;
+  padding: 8px 18px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--bg-deep);
+  letter-spacing: 1px;
 }
 .aim-send-btn:hover { background: #ccff66; }
 .aim-send-btn:active { transform: translate(2px, 2px); box-shadow: none; }
