@@ -1383,14 +1383,20 @@ title: 'python.exe :: full_metadata.py',
 meta: 'before filtering, you want to see one fragment in full.',
 storyAbove: `before you filter the whole list, take one full fragment apart so you can see exactly what fields exist. <code>.items()</code> walks every key-value pair in a dict.`,
 skill: 'DICT.ITEMS() :: ITERATING KEY-VALUE PAIRS',
-instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p>
+instructions: `<p><code>.items()</code> is a function that lives on every dict — python calls these <strong>methods</strong>. you call a method by writing the dict name, a dot, then the method name with parentheses:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person.items()</pre>
+<p>the dot says "the items function that belongs to <em>this</em> dict." the empty parentheses are how you actually <em>call</em> it (same as with regular functions like <code>print()</code> — without the parens, you'd just be referring to the function, not running it).</p>
+<p>using it with a <code>for</code> loop walks through every key and value in the dictionary:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person = {"name": "tegan", "age": 17}
 for key, value in person.items():
     print(f"{key}: {value}")</pre>
 <p>that prints:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">name: tegan
 age: 17</pre>
-<p><code>.items()</code> gives back pairs of (key, value), which is why the loop uses two variable names — one to receive each piece of the pair.</p>
+<p><code>.items()</code> gives back pairs of (key, value), which is why the loop uses two variable names — one for each piece of the pair.</p>
+<p>quick refresher on the f-string (you saw these back in chapter 1): the <code>f</code> right before the opening quote turns the string into a template — anything inside <code>{ }</code> gets swapped for the variable's actual value. so when <code>key</code> is <code>"name"</code> and <code>value</code> is <code>"tegan"</code>, <code>f"{key}: {value}"</code> becomes the string <code>"name: tegan"</code>. without the <code>f</code>, the curly braces would just be literal text:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">print("{key}: {value}")    # → {key}: {value}    (literally those characters)
+print(f"{key}: {value}")   # → name: tegan       (the actual values)</pre>
 <p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
 starter: `fragment_one = {
 "id": 1,
