@@ -1505,11 +1505,18 @@ bad and i can't take it back.`,
 `,
     expectedOutput: '28',
     matchType: 'contains',
-    codeMustContain: ['int('],
+    codeMustContain: ['int(', /answer\s*=\s*["']14["']/],
+    codeMustContainMessage: `the output is right, but the lesson isn't. this task is teaching <code>int()</code> on a string. the starter sets <code>answer = "14"</code> on purpose — that's the kind of data you'll get back from <code>input()</code> in the next task, and you can't change that. put the quotes back on the <code>"14"</code> if you removed them, then convert it inside your math: <code>print(int(answer) * 2)</code>.`,
+    commonMistakes: [
+      {
+        pattern: /^\s*int\([^)]*\)\s*$/m,
+        tip: `you have <code>int(answer)</code> on its own line. that converts the string to a number — but the result gets thrown away because nothing catches it. <code>answer</code> itself is still <code>"14"</code> on the next line, so <code>answer * 2</code> is the string <code>"1414"</code>. either capture the converted value (<code>number = int(answer)</code> then <code>print(number * 2)</code>) or convert it inline where the math happens: <code>print(int(answer) * 2)</code>.`
+      }
+    ],
     hint: `<p>two lines work:</p>
            <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
 print(number * 2)</pre>
-           <p>or one line: <code>print(int(answer) * 2)</code>. either is fine.</p>`,
+           <p>or one line: <code>print(int(answer) * 2)</code>. either is fine. don't remove the quotes around <code>"14"</code> — the lesson is converting a string, not skipping the conversion.</p>`,
     onComplete: {
       diary: `// type conversion practice passes. int("14") -> 14. doubled -> 28.`
     },
