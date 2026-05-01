@@ -1457,7 +1457,10 @@ for thing in shopping_list:
 bread costs 5
 milk costs 4</pre>
 <p>each pass, <code>thing</code> holds ONE of the three dicts. to get a specific field out of that dict, we still use the bracket lookup from earlier (<code>thing["price"]</code>) — the loop hands you the dict; it doesn't unpack it for you.</p>
-<p>(quick aside on why <code>thing["price"]</code> instead of just "we're inside <code>thing</code>": <code>thing</code> is a variable holding the dict. the loop didn't take you "inside" anything — it just gave you a name for the current item. to reach into the dict and grab a field, you still need the bracket lookup.)</p>
+<p>(why <code>thing["price"]</code> and not just <code>["price"]</code>? brackets do two different things depending on what's right before them:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">thing["price"]   # → 3        (bracket lookup: "look up 'price' in thing")
+["price"]        # → ['price']  (list literal: a brand new list with one string)</pre>
+<p><code>["price"]</code> by itself has nothing to do with <code>thing</code> — Python doesn't have an implicit "current thing" inside a loop. to look up a field, you have to write the name explicitly.)</p>
 
 <p><strong>step 3: only collect the items you care about.</strong> add an <code>if</code>, and use <code>.append</code> to build a new list:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">expensive = []
