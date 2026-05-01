@@ -1224,10 +1224,11 @@ fragment["content"]   # → "where are you"</pre>
                    <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">your task</h4>
                    <p>print three things, each on its own line:</p>
                    <ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px;">
-                     <li><strong>print</strong> how many fragments there are total — wrap <code>len(fragments)</code> in <code>print()</code>: <code>print(len(fragments))</code></li>
-                     <li><strong>print</strong> who sent the first message — get the first fragment with <code>fragments[0]</code>, get its sender with <code>["from"]</code>, and wrap it all in <code>print()</code>: <code>print(fragments[0]["from"])</code></li>
-                     <li><strong>print</strong> who sent the last message — same shape as #2, but use <code>fragments[-1]</code> for the last item</li>
-                   </ol>`,
+                     <li>how many fragments there are in total</li>
+                     <li>the sender of the first fragment</li>
+                     <li>the sender of the last fragment</li>
+                   </ol>
+                   <p>(use <code>len()</code> for the count, and the chained-access shape from above for the senders.)</p>`,
     starter: `# fragments is already loaded for you (10 messages)
 # print three things on three lines:
 # 1. the count of fragments
