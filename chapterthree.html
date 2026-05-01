@@ -1568,15 +1568,44 @@ title: 'python.exe :: wren_messages.py',
 meta: "pulling wren's entire night into one list.",
 storyAbove: `the cleanest way to get every message from a specific sender, in python, is a <strong>list comprehension</strong>. it does in one line what a <code>for</code> loop with an <code>if</code> takes four lines to do. it\'s the move that separates someone who learned python last week from someone who knows it.`,
 skill: 'LIST COMPREHENSIONS',
-instructions: `<p>a <strong>list comprehension</strong> builds a new list by filtering or transforming an existing one, in a single expression:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">numbers = [1, 2, 3, 4, 5]
-big = [n for n in numbers if n > 2]
+instructions: `<p>a <strong>list comprehension</strong> builds a new list by walking through an existing one and keeping the items you want — all in one line. it does the same job as a <code>for</code> loop with an <code>if</code>, just compressed.</p>
 
+               <p>the shape:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">[ EXPR  for NAME in SOURCE  if CONDITION ]</pre>
+               <p>each part has a job:</p>
+               <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
+                 <li><code>SOURCE</code> — the existing list to walk through</li>
+                 <li><code>NAME</code> — what to call "one item from SOURCE" (your pick — could be <code>x</code>, <code>n</code>, <code>item</code>, anything)</li>
+                 <li><code>CONDITION</code> — only items matching this make it into the new list (using <code>NAME</code>)</li>
+                 <li><code>EXPR</code> — what to put in the new list for each matching item (also written in terms of <code>NAME</code>)</li>
+               </ul>
+
+               <p>simple example — keep numbers greater than 2:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">numbers = [1, 2, 3, 4, 5]
+big = [n for n in numbers if n &gt; 2]
 # big is now [3, 4, 5]</pre>
+               <p>filling the shape in:</p>
+               <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
+                 <li>SOURCE → <code>numbers</code></li>
+                 <li>NAME → <code>n</code> (we picked one letter — call each item <code>n</code>)</li>
+                 <li>CONDITION → <code>n &gt; 2</code></li>
+                 <li>EXPR → <code>n</code> (just put the matching number in the new list as-is)</li>
+               </ul>
 
-               <p>read it like english: "<em>n for each n in numbers, if n is greater than 2.</em>"</p>
-               <p>it works on dicts inside lists too:</p>
+               <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">why it looks like the same word three times</h4>
+               <p>here's the version on a list of dicts:</p>
                <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">tegans = [fragment for fragment in fragments if fragment["from"] == "tegan_a87"]</pre>
+               <p>that line has the word <code>fragment</code> three times. it looks ridiculous. but each one is a different role:</p>
+               <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
+                 <li>1st <code>fragment</code> — the EXPR. what to put in the new list. ("the matching fragment, as-is.")</li>
+                 <li>2nd <code>fragment</code> — the NAME. picked by us. ("call each item from the list <code>fragment</code>.")</li>
+                 <li><code>fragments</code> (with the s) — the SOURCE. the original list.</li>
+                 <li>3rd <code>fragment</code> — using the NAME inside the CONDITION to check the <code>"from"</code> field of the current item.</li>
+               </ul>
+               <p>the syntax happens to repeat the name because you have to (a) name each item, (b) say what to put in the new list, (c) check a condition on each item. all three steps reference the same item, so the same name appears in three spots. you could rename it to anything — <code>x</code>, <code>thing</code>, <code>frag</code> — and it'd look less Buffalo-buffalo:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">tegans = [x for x in fragments if x["from"] == "tegan_a87"]</pre>
+               <p>same code, less of a tongue-twister. pick whatever name makes it readable to you.</p>
+
                <p><strong>your task:</strong> build a list called <code>wren_msgs</code> containing every fragment where the <code>"from"</code> field equals <code>"wren_h"</code>. then print just the count: <code>len(wren_msgs)</code>.</p>`,
 starter: `# the long way (you've already done this kind of thing):
 #   wren_msgs = []
