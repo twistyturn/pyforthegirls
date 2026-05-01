@@ -1284,16 +1284,17 @@ Looking forward to seeing you on the 21st.
     title: 'python.exe :: read_roster.py',
     meta: 'tegan saved every email attachment camp ever sent her.',
     skill: 'FILE I/O :: open() AND .readlines()',
-    hint: `<code>with open("outlook/inbox/attachments/roster_2004.txt") as f:</code> indented <code>lines = f.readlines()</code>. then three lines: <code>print(lines[0].strip())</code>, <code>print(lines[1].strip())</code>, <code>print(lines[2].strip())</code>.`,
+    hint: `<code>with open("outlook/inbox/attachments/roster_2004.txt") as roster:</code> indented <code>lines = roster.readlines()</code>. then three lines: <code>print(lines[0].strip())</code>, <code>print(lines[1].strip())</code>, <code>print(lines[2].strip())</code>.`,
     storyAbove: `at orientation, pinecrest emailed every staffer a roster as a text attachment. tegan saved hers. you need to learn how to make python read a file. <code>open()</code> opens it. <code>.readlines()</code> gets every line as a list of strings. <code>with</code> blocks make sure the file gets closed properly when you're done.`,
-    instructions: `<p>the <code>with</code> block opens a file, gives you a handle (<code>f</code>), and automatically closes it when you exit the block. <code>.readlines()</code> reads the file and gives you a list with one item per line:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">with open("filename.txt") as f:
-    lines = f.readlines()</pre>
+    instructions: `<p>the <code>with</code> block opens a file, hands you a "handle" you can read from, and automatically closes the file when you exit the block. <code>.readlines()</code> reads the whole file and gives you a list with one item per line:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">with open("filename.txt") as roster:
+    lines = roster.readlines()</pre>
+                   <p>the name after <code>as</code> is your pick — we used <code>roster</code> here because that's what's in the file. could be anything: <code>file</code>, <code>data</code>, <code>r</code>. (you'll often see <code>f</code> in python tutorials elsewhere — that's a tradition of "pick something short," nothing more. it's not related to f-strings, which put the <code>f</code> <em>before</em> the opening quote: <code>f"hi {name}"</code>.)</p>
                    <p>each line in the list still has its newline character (<code>\\n</code>) attached at the end, which makes <code>print()</code> add an extra blank line. <code>.strip()</code> removes whitespace (spaces, tabs, newlines) from both ends of a string:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"hello\\n".strip()    # → "hello"
 "  spaced  ".strip()  # → "spaced"</pre>
-                   <p><strong>your task:</strong> open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. use <code>.strip()</code> on each line to remove the trailing newline before printing.</p>`, starter: `with open("outlook/inbox/attachments/roster_2004.txt") as f:
-    lines = f.readlines()
+                   <p><strong>your task:</strong> open <code>outlook/inbox/attachments/roster_2004.txt</code> and print the first 3 lines. use <code>.strip()</code> on each line to remove the trailing newline before printing.</p>`, starter: `with open("outlook/inbox/attachments/roster_2004.txt") as roster:
+    lines = roster.readlines()
 
 # print lines[0], lines[1], lines[2] using .strip()
 
@@ -1349,8 +1350,8 @@ items[1:]   # → ["b", "c", "d"]</pre>
                <p><code>list[1:]</code> gives you everything from index 1 onward — i.e. everything except the first item.</p>
                <p><strong>your task:</strong> loop through <code>lines[1:]</code> (skipping the header). for each line, do the same parsing you just did, and append the resulting dict to a list called <code>staff</code>. then print <code>len(staff)</code>.</p>`,
 starter: `staff = []
-with open("outlook/inbox/attachments/roster_2004.txt") as f:
-    lines = f.readlines()
+with open("outlook/inbox/attachments/roster_2004.txt") as roster:
+    lines = roster.readlines()
 
 # loop through lines[1:] (skipping the header).
 # for each line:
@@ -1516,8 +1517,8 @@ hint: `same pattern as parsing roster_2004 but with the 2003 filename. use a lis
 storyAbove: `the H wasn't on the 2004 roster. you scroll up in tegan's inbox to summer 2003. there's a near-identical welcome email from marcia, dated jun 12 2003. same attachment format. tegan was at pinecrest last year too. maybe whoever came up the path was on staff in 2003 and didn't come back this year.`,
 instructions: `your task: open <code>outlook/inbox/attachments/roster_2003.txt</code>, parse it the same way you parsed the 2004 file (skip header, split on <code>|</code>, build dicts), and put the results in a list called <code>staff_2003</code>. then filter for first names starting with <code>"h"</code> and print <code>"first last"</code> for each match.`,
 starter: `staff_2003 = []
-with open("outlook/inbox/attachments/roster_2003.txt") as f:
-    lines = f.readlines()
+with open("outlook/inbox/attachments/roster_2003.txt") as roster:
+    lines = roster.readlines()
 
 # parse just like before
 

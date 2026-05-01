@@ -1,0 +1,12 @@
+# Stray compile artifacts (ELF/Mach-O default output)
+a.out
+
+# Local build/cache
+.DS_Store
+public/
+
+# Editors
+*.swp
+*.swo
+.vscode/
+.idea/

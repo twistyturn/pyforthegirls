@@ -1514,8 +1514,8 @@ cipher_alpha = build_cipher_alpha(key)
 decode_map = build_decode_map(cipher_alpha)
 
 # read the encoded letter
-with open("diary/.hidden/letter.txt") as f:
-    encoded = f.read()
+with open("diary/.hidden/letter.txt") as letter:
+    encoded = letter.read()
 
 # now walk thru it character by character.
 # if it's a letter, look it up in decode_map (lowercase the lookup,
