@@ -3141,8 +3141,8 @@ i'm going to ask her for everything she has.`,
     hint: `<code>print(len(messages))</code>`,
     storyAbove: `hannah's archive is a single text file. each line is one message in the format <code>[YYYY-MM-DD HH:MM] handle: content</code>. open it, read all lines, and confirm the count.`,
     instructions: `your task: open <code>hannah_archive.txt</code>, read all lines, store them in a list called <code>messages</code>, and print how many there are.`,
-    starter: `with open("hannah_archive.txt") as f:
-    messages = f.readlines()
+    starter: `with open("hannah_archive.txt") as archive:
+    messages = archive.readlines()
 
 # print the count
 `,
@@ -3173,8 +3173,8 @@ m.group(3)   # → "i'm so tired of this"  (content)</pre>three groups, three pi
     instructions: `your task: import re. for each line in <code>messages</code>, use the regex pattern (already provided) with three capture groups (date, sender, content) to parse it. store each parsed message as a dict with keys "date", "sender", "content" in a list called <code>parsed</code>. print the first parsed message and the last parsed message.`,
     starter: `import re
 
-with open("hannah_archive.txt") as f:
-    messages = f.readlines()
+with open("hannah_archive.txt") as archive:
+    messages = archive.readlines()
 
 # regex looks scary but it's just a pattern that matches text.
 # the parens () are "capture groups" — pieces i want pulled out.
@@ -3225,8 +3225,8 @@ counts.get("b", 0)       # \u2192 0   (no error \u2014 falls back to default)</p
                    <p><strong>your task:</strong> build a dict called <code>monthly_counts</code> where keys are year-month strings (<code>"2003-06"</code>, etc) and values are the count of messages in that month. then print each month and count in chronological order, with an ASCII bar made of <code>\u2588</code> characters (one per message).</p>`,
     starter: `import re
 
-with open("hannah_archive.txt") as f:
-    messages = f.readlines()
+with open("hannah_archive.txt") as archive:
+    messages = archive.readlines()
 pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
 parsed = []
 for line in messages:
@@ -3334,8 +3334,8 @@ re.search("wren", "I saw Wren at the lake", re.IGNORECASE)
                    <p>the starter gives you the parsed messages and the names list. you build the counts dict and the sorted output.</p>`,
     starter: `import re
 
-with open("hannah_archive.txt") as f:
-    messages = f.readlines()
+with open("hannah_archive.txt") as archive:
+    messages = archive.readlines()
 pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
 parsed = []
 for line in messages:

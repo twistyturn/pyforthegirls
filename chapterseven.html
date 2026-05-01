@@ -1783,11 +1783,11 @@ url = "https://camppinecrest.ca/staff/"
     title: 'python.exe :: load_archive_emails.py',
     meta: 'the zip is a folder of .eml files. parse them.',
     skill: 'EMAIL PARSING :: THE email MODULE AND DICT-OF-DICTS',
-    hint: `<code>folder = "2004_archive"</code>. <code>for fname in sorted(os.listdir(folder)):</code> indented <code>with open(os.path.join(folder, fname)) as f: msg = email.message_from_file(f)</code>. then build a dict with msg["From"], msg["To"], msg["Date"], msg["Subject"], msg.get_payload(). append to emails. print len and emails[0]["subject"].`,
+    hint: `<code>folder = "2004_archive"</code>. <code>for fname in sorted(os.listdir(folder)):</code> indented <code>with open(os.path.join(folder, fname)) as eml: msg = email.message_from_file(eml)</code>. then build a dict with msg["From"], msg["To"], msg["Date"], msg["Subject"], msg.get_payload(). append to emails. print len and emails[0]["subject"].`,
     storyAbove: `the zip extracts to a folder called <code>2004_archive/</code> with 149 files in <code>.eml</code> format. <code>.eml</code> is just plain text — a header section (From, To, Date, Subject) on top, then the body. python has a built-in <code>email</code> module that parses these files for you, plus an <code>os</code> module for working with folders.<br><br>the API has a few pieces. for one email file:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">import email
 
-with open("2004_archive/sample.eml") as f:
-    msg = email.message_from_file(f)
+with open("2004_archive/sample.eml") as eml:
+    msg = email.message_from_file(eml)
 
 print(msg["From"])
 print(msg["Subject"])
