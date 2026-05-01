@@ -1186,7 +1186,7 @@ it's time to read them in order.`,
 
                    <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">a list, refresher</h4>
                    <p>a list is an ordered collection of things. you've used these in loops:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours = ["red", "blue", "green"]
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">colours = ["red", "blue", "green"]
 len(colours)     # → 3
 colours[0]       # → "red"
 colours[1]       # → "blue"
@@ -1194,14 +1194,14 @@ colours[2]       # → "green"</pre>
                    <p><em>(the <code>#&nbsp;→</code> arrow in these examples shows what each expression <strong>equals</strong>. to actually display the value on screen, you'd write <code>print(len(colours))</code> or <code>print(colours[0])</code>. expressions by themselves don't print — you have to wrap them in <code>print()</code>.)</em></p>
                    <p><code>len(...)</code> tells you how many items. <code>colours[0]</code> grabs the first item. positions start at 0 (not 1) — the first item is at position 0, the second at 1, and so on.</p>
                    <p><strong>negative indexes count from the end.</strong> this is new:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">colours[-1]      # → "green"   (last item)
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">colours[-1]      # → "green"   (last item)
 colours[-2]      # → "blue"    (second-to-last)</pre>
                    <p>this is handy when you want the last thing without first counting how many items there are. <code>list[-1]</code> always means "the last item, whatever that is."</p>
 
                    <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">a dictionary</h4>
                    <p>a list holds items by <em>position</em> — first, second, third. a <strong>dictionary</strong> holds items by <em>name</em>. each item has a label (the key) and a value attached to it.</p>
                    <p>think of a dictionary as a <em>labeled box</em>. you don't reach in by position; you reach in by name:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragment = {"time": "23:46", "from": "wren_h", "content": "where are you"}
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">fragment = {"time": "23:46", "from": "wren_h", "content": "where are you"}
 
 fragment["time"]      # → "23:46"
 fragment["from"]      # → "wren_h"
@@ -1211,14 +1211,14 @@ fragment["content"]   # → "where are you"</pre>
 
                    <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">a list of dictionaries</h4>
                    <p>now combine them. <code>fragments</code> is a list, but each item in the list is a dictionary, not a string:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragments = [
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">fragments = [
     {"time": "23:46", "from": "wren_h", "content": "where are you"},
     {"time": "23:48", "from": "tegan_a87", "content": "the boathouse"},
     # ... eight more like this ...
 ]</pre>
                    <p>to grab the first fragment: <code>fragments[0]</code>. that gives you back the whole dictionary — something like <code>{"time": "23:46", "from": "wren_h", "content": "where are you"}</code>. you can SEE the sender in there, but to <em>extract</em> just the sender, you need a second step: index into the dictionary with the key <code>"from"</code>.</p>
                    <p>both steps in one line:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">fragments[0]["from"]</pre>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">fragments[0]["from"]</pre>
                    <p>read it left to right: <code>fragments[0]</code> → "the first fragment, which is a dict" → <code>["from"]</code> → "look up the 'from' key in that dict." the result is the sender's name as a string. wrap it in <code>print()</code> to display it.</p>
 
                    <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">your task</h4>
@@ -1291,11 +1291,11 @@ i'm so scared :(
     storyAbove: `you want to confirm something fast: was glorfindel actually a participant in any of the AIM logs? or were they only ever on the SMS side? <code>in</code> checks membership.`,
     skill: 'THE in OPERATOR (membership tests)',
     instructions: `<p>the <code>in</code> keyword checks if something is part of a collection. it returns <code>True</code> or <code>False</code>:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">people = ["wren_h", "briar_v", "tegan_a87"]
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">people = ["wren_h", "briar_v", "tegan_a87"]
 "wren_h" in people     # → True
 "hattie_w" in people   # → False</pre>
                    <p>which means you can use it as the condition in an <code>if</code>:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "wren_h" in people:
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">if "wren_h" in people:
     print("found")
 # prints: found</pre>
                    <p>it works on lists AND on strings (where it checks for substrings — <code>"cab" in "cabin"</code> → <code>True</code>).</p>
@@ -1330,7 +1330,7 @@ meta: "pulling tegan's last message into focus.",
 storyAbove: `the message you keep coming back to is the single character <code>h</code> at 23:46. you want to print every field of that one fragment cleanly so you can stare at it.`,
 skill: 'DICTIONARY KEY ACCESS',
 instructions: `<p>a dictionary stores values under keys. you access them with square brackets:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">person = {"name": "tegan", "age": 17}
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person = {"name": "tegan", "age": 17}
 print(person["name"])   # → tegan
 print(person["age"])    # → 17</pre>
 <p><strong>your task:</strong> the variable <code>last_msg</code> is set to the "h" message. print three fields, each on its own line, in this order: <code>time</code>, <code>from</code>, <code>content</code>.</p>`,
@@ -1386,11 +1386,11 @@ meta: 'before filtering, you want to see one fragment in full.',
 storyAbove: `before you filter the whole list, take one full fragment apart so you can see exactly what fields exist. <code>.items()</code> walks every key-value pair in a dict.`,
 skill: 'DICT.ITEMS() :: ITERATING KEY-VALUE PAIRS',
 instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">person = {"name": "tegan", "age": 17}
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person = {"name": "tegan", "age": 17}
 for key, value in person.items():
     print(f"{key}: {value}")</pre>
 <p>that prints:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">name: tegan
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">name: tegan
 age: 17</pre>
 <p><code>.items()</code> gives back pairs of (key, value), which is why the loop uses two variable names — one to receive each piece of the pair.</p>
 <p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
@@ -1420,14 +1420,14 @@ meta: 'find every message that mentions "cabin".',
 storyAbove: `wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains that word. use <code>.lower()</code> to make the search case-insensitive (in case wren ever capitalized it). collect the IDs of matching fragments into a list called <code>matches</code> and print it.`,
 skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
 instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"HELLO".lower()       # → "hello"
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"HELLO".lower()       # → "hello"
 "  hi  ".strip()      # → "hi"</pre>
 <p>you can also check whether one string appears <em>inside</em> another with <code>in</code>:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if "cabin" in "i'm in my cabin":
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">if "cabin" in "i'm in my cabin":
     print("match")</pre>
 <p>that prints <code>match</code>. the <code>in</code> check returns <code>True</code> if the left string appears anywhere in the right string.</p>
 <p>and one more thing you'll need: lists have a method called <code>.append()</code> that adds a new item to the end:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">my_list = [1, 2, 3]
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">my_list = [1, 2, 3]
 my_list.append(4)
 print(my_list)
 # → [1, 2, 3, 4]</pre>
@@ -1456,14 +1456,14 @@ meta: "pulling wren's entire night into one list.",
 storyAbove: `the cleanest way to get every message from a specific sender, in python, is a <strong>list comprehension</strong>. it does in one line what a <code>for</code> loop with an <code>if</code> takes four lines to do. it\'s the move that separates someone who learned python last week from someone who knows it.`,
 skill: 'LIST COMPREHENSIONS',
 instructions: `<p>a <strong>list comprehension</strong> builds a new list by filtering or transforming an existing one, in a single expression:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">numbers = [1, 2, 3, 4, 5]
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">numbers = [1, 2, 3, 4, 5]
 big = [n for n in numbers if n > 2]
 
 # big is now [3, 4, 5]</pre>
 
                <p>read it like english: "<em>n for each n in numbers, if n is greater than 2.</em>"</p>
                <p>it works on dicts inside lists too:</p>
-               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">tegans = [f for f in fragments if f["from"] == "tegan_a87"]</pre>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">tegans = [f for f in fragments if f["from"] == "tegan_a87"]</pre>
                <p><strong>your task:</strong> build a list called <code>wren_msgs</code> containing every fragment where the <code>"from"</code> field equals <code>"wren_h"</code>. then print just the count: <code>len(wren_msgs)</code>.</p>`,
 starter: `# the long way (you've already done this kind of thing):
 #   wren_msgs = []

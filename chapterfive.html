@@ -1501,7 +1501,7 @@ i think i know who.`,
     hint: `<code>for c in encoded:</code> indented <code>if c.isalpha():</code> then <code>decoded_char = decode_map[c.lower()]</code> then <code>if c.isupper(): decoded_char = decoded_char.upper()</code> then <code>decoded += decoded_char</code> else <code>decoded += c</code>.`,
     storyAbove: `you've built the decode_map. now apply it: read the encrypted letter, walk through it character by character, look up each letter in the map, build the decoded output. preserve case (uppercase letters stay uppercase). preserve everything that isn't a letter (spaces, punctuation, newlines).`,
     instructions: `<p>two new string methods you'll need:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"a".isalpha()    # → True   (a is a letter)
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"a".isalpha()    # → True   (a is a letter)
 "7".isalpha()    # → False  (7 is a digit)
 " ".isalpha()    # → False  (space isn't a letter)
 

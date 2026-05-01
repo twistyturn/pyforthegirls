@@ -1496,7 +1496,7 @@ bad and i can't take it back.`,
     storyAbove: `the next thing tegan was working on was a script that asks her a question and does math with the answer. but there's a quirk: when python reads text from a person, it gives back a <em>string</em>, even if the person typed a number. she left a tiny practice file in the folder before tackling the real one. start with that.`,
     skill: 'STRINGS vs NUMBERS',
     instructions: `<p>text-in-quotes (like <code>"5"</code> or <code>"tegan"</code>) is called a <strong>string</strong>, same as you saw in the very first task. python treats strings differently from numbers:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">"5" * 2  →  "55"   (python repeats the text twice)
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"5" * 2  →  "55"   (python repeats the text twice)
 5 * 2    →  10     (python does the math)</pre>
                    <p>to do math on a string of digits, you convert it: <code>int("5")</code> turns the string <code>"5"</code> into the number <code>5</code>.</p>
                    <p><strong>your task:</strong> the variable <code>answer</code> is set to the string <code>"14"</code> (in quotes — it's text, not a number). print it doubled. the script should print <code>28</code>, not <code>1414</code>.</p>`,
@@ -1513,7 +1513,7 @@ bad and i can't take it back.`,
       }
     ],
     hint: `<p>two lines work:</p>
-           <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
+           <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">number = int(answer)
 print(number * 2)</pre>
            <p>or one line: <code>print(int(answer) * 2)</code>. either is fine.</p>`,
     onComplete: {
@@ -1528,8 +1528,8 @@ print(number * 2)</pre>
     type: 'task',
     title: 'python.exe :: prompt.py',
     meta: 'a script for asking herself questions before bed.',
-    storyAbove: `now the real one. same int-conversion idea, but with a new function — <code>input()</code>. it pauses the script and waits for the person at the keyboard to type something, then hits enter. whatever they typed comes back as a string.<br><br>here's the simplest version:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">name = input("what's your name? ")
-print("hi " + name)</pre>when this runs:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">what's your name? <em>(person types: ashley, hits enter)</em>
+    storyAbove: `now the real one. same int-conversion idea, but with a new function — <code>input()</code>. it pauses the script and waits for the person at the keyboard to type something, then hits enter. whatever they typed comes back as a string.<br><br>here's the simplest version:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">name = input("what's your name? ")
+print("hi " + name)</pre>when this runs:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">what's your name? <em>(person types: ashley, hits enter)</em>
 hi ashley</pre>the script paused on line 1, waited for the person to type, stored what they typed in <code>name</code>, then ran line 2 with the value.<br><br>this is how scripts become <em>reusable</em>. the same code works for any name. the same code we're about to write would work for any number of days, not just 14.`,
     skill: 'INPUT & TYPE CONVERSION',
     instructions: `<p>this task uses <code>input()</code> to ask "how many days left?" and then doubles whatever the person typed.</p>
@@ -1542,7 +1542,7 @@ hi ashley</pre>the script paused on line 1, waited for the person to type, store
                    <p>expected output: <code>28</code></p>
                    <p>NOT <code>1414</code> — that's what you get if you skip the <code>int()</code> conversion and python repeats the string twice.</p>
                    <p><strong>important:</strong> <code>int(answer)</code> doesn't change <code>answer</code>. it makes a separate, new value (the number version), and hands it back to you. if you don't put that new value somewhere, it disappears the moment the line ends. so:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">int(answer)            # produces 14, then forgets it. answer is still "14".
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">int(answer)            # produces 14, then forgets it. answer is still "14".
 number = int(answer)   # produces 14 and saves it in a new variable called 'number'
 answer = int(answer)   # produces 14 and overwrites answer with the number version
 print(int(answer) * 2) # produces 14 and uses it right away in the math</pre>
@@ -1576,7 +1576,7 @@ print(int(answer) * 2) # produces 14 and uses it right away in the math</pre>
     ],
     fakeInput: '14',
     hint: `<p>same shape as the practice round:</p>
-           <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">number = int(answer)
+           <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">number = int(answer)
 print(number * 2)</pre>
            <p>or as a one-liner: <code>print(int(answer) * 2)</code>.</p>`,
     onComplete: {

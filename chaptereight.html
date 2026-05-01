@@ -2432,16 +2432,16 @@ def find_person(name, region):
     title: 'python.exe :: summarize.py',
     meta: 'your turn. write a function.',
     skill: 'FUNCTIONS :: def AND PARAMETERS',
-    storyAbove: `tegan was learning to write functions. a <strong>function</strong> is a chunk of code with a name on it — you write the code once, give it a name, and then you can run that chunk later just by writing the name. it's how programmers stop themselves from typing the same thing over and over.<br><br>here's the smallest possible example:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">def greet():
+    storyAbove: `tegan was learning to write functions. a <strong>function</strong> is a chunk of code with a name on it — you write the code once, give it a name, and then you can run that chunk later just by writing the name. it's how programmers stop themselves from typing the same thing over and over.<br><br>here's the smallest possible example:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">def greet():
     print("hi")
 
-greet()</pre>that prints:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">hi</pre>two parts: <code>def greet():</code> defines (creates) the function. the indented lines are what the function does. then <code>greet()</code> on its own line <em>calls</em> the function — runs the indented code.<br><br>functions can also take inputs, called <strong>parameters</strong>, in the parentheses:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">def greet(name):
+greet()</pre>that prints:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">hi</pre>two parts: <code>def greet():</code> defines (creates) the function. the indented lines are what the function does. then <code>greet()</code> on its own line <em>calls</em> the function — runs the indented code.<br><br>functions can also take inputs, called <strong>parameters</strong>, in the parentheses:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">def greet(name):
     print("hi " + name)
 
-greet("camille")</pre>that prints:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">hi camille</pre>`,
+greet("camille")</pre>that prints:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">hi camille</pre>`,
     instructions: `<p><strong>your task:</strong> write a function called <code>summarize_person</code> that takes a result dict (like the one Hannah's <code>find_person</code> returns) and prints a summary line.</p>
                    <p>the line should be the person's name, then counts of their nexopia, livejournal, and school paper hits — exactly in this format:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">Camille McCleod: 1 nexopia, 0 livejournals, 1 school papers</pre>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">Camille McCleod: 1 nexopia, 0 livejournals, 1 school papers</pre>
                    <p>the dict has keys <code>"name"</code>, <code>"nexopia"</code>, <code>"livejournals"</code>, and <code>"school_papers"</code>. the last three are lists — you can use <code>len()</code> on them to get the count.</p>
                    <p>after defining the function, the starter calls it on a sample dict so you can see if it works.</p>`,
     starterCode: `example = {
@@ -2788,7 +2788,7 @@ for t, label in candidates:
 23:44 (the moment tegan heard 'someone's coming'): True`,
     matchType: 'exact',
     codeMustContain: ['def could_walk_gravel', 'return'],
-    hint: `<p>loop through <code>SILENT_WINDOWS</code>. for each <code>(start, end)</code> pair, check if <code>start &lt;= time &lt;= end</code>. if so, return <code>False</code>. if the loop finishes without returning, return <code>True</code>.</p><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">def could_walk_gravel(time):
+    hint: `<p>loop through <code>SILENT_WINDOWS</code>. for each <code>(start, end)</code> pair, check if <code>start &lt;= time &lt;= end</code>. if so, return <code>False</code>. if the loop finishes without returning, return <code>True</code>.</p><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">def could_walk_gravel(time):
     for start, end in SILENT_WINDOWS:
         if start &lt;= time &lt;= end:
             return False
