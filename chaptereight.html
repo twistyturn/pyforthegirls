@@ -3711,7 +3711,7 @@ function renderAimLog(beat, isActive) {
     if (handle === 'pause') {
       return `<div class="aim-message-pause">[${escapeHtml(m.text)}]</div>`;
     }
-    const isPlayer = handle === 'you';
+    const isPlayer = handle === 'you' || (beat.selfHandle && handle === beat.selfHandle);
     const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
     return `<div class="${cls}"><span class="aim-message-from">${escapeHtml(handle)}:</span>${escapeHtml(m.text)}</div>`;
   }).join('');

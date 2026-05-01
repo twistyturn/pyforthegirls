@@ -701,6 +701,51 @@ letter-spacing: 1px;
 .aim-send-btn:hover { background: #ccff66; }
 .aim-send-btn:active { transform: translate(2px, 2px); box-shadow: none; }
 
+/* ============ ARCHIVE VIEW (ch6 player_browses_august — same chrome as AIM) ============ */
+.archive-window {
+  border: 2px solid var(--bg-deep);
+  background: #d8d8e8;
+  box-shadow: 4px 4px 0 var(--bg-deep);
+  margin: 16px 0;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+}
+.archive-window .window-titlebar {
+  background: linear-gradient(90deg, #6699ff 0%, #ffd633 100%);
+  color: var(--bg-deep);
+  text-shadow: none;
+}
+.archive-meta {
+  padding: 6px 12px;
+  background: #d8d8e8;
+  border-bottom: 1px solid var(--bg-deep);
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 11px;
+  color: var(--bg-deep);
+  font-style: italic;
+}
+.archive-body {
+  padding: 12px 14px;
+  background: #ffffff;
+  border-top: 1px solid var(--bg-deep);
+  border-bottom: 1px solid var(--bg-deep);
+  max-height: 60vh;
+  overflow-y: auto;
+  font-family: 'Tahoma', 'Geneva', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+.archive-line {
+  margin: 4px 0;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.archive-timestamp { color: #888; font-size: 11px; margin-right: 4px; }
+.archive-sender-tegan  { color: #cc0000; font-weight: bold; margin-right: 6px; }
+.archive-sender-hannah { color: #0000cc; font-weight: bold; margin-right: 6px; }
+.archive-content { color: #1a1a1a; }
+.archive-content.redacted-line { font-style: italic; color: #555; }
+
 /* ============ INTRO SCREEN ============ */
 .intro-screen {
 position: fixed; inset: 0;
@@ -3449,7 +3494,7 @@ function renderAimLog(beat, isActive) {
     if (!m.text || m.text.trim() === '' || m.text === '…') {
       return `<div class="aim-message-pause">. . .</div>`;
     }
-    const isPlayer = m.from === 'you';
+    const isPlayer = m.from === 'you' || (beat.selfHandle && m.from === beat.selfHandle);
     const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
     return `<div class="${cls}"><span class="aim-message-from">${m.from}:</span>${escapeHtml(m.text)}</div>`;
   }).join('');
