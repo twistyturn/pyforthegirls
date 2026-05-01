@@ -1880,7 +1880,7 @@ if (passed && beat.codeMustContain) {
   for (const __p of beat.codeMustContain) {
     let __hit;
     if (Array.isArray(__p)) {
-      __hit = __p.some(__s => __strippedCode.includes(__s));
+      __hit = __p.some(__s => __s instanceof RegExp ? __s.test(__strippedCode) : __strippedCode.includes(__s));
     } else if (__p instanceof RegExp) {
       __hit = __p.test(__strippedCode);
     } else {
