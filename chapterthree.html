@@ -1415,34 +1415,25 @@ buddy: { name: 'briar_v', msg: "i don't know who you are but you should stop. i 
 charms: 3
 },
 
-// –– BEAT 8: string methods + substring 'in' ––
+// –– BEAT 8a: list filtering pattern — practice ––
 {
-id: 'task_string_methods',
+id: 'task_string_methods_a',
 type: 'task',
-title: 'python.exe :: alibi_filter.py',
-meta: 'find every message that mentions "cabin".',
-storyAbove: `wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains that word. use <code>.lower()</code> to make the search case-insensitive (in case wren ever capitalized it). collect the IDs of matching fragments into a list called <code>matches</code> and print it.`,
-skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
-instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string (same idea as <code>.items()</code> on a dict from the previous task):</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"HELLO".lower()       # → "hello"     (lowercases the string)
-"  hi  ".strip()      # → "hi"        (trims whitespace)</pre>
-<p>you can also check whether one string appears <em>inside</em> another with <code>in</code>:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"cabin" in "i'm in my cabin"   # → True
-"cabin" in "i'm in my room"    # → False</pre>
-<p>lists have methods too. <code>.append()</code> adds one item to the end:</p>
+title: 'python.exe :: fic_picks_practice.py',
+meta: "tegan's practice scratchpad. she'd been collecting fic and wanted a quick way to filter the long ones.",
+storyAbove: `before applying this idea to wren's chat fragments, you find a practice script tegan left for herself. the data is a tiny list of bookmarked silmarillion fics with their wordcounts. you'll write the same shape of code you'll need for the real task — just on something simpler.`,
+skill: 'LOOPING A LIST OF DICTS + .append()',
+instructions: `<p>this is the practice round before the real filter. you're learning a single pattern: walk through a list of dicts, check each one against a condition, collect the ones that match into a new list.</p>
+<p>one new tool first: lists have <strong>methods</strong> the same way dicts do (you saw <code>.items()</code> on a dict in the previous task — same dot-syntax). <code>.append()</code> adds one item to the end of a list:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">my_list = [1, 2, 3]
 my_list.append(4)
 print(my_list)        # → [1, 2, 3, 4]</pre>
 <p>read <code>my_list.append(4)</code> as "<em>my_list, take this 4 and add it to yourself.</em>" the list goes on the left of the dot, the new item goes in the parens.</p>
 
-<h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">the part to slow down for: doing this on a whole list</h4>
-<p>the tools above each act on ONE thing — one string, one list. <code>fragments</code> isn't one thing; it's ten dictionaries stacked in a row. so calling a string method on it directly doesn't work:</p>
-<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">fragments.lower()
-# → AttributeError: 'list' object has no attribute 'lower'
-#   (translation: lists don't have a .lower() method. only strings do.)</pre>
-<p>so we need a way to walk through the list and look at one item at a time. that's a <code>for</code> loop. let's build it up in three small steps.</p>
+<h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">the pattern: walk a list one item at a time</h4>
+<p>let's build it up in three small steps using a grocery list (different from the fic data, so the shape stands out).</p>
 
-<p><strong>step 1: just visit each item.</strong> say we have a tiny list of numbers:</p>
+<p><strong>step 1: just visit each item.</strong> a tiny list of numbers:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">nums = [10, 20, 30]
 for n in nums:
     print(n)</pre>
@@ -1450,9 +1441,9 @@ for n in nums:
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">10
 20
 30</pre>
-<p>read the loop as "for each item in <code>nums</code>, call it <code>n</code>, then run the indented code." the variable <code>n</code> is just a name we picked — could be <code>x</code>, <code>num</code>, anything. the first time through, <code>n</code> is <code>10</code>. the second, <code>n</code> is <code>20</code>. the third, <code>n</code> is <code>30</code>. then the loop ends. <code>nums</code> didn't change — we only visited each item.</p>
+<p>read the loop as "for each item in <code>nums</code>, call it <code>n</code>, then run the indented code." the variable <code>n</code> is just a name we picked. the first time through, <code>n</code> is <code>10</code>. the second, <code>20</code>. the third, <code>30</code>. then the loop ends. <code>nums</code> didn't change — we only visited each item.</p>
 
-<p><strong>step 2: visit each dict in a list of dicts and pull out a field.</strong> same loop shape, just a fancier list:</p>
+<p><strong>step 2: visit each dict in a list of dicts and pull out a field.</strong> same loop shape, fancier list:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">shopping_list = [
     {"item": "apples", "price": 3},
     {"item": "bread",  "price": 5},
@@ -1466,7 +1457,7 @@ for thing in shopping_list:
 bread costs 5
 milk costs 4</pre>
 <p>each pass, <code>thing</code> holds ONE of the three dicts. to get a specific field out of that dict, we still use the bracket lookup from earlier (<code>thing["price"]</code>) — the loop hands you the dict; it doesn't unpack it for you.</p>
-<p>(quick aside on why <code>thing["price"]</code> instead of just "we're inside <code>thing</code>": <code>thing</code> is a variable holding the dict. the loop didn't take you "inside" anything — it just gave you a name for the current item. to reach into the dict and grab a field, you still need the bracket lookup, same as if you'd written <code>shopping_list[0]["price"]</code> by hand.)</p>
+<p>(quick aside on why <code>thing["price"]</code> instead of just "we're inside <code>thing</code>": <code>thing</code> is a variable holding the dict. the loop didn't take you "inside" anything — it just gave you a name for the current item. to reach into the dict and grab a field, you still need the bracket lookup.)</p>
 
 <p><strong>step 3: only collect the items you care about.</strong> add an <code>if</code>, and use <code>.append</code> to build a new list:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">expensive = []
@@ -1482,21 +1473,64 @@ print(expensive)</pre>
   <li>pass 2 — <code>thing</code> is the bread dict. <code>thing["price"]</code> is 5. <code>5 > 3</code> is True, so <code>expensive.append("bread")</code> runs. <code>expensive</code> is now <code>['bread']</code>.</li>
   <li>pass 3 — <code>thing</code> is the milk dict. <code>thing["price"]</code> is 4. <code>4 > 3</code> is True, so <code>expensive.append("milk")</code> runs. <code>expensive</code> is now <code>['bread', 'milk']</code>.</li>
 </ul>
-<p>after the loop ends, <code>print(expensive)</code> shows the collected list.</p>
 
-<p><strong>your task is the same shape with two small differences:</strong></p>
-<ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
-  <li>you're checking <em>strings</em> instead of <em>numbers</em> — specifically, the <code>"content"</code> field of each fragment.</li>
-  <li>strings can be uppercase or lowercase, and <code>"Cabin"</code> should still match <code>"cabin"</code>. so before you check, lowercase the content with <code>.lower()</code>: <code>f["content"].lower()</code>.</li>
-</ul>
-<p>for each fragment, check whether <code>"cabin"</code> appears in <code>f["content"].lower()</code>. when it does, append that fragment's <code>id</code> into <code>matches</code>. then <code>print(matches)</code>.</p>`,
+<p><strong>your task</strong> is the same shape applied to tegan's fic list. for each fic in <code>fics</code>, if its <code>wordcount</code> is over 10000, append its <code>title</code> to <code>long_fics</code>. then <code>print(long_fics)</code>.</p>`,
+starter: `# tegan's bookmarked silmarillion fic, with wordcounts.
+fics = [
+    {"title": "Of Stars and Silver Light", "wordcount": 12000},
+    {"title": "Forgotten", "wordcount": 3200},
+    {"title": "The Burning of the Ships", "wordcount": 47291},
+    {"title": "First Frost", "wordcount": 8000},
+]
+
+long_fics = []
+
+# loop through fics. if a fic's wordcount > 10000,
+# append its title to long_fics. then print(long_fics).
+
+`,
+expectedOutput: "['Of Stars and Silver Light', 'The Burning of the Ships']",
+matchType: 'exact',
+codeMustContain: ['for ', '.append('],
+codeMustContainDescription: `a <code>for</code> loop over <code>fics</code> plus <code>.append(</code> to collect titles`,
+commonMistakes: [
+  {
+    pattern: /fics\s*\.\s*append\s*\(/,
+    tip: `you wrote <code>fics.append(...)</code>, which would add a new item to the original fic list. you want to collect into <code>long_fics</code> instead — the list you're building goes on the left of the dot: <code>long_fics.append(fic["title"])</code>.`
+  },
+  {
+    pattern: /fics\s*\[\s*["']wordcount["']\s*\]/,
+    tip: `<code>fics["wordcount"]</code> doesn't work — <code>fics</code> is the whole list, not one dict. inside a loop like <code>for fic in fics:</code>, the loop variable <code>fic</code> is one fic dict, and <code>fic["wordcount"]</code> is its wordcount.`
+  }
+],
+hint: `the shape is a <code>for</code> loop over <code>fics</code>, with an <code>if</code> inside it that checks the wordcount. inside the if, append the current fic's title to <code>long_fics</code>. print after the loop ends.`,
+onComplete: {
+  diary: `// for + if + append. that's the shape. now wren's messages.`
+},
+charms: 1
+},
+
+// –– BEAT 8b: string methods + substring 'in' — the real one ––
+{
+id: 'task_string_methods',
+type: 'task',
+title: 'python.exe :: alibi_filter.py',
+meta: 'now the real one. find every message that mentions "cabin".',
+storyAbove: `same shape as the fic-picks practice, applied to wren's chat fragments. wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains it. use <code>.lower()</code> so <code>"Cabin"</code> still matches <code>"cabin"</code>. collect matching <code>id</code> values into <code>matches</code> and print the list.`,
+skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
+instructions: `<p>same shape as the fic-picks practice (loop, check, append). two new building blocks for this version:</p>
+<p><code>.lower()</code> is a string method that returns a lowercased copy:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"HELLO".lower()       # → "hello"</pre>
+<p>the <code>in</code> keyword checks whether one string appears inside another:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"cabin" in "i'm in my cabin"   # → True
+"cabin" in "i'm in my room"    # → False</pre>
+<p>combine them inside the loop check: <code>"cabin" in f["content"].lower()</code> reads as "is the substring 'cabin' anywhere in the lowercased content of this one fragment?" the <code>.lower()</code> step makes the search case-insensitive, so <code>"Cabin"</code> would still count.</p>
+<p><strong>your task:</strong> for each fragment, check whether <code>"cabin"</code> appears in <code>f["content"].lower()</code>. when it does, append the fragment's <code>id</code> into <code>matches</code>. then <code>print(matches)</code>.</p>`,
 starter: `# fragments is already loaded for you
 matches = []
 
 # for each fragment, check if "cabin" is in its lowercased content
-
 # if yes, append the fragment's id to matches
-
 # then print(matches)
 
 `, expectedOutput: '[1, 3, 10]', matchType: 'exact', codeMustContain: [['.lower(', '.casefold('], '.append('], codeMustContainDescription: `case-folding (<code>.lower()</code> or <code>.casefold()</code>) plus <code>.append(</code> to collect matches`, commonMistakes: [
@@ -1512,7 +1546,7 @@ matches = []
     pattern: /fragments\s*\.\s*append\s*\(/,
     tip: `you wrote <code>fragments.append(matches)</code>, which would add the <code>matches</code> list as a new item INTO fragments — backwards from what you want. you're collecting matches, so the call goes the other way: <code>matches.append(f["id"])</code>. read it as "matches: take this id and add it to yourself."`
   }
-], hint: `the shape is a <code>for</code> loop over <code>fragments</code>, with an <code>if</code> inside it that checks the lowercased content for <code>"cabin"</code>. inside the <code>if</code>, append the current fragment's <code>id</code> onto <code>matches</code>. <code>print(matches)</code> after the loop ends. (the loop variable is one fragment per pass — chain <code>["content"]</code> off it to get the string, then <code>.lower()</code> off that.)`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
+], hint: `same shape as the fic-picks practice. inside the loop, the check is <code>"cabin" in f["content"].lower()</code>. when it matches, append <code>f["id"]</code> to <code>matches</code>. <code>print(matches)</code> after the loop ends.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
 buddy: { name: 'wren_h', msg: "whatever you think you're piecing together, you're wrong. ask briar. ask anyone. i was in my cabin." }
 },
 charms: 3
