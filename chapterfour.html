@@ -1307,41 +1307,72 @@ head cook|Helen|Sokol|kitchen|off-site (drove home aug 13)`, matchType: 'exact',
 }
 },
 
-// –– BEAT 2a: task_string_parse_a — parse one sample line ––
+// –– BEAT 2a: task_split_practice — try .split() on one line ––
 {
-id: 'task_string_parse_a',
+id: 'task_split_practice',
 type: 'task',
 charms: 1,
-title: 'python.exe :: parse_one_line.py',
-meta: 'before parsing all 16 lines, get one to work.',
-skill: 'STRING PARSING :: PRACTICE ON ONE LINE',
-storyAbove: `each line of the roster looks like <code>director|Marcia|Deveraux|admin|on-site</code>. fields separated by pipes (<code>|</code>). before looping over all of them, get the parsing right on one sample line.`,
+title: 'python.exe :: try_split.py',
+meta: 'try .split() on its own first.',
+skill: 'STRING PARSING :: TRY THE SPLIT',
+storyAbove: `each line of the roster looks like <code>director|Marcia|Deveraux|admin|on-site</code>. fields separated by pipes (<code>|</code>). before doing anything fancy with that, just get a feel for splitting it.`,
 instructions: `<p>the string method <code>.split(separator)</code> chops a string into pieces. the <code>separator</code> is the character you want to chop AT — every place that character shows up, the string gets cut, and you get back the pieces as a list (the separator itself isn't included):</p>
                <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"a|b|c".split("|")    # → ["a", "b", "c"]   (cut at every "|")
 "red,blue,green".split(",")
 # → ["red", "blue", "green"]                  (cut at every ",")
 "hello world".split(" ")
 # → ["hello", "world"]                        (cut at the space)</pre>
-               <p>so on a roster line like <code>"director|Marcia|Deveraux|admin|on-site"</code>, calling <code>.split("|")</code> gives you back <code>["director", "Marcia", "Deveraux", "admin", "on-site"]</code> — five pieces, one per field.</p>
-               <p>you can combine that with the <code>.strip()</code> you saw in the previous task to clean up extra spaces. and lists have <code>.append()</code> for adding items, which you'll need next.</p>
-               <p><strong>your task:</strong> the variable <code>sample_line</code> holds one line from the roster. split it on <code>"|"</code>, build a dict with keys <code>"role"</code>, <code>"first"</code>, <code>"last"</code>, <code>"cabin"</code>, <code>"status"</code>, and print the dict.</p>
+               <p>so on a roster line like <code>"director|Marcia|Deveraux|admin|on-site"</code>, calling <code>.split("|")</code> gives you back <code>["director", "Marcia", "Deveraux", "admin", "on-site"]</code> — five pieces, one per field. that's a regular list, so you can index into it with <code>parts[0]</code>, <code>parts[1]</code>, etc.</p>
+               <p><strong>your task:</strong> the variable <code>sample_line</code> holds one line from the roster. split it on <code>"|"</code> into a variable called <code>parts</code>, and print <code>parts</code>.</p>
+               <p>expected output: <code>['director', 'Marcia', 'Deveraux', 'admin', 'on-site']</code></p>`,
+starter: `sample_line = "director|Marcia|Deveraux|admin|on-site"
+
+# split sample_line on "|" into parts
+# print parts
+`,
+expectedOutput: `['director', 'Marcia', 'Deveraux', 'admin', 'on-site']`,
+matchType: 'exact',
+codeMustContain: ['.split('],
+hint: `assign <code>sample_line.split("|")</code> to a variable named <code>parts</code>, then print <code>parts</code>.`,
+onComplete: {
+  diary: `// split works. five pieces from one line.`
+}
+},
+
+// –– BEAT 2b: task_string_parse_a — build one dict from the split ––
+{
+id: 'task_string_parse_a',
+type: 'task',
+charms: 1,
+title: 'python.exe :: parse_one_line.py',
+meta: 'turn the pieces into a labeled dict.',
+skill: 'STRING PARSING :: BUILD ONE DICT',
+storyAbove: `you've got a list of five strings. but a list only knows positions (<code>parts[0]</code>, <code>parts[1]</code>...) — it doesn't know that the first piece is a role and the second is a first name. a dict labels them.`,
+instructions: `<p>so far you've been READING dicts that already existed (<code>fragment["from"]</code>, <code>fragment["content"]</code>). this is the first time you'll WRITE one from scratch. the syntax is curly braces with <code>"key": value</code> pairs, separated by commas:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person = {"name": "Marcia", "role": "director"}
+print(person["name"])    # → Marcia</pre>
+               <p>the keys are strings you make up (any labels you want). the values can be anything — strings, numbers, even other variables. so if you have a list <code>parts = ["director", "Marcia", "Deveraux", "admin", "on-site"]</code>, you can use the items as values:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person = {"role": parts[0], "first": parts[1]}
+# → {"role": "director", "first": "Marcia"}</pre>
+               <p>same shape as before — just with variables on the right side instead of literal strings.</p>
+               <p><strong>your task:</strong> <code>sample_line</code> is the same line as last task. split it on <code>"|"</code>, then build a dict with keys <code>"role"</code>, <code>"first"</code>, <code>"last"</code>, <code>"cabin"</code>, <code>"status"</code> mapped to <code>parts[0]</code> through <code>parts[4]</code>, and print the dict.</p>
                <p>expected output: <code>{'role': 'director', 'first': 'Marcia', 'last': 'Deveraux', 'cabin': 'admin', 'status': 'on-site'}</code></p>`,
 starter: `sample_line = "director|Marcia|Deveraux|admin|on-site"
 
-# split sample_line on "|"
-# build a dict using the resulting list (parts[0], parts[1], ...)
+# split sample_line on "|" into parts
+# build a dict mapping "role"/"first"/"last"/"cabin"/"status" to parts[0]..parts[4]
 # print the dict
 `,
 expectedOutput: `{'role': 'director', 'first': 'Marcia', 'last': 'Deveraux', 'cabin': 'admin', 'status': 'on-site'}`,
 matchType: 'exact',
-codeMustContain: ['.split('],
-hint: `<code>parts = sample_line.split("|")</code>. then <code>person = {"role": parts[0], "first": parts[1], "last": parts[2], "cabin": parts[3], "status": parts[4]}</code>. then <code>print(person)</code>.`,
+codeMustContain: ['.split(', '{', '}'],
+hint: `start with <code>parts = sample_line.split("|")</code>. then write a dict literal with five <code>"key": parts[N]</code> pairs in the order role, first, last, cabin, status. assign it to a variable, then print that variable.`,
 onComplete: {
-  diary: `// one line parsed. now do all 15.`
+  diary: `// one line parsed into a dict. now do all 15.`
 }
 },
 
-// –– BEAT 2b: task_string_parse — loop and build list ––
+// –– BEAT 2c: task_string_parse — loop and build list ––
 {
 id: 'task_string_parse',
 type: 'task',
