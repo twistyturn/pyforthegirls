@@ -1199,17 +1199,15 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 // PYODIDE LOADING
 // ===========================================================================
 let pyodide = null;
-let pyodideLoading = false;
+let pyodideLoadingPromise = null;
 
 async function loadPyodideOnce() {
   if (pyodide) return pyodide;
-  if (pyodideLoading) {
-    while (!pyodide) await new Promise(r => setTimeout(r, 100));
-    return pyodide;
-  }
-  pyodideLoading = true;
-  pyodide = await loadPyodide();
-  return pyodide;
+  if (pyodideLoadingPromise) return pyodideLoadingPromise;
+  pyodideLoadingPromise = loadPyodide()
+    .then(p => { pyodide = p; return p; })
+    .catch(err => { pyodideLoadingPromise = null; throw err; });
+  return pyodideLoadingPromise;
 }
 
 async function runPython(code) {
@@ -3166,7 +3164,7 @@ i'm going to ask her for everything she has.`,
     meta: 'regex. break each line into date, sender, content.',
     skill: 'REGEX :: re.match() AND CAPTURE GROUPS',
     hint: `<code>for line in messages:</code> indented <code>m = re.match(pattern, line.strip())</code> then <code>if m: parsed.append({"date": m.group(1), "sender": m.group(2), "content": m.group(3)})</code>. then <code>print(parsed[0])</code> and <code>print(parsed[-1])</code>.`,
-    storyAbove: `each line in <code>messages</code> looks like <code>[2004-08-12 23:14] tegan_a87: i'm so tired of this</code>. you want to break that into three pieces — date, sender, content — so each message is a structured dict you can search.<br><br>python's <code>re</code> module does pattern matching with <strong>regular expressions</strong> — a tiny language for describing the shape of text. you don't need to learn it deeply right now; the pattern is provided in the starter. just know what it does.<br><br>parentheses in a regex pattern create <strong>capture groups</strong> — pieces of the matched text you can pull out individually. <code>re.match(pattern, line)</code> returns a Match object (or <code>None</code> if no match), and <code>m.group(n)</code> gets the n-th captured group:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
+    storyAbove: `each line in <code>messages</code> looks like <code>[2004-08-12 23:14] tegan_a87: i'm so tired of this</code>. you want to break that into three pieces — date, sender, content — so each message is a structured dict you can search.<br><br>python's <code>re</code> module does pattern matching with <strong>regular expressions</strong> — a tiny language for describing the shape of text. you don't need to learn it deeply right now; the pattern is provided in the starter. just know what it does.<br><br>parentheses in a regex pattern create <strong>capture groups</strong> — pieces of the matched text you can pull out individually. <code>re.match(pattern, line)</code> returns a Match object (or <code>None</code> if no match), and <code>m.group(n)</code> gets the n-th captured group:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (\w+): (.*)"
 line = "[2004-08-12 23:14] tegan_a87: i'm so tired of this"
 m = re.match(pattern, line)
 m.group(1)   # → "2004-08-12 23:14"      (date)
@@ -3213,15 +3211,15 @@ parsed = []
     storyAbove: `you have parsed messages with structured dates. now ask: how often did tegan and hannah talk over fourteen months? the first 7 characters of each date string (<code>2004-08-12 23:14</code>) gives you <code>2004-08</code>. group messages by year-month, count each group, then print a sorted ASCII bar chart.`,
     instructions: `<p>two pieces you'll need:</p>
                    <p><strong>1. string slicing.</strong> like list slicing, but for strings. <code>s[:7]</code> gives the first 7 characters:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">date = "2004-08-12 23:14"
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">date = "2004-08-12 23:14"
 date[:7]   # \u2192 "2004-08"</pre>
                    <p><strong>2. <code>.get()</code> for dicts.</strong> normally <code>my_dict[key]</code> errors if the key doesn't exist. <code>my_dict.get(key, default)</code> returns the default value instead:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">counts = {"a": 5}
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">counts = {"a": 5}
 counts["a"]              # \u2192 5
 counts.get("a", 0)       # \u2192 5
 counts.get("b", 0)       # \u2192 0   (no error \u2014 falls back to default)</pre>
                    <p>that lets you build counts incrementally without checking if the key exists yet:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">counts[month] = counts.get(month, 0) + 1
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">counts[month] = counts.get(month, 0) + 1
 # if month is new, this becomes 0 + 1 = 1
 # if month already exists, this becomes (current count) + 1</pre>
                    <p><strong>your task:</strong> build a dict called <code>monthly_counts</code> where keys are year-month strings (<code>"2003-06"</code>, etc) and values are the count of messages in that month. then print each month and count in chronological order, with an ASCII bar made of <code>\u2588</code> characters (one per message).</p>`,
@@ -3326,11 +3324,11 @@ monthly_counts = {}
     title: 'python.exe :: search_camp_names.py',
     meta: 'regex. find every camp counsellor by name.',
     skill: 'REGEX :: ALTERNATION AND IGNORECASE',
-    storyAbove: `you have parsed messages — each one is a dict with date, sender, content. now you need to find which messages mention camp counsellors, and which counsellor gets named most. tegan was thinking about who she'd named in her chats with hannah. it might tell us who she trusted, who she was scared of, who didn't matter.<br><br>two new pieces:<br><br><strong>1. <code>re.search</code> with <code>re.IGNORECASE</code></strong> — like <code>re.match</code>, but searches anywhere in the string, and the flag makes it match regardless of capitalization.<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">re.search("wren", "I saw Wren at the lake")
+    storyAbove: `you have parsed messages — each one is a dict with date, sender, content. now you need to find which messages mention camp counsellors, and which counsellor gets named most. tegan was thinking about who she'd named in her chats with hannah. it might tell us who she trusted, who she was scared of, who didn't matter.<br><br>two new pieces:<br><br><strong>1. <code>re.search</code> with <code>re.IGNORECASE</code></strong> — like <code>re.match</code>, but searches anywhere in the string, and the flag makes it match regardless of capitalization.<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">re.search("wren", "I saw Wren at the lake")
 # returns None (case mismatch)
 
 re.search("wren", "I saw Wren at the lake", re.IGNORECASE)
-# returns a match object (truthy)</pre><strong>2. sorting a dict by value.</strong> if you have <code>counts = {"wren": 11, "tyler": 4, "briar": 3}</code>, you can turn it into a sorted list of pairs:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">pairs = sorted(counts.items(), key=lambda p: p[1], reverse=True)
+# returns a match object (truthy)</pre><strong>2. sorting a dict by value.</strong> if you have <code>counts = {"wren": 11, "tyler": 4, "briar": 3}</code>, you can turn it into a sorted list of pairs:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">pairs = sorted(counts.items(), key=lambda p: p[1], reverse=True)
 # pairs is now [("wren", 11), ("tyler", 4), ("briar", 3)]</pre>that <code>key=lambda p: p[1]</code> looks scary. it's just python's way of saying "sort by the second item in each pair" — the count, not the name. <code>p[1]</code> picks out the count from each <code>(name, count)</code> pair.`,
     instructions: `<p><strong>your task:</strong> for each parsed message, search the content for any of these names: wren, briar, camille, hattie, melissa, marcia, tyler. count how many messages mention each. print each name and its count, sorted by count descending.</p>
                    <p>the starter gives you the parsed messages and the names list. you build the counts dict and the sorted output.</p>`,

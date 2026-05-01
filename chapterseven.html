@@ -1515,17 +1515,15 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 // PYODIDE LOADING
 // ===========================================================================
 let pyodide = null;
-let pyodideLoading = false;
+let pyodideLoadingPromise = null;
 
 async function loadPyodideOnce() {
   if (pyodide) return pyodide;
-  if (pyodideLoading) {
-    while (!pyodide) await new Promise(r => setTimeout(r, 100));
-    return pyodide;
-  }
-  pyodideLoading = true;
-  pyodide = await loadPyodide();
-  return pyodide;
+  if (pyodideLoadingPromise) return pyodideLoadingPromise;
+  pyodideLoadingPromise = loadPyodide()
+    .then(p => { pyodide = p; return p; })
+    .catch(err => { pyodideLoadingPromise = null; throw err; });
+  return pyodideLoadingPromise;
 }
 
 async function runPython(code) {
@@ -1739,7 +1737,7 @@ i'm going to look.`,
     hint: `<code>response = urllib.request.urlopen(url)</code> then <code>content = response.read().decode("utf-8")</code> then <code>print(content[:500])</code>.`,
     storyAbove: `the camp's URL is <code>camppinecrest.ca</code>. the public site is at the root. but websites are just folders of files on a server. some folders are linked from the home page; some folders are sitting there unmentioned. you can ask the server for a folder by name and see what comes back. if the server is set up to allow it, asking for a folder shows you a list of every file inside. this is called a "directory listing." it shouldn't be exposed but it often is, because people forget to turn it off.`,
     instructions: `<p>fetching a webpage from python:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">import urllib.request
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">import urllib.request
 
 response = urllib.request.urlopen("https://example.com")
 raw_bytes = response.read()
@@ -1786,23 +1784,23 @@ url = "https://camppinecrest.ca/staff/"
     meta: 'the zip is a folder of .eml files. parse them.',
     skill: 'EMAIL PARSING :: THE email MODULE AND DICT-OF-DICTS',
     hint: `<code>folder = "2004_archive"</code>. <code>for fname in sorted(os.listdir(folder)):</code> indented <code>with open(os.path.join(folder, fname)) as f: msg = email.message_from_file(f)</code>. then build a dict with msg["From"], msg["To"], msg["Date"], msg["Subject"], msg.get_payload(). append to emails. print len and emails[0]["subject"].`,
-    storyAbove: `the zip extracts to a folder called <code>2004_archive/</code> with 149 files in <code>.eml</code> format. <code>.eml</code> is just plain text — a header section (From, To, Date, Subject) on top, then the body. python has a built-in <code>email</code> module that parses these files for you, plus an <code>os</code> module for working with folders.<br><br>the API has a few pieces. for one email file:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">import email
+    storyAbove: `the zip extracts to a folder called <code>2004_archive/</code> with 149 files in <code>.eml</code> format. <code>.eml</code> is just plain text — a header section (From, To, Date, Subject) on top, then the body. python has a built-in <code>email</code> module that parses these files for you, plus an <code>os</code> module for working with folders.<br><br>the API has a few pieces. for one email file:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">import email
 
 with open("2004_archive/sample.eml") as f:
     msg = email.message_from_file(f)
 
 print(msg["From"])
 print(msg["Subject"])
-print(msg.get_payload())</pre>that would print something like:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">Briar Vance &lt;briar.vance@camppinecrest.ca&gt;
+print(msg.get_payload())</pre>that would print something like:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">Briar Vance &lt;briar.vance@camppinecrest.ca&gt;
 Re: lifeguard rotation update
-(Routine staff communication regarding lifeguard rotation update.)</pre><code>msg["..."]</code> reads a header. <code>msg.get_payload()</code> reads the body. easy.<br><br>for looping over a folder:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">import os
+(Routine staff communication regarding lifeguard rotation update.)</pre><code>msg["..."]</code> reads a header. <code>msg.get_payload()</code> reads the body. easy.<br><br>for looping over a folder:<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">import os
 
 for filename in sorted(os.listdir("2004_archive")):
     full_path = os.path.join("2004_archive", filename)
     print(full_path)</pre><code>os.listdir(folder)</code> gives you a list of filenames. <code>os.path.join("a", "b")</code> joins them into a path like <code>"a/b"</code> — handles the slash for you so it works on any system.`,
     instructions: `<p><strong>your task:</strong> for each <code>.eml</code> file in <code>2004_archive/</code>, parse it and pull out From, To, Date, Subject, and the body. store each as a dict in a list called <code>emails</code>. then print the count and the subject of the first email.</p>
                    <p>expected output:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">149 emails loaded.
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">149 emails loaded.
 Re: lifeguard rotation update</pre>`,
     starter: `import os
 import email
@@ -1841,10 +1839,10 @@ Re: lifeguard rotation update`,
     meta: 'narrow the corpus. four days.',
     skill: 'DATETIME PARSING :: email.utils.parsedate_to_datetime',
     hint: `<code>for em in emails:</code> indented <code>dt = parsedate_to_datetime(em["date"])</code> then <code>if start <= dt < end: aug_emails.append(em)</code>. then print count, then loop again printing <code>f"[{dt.strftime('%b %d, %H:%M')}] {em['subject']}"</code>.`,
-    storyAbove: `the date headers in emails are formatted like <code>Sun, 15 Aug 2004 09:14:22 -0600</code>. python's <code>email.utils.parsedate_to_datetime</code> turns those into <strong>datetime</strong> objects you can compare and format:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">from email.utils import parsedate_to_datetime
+    storyAbove: `the date headers in emails are formatted like <code>Sun, 15 Aug 2004 09:14:22 -0600</code>. python's <code>email.utils.parsedate_to_datetime</code> turns those into <strong>datetime</strong> objects you can compare and format:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">from email.utils import parsedate_to_datetime
 dt = parsedate_to_datetime("Sun, 15 Aug 2004 09:14:22 -0600")
 print(dt)
-# → 2004-08-15 09:14:22-06:00</pre>once you have a datetime, you can compare it with <code>&lt;</code>, <code>&gt;=</code>, etc. you can also format it as a string with <code>.strftime()</code> using format codes:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">dt.strftime("%b %d, %H:%M")
+# → 2004-08-15 09:14:22-06:00</pre>once you have a datetime, you can compare it with <code>&lt;</code>, <code>&gt;=</code>, etc. you can also format it as a string with <code>.strftime()</code> using format codes:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">dt.strftime("%b %d, %H:%M")
 # → "Aug 15, 09:14"</pre><code>%b</code> is the abbreviated month, <code>%d</code> is the day-of-month, <code>%H:%M</code> is hours:minutes. you don't need to memorize these — just know they exist and you can look them up.<br><br>you want emails from August 13 through August 16, 2004. the starter pre-builds the start and end datetime objects for you, in mountain-time (UTC-6).`,
     instructions: `your task: import datetime and email.utils. for each email, parse its date header into a datetime. filter to those between Aug 13, 2004 and Aug 17, 2004 (start inclusive, end exclusive) using a UTC-6 timezone. store in <code>aug_emails</code>. print the count and the subject + abbreviated date of each one.`,
     starter: `import datetime
@@ -1986,11 +1984,11 @@ i have a lot to find out about tyler hughes.`,
     hint: `<code>gap = infirmary - boathouse</code>. then <code>total_seconds = int(gap.total_seconds())</code>, <code>hours = total_seconds // 3600</code>, <code>minutes = (total_seconds % 3600) // 60</code>. <code>print(f"{hours} hours, {minutes} minutes")</code>.`,
     storyAbove: `hannah told you tegan was meeting her ride at the boathouse at 11 PM. tyler showed up at the infirmary at 9:14 AM the next morning. how long is between them.`,
     instructions: `<p>subtracting two datetimes gives you a <strong>timedelta</strong> \u2014 a duration. you can pull the total seconds out of it:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">gap = end - start                     # a timedelta
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">gap = end - start                     # a timedelta
 total_seconds = int(gap.total_seconds())
 # total_seconds is now an integer like 36862</pre>
                    <p>to convert that into hours and minutes, you need two new operators:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">7 // 2     # \u2192 3   (floor division \u2014 drops the remainder)
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">7 // 2     # \u2192 3   (floor division \u2014 drops the remainder)
 7 % 2      # \u2192 1   (modulo \u2014 gives only the remainder)
 
 36862 // 3600        # \u2192 10  (whole hours in 36862 seconds)
