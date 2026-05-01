@@ -1464,7 +1464,7 @@ matches = []
     pattern: /fragments\s*\.\s*append\s*\(/,
     tip: `you wrote <code>fragments.append(matches)</code>, which would add the <code>matches</code> list as a new item INTO fragments — backwards from what you want. you're collecting matches, so the call goes the other way: <code>matches.append(f["id"])</code>. read it as "matches: take this id and add it to yourself."`
   }
-], hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
+], hint: `the shape is a <code>for</code> loop over <code>fragments</code>, with an <code>if</code> inside it that checks the lowercased content for <code>"cabin"</code>. inside the <code>if</code>, append the current fragment's <code>id</code> onto <code>matches</code>. <code>print(matches)</code> after the loop ends. (the loop variable is one fragment per pass — chain <code>["content"]</code> off it to get the string, then <code>.lower()</code> off that.)`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
 buddy: { name: 'wren_h', msg: "whatever you think you're piecing together, you're wrong. ask briar. ask anyone. i was in my cabin." }
 },
 charms: 3
