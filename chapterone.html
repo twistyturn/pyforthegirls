@@ -1306,8 +1306,8 @@ i should be scared. i'm not scared. i'm so far past scared.`,
                    <p>...stores the text <code>hi ashley</code> in <code>greeting</code>. python sees the <code>{name}</code> and swaps in whatever the variable holds.</p>
                    <p><strong>your task:</strong> the variables <code>name</code> and <code>day</code> are already set up for you. complete the f-string on the <code>header = </code> line so that <code>print(header)</code> prints exactly: <code>=== day 5 :: tegan ===</code></p>`,
     starter: `name = "tegan"\nday = 5\nheader = f""\nprint(header)`,
-    expectedOutput: 'day 5',
-    matchType: 'contains',
+    expectedOutput: '=== day 5 :: tegan ===',
+    matchType: 'exact',
     codeMustContain: ['{day}', '{name}'],
     commonMistakes: [
       {
@@ -1319,7 +1319,7 @@ i should be scared. i'm not scared. i'm so far past scared.`,
         tip: `the values are hardcoded into the f-string. the point is to <em>substitute</em> the variables — write <code>{day}</code> and <code>{name}</code> in curly braces inside the f-string, and python will plug in the values for you. that way the same code works when day or name changes.`
       }
     ],
-    hint: `inside the quotes, put <code>{day}</code> and <code>{name}</code> wherever you want the values to show up. the exact decoration around them is up to you. something like <code>=== day {day} :: {name} ===</code> works.`,
+    hint: `match the expected output exactly: <code>=== day 5 :: tegan ===</code>. the f-string is <code>f"=== day {day} :: {name} ==="</code> — three equals signs, a space, the word <code>day</code>, a space, <code>{day}</code>, a space, two colons, a space, <code>{name}</code>, a space, three equals signs.`,
     onComplete: {
       diary: `// header generator works. she used this on every entry from july onward.`,
       buddy: { name: 'wren_h', msg: 'who is this. who is this. how did you get into this account.' }
