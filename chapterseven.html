@@ -2696,6 +2696,8 @@ outEl.innerHTML = `<span class="info">// booting python interpreter...
 // (~10 seconds on first run, instant after that)
 // ▰▰▱▱▱▱▱▱▱▱</span>`;
 
+try {
+
 // Patch input() if needed
 let runCode = code;
 if (beat.fakeInput !== undefined) {
@@ -2808,6 +2810,13 @@ const __expectedLine = beat.matchType === 'contains_all' && Array.isArray(beat.e
       : `expected output:\n${escapeHtml(expectedNormalized)}`);
 outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// ${__expectedLine}\n\n// not quite. try again.</span>`;
 appendCommonMistakeTip(outEl, code, beat.commonMistakes);
+}
+} catch (__runTaskErr) {
+  console.error('[runTask] uncaught:', __runTaskErr);
+  if (outEl) {
+    const __msg = String((__runTaskErr && __runTaskErr.message) || __runTaskErr);
+    outEl.innerHTML = `<span class="err">// the test runner hit an unexpected problem:\n${escapeHtml(__msg)}</span>\n<span class="info">// this isn't your code's fault. try refreshing the page. if it keeps happening, the browser console (F12) will have the full error.</span>`;
+  }
 }
 }
 
