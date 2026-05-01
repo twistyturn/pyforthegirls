@@ -1487,13 +1487,20 @@ i love you the way i told you i did. don't forget that part.
     type: 'task',
     title: 'python.exe :: access_check_practice.py',
     meta: 'tegan was teaching herself boolean logic. this is her practice scratchpad.',
-    storyAbove: `wren's email proves she had access to tegan's account. anyone snooping needs to figure out, fast, who could've been logged in at any given moment. that's a job for boolean logic. <code>and</code> requires both conditions to be true; <code>or</code> requires at least one.<br><br>tegan left two practice scripts. start with the easier one — she filled in most of it.`,
+    storyAbove: `wren's email proves she had access to tegan's account. anyone snooping needs to figure out, fast, who could've been logged in at any given moment. that means combining checks — was the name on the access list AND was the time inside the right window? you need a way to glue two yes/no questions into one bigger yes/no question.<br><br>tegan left two practice scripts. start with the easier one — she filled in most of it.`,
     skill: 'BOOLEAN LOGIC (and / or / not)',
-    instructions: `<p>combine conditions with <code>and</code>, <code>or</code>, <code>not</code>:</p>
+    instructions: `<p>any value that's just <code>True</code> or <code>False</code> is called a <strong>boolean</strong>. every comparison you've written so far — like <code>guess == "hemlock"</code> — gives you back a boolean.</p>
+                   <p>to combine two booleans into one, python has three keywords called <strong>boolean operators</strong>:</p>
+                   <ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
+                     <li><code>a and b</code> &rarr; True only when <em>both</em> are True</li>
+                     <li><code>a or b</code> &rarr; True when <em>at least one</em> is True</li>
+                     <li><code>not a</code> &rarr; flips True to False and False to True</li>
+                   </ul>
+                   <p>using a boolean operator inside an <code>if</code> lets you check more than one thing at once:</p>
                    <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">if age >= 18 and role == "counselor":
     print("ADULT_STAFF")</pre>
-                   <p>you also have comparisons: <code>&gt;=</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&lt;</code>.</p>
-                   <p><strong>your task:</strong> the script below is mostly written. replace the <code>???</code> with the correct boolean operator, and fill in the two empty <code>print()</code> statements. when name is <code>"wren"</code> and age is <code>19</code>, the script should print <code>ADULT_COUNSELOR</code>.</p>`,
+                   <p>you also have number comparisons available if you need them: <code>&gt;=</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&lt;</code>.</p>
+                   <p><strong>your task:</strong> the script below is mostly written. replace the <code>???</code> with the right boolean operator, and fill in the two empty <code>print()</code> statements. when name is <code>"wren"</code> and age is <code>19</code>, the script should print <code>ADULT_COUNSELOR</code>.</p>`,
     starter: `name = "wren"
 age = 19
 # replace ??? with the right boolean operator (and / or)
