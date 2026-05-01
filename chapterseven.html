@@ -2213,7 +2213,23 @@ function renderStory() {
     renderBeat(BEATS[i], i === upTo);
   }
   // scroll to bottom
-  setTimeout(() => { const cw = document.getElementById('chapterWindowBody'); if (cw) cw.scrollTo({ top: cw.scrollHeight, behavior: 'smooth' }); }, 100);
+  setTimeout(() => {
+    const cw = document.getElementById('chapterWindowBody');
+    if (!cw) return;
+    // Scroll the most-recently-rendered (active) beat into view at the top of
+    // the chapter window, rather than the bottom of the whole story. The
+    // active beat is the last child of storyContainer; falling back to
+    // scrollHeight if storyContainer is empty.
+    const lastBeat = storyContainer.lastElementChild;
+    if (lastBeat) {
+      const cwRect = cw.getBoundingClientRect();
+      const beatRect = lastBeat.getBoundingClientRect();
+      const offset = (beatRect.top - cwRect.top) + cw.scrollTop - 16;
+      cw.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
+    } else {
+      cw.scrollTo({ top: cw.scrollHeight, behavior: 'smooth' });
+    }
+  }, 100);
 }
 
 function renderBeat(beat, isActive) {
