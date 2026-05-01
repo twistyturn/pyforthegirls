@@ -1383,14 +1383,20 @@ title: 'python.exe :: full_metadata.py',
 meta: 'before filtering, you want to see one fragment in full.',
 storyAbove: `before you filter the whole list, take one full fragment apart so you can see exactly what fields exist. <code>.items()</code> walks every key-value pair in a dict.`,
 skill: 'DICT.ITEMS() :: ITERATING KEY-VALUE PAIRS',
-instructions: `<p>to walk through every key and value in a dictionary, use <code>.items()</code> with a <code>for</code> loop:</p>
+instructions: `<p>every dict in python comes with a few built-in helpers. <code>.items()</code> is one of them. you use it by writing the dict's name, then a dot, then the helper's name with parens after it:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person.items()</pre>
+<p>the dot says "the items thing that belongs to <em>this specific</em> dict." the empty parens after it are what actually <em>runs</em> it — same as <code>print()</code> always needing parens. without the parens you'd just be pointing at the helper without using it. (the technical name for "helper attached to a value like this" is <strong>method</strong>, in case you see that word in tutorials elsewhere.)</p>
+<p>using it with a <code>for</code> loop walks through every key and value in the dictionary:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person = {"name": "tegan", "age": 17}
 for key, value in person.items():
     print(f"{key}: {value}")</pre>
 <p>that prints:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">name: tegan
 age: 17</pre>
-<p><code>.items()</code> gives back pairs of (key, value), which is why the loop uses two variable names — one to receive each piece of the pair.</p>
+<p><code>.items()</code> gives back pairs of (key, value), which is why the loop uses two variable names — one for each piece of the pair.</p>
+<p>quick refresher on the f-string (you saw these back in chapter 1): the <code>f</code> right before the opening quote turns the string into a template — anything inside <code>{ }</code> gets swapped for the variable's actual value. so when <code>key</code> is <code>"name"</code> and <code>value</code> is <code>"tegan"</code>, <code>f"{key}: {value}"</code> becomes the string <code>"name: tegan"</code>. without the <code>f</code>, the curly braces would just be literal text:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">print("{key}: {value}")    # → {key}: {value}    (literally those characters)
+print(f"{key}: {value}")   # → name: tegan       (the actual values)</pre>
 <p><strong>your task:</strong> walk through <code>fragment_one</code> with <code>.items()</code> and print each pair as <code>key: value</code> (using an f-string).</p>`,
 starter: `fragment_one = {
 "id": 1,
@@ -1417,19 +1423,25 @@ title: 'python.exe :: alibi_filter.py',
 meta: 'find every message that mentions "cabin".',
 storyAbove: `wren said the word "cabin" three times across the night, building her alibi like a script. find every fragment whose content contains that word. use <code>.lower()</code> to make the search case-insensitive (in case wren ever capitalized it). collect the IDs of matching fragments into a list called <code>matches</code> and print it.`,
 skill: 'STRING METHODS :: .lower() AND SUBSTRING in',
-instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string:</p>
+instructions: `<p>strings have <strong>methods</strong> — built-in tools you call with a dot after the string (same idea as <code>.items()</code> on a dict from the previous task):</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">"HELLO".lower()       # → "hello"
 "  hi  ".strip()      # → "hi"</pre>
 <p>you can also check whether one string appears <em>inside</em> another with <code>in</code>:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">if "cabin" in "i'm in my cabin":
     print("match")</pre>
 <p>that prints <code>match</code>. the <code>in</code> check returns <code>True</code> if the left string appears anywhere in the right string.</p>
-<p>and one more thing you'll need: lists have a method called <code>.append()</code> that adds a new item to the end:</p>
+<p>and one more thing you'll need: lists also have methods. <code>.append()</code> adds a new item to the end of a list:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">my_list = [1, 2, 3]
-my_list.append(4)
+my_list.append(4)        # adds 4 to the END of my_list
 print(my_list)
 # → [1, 2, 3, 4]</pre>
-<p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. collect matching <code>id</code> values into a list called <code>matches</code> using <code>.append()</code>, and print the list.</p>`,
+<p>read <code>my_list.append(4)</code> as "my_list: take this 4 and add it to yourself." the order matters — the list goes on the left, the new item goes inside the parens.</p>
+<p><strong>here's the trick that ties it together:</strong> all three of these tools work on <em>one thing at a time</em>. <code>.lower()</code> lowercases <em>one</em> string. <code>in</code> checks <em>one</em> substring against <em>one</em> string. <code>.append(x)</code> adds <em>one</em> item to <em>one</em> list. <code>fragments</code> isn't one thing — it's a list of ten of them. so you need a <code>for</code> loop:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">for f in fragments:
+    # inside the loop, f is ONE fragment. fragments is still the whole list.
+    # do your checks on f, not on fragments.</pre>
+<p>the loop variable (here it's <code>f</code>, but you can name it anything) IS one fragment per iteration. that's the value to work with inside the loop. <code>f["content"]</code> is that one fragment's content string — the string you can lowercase and check for <code>"cabin"</code>. inside the loop, don't reach back to <code>fragments</code> — you're already <em>holding</em> one of them as <code>f</code>.</p>
+<p><strong>your task:</strong> loop through <code>fragments</code>. for each one, check whether <code>"cabin"</code> appears in the lowercased content. when it does, append that fragment's <code>id</code> into <code>matches</code>. then <code>print(matches)</code>.</p>`,
 starter: `# fragments is already loaded for you
 matches = []
 
@@ -1439,7 +1451,20 @@ matches = []
 
 # then print(matches)
 
-`, expectedOutput: '[1, 3, 10]', matchType: 'exact', codeMustContain: [['.lower(', '.casefold('], '.append('], codeMustContainDescription: `case-folding (<code>.lower()</code> or <code>.casefold()</code>) plus <code>.append(</code> to collect matches`, hint: `<code>for f in fragments:</code> then indented <code>if "cabin" in f["content"].lower():</code> then double-indented <code>matches.append(f["id"])</code>. then unindented <code>print(matches)</code>.`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
+`, expectedOutput: '[1, 3, 10]', matchType: 'exact', codeMustContain: [['.lower(', '.casefold('], '.append('], codeMustContainDescription: `case-folding (<code>.lower()</code> or <code>.casefold()</code>) plus <code>.append(</code> to collect matches`, commonMistakes: [
+  {
+    pattern: /fragments\s*\.\s*lower\s*\(/,
+    tip: `<code>fragments.lower()</code> doesn't work because <code>fragments</code> is a list, not a string. <code>.lower()</code> is a string tool. you need to loop through fragments first, pull the content out of each one (<code>f["content"]</code>), and call <code>.lower()</code> on that one string. the shape is: <code>for f in fragments:</code>, then indented, <code>if "cabin" in f["content"].lower(): ...</code>`
+  },
+  {
+    pattern: /["']cabin["']\s+in\s+fragments\b/,
+    tip: `<code>"cabin" in fragments</code> checks whether the literal string <code>"cabin"</code> is one of the items in the fragments list. the items are dictionaries, not strings, so this is always False — even if you wrote this <em>inside</em> a loop. inside a loop like <code>for f in fragments:</code>, the loop variable <code>f</code> is one fragment; that's what you check against, not <code>fragments</code> itself. so the line should be <code>if "cabin" in f["content"].lower():</code> — note the <code>f</code>, not <code>fragments</code>. (whatever you named your loop variable — <code>f</code>, <code>frag</code>, <code>message</code>, anything — that's what you use inside the loop body.)`
+  },
+  {
+    pattern: /fragments\s*\.\s*append\s*\(/,
+    tip: `you wrote <code>fragments.append(matches)</code>, which would add the <code>matches</code> list as a new item INTO fragments — backwards from what you want. you're collecting matches, so the call goes the other way: <code>matches.append(f["id"])</code>. read it as "matches: take this id and add it to yourself."`
+  }
+], hint: `the shape is a <code>for</code> loop over <code>fragments</code>, with an <code>if</code> inside it that checks the lowercased content for <code>"cabin"</code>. inside the <code>if</code>, append the current fragment's <code>id</code> onto <code>matches</code>. <code>print(matches)</code> after the loop ends. (the loop variable is one fragment per pass — chain <code>["content"]</code> off it to get the string, then <code>.lower()</code> off that.)`, fragmentInjection: true, onComplete: { diary: `// fragments 1, 3, 10. all from wren, all to briar. each one says "cabin." an alibi built three times across nine hours.`,
 buddy: { name: 'wren_h', msg: "whatever you think you're piecing together, you're wrong. ask briar. ask anyone. i was in my cabin." }
 },
 charms: 3
@@ -1614,7 +1639,7 @@ w.className = 'window terminal-window';
 // Story above, in a diary-ish small note
 const storyHtml = beat.storyAbove ? ` <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;"> ${beat.storyAbove} </div>` : '';
 
-w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> ${storyHtml} <div style="background: var(--window-bg); padding: 14px 16px;"> <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;"> ✦ skill unlocking: ${beat.skill} </div> <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;"> ${beat.instructions} </div> <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div> <div style="margin-top: 8px;"> <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button> </div> </div> <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div> <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea> <div class="editor-bar"> <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button> <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button> <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);"> ${completed ? '✓ COMPLETE' : 'NOT YET RUN'} </span> </div> <div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div> ${completed && isActive ?`<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
+w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> ${storyHtml} <div style="background: var(--window-bg); padding: 14px 16px;"> <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;"> ✦ skill unlocking: ${beat.skill} </div> <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;"> ${beat.instructions} </div> <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div> <div style="margin-top: 8px;"> <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button> </div> </div> <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div> <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea> <div class="editor-bar"> <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button> <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button> <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);"> ${completed ? '✓ COMPLETE' : 'NOT YET RUN'} </span> </div> <div class="output-area" id="output-${beat.id}">${completed && beat.completedOutput ? beat.completedOutput : '<span class="info">// awaiting execution...</span>'}</div> ${completed && isActive ?`<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
 <button class="btn" onclick="advanceBeat()">▸ continue</button>
 </div>`: ''}`;
 storyContainer.appendChild(w);
@@ -1819,6 +1844,8 @@ if (passed && beat.codeMustContain) {
 
 if (passed) {
 outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
+// persist the result so the post-rerender completed view keeps showing it
+beat.completedOutput = outEl.innerHTML;
 // mark complete
 if (!state.completedBeats.includes(beat.id)) {
 state.completedBeats.push(beat.id);
@@ -1832,7 +1859,7 @@ if (beat.onComplete?.buddy) {
 showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 }
 // re-render to show "continue" button
-setTimeout(() => renderStory(), 600);
+setTimeout(() => renderStory(), 2500);
 } else {
 const __expectedLine = beat.matchType === 'contains_all' && Array.isArray(beat.expectedOutput)
   ? `expected output should include each of: ${beat.expectedOutput.map(__s => escapeHtml(__s)).join(', ')}`
