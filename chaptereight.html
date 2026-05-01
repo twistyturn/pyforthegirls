@@ -3978,6 +3978,9 @@ function friendlyErrorHint(errStr) {
   if (/KeyError/i.test(errStr)) {
     return 'the dict doesn\'t have that key. check spelling — keys are case-sensitive (<code>"Time"</code> and <code>"time"</code> are different). also check that you used the right quotes around the key.';
   }
+  if (/TypeError.*["\']NoneType["\']/i.test(errStr)) {
+    return 'something in the expression is <code>None</code> when you expected a value. the most common cause: you wrote <code>print(x) * n</code> (or some other math <em>around</em> a <code>print()</code> call). <code>print()</code> doesn\'t return what it printed — it returns <code>None</code> — so this asks python to compute <code>None * n</code>. the fix is to do the math <em>inside</em> the parentheses: <code>print(x * n)</code>. (same gotcha applies to your own functions that forget to <code>return</code>, or methods like <code>list.sort()</code> that change a list in place and return <code>None</code>.)';
+  }
   if (/TypeError.*unsupported operand type|TypeError.*can only concatenate|TypeError.*str.*int|TypeError.*int.*str|TypeError.*must be str/i.test(errStr)) {
     return 'you mixed a string and a number in an operation that needs them to match. use <code>int(x)</code> to convert a string of digits to a number, or <code>str(x)</code> to convert a number to a string.';
   }
