@@ -342,6 +342,35 @@ text-transform: uppercase;
 letter-spacing: 1px;
 }
 
+/* Polaroid-style attachment for diary photos */
+.diary-polaroid {
+display: block;
+max-width: min(340px, 100%);
+max-height: 380px;
+margin: 18px auto;
+padding: 10px 10px 36px 10px;
+background: #fffaf2;
+border: 1px solid #c4b8a8;
+box-shadow: 3px 3px 0 rgba(45,10,61,0.18), 6px 6px 14px rgba(45,10,61,0.12);
+transform: rotate(-1.4deg);
+position: relative;
+}
+.diary-polaroid img {
+display: block;
+width: 100%;
+height: auto;
+max-height: 320px;
+object-fit: cover;
+}
+.diary-polaroid .polaroid-caption {
+position: absolute;
+left: 0; right: 0; bottom: 8px;
+text-align: center;
+font-family: 'Nanum Pen Script', cursive;
+font-size: 16px;
+color: #6b4a78;
+}
+
 
 /* ============ EMAIL CHROME (renders email-shaped diary beats with
    period-Outlook-Express styling instead of notebook paper) ============ */
@@ -1264,6 +1293,14 @@ font-family: 'Courier New', monospace;
 font-size: 11px;
 color: #557755;
 flex-shrink: 0;
+}
+.nx-pic {
+width: 96px;
+height: 96px;
+object-fit: cover;
+border: 1px solid #88aa88;
+flex-shrink: 0;
+display: block;
 }
 .nx-info {
 flex: 1;
@@ -2505,6 +2542,8 @@ camille_m_88`,
       sex: 'female',
       location: 'edmonton, alberta',
       lastLogin: '2005-10-02',
+      photoSrc: 'images/camille%20at%20galaxyland.png',
+      photoAlt: 'Camille at Galaxyland inside West Edmonton Mall, posing in front of the rides.',
       mood: '',
       music: 'avril lavigne, sum 41, three days grace, nickelback',
       movies: 'mean girls, a walk to remember, the notebook',
@@ -2688,6 +2727,8 @@ she also didn't return to camp this year.
 her LJ is private. her old posts are gone.
 i don't think she did anything. i think she figured
 out what she'd been part of and walked away.
+
+<figure class="diary-polaroid"><img src="images/briar%20grad%20photo.png" alt="Briar Vance, high school graduation portrait. Black grad gown, neutral smile. Pulled from a Calgary high school yearbook archive — the only image still findable now that her LJ is private."><figcaption class="polaroid-caption">vance, b. — grad photo</figcaption></figure>
 
 i'm not going to message her.`,
     nextBtn: '\u25b8 AIM'
@@ -3241,7 +3282,9 @@ function renderNexopiaView(beat, isActive) {
       <span class="nexopia-tagline">user profile</span>
     </div>
     <div class="nexopia-profile">
-      <div class="nx-pic-placeholder">[no pic]</div>
+      ${p.photoSrc
+        ? `<img class="nx-pic" src="${escapeHtml(p.photoSrc)}" alt="${escapeHtml(p.photoAlt || '')}">`
+        : `<div class="nx-pic-placeholder">[no pic]</div>`}
       <div class="nx-info">
         <div class="nx-username">${escapeHtml(p.username || '')}</div>
         <div class="nx-stat"><span class="nx-stat-label">age:</span> ${escapeHtml(String(p.age || ''))}</div>
