@@ -2173,6 +2173,8 @@ async function runTask(beatId) {
 // (~10 seconds on first run, instant after that)
 // ▰▰▱▱▱▱▱▱▱▱</span>`;
 
+try {
+
   // Patch input() if needed
   let runCode = code;
   if (beat.fakeInput !== undefined) {
@@ -2224,7 +2226,7 @@ builtins.input = __patched_input
     for (const __p of beat.codeMustContain) {
       let __hit;
       if (Array.isArray(__p)) {
-        __hit = __p.some(__s => __strippedCode.includes(__s));
+        __hit = __p.some(__s => __s instanceof RegExp ? __s.test(__strippedCode) : __strippedCode.includes(__s));
       } else if (__p instanceof RegExp) {
         __hit = __p.test(__strippedCode);
       } else {
@@ -2276,6 +2278,13 @@ builtins.input = __patched_input
     outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// ${__expectedLine}\n\n// not quite. try again.</span>`;
     appendCommonMistakeTip(outEl, code, beat.commonMistakes);
   }
+} catch (__runTaskErr) {
+  console.error('[runTask] uncaught:', __runTaskErr);
+  if (outEl) {
+    const __msg = String((__runTaskErr && __runTaskErr.message) || __runTaskErr);
+    outEl.innerHTML = `<span class="err">// the test runner hit an unexpected problem:\n${escapeHtml(__msg)}</span>\n<span class="info">// this isn't your code's fault. try refreshing the page. if it keeps happening, the browser console (F12) will have the full error.</span>`;
+  }
+}
 }
 
 function resetTask(beatId) {
