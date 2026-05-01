@@ -2905,7 +2905,7 @@ he came out of the bushes at 11:44.`,
       { who: 'glorfindel_lives', text: "yeah" },
       { who: 'glorfindel_lives', text: "you can't move a body far in four minutes. even with weights staged. wherever she is, she's right there" },
       { who: 'you', text: "i went back through the 2004 emails" },
-      { who: 'you', text: "the search team didn't know she went to the boathouse. her phone was at the bottom of the lake. her last sighting was the bonfire at 11" },
+      { who: 'you', text: "the search team didn't know she went to the boathouse. her phone was never recovered, and the SMS log was sitting in her hotmail behind a password. her last sighting was the bonfire at 11" },
       { who: 'you', text: "they prioritized the trail to whitecourt road and the woods. they covered the open lake out to the buoy line. the dive team came up empty there" },
       { who: 'glorfindel_lives', text: "the boathouse?" },
       { who: 'you', text: "they walked the inside the morning after. nothing visible from above the deck. without specific evidence she'd been there they didn't dive under the pilings" },
@@ -2974,7 +2974,23 @@ function renderStory() {
     renderBeat(BEATS[i], i === upTo);
   }
   // scroll to bottom
-  setTimeout(() => { const cw = document.getElementById('chapterWindowBody'); if (cw) cw.scrollTo({ top: cw.scrollHeight, behavior: 'smooth' }); }, 100);
+  setTimeout(() => {
+    const cw = document.getElementById('chapterWindowBody');
+    if (!cw) return;
+    // Scroll the most-recently-rendered (active) beat into view at the top of
+    // the chapter window, rather than the bottom of the whole story. The
+    // active beat is the last child of storyContainer; falling back to
+    // scrollHeight if storyContainer is empty.
+    const lastBeat = storyContainer.lastElementChild;
+    if (lastBeat) {
+      const cwRect = cw.getBoundingClientRect();
+      const beatRect = lastBeat.getBoundingClientRect();
+      const offset = (beatRect.top - cwRect.top) + cw.scrollTop - 16;
+      cw.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
+    } else {
+      cw.scrollTo({ top: cw.scrollHeight, behavior: 'smooth' });
+    }
+  }, 100);
 }
 
 function renderBeat(beat, isActive) {
