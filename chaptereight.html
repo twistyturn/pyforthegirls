@@ -4002,7 +4002,13 @@ function friendlyErrorHint(errStr) {
   if (/TypeError.*["\']NoneType["\']/i.test(errStr)) {
     return 'something in the expression is <code>None</code> when you expected a value. the most common cause: you wrote <code>print(x) * n</code> (or some other math <em>around</em> a <code>print()</code> call). <code>print()</code> doesn\'t return what it printed — it returns <code>None</code> — so this asks python to compute <code>None * n</code>. the fix is to do the math <em>inside</em> the parentheses: <code>print(x * n)</code>. (this same trap shows up later for any function that doesn\'t have a <code>return</code>, or for methods like <code>list.sort()</code> that change a list directly instead of giving back a new one.)';
   }
-  if (/TypeError.*unsupported operand type|TypeError.*can only concatenate|TypeError.*str.*int|TypeError.*int.*str|TypeError.*must be str/i.test(errStr)) {
+  if (/TypeError.*string indices must be integers/i.test(errStr)) {
+    return 'you tried to look up something with a string key (like <code>x["field"]</code>), but <code>x</code> turned out to be a string, not a dict. on a string, brackets only work with integer positions (<code>s[0]</code> for the first character). this often means a variable you thought was a dict is actually a string — for example, if you appended a string into a list of dicts and then tried to read that string as if it were a dict.';
+  }
+  if (/TypeError.*object is not subscriptable/i.test(errStr)) {
+    return 'you tried to use square-bracket lookup on something that doesn\'t support it. brackets work on lists (<code>list[0]</code>), strings (<code>s[0]</code>), and dicts (<code>d["key"]</code>). they don\'t work on integers, floats, or None. usually means a variable is a different type than you expected — print it before the failing line to see what it actually is.';
+  }
+  if (/TypeError.*unsupported operand type|TypeError.*can only concatenate|TypeError.*\bstr\b.*\bint\b|TypeError.*\bint\b.*\bstr\b|TypeError.*must be str/i.test(errStr)) {
     return 'you mixed a string and a number in an operation that needs them to match. use <code>int(x)</code> to convert a string of digits to a number, or <code>str(x)</code> to convert a number to a string.';
   }
   if (/AttributeError.*has no attribute/i.test(errStr)) {
