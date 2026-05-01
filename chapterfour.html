@@ -1324,6 +1324,17 @@ instructions: `<p>the string method <code>.split(separator)</code> chops a strin
 # → ["hello", "world"]                        (cut at the space)</pre>
                <p>so on a roster line like <code>"director|Marcia|Deveraux|admin|on-site"</code>, calling <code>.split("|")</code> gives you back <code>["director", "Marcia", "Deveraux", "admin", "on-site"]</code> — five pieces, one per field.</p>
                <p>you can combine that with the <code>.strip()</code> you saw in the previous task to clean up extra spaces. and lists have <code>.append()</code> for adding items, which you'll need next.</p>
+               <h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">building a dict from scratch</h4>
+               <p>you've been READING dicts (<code>fragment["content"]</code>, <code>last_msg["from"]</code>) all of chapter 3, but this is the first time you'll WRITE one. the syntax is curly braces around <code>"key": value</code> pairs, separated by commas:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">person = {"name": "Marcia", "role": "director"}
+print(person)            # → {'name': 'Marcia', 'role': 'director'}
+print(person["name"])    # → Marcia</pre>
+               <p>the values can be variables — they don't have to be hardcoded literals:</p>
+               <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">first_name = "Marcia"
+last_name = "Deveraux"
+person = {"first": first_name, "last": last_name}
+# person is now {"first": "Marcia", "last": "Deveraux"}</pre>
+               <p>so for this task, after you split the line, you'll have a list of pieces; you build the dict by writing each <code>"key": piece</code> pair using the appropriate position in that list (e.g. <code>parts[0]</code>, <code>parts[1]</code>, etc.).</p>
                <p><strong>your task:</strong> the variable <code>sample_line</code> holds one line from the roster. split it on <code>"|"</code>, build a dict with keys <code>"role"</code>, <code>"first"</code>, <code>"last"</code>, <code>"cabin"</code>, <code>"status"</code>, and print the dict.</p>
                <p>expected output: <code>{'role': 'director', 'first': 'Marcia', 'last': 'Deveraux', 'cabin': 'admin', 'status': 'on-site'}</code></p>`,
 starter: `sample_line = "director|Marcia|Deveraux|admin|on-site"
