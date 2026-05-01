@@ -1694,7 +1694,7 @@ w.className = 'window terminal-window';
 // Story above, in a diary-ish small note
 const storyHtml = beat.storyAbove ? ` <div style="background: #fff8f0; padding: 14px 18px; font-family: 'Nanum Pen Script', cursive; font-size: 18px; color: #2d0a3d; border-bottom: 2px solid var(--bg-deep); line-height: 1.4;"> ${beat.storyAbove} </div>` : '';
 
-w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> ${storyHtml} <div style="background: var(--window-bg); padding: 14px 16px;"> <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;"> ✦ skill unlocking: ${beat.skill} </div> <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;"> ${beat.instructions} </div> <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div> <div style="margin-top: 8px;"> <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button> </div> </div> <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div> <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea> <div class="editor-bar"> <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button> <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button> <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);"> ${completed ? '✓ COMPLETE' : 'NOT YET RUN'} </span> </div> <div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div> ${completed && isActive ?`<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
+w.innerHTML = `<div class="window-titlebar"> <span>${beat.title}</span> <div class="window-titlebar-buttons"> <span class="titlebar-btn">_</span> <span class="titlebar-btn">□</span> <span class="titlebar-btn">×</span> </div> </div> ${storyHtml} <div style="background: var(--window-bg); padding: 14px 16px;"> <div style="font-family: 'Silkscreen', monospace; font-size: 10px; color: var(--pink-hot); margin-bottom: 8px;"> ✦ skill unlocking: ${beat.skill} </div> <div style="font-family: 'VT323', monospace; font-size: 17px; color: var(--bg-deep); line-height: 1.4;"> ${beat.instructions} </div> <div class="hint-box hidden" id="hint-${beat.id}">${beat.hint}</div> <div style="margin-top: 8px;"> <button class="btn btn-secondary" style="font-size: 9px; padding: 4px 10px;" onclick="document.getElementById('hint-${beat.id}').classList.toggle('hidden')">✿ show hint</button> </div> </div> <div class="file-tab">${beat.title.split('::')[1] || 'script.py'}</div> <textarea class="code-area" id="code-${beat.id}" ${completed ? 'readonly' : ''}>${completed ? (beat.completedCode || beat.starter) : beat.starter}</textarea> <div class="editor-bar"> <button class="btn btn-acid" onclick="runTask('${beat.id}')" ${completed ? 'disabled' : ''}>▸ RUN</button> <button class="btn btn-secondary" onclick="resetTask('${beat.id}')" ${completed ? 'disabled' : ''}>↺ reset</button> <span style="margin-left: auto; font-family: 'Silkscreen', monospace; font-size: 9px; color: var(--bg-deep);"> ${completed ? '✓ COMPLETE' : 'NOT YET RUN'} </span> </div> <div class="output-area" id="output-${beat.id}">${completed && beat.completedOutput ? beat.completedOutput : '<span class="info">// awaiting execution...</span>'}</div> ${completed && isActive ?`<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
 <button class="btn" onclick="advanceBeat()">▸ continue</button>
 </div>`: ''}`;
 storyContainer.appendChild(w);
@@ -1911,6 +1911,8 @@ if (passed && beat.codeMustContain) {
 
 if (passed) {
 outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
+// persist the result so the post-rerender completed view keeps showing it
+beat.completedOutput = outEl.innerHTML;
 // mark complete
 if (!state.completedBeats.includes(beat.id)) {
 state.completedBeats.push(beat.id);
@@ -1924,7 +1926,7 @@ if (beat.onComplete?.buddy) {
 showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 }
 // re-render to show "continue" button
-setTimeout(() => renderStory(), 600);
+setTimeout(() => renderStory(), 2500);
 } else {
 const __expectedLine = beat.matchType === 'contains_all' && Array.isArray(beat.expectedOutput)
   ? `expected output should include each of: ${beat.expectedOutput.map(__s => escapeHtml(__s)).join(', ')}`

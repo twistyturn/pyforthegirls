@@ -3907,7 +3907,7 @@ function renderTask(beat, isActive) {
     ${completed ? '✓ COMPLETE' : 'NOT YET RUN'}
   </span>
 </div>
-<div class="output-area" id="output-${beat.id}"><span class="info">// awaiting execution...</span></div>
+<div class="output-area" id="output-${beat.id}">${completed && beat.completedOutput ? beat.completedOutput : '<span class="info">// awaiting execution...</span>'}</div>
 ${completed && isActive ? `<div style="padding: 12px; background: var(--window-bg); border-top: 2px solid var(--bg-deep); text-align: center;">
   <button class="btn" onclick="advanceBeat()">▸ continue</button>
 </div>` : ''}
@@ -4118,6 +4118,8 @@ if (passed && beat.codeMustContain) {
 
 if (passed) {
 outEl.innerHTML = `<span class="ok">${escapeHtml(actualOutput) || '(no output)'}\n\n✦ TEST PASSED ✦\n${beat.onComplete?.diary || ''}</span>`;
+// persist the result so the post-rerender completed view keeps showing it
+beat.completedOutput = outEl.innerHTML;
 // mark complete
 if (!state.completedBeats.includes(beat.id)) {
 state.completedBeats.push(beat.id);
@@ -4131,7 +4133,7 @@ if (beat.onComplete?.buddy) {
 showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 }
 // re-render to show "continue" button
-setTimeout(() => renderStory(), 600);
+setTimeout(() => renderStory(), 2500);
 } else {
 const __expectedLine = beat.matchType === 'contains_all' && Array.isArray(beat.expectedOutput)
   ? `expected output should include each of: ${beat.expectedOutput.map(__s => escapeHtml(__s)).join(', ')}`
