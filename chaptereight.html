@@ -1406,6 +1406,21 @@ opacity: 0.9;
 background: #eef3fa;
 padding: 8px 14px;
 border-bottom: 1px solid #ccd5e8;
+display: flex;
+gap: 12px;
+align-items: center;
+}
+.lj-userpic {
+width: 80px;
+height: 80px;
+object-fit: cover;
+border: 1px solid #aabacc;
+flex-shrink: 0;
+display: block;
+}
+.lj-userhead-text {
+flex: 1;
+min-width: 0;
 }
 .lj-name {
 font-weight: bold;
@@ -2616,7 +2631,9 @@ mel_k_lights`,
       name: 'melissa',
       location: 'calgary, alberta',
       mood: 'thoughtful',
-      music: 'tegan and sara'
+      music: 'tegan and sara',
+      userpicSrc: 'images/melissa%20at%20lloyds.png',
+      userpicAlt: 'melissa at Lloyd\'s roller rink'
     },
     posts: [
       {
@@ -3352,8 +3369,11 @@ function renderLivejournalView(beat, isActive) {
       <span class="lj-username">/users/${escapeHtml(p.username || '')}/</span>
     </div>
     <div class="lj-userhead">
-      <div class="lj-name">${escapeHtml(p.name || '')}</div>
-      <div class="lj-loc">${escapeHtml(p.location || '')}</div>
+      ${p.userpicSrc ? `<img class="lj-userpic" src="${escapeHtml(p.userpicSrc)}" alt="${escapeHtml(p.userpicAlt || '')}">` : ''}
+      <div class="lj-userhead-text">
+        <div class="lj-name">${escapeHtml(p.name || '')}</div>
+        <div class="lj-loc">${escapeHtml(p.location || '')}</div>
+      </div>
     </div>
     <div class="lj-posts">${postsHtml}</div>
     ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
