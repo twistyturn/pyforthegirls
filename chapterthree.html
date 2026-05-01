@@ -1435,36 +1435,61 @@ my_list.append(4)
 print(my_list)        # → [1, 2, 3, 4]</pre>
 <p>read <code>my_list.append(4)</code> as "<em>my_list, take this 4 and add it to yourself.</em>" the list goes on the left of the dot, the new item goes in the parens.</p>
 
-<h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">here's the part to slow down for</h4>
+<h4 style="color:#ff66c4;margin-top:20px;margin-bottom:8px;">the part to slow down for: doing this on a whole list</h4>
 <p>the tools above each act on ONE thing — one string, one list. <code>fragments</code> isn't one thing; it's ten dictionaries stacked in a row. so calling a string method on it directly doesn't work:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">fragments.lower()
 # → AttributeError: 'list' object has no attribute 'lower'
 #   (translation: lists don't have a .lower() method. only strings do.)</pre>
-<p>to lowercase a string, you need to be holding ONE string. to get one string out of fragments, you have to walk through fragments one item at a time. that's what a <code>for</code> loop does. here's a complete worked example using a different list (a grocery list of dicts) so the shape is clear:</p>
+<p>so we need a way to walk through the list and look at one item at a time. that's a <code>for</code> loop. let's build it up in three small steps.</p>
+
+<p><strong>step 1: just visit each item.</strong> say we have a tiny list of numbers:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">nums = [10, 20, 30]
+for n in nums:
+    print(n)</pre>
+<p>that prints:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">10
+20
+30</pre>
+<p>read the loop as "for each item in <code>nums</code>, call it <code>n</code>, then run the indented code." the variable <code>n</code> is just a name we picked — could be <code>x</code>, <code>num</code>, anything. the first time through, <code>n</code> is <code>10</code>. the second, <code>n</code> is <code>20</code>. the third, <code>n</code> is <code>30</code>. then the loop ends. <code>nums</code> didn't change — we only visited each item.</p>
+
+<p><strong>step 2: visit each dict in a list of dicts and pull out a field.</strong> same loop shape, just a fancier list:</p>
 <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">shopping_list = [
     {"item": "apples", "price": 3},
-    {"item": "BREAD", "price": 5},
-    {"item": "milk", "price": 4},
+    {"item": "bread",  "price": 5},
+    {"item": "milk",   "price": 4},
 ]
 
-expensive = []
 for thing in shopping_list:
-    # on each pass, \`thing\` is ONE dict from the list:
-    #   pass 1: {"item": "apples", "price": 3}
-    #   pass 2: {"item": "BREAD",  "price": 5}
-    #   pass 3: {"item": "milk",   "price": 4}
+    print(thing["item"], "costs", thing["price"])</pre>
+<p>that prints:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">apples costs 3
+bread costs 5
+milk costs 4</pre>
+<p>each pass, <code>thing</code> holds ONE of the three dicts. to get a specific field out of that dict, we still use the bracket lookup from earlier (<code>thing["price"]</code>) — the loop hands you the dict; it doesn't unpack it for you.</p>
+<p>(quick aside on why <code>thing["price"]</code> instead of just "we're inside <code>thing</code>": <code>thing</code> is a variable holding the dict. the loop didn't take you "inside" anything — it just gave you a name for the current item. to reach into the dict and grab a field, you still need the bracket lookup, same as if you'd written <code>shopping_list[0]["price"]</code> by hand.)</p>
+
+<p><strong>step 3: only collect the items you care about.</strong> add an <code>if</code>, and use <code>.append</code> to build a new list:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">expensive = []
+for thing in shopping_list:
     if thing["price"] > 3:
         expensive.append(thing["item"])
-print(expensive)
-# → ['BREAD', 'milk']</pre>
-<p>three things to notice in that example:</p>
-<ol style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
-  <li>the loop variable is <code>thing</code> — that's just a name we picked. you can name it <code>x</code>, <code>item</code>, <code>row</code>, anything. on each pass, the variable holds ONE dict from the list.</li>
-  <li>inside the loop, the work happens on <code>thing</code> (the current item), <em>not</em> on <code>shopping_list</code>. <code>thing["price"]</code> is the price of one item. writing <code>shopping_list["price"]</code> would be nonsense — shopping_list is the whole list, it doesn't have a single price.</li>
-  <li>we append to <code>expensive</code> (the list we're building), not to <code>shopping_list</code>. the list you're collecting into goes on the left of <code>.append</code>.</li>
-</ol>
+print(expensive)</pre>
+<p>that prints:</p>
+<pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">['bread', 'milk']</pre>
+<p>walking through what each pass did:</p>
+<ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
+  <li>pass 1 — <code>thing</code> is the apples dict. <code>thing["price"]</code> is 3. <code>3 > 3</code> is False, so the indented body is skipped. <code>expensive</code> is still <code>[]</code>.</li>
+  <li>pass 2 — <code>thing</code> is the bread dict. <code>thing["price"]</code> is 5. <code>5 > 3</code> is True, so <code>expensive.append("bread")</code> runs. <code>expensive</code> is now <code>['bread']</code>.</li>
+  <li>pass 3 — <code>thing</code> is the milk dict. <code>thing["price"]</code> is 4. <code>4 > 3</code> is True, so <code>expensive.append("milk")</code> runs. <code>expensive</code> is now <code>['bread', 'milk']</code>.</li>
+</ul>
+<p>after the loop ends, <code>print(expensive)</code> shows the collected list.</p>
 
-<p><strong>your task</strong> is the same shape, with different ingredients. for each fragment, check whether <code>"cabin"</code> appears in its lowercased content. when it does, append that fragment's <code>id</code> into <code>matches</code>. then <code>print(matches)</code>.</p>`,
+<p><strong>your task is the same shape with two small differences:</strong></p>
+<ul style="font-family: 'VT323', monospace; font-size: 16px; padding-left: 20px; margin: 8px 0;">
+  <li>you're checking <em>strings</em> instead of <em>numbers</em> — specifically, the <code>"content"</code> field of each fragment.</li>
+  <li>strings can be uppercase or lowercase, and <code>"Cabin"</code> should still match <code>"cabin"</code>. so before you check, lowercase the content with <code>.lower()</code>: <code>f["content"].lower()</code>.</li>
+</ul>
+<p>for each fragment, check whether <code>"cabin"</code> appears in <code>f["content"].lower()</code>. when it does, append that fragment's <code>id</code> into <code>matches</code>. then <code>print(matches)</code>.</p>`,
 starter: `# fragments is already loaded for you
 matches = []
 
