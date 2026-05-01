@@ -2076,6 +2076,8 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === expectedNormalized.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(expectedNormalized);
+} else if (beat.matchType === 'contains_all') {
+passed = Array.isArray(beat.expectedOutput) && beat.expectedOutput.every(__s => actualOutput.includes(__s));
 }
 
 // codeMustContain: ensure the player actually used the skill the task is
@@ -2137,7 +2139,12 @@ showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 // re-render to show "continue" button
 setTimeout(() => renderStory(), 600);
 } else {
-outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(expectedNormalized)}\n\n// not quite. try again.</span>`;
+const __expectedLine = beat.matchType === 'contains_all' && Array.isArray(beat.expectedOutput)
+  ? `expected output should include each of: ${beat.expectedOutput.map(__s => escapeHtml(__s)).join(', ')}`
+  : (beat.matchType === 'contains'
+      ? `expected output should include:\n${escapeHtml(expectedNormalized)}`
+      : `expected output:\n${escapeHtml(expectedNormalized)}`);
+outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// ${__expectedLine}\n\n// not quite. try again.</span>`;
 appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 }
 }
