@@ -1311,6 +1311,7 @@ id: 'aim_log_1',
 type: 'aim_log',
 title: 'open file: AIM_archives/camille_summer04.txt',
 meta: 'aim log :: tegan_a87 ↔ camille.j.89 :: jul 9 - aug 1 2004',
+selfHandle: 'tegan_a87',
 messages: [
   { from: 'system', text: '— jul 9 2004 :: 11:23 pm —' },
   { from: 'camille.j.89', text: 'hey are you ok' },
@@ -1904,7 +1905,7 @@ function renderAimLog(beat, isActive) {
     if (handle === 'pause') {
       return `<div class="aim-message-pause">[${escapeHtml(m.text)}]</div>`;
     }
-    const isPlayer = handle === 'you';
+    const isPlayer = handle === 'you' || (beat.selfHandle && handle === beat.selfHandle);
     const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
     return `<div class="${cls}"><span class="aim-message-from">${escapeHtml(handle)}:</span>${escapeHtml(m.text)}</div>`;
   }).join('');

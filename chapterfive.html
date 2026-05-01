@@ -1766,7 +1766,7 @@ function renderAimLog(beat, isActive) {
     if (!m.text || m.text.trim() === '' || m.text === '…') {
       return `<div class="aim-message-pause">. . .</div>`;
     }
-    const isPlayer = m.from === 'you';
+    const isPlayer = m.from === 'you' || (beat.selfHandle && m.from === beat.selfHandle);
     const cls = isPlayer ? 'aim-message aim-message-player' : 'aim-message';
     return `<div class="${cls}"><span class="aim-message-from">${m.from}:</span>${escapeHtml(m.text)}</div>`;
   }).join('');
