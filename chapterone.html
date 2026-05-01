@@ -1304,10 +1304,10 @@ i should be scared. i'm not scared. i'm so far past scared.`,
                    <p>example: if <code>name = "ashley"</code>, then</p>
                    <p><code>greeting = f"hi {name}"</code></p>
                    <p>...stores the text <code>hi ashley</code> in <code>greeting</code>. python sees the <code>{name}</code> and swaps in whatever the variable holds.</p>
-                   <p><strong>your task:</strong> the variables <code>name</code> and <code>day</code> are already set up for you. complete the f-string on the <code>header = </code> line so that <code>print(header)</code> prints exactly: <code>=== day 5 :: tegan ===</code></p>`,
+                   <p><strong>your task:</strong> the variables <code>name</code> and <code>day</code> are already set up for you. complete the f-string on the <code>header = </code> line so that <code>print(header)</code> shows both values together. something like <code>=== day 5 :: tegan ===</code> works — the exact decoration around the values is up to you, as long as the day number and the name both end up in the output.</p>`,
     starter: `name = "tegan"\nday = 5\nheader = f""\nprint(header)`,
-    expectedOutput: '=== day 5 :: tegan ===',
-    matchType: 'exact',
+    expectedOutput: ['5', 'tegan'],
+    matchType: 'contains_all',
     codeMustContain: ['{day}', '{name}'],
     commonMistakes: [
       {
@@ -1319,7 +1319,7 @@ i should be scared. i'm not scared. i'm so far past scared.`,
         tip: `the values are hardcoded into the f-string. the point is to <em>substitute</em> the variables — write <code>{day}</code> and <code>{name}</code> in curly braces inside the f-string, and python will plug in the values for you. that way the same code works when day or name changes.`
       }
     ],
-    hint: `match the expected output exactly: <code>=== day 5 :: tegan ===</code>. the f-string is <code>f"=== day {day} :: {name} ==="</code> — three equals signs, a space, the word <code>day</code>, a space, <code>{day}</code>, a space, two colons, a space, <code>{name}</code>, a space, three equals signs.`,
+    hint: `inside the quotes, put <code>{day}</code> and <code>{name}</code> wherever you want the values to show up. the exact decoration around them is up to you — <code>f"day {day}, {name}"</code> works, <code>f"=== day {day} :: {name} ==="</code> works, anything that puts both values in the printout works.`,
     onComplete: {
       diary: `// header generator works. she used this on every entry from july onward.`,
       buddy: { name: 'wren_h', msg: 'who is this. who is this. how did you get into this account.' }
@@ -1509,7 +1509,7 @@ bad and i can't take it back.`,
     commonMistakes: [
       {
         pattern: /^\s*int\([^)]*\)\s*$/m,
-        tip: `you have <code>int(answer)</code> on its own line. that converts the string to a number — but the result gets thrown away because nothing catches it. <code>answer</code> itself is still <code>"14"</code> on the next line, so <code>answer * 2</code> is the string <code>"1414"</code>. either capture the converted value (<code>number = int(answer)</code> then <code>print(number * 2)</code>), or convert it inline where the math happens: <code>print(int(answer) * 2)</code>.`
+        tip: `<code>int(answer)</code> on its own line produces the number 14 and then forgets it — nothing on that line saved it anywhere. <code>answer</code> is still the string <code>"14"</code> on the next line, so <code>answer * 2</code> is <code>"1414"</code> (the string repeated). put the new number somewhere with <code>=</code>: <code>number = int(answer)</code> then <code>print(number * 2)</code>. or do the conversion inline where the math happens: <code>print(int(answer) * 2)</code>.`
       }
     ],
     hint: `<p>two lines work:</p>
@@ -1541,11 +1541,12 @@ hi ashley</pre>the script paused on line 1, waited for the person to type, store
                    </ul>
                    <p>expected output: <code>28</code></p>
                    <p>NOT <code>1414</code> — that's what you get if you skip the <code>int()</code> conversion and python repeats the string twice.</p>
-                   <p><strong>important:</strong> when you call <code>int(answer)</code>, python gives you back a new value (the number version). this returned value is not automatic — if you don't <em>catch</em> it with an <code>=</code> sign or use it directly in another expression, the value disappears. so:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">int(answer)            # the number is computed, then thrown away
-number = int(answer)   # the number is computed and stored in 'number'
-print(int(answer) * 2) # the number is computed and used right away</pre>
-                   <p>variables don't change just because you called a function on them. <code>answer</code> stays a string forever unless you overwrite it with <code>answer = int(answer)</code>.</p>
+                   <p><strong>important:</strong> <code>int(answer)</code> doesn't change <code>answer</code>. it makes a separate, new value (the number version), and hands it back to you. if you don't put that new value somewhere, it disappears the moment the line ends. so:</p>
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;">int(answer)            # produces 14, then forgets it. answer is still "14".
+number = int(answer)   # produces 14 and saves it in a new variable called 'number'
+answer = int(answer)   # produces 14 and overwrites answer with the number version
+print(int(answer) * 2) # produces 14 and uses it right away in the math</pre>
+                   <p>the takeaway: putting the result somewhere — into the same name with <code>=</code>, or a new name with <code>=</code>, or directly into the next thing on the same line — is what makes the converted number stick around for you to use.</p>
                    <p><strong>your task:</strong> write a script that asks "how many days left? " using <code>input()</code>, then prints the answer doubled. you'll need <code>input()</code>, <code>int()</code>, and one <code>print()</code>.</p>`,
     starter: `answer = input("how many days left? ")\n# convert answer to a number, then print it times 2\n`,
     expectedOutput: '28',
@@ -1558,7 +1559,7 @@ print(int(answer) * 2) # the number is computed and used right away</pre>
       },
       {
         pattern: /^[ \t]*int\s*\(\s*answer\s*\)\s*$/m,
-        tip: `<code>int(answer)</code> on its own line computes the number and throws it away. variables don't change just because you called a function on them. try <code>answer = int(answer)</code> (overwrites the variable) or <code>number = int(answer)</code> (stores it under a new name) so the converted value sticks around.`
+        tip: `<code>int(answer)</code> on its own line produces the number 14 and then forgets it — nothing on that line saved it. <code>answer</code> is still the string <code>"14"</code> on the next line. you need to put the new number somewhere with <code>=</code>: either <code>answer = int(answer)</code> to replace <code>answer</code> with the number version, or <code>number = int(answer)</code> to save the number under a new name so you can use it in your math.`
       },
       {
         pattern: /print\s*\(\s*answer\s*\)\s*\*\s*2/,
@@ -1885,6 +1886,8 @@ if (beat.matchType === 'exact') {
 passed = actualOutput.trim() === beat.expectedOutput.trim();
 } else if (beat.matchType === 'contains') {
 passed = actualOutput.includes(beat.expectedOutput);
+} else if (beat.matchType === 'contains_all') {
+passed = Array.isArray(beat.expectedOutput) && beat.expectedOutput.every(__s => actualOutput.includes(__s));
 }
 
 // codeMustContain: ensure the player actually used the skill the task is
@@ -1946,7 +1949,12 @@ showBuddy(beat.onComplete.buddy.name, beat.onComplete.buddy.msg);
 // re-render to show "continue" button
 setTimeout(() => renderStory(), 600);
 } else {
-outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// expected output:\n${escapeHtml(beat.expectedOutput)}\n\n// not quite. try again.</span>`;
+const __expectedLine = beat.matchType === 'contains_all' && Array.isArray(beat.expectedOutput)
+  ? `expected output should include each of: ${beat.expectedOutput.map(__s => escapeHtml(__s)).join(', ')}`
+  : (beat.matchType === 'contains'
+      ? `expected output should include:\n${escapeHtml(beat.expectedOutput)}`
+      : `expected output:\n${escapeHtml(beat.expectedOutput)}`);
+outEl.innerHTML = `<span class="info">${escapeHtml(actualOutput) || '(no output)'}\n</span><span class="err">// ${__expectedLine}\n\n// not quite. try again.</span>`;
 appendCommonMistakeTip(outEl, code, beat.commonMistakes);
 }
 }
