@@ -512,6 +512,7 @@
       buddy: 'wren_h ↔ briar_v',
       title: 'AIM :: wren_h ↔ briar_v (recovered fragments)',
       blurb: 'recovered from her cache during chapter 3. NOT one of tegan\'s logs — these are wren and briar covering for each other on aug 14.',
+      selfHandle: 'wren_h',
       messages: [
         ['system', null, '** fragments — not in chronological order — recovered aug 17 **'],
         ['21:30', 'wren_h', 'covering for me tonight right? i\'m in the cabin. you saw me in the cabin.'],
@@ -554,7 +555,8 @@
       if (who === null || who === 'system') {
         body += '<div class="vw-aim-system">' + escapeHtml(text) + '</div>';
       } else {
-        const fromSelf = (who === 'tegan_a87');
+        const selfHandle = log.selfHandle || 'tegan_a87';
+        const fromSelf = (who === selfHandle);
         const cls = fromSelf ? 'vw-aim-msg vw-aim-from-self' : 'vw-aim-msg vw-aim-from-other';
         body += '<div class="' + cls + '">' +
                   '<span class="vw-aim-timestamp">[' + escapeHtml(time) + '] </span>' +
