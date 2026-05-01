@@ -1616,7 +1616,12 @@ starter: `# the long way (you've already done this kind of thing):
 wren_msgs =
 
 print(len(wren_msgs))
-`, expectedOutput: '4', matchType: 'exact', codeMustContain: [/\[[^\]\n]*\bfor\b[^\]\n]*\]/], codeMustContainDescription: `a list comprehension — the <code>[expression for item in list if condition]</code> shape on a single line`, hint: `<code>wren_msgs = [fragment for fragment in fragments if fragment["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 4 messages. four times wren reached out to briar that night.
+`, expectedOutput: '4', matchType: 'exact', codeMustContain: [/\[[^\]\n]*\bfor\b[^\]\n]*\]/], codeMustContainDescription: `a list comprehension — the <code>[expression for item in list if condition]</code> shape on a single line`, commonMistakes: [
+  {
+    pattern: /wren_msgs\s*=\s*\[[^\]]*\bin\s+wren_msgs\b/,
+    tip: `you wrote <code>wren_msgs = [... for ... in wren_msgs ...]</code> — but <code>wren_msgs</code> doesn't exist yet on the right side, because the <code>=</code> is what's creating it. python evaluates the right side first, then assigns to the left, so when <code>for ... in wren_msgs</code> runs, <code>wren_msgs</code> hasn't been defined. you want to walk through <code>fragments</code> (the source list of every chat message) and pick the ones from wren: <code>wren_msgs = [fragment for fragment in fragments if fragment["from"] == "wren_h"]</code>.`
+  }
+], hint: `<code>wren_msgs = [fragment for fragment in fragments if fragment["from"] == "wren_h"]</code>. then <code>print(len(wren_msgs))</code> on the next line.`, fragmentInjection: true, onComplete: { diary: `// 4 messages. four times wren reached out to briar that night.
 // 9:30: set up alibi.
 // 10:42: refine alibi.
 // 12:08: thank briar (for what?)
