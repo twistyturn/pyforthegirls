@@ -181,6 +181,7 @@
     color: var(--lime-acid);
   }
   .chapter-status.locked { color: var(--lavender); opacity: 0.7; }
+  .chapter-status.done { color: var(--cyan-glow); }
 
   .footer {
     text-align: center;
@@ -286,9 +287,10 @@
       const raw = localStorage.getItem(saveKey);
       if (!raw) return { state: 'fresh', label: 'not started' };
       const s = JSON.parse(raw);
-      const beats = (s && s.completedBeats && s.completedBeats.length) || 0;
+      const beats = (s && s.completedBeats) || [];
       const charms = (s && s.charms) || 0;
-      if (beats > 0) return { state: 'progress', label: `in progress :: ${charms} ✿` };
+      if (beats.includes('wrap')) return { state: 'done', label: `completed :: ${charms} ✿` };
+      if (beats.length > 0) return { state: 'progress', label: `in progress :: ${charms} ✿` };
       return { state: 'fresh', label: 'not started' };
     } catch(e) {
       return { state: 'fresh', label: 'not started' };
@@ -306,21 +308,20 @@
       card.innerHTML = `
         <div class="chapter-num">CHAPTER ${String(ch.num).padStart(2, '0')}</div>
         <div class="chapter-title">${ch.title}</div>
-        <div class="chapter-status ${status.state === 'fresh' ? 'locked' : ''}">${status.label}</div>
+        <div class="chapter-status ${status.state === 'fresh' ? 'locked' : status.state === 'done' ? 'done' : ''}">${status.label}</div>
       `;
       grid.appendChild(card);
     });
   }
 
   function nextChapterFile() {
-    // Highest-numbered chapter with progress (the furthest the player has
-    // reached), else chapter 1. Saves are never auto-cleared, so iterating
-    // forwards would always pin "continue" to ch1 once the player had
-    // finished it.
-    for (let i = CHAPTERS.length - 1; i >= 0; i--) {
-      if (chapterStatus(CHAPTERS[i].saveKey).state === 'progress') return CHAPTERS[i];
+    // Lowest-numbered chapter that isn't already completed. If every
+    // chapter is done, fall back to the final one so the button still
+    // points somewhere reachable.
+    for (let i = 0; i < CHAPTERS.length; i++) {
+      if (chapterStatus(CHAPTERS[i].saveKey).state !== 'done') return CHAPTERS[i];
     }
-    return CHAPTERS[0];
+    return CHAPTERS[CHAPTERS.length - 1];
   }
 
   function updateContinueBtn() {
