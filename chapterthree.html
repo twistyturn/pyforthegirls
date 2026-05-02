@@ -1801,6 +1801,7 @@ storyContainer.appendChild(w);
 }
 
 function renderWrap(beat, isActive) {
+if (!state.completedBeats.includes(beat.id)) { state.completedBeats.push(beat.id); writeSave(state); }
 if (window.Caseboard) Caseboard.recordWrap(3);
 const w = document.createElement('div');
 w.className = 'window story-window';

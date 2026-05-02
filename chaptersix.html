@@ -3675,6 +3675,7 @@ storyContainer.appendChild(w);
 }
 
 function renderWrap(beat, isActive) {
+  if (!state.completedBeats.includes(beat.id)) { state.completedBeats.push(beat.id); writeSave(state); }
   if (isActive && window.Sounds) Sounds.playOnceEver('aim-goodbye', 'aim-goodbye-ch6');
 if (window.Caseboard) Caseboard.recordWrap(6);
 const w = document.createElement('div');
