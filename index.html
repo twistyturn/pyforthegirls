@@ -259,15 +259,19 @@
 <script>
   const SHARED_USER_KEY = 'pyforthegirls_user';
 
+  // wrapBeat is the index of each chapter's terminal beat (the celebration
+  // screen). once state.currentBeat reaches it, the chapter is done — even
+  // for legacy saves that never fired the wrap-marker push. update if any
+  // chapter's BEATS array gains/loses entries.
   const CHAPTERS = [
-    { num: 1, file: 'chapterone.html',   title: 'pinecrest_summer.zip',     saveKey: 'pyforthegirls_save_v1' },
-    { num: 2, file: 'chaptertwo.html',   title: 'cracking the lock',        saveKey: 'pyforthegirls_save_ch2_v1' },
-    { num: 3, file: 'chapterthree.html', title: 'the night of',             saveKey: 'pyforthegirls_save_ch3_v1' },
-    { num: 4, file: 'chapterfour.html',  title: 'the names that start with h', saveKey: 'pyforthegirls_save_ch4_v1' },
-    { num: 5, file: 'chapterfive.html',  title: "if you're reading this",   saveKey: 'pyforthegirls_save_ch5_v1' },
-    { num: 6, file: 'chaptersix.html',   title: 'fourteen months',          saveKey: 'pyforthegirls_save_ch6_v1' },
-    { num: 7, file: 'chapterseven.html', title: 'ten hours',                saveKey: 'pyforthegirls_save_ch7_v1' },
-    { num: 8, file: 'chaptereight.html', title: 'next summer',              saveKey: 'pyforthegirls_save_ch8_v1' },
+    { num: 1, file: 'chapterone.html',   title: 'pinecrest_summer.zip',     saveKey: 'pyforthegirls_save_v1',     wrapBeat: 14 },
+    { num: 2, file: 'chaptertwo.html',   title: 'cracking the lock',        saveKey: 'pyforthegirls_save_ch2_v1', wrapBeat: 15 },
+    { num: 3, file: 'chapterthree.html', title: 'the night of',             saveKey: 'pyforthegirls_save_ch3_v1', wrapBeat: 12 },
+    { num: 4, file: 'chapterfour.html',  title: 'the names that start with h', saveKey: 'pyforthegirls_save_ch4_v1', wrapBeat: 13 },
+    { num: 5, file: 'chapterfive.html',  title: "if you're reading this",   saveKey: 'pyforthegirls_save_ch5_v1', wrapBeat: 11 },
+    { num: 6, file: 'chaptersix.html',   title: 'fourteen months',          saveKey: 'pyforthegirls_save_ch6_v1', wrapBeat: 8  },
+    { num: 7, file: 'chapterseven.html', title: 'ten hours',                saveKey: 'pyforthegirls_save_ch7_v1', wrapBeat: 10 },
+    { num: 8, file: 'chaptereight.html', title: 'next summer',              saveKey: 'pyforthegirls_save_ch8_v1', wrapBeat: 17 },
   ];
 
   const introPanel = document.getElementById('introPanel');
@@ -282,14 +286,20 @@
     try { localStorage.setItem(SHARED_USER_KEY, name); } catch(e) {}
   }
 
-  function chapterStatus(saveKey) {
+  function chapterStatus(ch) {
     try {
-      const raw = localStorage.getItem(saveKey);
+      const raw = localStorage.getItem(ch.saveKey);
       if (!raw) return { state: 'fresh', label: 'not started' };
       const s = JSON.parse(raw);
       const beats = (s && s.completedBeats) || [];
       const charms = (s && s.charms) || 0;
-      if (beats.includes('wrap')) return { state: 'done', label: `completed :: ${charms} ✿` };
+      const cur = (s && typeof s.currentBeat === 'number') ? s.currentBeat : -1;
+      // a chapter is done if either the wrap-marker has been pushed OR the
+      // player's currentBeat already sits on the wrap screen (handles
+      // pre-fix saves where the marker never got written).
+      if (beats.includes('wrap') || cur >= ch.wrapBeat) {
+        return { state: 'done', label: `completed :: ${charms} ✿` };
+      }
       if (beats.length > 0) return { state: 'progress', label: `in progress :: ${charms} ✿` };
       return { state: 'fresh', label: 'not started' };
     } catch(e) {
@@ -301,7 +311,7 @@
     const grid = document.getElementById('chapterGrid');
     grid.innerHTML = '';
     CHAPTERS.forEach(ch => {
-      const status = chapterStatus(ch.saveKey);
+      const status = chapterStatus(ch);
       const card = document.createElement('a');
       card.className = 'chapter-card';
       card.href = ch.file;
@@ -319,7 +329,7 @@
     // chapter is done, fall back to the final one so the button still
     // points somewhere reachable.
     for (let i = 0; i < CHAPTERS.length; i++) {
-      if (chapterStatus(CHAPTERS[i].saveKey).state !== 'done') return CHAPTERS[i];
+      if (chapterStatus(CHAPTERS[i]).state !== 'done') return CHAPTERS[i];
     }
     return CHAPTERS[CHAPTERS.length - 1];
   }
@@ -329,7 +339,7 @@
     const btn = document.getElementById('continueBtn');
     btn.href = ch.file;
     const num = String(ch.num).padStart(2, '0');
-    const verb = chapterStatus(ch.saveKey).state === 'progress' ? 'continue' : 'start';
+    const verb = chapterStatus(ch).state === 'progress' ? 'continue' : 'start';
     btn.textContent = `▸ ${verb} chapter ${num}`;
   }
 
