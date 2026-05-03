@@ -1889,6 +1889,7 @@ body.is-loading, body.is-loading *, .cursor-wait, .cursor-wait * {
 }
 .timeline-pin.pin-tegan .pin-dot { background: #ff66c4; }
 .timeline-pin.pin-wren .pin-dot { background: #66ccff; }
+.timeline-pin.pin-camille .pin-dot { background: #c8ff66; border-color: #5a7a1f; }
 .timeline-pin.pin-tyler .pin-dot { background: #b22222; border-style: dashed; border-color: #4a0000; }
 .timeline-pin.pin-tyler.tyler-emerged .pin-dot { border-style: solid; }
 .timeline-pin.pin-tyler.tyler-hidden { opacity: 0.85; }
@@ -2680,6 +2681,8 @@ i'll go. i'll sit there. fine.`,
 
 she's not a god. she's not the world. she's a 19-year-old in edmonton with a complex about being chosen and i was 16 and didn't know what i was getting into.
 
+things i'm allowed to remember now without flinching: she rewrote my schedule so we'd have the same off-hours. she told me my friends at home were "fine for a small life." she taught me how to lie to my mom on the phone. she told me i was different and then took weeks at a time to prove i wasn't. when i cried she'd say she'd never seen anyone cry that ugly. then the next morning she'd hold my face like i was a saint.
+
 i still love her in some way i don't have a name for. i don't want to. it's just there.
 
 but i can see her now. and the thing about seeing her is that she gets smaller.`,
@@ -2874,52 +2877,60 @@ for t, label in candidates:
     frames: [
       {
         time: '22:00',
-        caption: 'tegan and wren both in hemlock. tyler not on the path yet.',
+        caption: 'tegan, wren, and camille all in hemlock. tyler not on the path yet.',
         pins: [
-          { person: 'tegan', location: 'hemlock' },
-          { person: 'wren',  location: 'hemlock' }
+          { person: 'tegan',   location: 'hemlock' },
+          { person: 'wren',    location: 'hemlock' },
+          { person: 'camille', location: 'hemlock_step' }
         ]
       },
       {
         time: '23:00',
-        caption: 'wren and tegan at the boathouse. wren says the gravel was silent.',
+        caption: 'wren and tegan at the boathouse. wren says the gravel was silent. camille is on hemlock duty with the campers.',
         pins: [
-          { person: 'tegan', location: 'boathouse_dock' },
-          { person: 'wren',  location: 'boathouse_dock' },
-          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+          { person: 'wren',    location: 'boathouse_inside_w' },
+          { person: 'tegan',   location: 'boathouse_inside_e' },
+          { person: 'tyler',   location: 'boathouse_bushes', hidden: true },
+          { person: 'camille', location: 'hemlock_step' }
         ]
       },
       {
         time: '23:25',
         caption: 'wren walks back up the gravel. tegan stays. nothing audible from the bushes.',
         pins: [
-          { person: 'tegan', location: 'boathouse_dock' },
-          { person: 'wren',  location: 'gravel_path' },
-          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+          { person: 'tegan',   location: 'boathouse_inside_e' },
+          { person: 'wren',    location: 'gravel_path' },
+          { person: 'tyler',   location: 'boathouse_bushes', hidden: true },
+          { person: 'camille', location: 'hemlock_step' }
         ]
       },
       {
         time: '23:31',
-        caption: 'wren back in her cabin. tegan still alone at the dock. \"she is not here yet.\"',
+        caption: 'wren back at hemlock, wet. camille sees her come in. tegan still alone at the boathouse. "she is not here yet."',
         pins: [
-          { person: 'tegan', location: 'boathouse_dock' },
-          { person: 'wren',  location: 'hemlock' },
-          { person: 'tyler', location: 'boathouse_bushes', hidden: true }
+          { person: 'tegan',   location: 'boathouse_inside_e' },
+          { person: 'wren',    location: 'hemlock' },
+          { person: 'camille', location: 'hemlock_step' },
+          { person: 'tyler',   location: 'boathouse_bushes', hidden: true }
         ]
       },
       {
         time: '23:44',
-        caption: 'tyler emerges. tegan: "someone is coming up the path. it is not her."',
+        caption: 'tyler emerges. tegan: "someone is coming up the path. it is not her." wren is in cabin. camille is in cabin.',
         pins: [
-          { person: 'tegan', location: 'boathouse_dock' },
-          { person: 'tyler', location: 'gravel_path' }
+          { person: 'tegan',   location: 'boathouse_inside_e' },
+          { person: 'tyler',   location: 'gravel_path' },
+          { person: 'wren',    location: 'hemlock' },
+          { person: 'camille', location: 'hemlock_step' }
         ]
       },
       {
         time: '23:50',
-        caption: 'camille saw tyler walking out from behind the boathouse.',
+        caption: 'camille saw tyler walking out from behind the boathouse — from her hemlock window. wren is still in cabin.',
         pins: [
-          { person: 'tyler', location: 'behind_boathouse' }
+          { person: 'tyler',   location: 'behind_boathouse' },
+          { person: 'wren',    location: 'hemlock' },
+          { person: 'camille', location: 'hemlock_step' }
         ]
       }
     ],
@@ -3559,6 +3570,7 @@ function renderTimelineMap(beat, isActive) {
     <div class="timeline-legend">
       <span class="legend-item"><span class="legend-swatch" style="background:#ff66c4;"></span> tegan</span>
       <span class="legend-item"><span class="legend-swatch" style="background:#66ccff;"></span> wren</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:#c8ff66;"></span> camille</span>
       <span class="legend-item"><span class="legend-swatch legend-tyler-hidden"></span> tyler (hidden)</span>
       <span class="legend-item"><span class="legend-swatch" style="background:#b22222;"></span> tyler (emerged)</span>
     </div>

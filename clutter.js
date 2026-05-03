@@ -209,10 +209,13 @@
   const MAP_LOCATIONS = {
     pinewood:         { x: 130, y: 295, label: 'Pinewood (boys)' },
     hemlock:          { x: 210, y: 395, label: 'Hemlock (tegan + wren)' },
+    hemlock_step:     { x: 250, y: 410, label: 'Hemlock step (camille)' },
     main_lodge:       { x: 400, y: 295, label: 'Main Lodge' },
     fire_pit:         { x: 400, y: 510, label: 'Fire Pit' },
     gravel_path:      { x: 470, y: 285, label: 'Gravel path' },
     boathouse:        { x: 540, y: 250, label: 'Boathouse' },
+    boathouse_inside_w: { x: 528, y: 252, label: 'Boathouse (interior, west)' },
+    boathouse_inside_e: { x: 556, y: 252, label: 'Boathouse (interior, east)' },
     boathouse_dock:   { x: 590, y: 215, label: 'Dock' },
     boathouse_bushes: { x: 490, y: 280, label: 'Bushes (cover)' },
     behind_boathouse: { x: 522, y: 232, label: 'Behind boathouse' },
