@@ -2228,6 +2228,15 @@ def find_person(name, region):
         "livejournals": [],
         "school_papers": []
     })
+
+# Defensive mock for summarize_person — the player writes this themselves in
+# task_define_function (BEAT 4). When that beat's code is still in pyodide
+# globals it overrides this. But if the player hits a later beat in a fresh
+# session (page reload, returning from another chapter), the mock keeps the
+# downstream tasks from blowing up with NameError. Output format must match
+# what the player is asked to produce in BEAT 4.
+def summarize_person(result_dict):
+    print(f"{result_dict['name']}: {len(result_dict['nexopia'])} nexopia, {len(result_dict['livejournals'])} livejournals, {len(result_dict['school_papers'])} school papers")
 `); } catch (e) {}
 }
 
@@ -2606,6 +2615,7 @@ camille_m_88`,
     skill: 'FUNCTION REUSE :: SAME CODE, DIFFERENT INPUTS',
     storyAbove: `the function works for any name. you don't have to write it again.`,
     instructions: `call <code>find_person("Melissa Klassen", "calgary")</code>. summarize. print all livejournal usernames, one per line.`,
+    hint: `the first two lines are already in the starter — they call <code>find_person</code> and pass the result to <code>summarize_person</code>. for the last part, the result has a <code>"livejournals"</code> key whose value is a list of usernames. loop through that list with a <code>for</code>, and <code>print</code> each one.`,
     starterCode: `result = find_person("Melissa Klassen", "calgary")
 summarize_person(result)
 
