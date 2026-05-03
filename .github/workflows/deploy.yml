@@ -28,6 +28,7 @@ jobs:
           cp -v favicon.png public/
           cp -v caseboard.js clutter.js study_notes.js sounds.js practice.js viewers.js public/
           cp -rv cursors public/
+          cp -rv images public/
           cp -rv python_practice public/
           mkdir -p public/sounds
           # Copy sound files but skip the _unused/ subfolder.
