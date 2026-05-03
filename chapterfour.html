@@ -1713,6 +1713,13 @@ storyContainer.appendChild(w);
 }
 
 function renderDiary(beat, isActive) {
+  // notify on first render of notes/*.txt diary beats
+  if (isActive && beat && beat.title && beat.title.indexOf('open file: notes/') === 0
+      && !state.completedBeats.includes(beat.id)
+      && typeof Viewers !== 'undefined' && Viewers.notify) {
+    const fname = beat.title.replace('open file: ', '');
+    Viewers.notify('file saved', fname);
+  }
 if (isActive && window.Sounds && /\.eml|email_archive|\bfrom:\s*\S+@/i.test((beat.title || '') + ' ' + (beat.meta || ''))) {
   Sounds.playOnce('email-new', 'mail:' + beat.id);
 }
@@ -2160,6 +2167,16 @@ document.addEventListener('click', (e) => {
   }
 });
 
+
+// Expose this chapter's reachable notes/*.txt entries to viewers.js,
+// which renders them in the desktop notes/ folder.
+window.PYFTG_GET_NOTES = function() {
+  if (typeof BEATS === 'undefined' || typeof state === 'undefined') return [];
+  return BEATS
+    .filter(b => b.type === 'diary' && b.title && b.title.indexOf('open file: notes/') === 0)
+    .filter(b => state.completedBeats.includes(b.id))
+    .map(b => ({ id: b.id, title: b.title, body: b.body, meta: b.meta }));
+};
 </script>
 
 <script src="caseboard.js"></script>
