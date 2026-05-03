@@ -745,6 +745,23 @@ letter-spacing: 1px;
 .archive-sender-hannah { color: #0000cc; font-weight: bold; margin-right: 6px; }
 .archive-content { color: #1a1a1a; }
 .archive-content.redacted-line { font-style: italic; color: #555; }
+.archive-day-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 16px 0 10px;
+  color: #888;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.archive-day-divider::before,
+.archive-day-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #ccc;
+}
 
 /* ============ INTRO SCREEN ============ */
 .intro-screen {
@@ -3455,10 +3472,24 @@ function renderBeat(beat, isActive) {
 function renderArchiveView(beat, isActive) {
   const w = document.createElement('div');
   w.className = 'archive-window';
+  function dayLabel(ymd) {
+    // ymd = "YYYY-MM-DD". construct as local-noon to dodge timezone shifts.
+    const d = new Date(ymd + 'T12:00:00');
+    const weekday = d.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+    const month = d.toLocaleDateString('en-US', { month: 'long' }).toLowerCase();
+    return `${weekday}, ${month} ${d.getDate()}, ${d.getFullYear()}`;
+  }
+  let prevDay = null;
   const linesHtml = beat.messages.map(m => {
+    const day = (m.date || '').slice(0, 10);
+    let dividerHtml = '';
+    if (day && day !== prevDay) {
+      dividerHtml = `<div class="archive-day-divider"><span>${dayLabel(day)}</span></div>`;
+      prevDay = day;
+    }
     const senderClass = (m.sender === 'tegan_a87') ? 'archive-sender-tegan' : 'archive-sender-hannah';
     const contentClass = m.content.includes('[REDACTED]') ? 'archive-content redacted-line' : 'archive-content';
-    return `<div class="archive-line"><span class="archive-timestamp">[${m.date}]</span><span class="${senderClass}">${m.sender}:</span><span class="${contentClass}">${escapeHtml(m.content)}</span></div>`;
+    return `${dividerHtml}<div class="archive-line"><span class="archive-timestamp">[${m.date}]</span><span class="${senderClass}">${m.sender}:</span><span class="${contentClass}">${escapeHtml(m.content)}</span></div>`;
   }).join('');
   w.innerHTML = `
     <div class="window-titlebar">
