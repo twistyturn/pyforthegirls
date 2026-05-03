@@ -335,6 +335,67 @@
 }
 .vw-diary-body { white-space: pre-wrap; }
 
+/* ====== chrome: Outlook Express (2004 staff email archive) ====== */
+.vw-chrome-outlook { background: #ece9d8; padding: 0; font-family: Tahoma, sans-serif; }
+.vw-oe-folder-bar {
+  background: linear-gradient(180deg, #316ac5 0%, #1a4ab0 100%);
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  border-bottom: 1px solid #1a4ab0;
+}
+.vw-oe-list { background: #fff; max-height: 56vh; overflow-y: auto; }
+.vw-oe-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 110px;
+  gap: 0;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #1a1a1a;
+  border-bottom: 1px solid #e6e3d4;
+  cursor: pointer;
+}
+.vw-oe-row:hover:not(.vw-oe-header) { background: #d3deef; }
+.vw-oe-row.vw-oe-header {
+  background: #ece9d8;
+  font-weight: bold;
+  cursor: default;
+  border-bottom: 1px solid #888;
+  padding: 4px 8px;
+}
+.vw-oe-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vw-oe-cell-from { color: #1a1a1a; }
+.vw-oe-cell-subject { color: #1a1a1a; }
+.vw-oe-cell-date { color: #555; font-family: 'Courier New', monospace; font-size: 10px; text-align: right; padding-right: 4px; }
+.vw-oe-statusbar {
+  background: #ece9d8;
+  border-top: 1px solid #888;
+  padding: 6px 10px;
+  font-size: 10px;
+  color: #555;
+  font-style: italic;
+}
+.vw-oe-msg-headers {
+  background: #ece9d8;
+  padding: 8px 12px;
+  border-bottom: 1px solid #888;
+  font-size: 12px;
+  color: #1a1a1a;
+}
+.vw-oe-hdr { margin-bottom: 2px; }
+.vw-oe-hdr-label { color: #555; font-weight: bold; display: inline-block; min-width: 64px; }
+.vw-oe-msg-body {
+  background: #fff;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1a1a1a;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 200px;
+}
+
 /* ====== chrome: python REPL ====== */
 .vw-chrome-repl {
   background: #000;
@@ -450,6 +511,8 @@
       case 'sms-log':          return viewSmsLog(arg);
       case 'diary':            return viewDiaryIndex();
       case 'diary-entry':      return viewDiaryEntry(arg);
+      case 'email':            return viewEmailIndex();
+      case 'email-msg':        return viewEmailMessage(arg);
       default:
         return { title: 'unknown', chromeClass: 'vw-chrome-explorer',
                  html: '<div style="padding:40px; text-align:center; font-size:11px; color:#888;">unknown view: ' + escapeHtml(type) + '</div>' };
@@ -495,7 +558,7 @@
       chapter: 2, // first opened in ch2's aim_log_1 beat
       buddy: 'camille.j.89',
       title: 'AIM with camille.j.89',
-      blurb: 'cousin from edmonton. summer ’04. background lurker.',
+      blurb: 'fellow JC at hemlock cabin. tegan\'s only confidant at camp.',
       messages: [
         ['system', null, '** session opened :: jul 12 2004 :: 22:14 **'],
         ['22:14', 'camille.j.89', 'okayyyy so what was the password'],
@@ -507,7 +570,50 @@
         ['22:17', 'camille.j.89', 'TEG'],
         ['22:17', 'tegan_a87', 'i didn\'t say anything'],
         ['22:17', 'camille.j.89', 'you didn\'t HAVE to'],
-        ['system', null, '** session closed :: 22:41 **']
+        ['system', null, '** session closed :: 22:41 **'],
+        ['system', null, '** session opened :: jul 9 2004 :: 23:23 **'],
+        ['23:23', 'camille.j.89', 'hey are you ok'],
+        ['23:23', 'camille.j.89', 'like genuinely'],
+        ['23:24', 'camille.j.89', 'i saw you guys yesterday at the boathouse'],
+        ['23:24', 'camille.j.89', 'i wasn\'t snooping i was getting my sweatshirt :/'],
+        ['23:24', 'camille.j.89', 'but i saw'],
+        ['23:25', 'tegan_a87', 'don\'t tell anyone'],
+        ['23:25', 'camille.j.89', 'tegan oh my god no'],
+        ['23:25', 'camille.j.89', 'i would never'],
+        ['23:25', 'camille.j.89', 'i would NEVER'],
+        ['23:26', 'camille.j.89', 'please don\'t be scared of me'],
+        ['23:26', 'camille.j.89', 'i sat with it for a sec last night not gonna lie'],
+        ['23:26', 'camille.j.89', 'only bc i didn\'t want to say the wrong thing about it'],
+        ['23:27', 'camille.j.89', 'but i don\'t have a problem with'],
+        ['23:27', 'camille.j.89', 'any of it'],
+        ['23:27', 'camille.j.89', 'i hope you know that'],
+        ['23:27', 'camille.j.89', 'i\'m just worried :('],
+        ['23:28', 'camille.j.89', 'is this something you can even tell anybody at home'],
+        ['23:28', 'camille.j.89', 'like that has to be SO heavy to be carrying alone'],
+        ['23:29', 'camille.j.89', 'and isn\'t she your senior counsellor'],
+        ['23:29', 'camille.j.89', 'that\'s the part that\'s getting me'],
+        ['23:30', 'camille.j.89', 'are you ok'],
+        ['23:31', 'tegan_a87', 'i\'m fine'],
+        ['23:31', 'tegan_a87', 'please please please don\'t say anything'],
+        ['23:31', 'tegan_a87', 'she\'ll know it was you'],
+        ['23:32', 'camille.j.89', 'she\'ll know what was me'],
+        ['23:32', 'camille.j.89', 'tegan'],
+        ['23:32', 'camille.j.89', 'tegan are you SAFE :((('],
+        ['system', null, '** user tegan_a87 has gone idle **'],
+        ['system', null, '** session opened :: aug 1 2004 :: 01:47 **'],
+        ['01:47', 'camille.j.89', 'about the bonfire'],
+        ['01:47', 'camille.j.89', 'i saw what you did'],
+        ['01:48', 'camille.j.89', 'i know it looked like a joke for tyler'],
+        ['01:48', 'camille.j.89', 'but tegan'],
+        ['01:48', 'camille.j.89', 'it wasn\'t a joke right'],
+        ['01:49', 'camille.j.89', 'i\'m not going to say anything'],
+        ['01:49', 'camille.j.89', 'i would never'],
+        ['01:49', 'camille.j.89', 'i just want you to know that someone saw you'],
+        ['01:50', 'camille.j.89', 'and it\'s okay'],
+        ['01:51', 'tegan_a87', 'stop messaging me'],
+        ['01:51', 'tegan_a87', 'please'],
+        ['01:51', 'tegan_a87', 'i can\'t'],
+        ['system', null, '** user tegan_a87 has gone idle **']
       ]
     },
     'wren_h_briar_v.txt': {
@@ -1050,20 +1156,101 @@ her name is wren halloway`
     return { title: filename, chromeClass: 'vw-chrome-diary', html: html };
   }
 
+  // ---- Outlook Express :: 2004 staff email archive ----
+  // Reads window.EMAIL_CORPUS (loaded by email_corpus.js). Gated to ch7+ at the
+  // call site (the desktop icon only appears once the player has diegetically
+  // recovered the archive). The viewer mirrors classic OE chrome — a list pane
+  // (top) summarising sender/subject/date, plus per-message reading via
+  // pushView('email-msg', idx).
+  function emailCorpusOrEmpty() {
+    return (typeof window !== 'undefined' && Array.isArray(window.EMAIL_CORPUS))
+      ? window.EMAIL_CORPUS : [];
+  }
+  function shortDate(rfcDate) {
+    // 'Sun, 15 Aug 2004 09:14:22 -0600' → 'Aug 15 09:14'
+    const m = (rfcDate || '').match(/\d{2} (\w{3}) (\d{4}) (\d{2}):(\d{2})/);
+    if (!m) return rfcDate || '';
+    return m[1] + ' ' + m[3] + ':' + m[4];
+  }
+  function shortFrom(fromHdr) {
+    // 'Briar Vance <briar.vance@camppinecrest.ca>' → 'Briar Vance'
+    const m = (fromHdr || '').match(/^([^<]+?)\s*</);
+    return m ? m[1] : (fromHdr || '');
+  }
+  function viewEmailIndex() {
+    setPath('C:\\Documents and Settings\\tegan\\Desktop\\pinecrest_summer\\inbox\\');
+    const corpus = emailCorpusOrEmpty();
+    setStatus(corpus.length + ' message(s)');
+    if (corpus.length === 0) {
+      return { title: 'Inbox', chromeClass: 'vw-chrome-outlook',
+        html: '<div style="padding:40px;text-align:center;color:#888;font-family:Tahoma,sans-serif;">inbox is empty. (the 2004 staff archive isn\'t loaded.)</div>' };
+    }
+    // sort by date ascending — earliest emails first, matches a real inbox view
+    const indexed = corpus.map((e, i) => ({ e: e, i: i, ts: Date.parse(e.date) || 0 }));
+    indexed.sort((a, b) => a.ts - b.ts);
+    const rows = indexed.map(rec => {
+      const e = rec.e;
+      return '<div class="vw-oe-row" onclick="Viewers.pushView(\'email-msg\', ' + rec.i + ')">' +
+               '<span class="vw-oe-cell vw-oe-cell-from">' + escapeHtml(shortFrom(e.from)) + '</span>' +
+               '<span class="vw-oe-cell vw-oe-cell-subject">' + escapeHtml(e.subject || '(no subject)') + '</span>' +
+               '<span class="vw-oe-cell vw-oe-cell-date">' + escapeHtml(shortDate(e.date)) + '</span>' +
+             '</div>';
+    }).join('');
+    const html =
+      '<div class="vw-oe-folder-bar">📥 Inbox &nbsp;·&nbsp; ' + corpus.length + ' messages</div>' +
+      '<div class="vw-oe-row vw-oe-header">' +
+        '<span class="vw-oe-cell vw-oe-cell-from">From</span>' +
+        '<span class="vw-oe-cell vw-oe-cell-subject">Subject</span>' +
+        '<span class="vw-oe-cell vw-oe-cell-date">Received</span>' +
+      '</div>' +
+      '<div class="vw-oe-list">' + rows + '</div>' +
+      '<div class="vw-oe-statusbar">' +
+        'tegan was on the camp staff mailing list. this archive came from the camp\'s public web directory. ' +
+        'every staff message from january to august 2004.' +
+      '</div>';
+    return { title: 'Inbox - Outlook Express', chromeClass: 'vw-chrome-outlook', html: html };
+  }
+  function viewEmailMessage(idx) {
+    const corpus = emailCorpusOrEmpty();
+    const i = parseInt(idx, 10);
+    const e = corpus[i];
+    if (!e) return { title: 'not found', chromeClass: 'vw-chrome-outlook', html: '<div style="padding:40px;">message not found.</div>' };
+    setPath('inbox\\msg-' + i);
+    setStatus(e.subject || '(no subject)');
+    const bodyHtml = escapeHtml(e.body || '').replace(/\n/g, '<br>');
+    const html =
+      '<div class="vw-oe-msg-headers">' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">From:</span> ' + escapeHtml(e.from || '') + '</div>' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">To:</span> ' + escapeHtml(e.to || '') + '</div>' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">Date:</span> ' + escapeHtml(e.date || '') + '</div>' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">Subject:</span> ' + escapeHtml(e.subject || '') + '</div>' +
+      '</div>' +
+      '<div class="vw-oe-msg-body">' + bodyHtml + '</div>';
+    return { title: e.subject || '(no subject)', chromeClass: 'vw-chrome-outlook', html: html };
+  }
+
   // ---- pinecrest_summer/ (the unzipped archive) ----
   function viewPinecrest() {
     setPath('C:\\Documents and Settings\\tegan\\Desktop\\pinecrest_summer\\');
-    setStatus('5 object(s)');
+    const ch = currentChapter();
+    // Outlook only appears once the player has diegetically pulled the camp
+    // staff email archive from camppinecrest.ca/staff in ch7.
+    const showOutlook = ch >= 7 && Array.isArray(window.EMAIL_CORPUS);
+    const itemCount = 5 + (showOutlook ? 1 : 0);
+    setStatus(itemCount + ' object(s)');
     const html =
       '<div class="vw-explorer-grid">' +
         explorerItem('💬', 'AIM_archives', "Viewers.pushView('aim')") +
         explorerItem('📱', 'SMS_dumps', "Viewers.pushView('sms')") +
         explorerItem('📔', 'diary', "Viewers.pushView('diary')") +
+        (showOutlook ? explorerItem('📧', 'inbox (Outlook)', "Viewers.pushView('email')") : '') +
         explorerItem('📂', 'staff_2003.txt', "alert('roster of pinecrest counsellors, summer 2003. extracted in chapter 4.')") +
         explorerItem('📂', 'staff_2004.txt', "alert('roster of pinecrest counsellors, summer 2004. extracted in chapter 4.')") +
       '</div>' +
       '<div style="margin-top:16px; padding:8px; background:#fffbe6; border:1px solid #d4d0c8; font-family:Tahoma,sans-serif; font-size:11px; color:#666;">' +
-        '<em>extracted from pinecrest_summer.zip on chapter 2. password: birchwoodcounsellor1985.</em>' +
+        '<em>extracted from pinecrest_summer.zip on chapter 2. password: birchwoodcounsellor1985.' +
+        (showOutlook ? ' inbox archive added in chapter 7 from the camp\'s public web directory.' : '') +
+        '</em>' +
       '</div>';
     return { title: 'pinecrest_summer', chromeClass: 'vw-chrome-explorer', html: html };
   }
