@@ -3330,6 +3330,11 @@ monthly_counts = {}
       { date: '2004-08-13 23:52', sender: 'tegan_a87', content: 'thank you anyway' },
       { date: '2004-08-14 09:47', sender: 'tegan_a87', content: 'see you on the other side' }
     ],
+    diaryAfter: `// these are the august messages \u2014 the densest, the loudest. but the file goes back further. fourteen months of late-night chats.
+
+// the whole archive is on her desktop in AIM_archives/glorfindel_lives.txt. i can scroll it any time.
+
+// for now: the search.`,
     nextBtn: '\u25b8 search by name'
   },
 
@@ -3502,6 +3507,7 @@ function renderArchiveView(beat, isActive) {
     </div>
     <div class="archive-meta">${beat.meta || ''}</div>
     <div class="archive-body">${linesHtml}</div>
+    ${beat.diaryAfter ? `<div style="padding: 14px 16px; background: var(--bg-deep); color: var(--lime-acid); font-family: 'VT323', monospace; font-size: 16px; line-height: 1.5; border-top: 2px solid var(--lime-acid); white-space: pre-line;">${escapeHtml(beat.diaryAfter)}</div>` : ''}
     ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
       <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
     </div>` : ''}
