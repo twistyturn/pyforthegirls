@@ -335,6 +335,67 @@
 }
 .vw-diary-body { white-space: pre-wrap; }
 
+/* ====== chrome: Outlook Express (2004 staff email archive) ====== */
+.vw-chrome-outlook { background: #ece9d8; padding: 0; font-family: Tahoma, sans-serif; }
+.vw-oe-folder-bar {
+  background: linear-gradient(180deg, #316ac5 0%, #1a4ab0 100%);
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  border-bottom: 1px solid #1a4ab0;
+}
+.vw-oe-list { background: #fff; max-height: 56vh; overflow-y: auto; }
+.vw-oe-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 110px;
+  gap: 0;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #1a1a1a;
+  border-bottom: 1px solid #e6e3d4;
+  cursor: pointer;
+}
+.vw-oe-row:hover:not(.vw-oe-header) { background: #d3deef; }
+.vw-oe-row.vw-oe-header {
+  background: #ece9d8;
+  font-weight: bold;
+  cursor: default;
+  border-bottom: 1px solid #888;
+  padding: 4px 8px;
+}
+.vw-oe-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vw-oe-cell-from { color: #1a1a1a; }
+.vw-oe-cell-subject { color: #1a1a1a; }
+.vw-oe-cell-date { color: #555; font-family: 'Courier New', monospace; font-size: 10px; text-align: right; padding-right: 4px; }
+.vw-oe-statusbar {
+  background: #ece9d8;
+  border-top: 1px solid #888;
+  padding: 6px 10px;
+  font-size: 10px;
+  color: #555;
+  font-style: italic;
+}
+.vw-oe-msg-headers {
+  background: #ece9d8;
+  padding: 8px 12px;
+  border-bottom: 1px solid #888;
+  font-size: 12px;
+  color: #1a1a1a;
+}
+.vw-oe-hdr { margin-bottom: 2px; }
+.vw-oe-hdr-label { color: #555; font-weight: bold; display: inline-block; min-width: 64px; }
+.vw-oe-msg-body {
+  background: #fff;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #1a1a1a;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  min-height: 200px;
+}
+
 /* ====== chrome: python REPL ====== */
 .vw-chrome-repl {
   background: #000;
@@ -450,6 +511,8 @@
       case 'sms-log':          return viewSmsLog(arg);
       case 'diary':            return viewDiaryIndex();
       case 'diary-entry':      return viewDiaryEntry(arg);
+      case 'email':            return viewEmailIndex();
+      case 'email-msg':        return viewEmailMessage(arg);
       default:
         return { title: 'unknown', chromeClass: 'vw-chrome-explorer',
                  html: '<div style="padding:40px; text-align:center; font-size:11px; color:#888;">unknown view: ' + escapeHtml(type) + '</div>' };
@@ -495,7 +558,7 @@
       chapter: 2, // first opened in ch2's aim_log_1 beat
       buddy: 'camille.j.89',
       title: 'AIM with camille.j.89',
-      blurb: 'cousin from edmonton. summer ’04. background lurker.',
+      blurb: 'fellow JC at hemlock cabin. tegan\'s only confidant at camp.',
       messages: [
         ['system', null, '** session opened :: jul 12 2004 :: 22:14 **'],
         ['22:14', 'camille.j.89', 'okayyyy so what was the password'],
@@ -507,7 +570,50 @@
         ['22:17', 'camille.j.89', 'TEG'],
         ['22:17', 'tegan_a87', 'i didn\'t say anything'],
         ['22:17', 'camille.j.89', 'you didn\'t HAVE to'],
-        ['system', null, '** session closed :: 22:41 **']
+        ['system', null, '** session closed :: 22:41 **'],
+        ['system', null, '** session opened :: jul 9 2004 :: 23:23 **'],
+        ['23:23', 'camille.j.89', 'hey are you ok'],
+        ['23:23', 'camille.j.89', 'like genuinely'],
+        ['23:24', 'camille.j.89', 'i saw you guys yesterday at the boathouse'],
+        ['23:24', 'camille.j.89', 'i wasn\'t snooping i was getting my sweatshirt :/'],
+        ['23:24', 'camille.j.89', 'but i saw'],
+        ['23:25', 'tegan_a87', 'don\'t tell anyone'],
+        ['23:25', 'camille.j.89', 'tegan oh my god no'],
+        ['23:25', 'camille.j.89', 'i would never'],
+        ['23:25', 'camille.j.89', 'i would NEVER'],
+        ['23:26', 'camille.j.89', 'please don\'t be scared of me'],
+        ['23:26', 'camille.j.89', 'i sat with it for a sec last night not gonna lie'],
+        ['23:26', 'camille.j.89', 'only bc i didn\'t want to say the wrong thing about it'],
+        ['23:27', 'camille.j.89', 'but i don\'t have a problem with'],
+        ['23:27', 'camille.j.89', 'any of it'],
+        ['23:27', 'camille.j.89', 'i hope you know that'],
+        ['23:27', 'camille.j.89', 'i\'m just worried :('],
+        ['23:28', 'camille.j.89', 'is this something you can even tell anybody at home'],
+        ['23:28', 'camille.j.89', 'like that has to be SO heavy to be carrying alone'],
+        ['23:29', 'camille.j.89', 'and isn\'t she your senior counsellor'],
+        ['23:29', 'camille.j.89', 'that\'s the part that\'s getting me'],
+        ['23:30', 'camille.j.89', 'are you ok'],
+        ['23:31', 'tegan_a87', 'i\'m fine'],
+        ['23:31', 'tegan_a87', 'please please please don\'t say anything'],
+        ['23:31', 'tegan_a87', 'she\'ll know it was you'],
+        ['23:32', 'camille.j.89', 'she\'ll know what was me'],
+        ['23:32', 'camille.j.89', 'tegan'],
+        ['23:32', 'camille.j.89', 'tegan are you SAFE :((('],
+        ['system', null, '** user tegan_a87 has gone idle **'],
+        ['system', null, '** session opened :: aug 1 2004 :: 01:47 **'],
+        ['01:47', 'camille.j.89', 'about the bonfire'],
+        ['01:47', 'camille.j.89', 'i saw what you did'],
+        ['01:48', 'camille.j.89', 'i know it looked like a joke for tyler'],
+        ['01:48', 'camille.j.89', 'but tegan'],
+        ['01:48', 'camille.j.89', 'it wasn\'t a joke right'],
+        ['01:49', 'camille.j.89', 'i\'m not going to say anything'],
+        ['01:49', 'camille.j.89', 'i would never'],
+        ['01:49', 'camille.j.89', 'i just want you to know that someone saw you'],
+        ['01:50', 'camille.j.89', 'and it\'s okay'],
+        ['01:51', 'tegan_a87', 'stop messaging me'],
+        ['01:51', 'tegan_a87', 'please'],
+        ['01:51', 'tegan_a87', 'i can\'t'],
+        ['system', null, '** user tegan_a87 has gone idle **']
       ]
     },
     'wren_h_briar_v.txt': {
@@ -529,58 +635,432 @@
       chapter: 6, // ch6's player_browses_august archive beat surfaces this log
       buddy: 'glorfindel_lives',
       title: 'AIM with glorfindel_lives',
-      blurb: 'LJ friend. talked tolkien fic mostly. only outside witness on aug 14. dense final two weeks before camp ended.',
+      blurb: 'LJ / silmarillion friend in halifax. 14 months of late-night chats — fic, music, movies, school, the slow plan to leave. only outside witness on aug 14.',
       messages: [
-        ['system', null, '** session opened :: aug 1 2004 :: 23:11 **'],
-        ['23:11', 'tegan_a87', 'wren kissed me'],
-        ['23:11', 'tegan_a87', 'wren KISSED me'],
-        ['23:11', 'glorfindel_lives', 'WHAT'],
-        ['23:12', 'tegan_a87', 'at the boathouse. after lights out. she said she\'s been thinking about me since last summer'],
-        ['23:13', 'tegan_a87', 'i know. i KNOW. she\'s 19. she\'s a counsellor. i\'m a JC. it\'s bad'],
-        ['23:14', 'tegan_a87', 'i don\'t care'],
-        ['system', null, '** session opened :: aug 4 2004 :: 00:42 **'],
-        ['00:42', 'glorfindel_lives', 'are you still leaving after camp'],
-        ['00:42', 'tegan_a87', 'yes'],
-        ['00:42', 'tegan_a87', 'yes. i have to. nothing about wren changes that'],
-        ['00:43', 'tegan_a87', 'probably it makes it worse actually. i can\'t be a girl who has a secret with a 19 year old at camp pinecrest forever'],
-        ['system', null, '** session opened :: aug 6 2004 :: 23:18 **'],
-        ['23:18', 'tegan_a87', 'bonfire tonight'],
-        ['23:18', 'tegan_a87', 'i kissed wren in front of everyone'],
-        ['23:19', 'glorfindel_lives', 'WHAT'],
-        ['23:19', 'tegan_a87', 'ok hear me out. there\'s this boy who keeps doing the thing where he sits next to me. so i had this idea'],
-        ['23:20', 'tegan_a87', 'i told wren to play along. then at the bonfire i grabbed her face and kissed her like full on. for like five seconds'],
-        ['23:20', 'tegan_a87', 'everyone laughed. the boy laughed. like haha look at the girls being silly'],
-        ['23:21', 'glorfindel_lives', 'tegan'],
-        ['23:21', 'tegan_a87', 'i KNOW. i got to actually kiss her. in front of everyone. and have it not count'],
-        ['23:22', 'tegan_a87', 'it was the best thing'],
-        ['23:22', 'glorfindel_lives', 'was she into it'],
-        ['23:23', 'tegan_a87', 'i mean she kissed me back'],
-        ['23:23', 'tegan_a87', 'she didn\'t really talk to me after though. i\'ll see her tomorrow'],
-        ['system', null, '** session opened :: aug 8 2004 :: 23:15 **'],
-        ['23:15', 'tegan_a87', 'i have $640 saved'],
-        ['23:15', 'tegan_a87', 'it\'s not a lot but it\'s a lot for me'],
-        ['23:16', 'glorfindel_lives', 'it\'s enough for the first month. [REDACTED] won\'t take rent'],
-        ['system', null, '** session opened :: aug 12 2004 :: 23:54 **'],
-        ['23:54', 'tegan_a87', 'two days to go'],
-        ['23:54', 'tegan_a87', '[REDACTED] confirmed for the 14th. 11 PM at the boathouse'],
-        ['23:55', 'glorfindel_lives', 'i\'ll be at the rendezvous. i\'ll be there the whole time'],
-        ['23:56', 'tegan_a87', 'how long do you wait if i don\'t show up'],
-        ['23:56', 'glorfindel_lives', 'i\'m not leaving until you\'re there'],
-        ['23:57', 'tegan_a87', 'hannah you can\'t sit in [REDACTED] for 14 hours'],
-        ['23:57', 'glorfindel_lives', 'watch me'],
-        ['system', null, '** session opened :: aug 13 2004 :: 22:30 **'],
-        ['22:30', 'tegan_a87', 'i wrote the letter today. encrypted it. hid it'],
-        ['22:31', 'tegan_a87', 'anyone who cares enough to crack it. mostly i think nobody will'],
-        ['22:31', 'glorfindel_lives', 'someone will'],
-        ['system', null, '** session opened :: aug 13 2004 :: 23:48 **'],
-        ['23:48', 'tegan_a87', 'i\'m scared'],
-        ['23:48', 'glorfindel_lives', 'you\'re allowed to be'],
-        ['23:51', 'tegan_a87', 'thank you'],
-        ['23:51', 'glorfindel_lives', 'don\'t thank me yet'],
-        ['23:52', 'tegan_a87', 'thank you anyway'],
-        ['system', null, '** session opened :: aug 14 2004 :: 09:47 **'],
-        ['09:47', 'tegan_a87', 'see you on the other side'],
-        ['system', null, '** session closed **']
+        ["system", null, "** session opened :: jun 15 2003 :: 21:33 **"],
+        ["21:33", "glorfindel_lives", "are you the tegan from the silmarillion thread"],
+        ["21:34", "tegan_a87", "yeah why"],
+        ["21:34", "glorfindel_lives", "the one who said feanor was right about the silmarils"],
+        ["21:35", "tegan_a87", "i did NOT say he was RIGHT i said he was MORALLY CONSISTENT"],
+        ["21:35", "glorfindel_lives", "ok glorfindel-balrog-slayer signing on"],
+        ["21:36", "tegan_a87", "lol your screenname is literally a deep cut"],
+        ["21:36", "tegan_a87", "most people pick legolas"],
+        ["21:37", "glorfindel_lives", "most people are wrong about a lot of things"],
+        ["system", null, "** session opened :: jun 22 2003 :: 22:14 **"],
+        ["22:14", "glorfindel_lives", "ok so i finished the silmarillion AGAIN. fifth time"],
+        ["22:14", "tegan_a87", "oh god which part are you crying about this time"],
+        ["22:15", "glorfindel_lives", "beren and luthien obviously"],
+        ["22:15", "tegan_a87", "predictable. correct. but predictable"],
+        ["22:16", "glorfindel_lives", "what would you cry about"],
+        ["22:16", "tegan_a87", "maeglin actually. nobody cries about maeglin enough"],
+        ["22:17", "glorfindel_lives", "maeglin is a TRAITOR"],
+        ["22:17", "tegan_a87", "ok and? was he supposed to be FINE? his mother died his uncle hated him he was in love with his cousin he never had a chance"],
+        ["22:18", "glorfindel_lives", "i feel like this is a tegan-coded read"],
+        ["22:18", "tegan_a87", "shut up"],
+        ["system", null, "** session opened :: jun 29 2003 :: 00:18 **"],
+        ["00:18", "tegan_a87", "ok unrelated. do you actually like school"],
+        ["00:18", "glorfindel_lives", "i tolerated it. dropped out of dal sophomore year. taking a break"],
+        ["00:19", "tegan_a87", "wait you're not in school?"],
+        ["00:19", "glorfindel_lives", "nope. working at the bookstore. saving money. figuring it out"],
+        ["00:20", "tegan_a87", "my mom would literally die. like full clutching pearls death"],
+        ["00:20", "glorfindel_lives", "my mom did die a little. she's getting over it"],
+        ["system", null, "** session opened :: jul 8 2003 :: 23:14 **"],
+        ["23:14", "tegan_a87", "i'm at camp now btw. didn't tell you"],
+        ["23:14", "glorfindel_lives", "oh!! where"],
+        ["23:15", "tegan_a87", "place called pinecrest. alberta. the woods"],
+        ["23:15", "tegan_a87", "i'm a junior counsellor. it's my first year"],
+        ["23:16", "glorfindel_lives", "that sounds like the start of a horror movie"],
+        ["23:16", "tegan_a87", "it's literally just a lake and some buildings"],
+        ["system", null, "** session opened :: jul 22 2003 :: 23:14 **"],
+        ["23:14", "tegan_a87", "capture the flag tonight was rigged"],
+        ["23:14", "tegan_a87", "tyler's group had like three more people than ours"],
+        ["23:15", "tegan_a87", "also their flag was hidden somewhere we couldn't even reach without going through pinewood and pinewood is BOY CABIN"],
+        ["23:15", "tegan_a87", "so basically we lost on a technicality"],
+        ["23:16", "glorfindel_lives", "that's so unfair"],
+        ["23:16", "tegan_a87", "anyway briar made me apologize to tyler for \"being a sore loser\" which i was NOT i was being a fair loser"],
+        ["system", null, "** session opened :: aug 2 2003 :: 23:48 **"],
+        ["23:48", "tegan_a87", "there's this counsellor wren halloway. she's 18. she has GREEN EYES"],
+        ["23:48", "glorfindel_lives", "oh god"],
+        ["23:49", "tegan_a87", "i KNOW. it's fine. i'm being normal about it"],
+        ["23:49", "glorfindel_lives", "are you though"],
+        ["23:50", "tegan_a87", "no"],
+        ["system", null, "** session opened :: aug 19 2003 :: 22:08 **"],
+        ["22:08", "tegan_a87", "home from camp. it's so quiet here"],
+        ["22:09", "glorfindel_lives", "you survived"],
+        ["22:09", "tegan_a87", "barely. i forgot how much i hate my room"],
+        ["22:10", "tegan_a87", "also i made a livejournal"],
+        ["22:10", "glorfindel_lives", "NO YOU DIDN'T"],
+        ["22:11", "tegan_a87", "i did. i'm tegan_a87. add me"],
+        ["22:11", "glorfindel_lives", "oh i ALREADY have one. i'm glorfindel_h. been on there since 2002"],
+        ["22:12", "tegan_a87", "of COURSE you have. probably a sandman icon"],
+        ["22:12", "glorfindel_lives", "how DARE you read me like that"],
+        ["system", null, "** session opened :: sep 4 2003 :: 19:41 **"],
+        ["19:41", "tegan_a87", "school started. french immersion is killing me"],
+        ["19:42", "glorfindel_lives", "french immersion in alberta is wild btw. like why"],
+        ["19:42", "tegan_a87", "my mom thought it would \"open doors\""],
+        ["19:43", "tegan_a87", "the doors it opens are french doors. into more french"],
+        ["system", null, "** session opened :: sep 19 2003 :: 22:01 **"],
+        ["22:01", "glorfindel_lives", "have you watched alias yet i keep telling you"],
+        ["22:02", "tegan_a87", "i don't have time for new shows i have ROTK in 12 weeks"],
+        ["22:02", "glorfindel_lives", "you can do both"],
+        ["22:03", "tegan_a87", "i CANNOT do both. i'm rewatching fellowship for the seventh time"],
+        ["22:03", "glorfindel_lives", "i love you so much"],
+        ["system", null, "** session opened :: sep 25 2003 :: 21:12 **"],
+        ["21:12", "tegan_a87", "the strokes is it album of the decade y/n"],
+        ["21:12", "glorfindel_lives", "it's MID. is this just"],
+        ["21:13", "tegan_a87", "it's not even my favorite of theirs. room on fire is BETTER"],
+        ["21:13", "glorfindel_lives", "i'm not arguing strokes with you it's like 11pm here"],
+        ["system", null, "** session opened :: oct 11 2003 :: 20:22 **"],
+        ["20:22", "glorfindel_lives", "have you done two towers extended yet"],
+        ["20:23", "tegan_a87", "THREE TIMES. helms deep is even longer this time"],
+        ["20:23", "glorfindel_lives", "peak cinema"],
+        ["system", null, "** session opened :: oct 25 2003 :: 23:19 **"],
+        ["23:19", "glorfindel_lives", "halloween costume help. i have like nothing"],
+        ["23:19", "tegan_a87", "go as eowyn. you have the brown hair already. find a sword"],
+        ["23:20", "glorfindel_lives", "i don't OWN a sword"],
+        ["23:20", "tegan_a87", "buy one. it's an investment"],
+        ["system", null, "** session opened :: oct 30 2003 :: 23:51 **"],
+        ["23:51", "tegan_a87", "my dad called. wants me for thanksgiving in edmonton. obviously"],
+        ["23:51", "glorfindel_lives", "do you want to go?"],
+        ["23:52", "tegan_a87", "not really. but his apartment has cable and ours doesn't so"],
+        ["23:52", "glorfindel_lives", "cable thanksgiving"],
+        ["23:53", "tegan_a87", "he'll order food and ask me about school for like 20 min and then we'll watch tv. it's fine"],
+        ["system", null, "** session opened :: nov 2 2003 :: 22:18 **"],
+        ["22:18", "tegan_a87", "i had a bad week"],
+        ["22:18", "tegan_a87", "like. bad bad"],
+        ["22:19", "glorfindel_lives", "do you want to talk about it"],
+        ["22:19", "tegan_a87", "not really. just wanted you to know"],
+        ["22:20", "glorfindel_lives", "ok i'm here. always"],
+        ["system", null, "** session opened :: nov 15 2003 :: 21:33 **"],
+        ["21:33", "glorfindel_lives", "ok i finally got rotk premiere tickets"],
+        ["21:33", "glorfindel_lives", "dec 17. midnight showing in halifax"],
+        ["21:34", "tegan_a87", "i'm going to dec 17. midnight in EDMONTON. an hour from here"],
+        ["21:34", "tegan_a87", "my mom is driving me"],
+        ["21:34", "glorfindel_lives", "WAIT we'll be watching it at the SAME TIME"],
+        ["21:35", "tegan_a87", "oh my god you're right"],
+        ["21:35", "tegan_a87", "90 minutes earlier in alberta though"],
+        ["21:36", "glorfindel_lives", "WHATEVER. simultaneous in spirit"],
+        ["system", null, "** session opened :: nov 22 2003 :: 22:48 **"],
+        ["22:48", "tegan_a87", "i made a quiz on quizilla. what type of LOTR death are you"],
+        ["22:48", "glorfindel_lives", "post the link"],
+        ["22:49", "tegan_a87", "i got boromir'd which feels embarrassingly accurate"],
+        ["22:49", "glorfindel_lives", "i got faramir of course because i AM faramir"],
+        ["system", null, "** session opened :: dec 19 2003 :: 01:14 **"],
+        ["01:14", "tegan_a87", "my mom asked if i had any \"real friends\" again"],
+        ["01:14", "tegan_a87", "i didn't say you. she'd be worse about you than about no friends"],
+        ["01:15", "glorfindel_lives", "i'm her worst nightmare. older. across the country. on the internet"],
+        ["01:15", "tegan_a87", "ya basically"],
+        ["01:16", "glorfindel_lives", "ok BUT i mean what about real-real friends. don't you have like"],
+        ["01:16", "tegan_a87", "madeline and rachel. yeah. i can hang out with them. it's fine"],
+        ["01:17", "tegan_a87", "but it's like. they're nice. but i can't talk about anything that matters"],
+        ["01:17", "glorfindel_lives", "yeah"],
+        ["system", null, "** session opened :: dec 25 2003 :: 23:42 **"],
+        ["23:42", "tegan_a87", "merry christmas i hate it here"],
+        ["23:42", "glorfindel_lives", "merry christmas i'm working tomorrow. boxing day at the bookstore is hell"],
+        ["23:43", "tegan_a87", "where do you work again i forgot"],
+        ["23:43", "glorfindel_lives", "[REDACTED]. independent shop. owner lets me read on shift"],
+        ["23:44", "tegan_a87", "god that sounds nice"],
+        ["23:44", "glorfindel_lives", "it is. i make like nothing but i get to be alone for hours"],
+        ["system", null, "** session opened :: jan 8 2004 :: 23:51 **"],
+        ["23:51", "tegan_a87", "rotk extended is finally announced. december"],
+        ["23:52", "glorfindel_lives", "i'm going to cry already"],
+        ["system", null, "** session opened :: jan 22 2004 :: 22:14 **"],
+        ["22:14", "glorfindel_lives", "ok i started the wheel of time"],
+        ["22:14", "tegan_a87", "NO"],
+        ["22:15", "glorfindel_lives", "i had to. people kept saying it was the next thing"],
+        ["22:15", "tegan_a87", "hannah it's THIRTEEN BOOKS"],
+        ["22:16", "glorfindel_lives", "i KNOW. i'm 200 pages into book one and i already want to fight rand"],
+        ["22:16", "tegan_a87", "rand is the WORST one"],
+        ["22:17", "glorfindel_lives", "that's so encouraging thank you"],
+        ["system", null, "** session opened :: jan 30 2004 :: 23:51 **"],
+        ["23:51", "tegan_a87", "do you ever just lie awake hating your bedroom"],
+        ["23:51", "glorfindel_lives", "all the time"],
+        ["23:52", "tegan_a87", "good. that's the only correct answer"],
+        ["system", null, "** session opened :: feb 4 2004 :: 23:18 **"],
+        ["23:18", "tegan_a87", "my mom is making me audition for a community theatre thing in edmonton"],
+        ["23:18", "tegan_a87", "she thinks i need a \"social outlet\""],
+        ["23:19", "glorfindel_lives", "what's the play"],
+        ["23:19", "tegan_a87", "oklahoma"],
+        ["23:19", "glorfindel_lives", "NO"],
+        ["23:20", "tegan_a87", "YES"],
+        ["23:20", "glorfindel_lives", "tegan you cannot be in oklahoma"],
+        ["23:21", "tegan_a87", "i'm going to bomb the audition on purpose"],
+        ["system", null, "** session opened :: feb 14 2004 :: 22:05 **"],
+        ["22:05", "tegan_a87", "valentine's day in french immersion is uniquely horrible"],
+        ["22:06", "tegan_a87", "they made us write valentine's notes. en français"],
+        ["22:06", "tegan_a87", "i wrote one to my mom. lying"],
+        ["system", null, "** session opened :: feb 22 2004 :: 23:44 **"],
+        ["23:44", "tegan_a87", "have you ever thought about just. leaving"],
+        ["23:45", "glorfindel_lives", "like leaving where"],
+        ["23:45", "tegan_a87", "anywhere. just. not being where you are"],
+        ["23:46", "glorfindel_lives", "i think about it sometimes yeah"],
+        ["23:46", "tegan_a87", "i think about it constantly"],
+        ["system", null, "** session opened :: feb 25 2004 :: 22:33 **"],
+        ["22:33", "tegan_a87", "i bought outkast. speakerboxxx. on cd. with my own money"],
+        ["22:33", "glorfindel_lives", "the love below is BETTER actually"],
+        ["22:34", "tegan_a87", "i like both. don't make me choose"],
+        ["system", null, "** session opened :: mar 6 2004 :: 22:30 **"],
+        ["22:30", "glorfindel_lives", "did you see lost in translation finally"],
+        ["22:30", "tegan_a87", "YES. obsessed. that hotel"],
+        ["22:31", "glorfindel_lives", "bill murray's face"],
+        ["22:31", "tegan_a87", "the karaoke scene like literally PERFECT"],
+        ["22:32", "tegan_a87", "also i want to be lonely in a foreign hotel so badly"],
+        ["22:32", "glorfindel_lives", "tegan"],
+        ["22:33", "tegan_a87", "WHAT it's a vibe"],
+        ["system", null, "** session opened :: mar 15 2004 :: 00:32 **"],
+        ["00:32", "tegan_a87", "i can't be here when i graduate. i can't go to the local college. i can't stay"],
+        ["00:33", "glorfindel_lives", "where would you go"],
+        ["00:33", "tegan_a87", "anywhere. east. somewhere big"],
+        ["00:34", "glorfindel_lives", "you have like a year and a half of high school left"],
+        ["00:34", "tegan_a87", "i know"],
+        ["00:35", "tegan_a87", "i don't think i can do a year and a half"],
+        ["system", null, "** session opened :: mar 24 2004 :: 23:04 **"],
+        ["23:04", "glorfindel_lives", "did you watch the OC tonight"],
+        ["23:04", "tegan_a87", "we don't get fox where i live??"],
+        ["23:05", "glorfindel_lives", "i forgot you live in like an oil town. RIP"],
+        ["23:05", "tegan_a87", "i download it on kazaa the next day. my mom would kill me if she knew"],
+        ["system", null, "** session opened :: apr 2 2004 :: 22:11 **"],
+        ["22:11", "tegan_a87", "i've been thinking"],
+        ["22:11", "tegan_a87", "i don't have to wait for graduation"],
+        ["22:12", "glorfindel_lives", "tegan"],
+        ["22:12", "tegan_a87", "i know i know. but hear me out"],
+        ["22:13", "tegan_a87", "i'd be 18 in january. that's only five months after camp ends"],
+        ["22:13", "tegan_a87", "if i could just disappear for five months"],
+        ["system", null, "** session opened :: apr 18 2004 :: 23:02 **"],
+        ["23:02", "glorfindel_lives", "i saw eternal sunshine yesterday"],
+        ["23:02", "glorfindel_lives", "tegan"],
+        ["23:03", "glorfindel_lives", "it broke me"],
+        ["23:03", "tegan_a87", "i'm going next weekend my mom is driving me to edmonton bc it's not playing here"],
+        ["23:04", "glorfindel_lives", "text me when you've seen it"],
+        ["23:04", "tegan_a87", "will do. is it sad-sad or melancholy-sad"],
+        ["23:05", "glorfindel_lives", "it's BOTH. it's a new category"],
+        ["system", null, "** session opened :: apr 25 2004 :: 23:48 **"],
+        ["23:48", "tegan_a87", "just saw mean girls. you have to see it"],
+        ["23:48", "glorfindel_lives", "is it actually good or are you in your tina fey era"],
+        ["23:49", "tegan_a87", "BOTH"],
+        ["system", null, "** session opened :: may 1 2004 :: 22:48 **"],
+        ["22:48", "tegan_a87", "ok i saw it. drove home in silence. mom thought i was mad at her"],
+        ["22:48", "glorfindel_lives", "were you"],
+        ["22:49", "tegan_a87", "no but i couldn't explain why i wasn't talking"],
+        ["22:49", "tegan_a87", "clementine's hair"],
+        ["22:50", "glorfindel_lives", "SARAH POLLEY'S whole performance"],
+        ["22:50", "tegan_a87", "i want to dye my hair blue"],
+        ["22:51", "glorfindel_lives", "do not dye your hair blue at camp"],
+        ["22:51", "tegan_a87", "ugh ok fine. after camp"],
+        ["system", null, "** session opened :: may 8 2004 :: 00:14 **"],
+        ["00:14", "tegan_a87", "my mom keeps asking when i'm going to \"have friends here\""],
+        ["00:14", "tegan_a87", "as if the friends i have don't count because they're online"],
+        ["system", null, "** session opened :: may 22 2004 :: 00:14 **"],
+        ["00:14", "glorfindel_lives", "ok i'm done with the OC for the season. cohen brothers carried that show"],
+        ["00:15", "tegan_a87", "i'm waiting for the finale to download. don't spoil"],
+        ["system", null, "** session opened :: jun 4 2004 :: 21:33 **"],
+        ["21:33", "tegan_a87", "i talked to my doctor today about how i've been feeling"],
+        ["21:34", "tegan_a87", "she put me on something. low dose"],
+        ["21:34", "glorfindel_lives", "tegan that's good"],
+        ["21:34", "tegan_a87", "i don't know yet. supposed to take a few weeks"],
+        ["21:35", "glorfindel_lives", "i'm proud of you for asking"],
+        ["21:35", "tegan_a87", "it's not a big deal"],
+        ["21:36", "glorfindel_lives", "it is though"],
+        ["system", null, "** session opened :: jun 12 2004 :: 00:08 **"],
+        ["00:08", "tegan_a87", "ok i'm doing it"],
+        ["00:08", "glorfindel_lives", "you are doing what"],
+        ["00:09", "tegan_a87", "i'm leaving. after camp. i'm just going"],
+        ["00:09", "glorfindel_lives", "oh my god"],
+        ["00:10", "tegan_a87", "i need your help. i need someone who knows"],
+        ["00:10", "glorfindel_lives", "i'm in. obviously i'm in"],
+        ["system", null, "** session opened :: jun 15 2004 :: 23:14 **"],
+        ["23:14", "tegan_a87", "school's done for the year btw. i forgot to tell you"],
+        ["23:14", "glorfindel_lives", "oh!! how did finals go"],
+        ["23:15", "tegan_a87", "84 french. 91 english. 88 history. 76 chem"],
+        ["23:15", "glorfindel_lives", "tegan that's amazing"],
+        ["23:16", "tegan_a87", "it's normal. my mom said \"good. now do better in chem\""],
+        ["23:16", "glorfindel_lives", "oh my god she did NOT"],
+        ["23:17", "tegan_a87", "she literally did"],
+        ["system", null, "** session opened :: jun 18 2004 :: 23:42 **"],
+        ["23:42", "glorfindel_lives", "i talked to [REDACTED] today"],
+        ["23:42", "glorfindel_lives", "she has a place. cheap. she'll let you stay until you figure out a job"],
+        ["23:43", "tegan_a87", "oh my god really"],
+        ["23:43", "glorfindel_lives", "yeah. she's been through it. she gets it"],
+        ["system", null, "** session opened :: jun 22 2004 :: 22:18 **"],
+        ["22:18", "glorfindel_lives", "ok unrelated but my coworker quit so i'm closing every saturday now"],
+        ["22:18", "tegan_a87", "rip your weekends"],
+        ["22:19", "glorfindel_lives", "i'm getting more shifts which means more money for [REDACTED]"],
+        ["22:19", "tegan_a87", "hannah"],
+        ["22:20", "glorfindel_lives", "don't"],
+        ["22:20", "tegan_a87", "you can't pay for me"],
+        ["22:21", "glorfindel_lives", "i can do whatever i want with my paychecks. shut up"],
+        ["system", null, "** session opened :: jun 25 2004 :: 22:14 **"],
+        ["22:14", "tegan_a87", "camp starts in two weeks. i'm packing tonight"],
+        ["22:14", "tegan_a87", "i'm packing TWO bags. one i bring back. one i leave with"],
+        ["22:15", "glorfindel_lives", "where are you going to keep the leaving bag"],
+        ["22:15", "tegan_a87", "under the dock. there's a storage box that's been broken since 2002. nobody checks it"],
+        ["system", null, "** session opened :: jun 28 2004 :: 00:11 **"],
+        ["00:11", "tegan_a87", "i went through everything in my room today"],
+        ["00:11", "tegan_a87", "trying to figure out what i'd actually miss if i never came back for it"],
+        ["00:12", "glorfindel_lives", "what's on the list"],
+        ["00:12", "tegan_a87", "my journal. my fellowship dvd. the bracelet my dad gave me when i was 9. one specific sweater"],
+        ["00:13", "glorfindel_lives", "bring all of it"],
+        ["00:13", "tegan_a87", "the leaving bag is small. i can fit some"],
+        ["system", null, "** session opened :: jul 4 2004 :: 22:48 **"],
+        ["22:48", "tegan_a87", "i'm at camp. i made it through orientation"],
+        ["22:49", "tegan_a87", "wren is here. she's a cabin counsellor this year not a JC"],
+        ["22:49", "glorfindel_lives", "oh. wren wren? from last summer?"],
+        ["22:50", "tegan_a87", "yeah. wren. wren halloway"],
+        ["22:50", "tegan_a87", "she looked at me at lunch and i forgot how to use my hands"],
+        ["system", null, "** session opened :: jul 8 2004 :: 22:33 **"],
+        ["22:33", "tegan_a87", "the new JCs are mostly fine"],
+        ["22:33", "tegan_a87", "there's this girl hattie who's like 17 and SO earnest. she made everyone matching cabin signs"],
+        ["22:34", "glorfindel_lives", "that's adorable"],
+        ["22:34", "tegan_a87", "it IS. i feel bad that i find her exhausting"],
+        ["22:35", "glorfindel_lives", "you find everyone exhausting"],
+        ["22:35", "tegan_a87", "that's not TRUE i don't find you exhausting"],
+        ["22:36", "glorfindel_lives", "counter: you can mute me"],
+        ["system", null, "** session opened :: jul 11 2004 :: 23:03 **"],
+        ["23:03", "glorfindel_lives", "[REDACTED] said she can pick you up at the boathouse. she has a [REDACTED] her cousin lent her"],
+        ["23:04", "tegan_a87", "oh my god"],
+        ["23:04", "glorfindel_lives", "she's good. i know her from the [REDACTED] message board. she's been planning trips like this for years"],
+        ["23:05", "tegan_a87", "i'll never be able to thank her"],
+        ["23:05", "glorfindel_lives", "she doesn't want to be thanked. she wants you to be safe"],
+        ["system", null, "** session opened :: jul 15 2004 :: 23:48 **"],
+        ["23:48", "tegan_a87", "it rained all day today. the campers were CHAOS"],
+        ["23:48", "tegan_a87", "we did indoor activities. i taught them how to french braid hair"],
+        ["23:49", "glorfindel_lives", "oh god you can french braid?"],
+        ["23:49", "tegan_a87", "my mom is OBSESSED with hair. mandatory skill"],
+        ["23:50", "glorfindel_lives", "i can like. ponytail. that's my range"],
+        ["23:50", "tegan_a87", "you have like 5 inches of hair what do you need to know"],
+        ["23:51", "glorfindel_lives", "FAIR"],
+        ["system", null, "** session opened :: jul 19 2004 :: 21:48 **"],
+        ["21:48", "tegan_a87", "ok so today's drama"],
+        ["21:49", "tegan_a87", "briar made everyone do a TRUST FALL"],
+        ["21:49", "tegan_a87", "at staff orientation. for trust building. between counsellors"],
+        ["21:50", "glorfindel_lives", "lmaoooo"],
+        ["21:50", "tegan_a87", "i fell into wren's arms which was great"],
+        ["21:51", "tegan_a87", "also fell into a bunch of other people's arms which was less great"],
+        ["21:51", "tegan_a87", "anyway tyler is back as a JC. apparently this is his second summer"],
+        ["21:52", "glorfindel_lives", "oh that name's familiar"],
+        ["21:52", "tegan_a87", "he was at camp last year. did capture the flag. won unfairly. you wouldn't remember"],
+        ["21:53", "tegan_a87", "he asked me if i remembered him. i said vaguely"],
+        ["21:54", "tegan_a87", "which is a lie i remember EVERYONE from last summer i'm a freak"],
+        ["system", null, "** session opened :: jul 25 2004 :: 22:48 **"],
+        ["22:48", "tegan_a87", "how does the safe house thing work"],
+        ["22:49", "glorfindel_lives", "you go in, you say [REDACTED] sent you, you get the room. she charges nothing. she'll feed you. you stay as long as you need"],
+        ["22:49", "tegan_a87", "and after"],
+        ["22:50", "glorfindel_lives", "after we figure out what after means. one step at a time"],
+        ["system", null, "** session opened :: jul 28 2004 :: 00:18 **"],
+        ["00:18", "tegan_a87", "camille gave me a friendship bracelet today"],
+        ["00:18", "tegan_a87", "like just walked up at lunch and tied it on my wrist and walked away"],
+        ["00:19", "glorfindel_lives", "oh that's cute"],
+        ["00:19", "tegan_a87", "i'm going to cry. i'm leaving in like 2 weeks"],
+        ["00:20", "glorfindel_lives", "tegan"],
+        ["00:20", "tegan_a87", "i KNOW. i KNOW. don't say it"],
+        ["system", null, "** session opened :: jul 31 2004 :: 23:33 **"],
+        ["23:33", "glorfindel_lives", "it's so weird that we've been doing this for over a year now"],
+        ["23:33", "tegan_a87", "i know"],
+        ["23:34", "tegan_a87", "you've been through more of my actual life than anyone else"],
+        ["system", null, "** session opened :: aug 1 2004 :: 23:11 **"],
+        ["23:11", "tegan_a87", "wren kissed me"],
+        ["23:11", "tegan_a87", "wren KISSED me"],
+        ["23:11", "glorfindel_lives", "WHAT"],
+        ["23:12", "tegan_a87", "at the boathouse. after lights out. she said she's been thinking about me since last summer"],
+        ["23:13", "tegan_a87", "i know. i KNOW. she's 19. she's a counsellor. i'm a JC. it's bad"],
+        ["23:14", "tegan_a87", "i don't care"],
+        ["system", null, "** session opened :: aug 2 2004 :: 23:55 **"],
+        ["23:55", "tegan_a87", "i can't sleep"],
+        ["23:55", "glorfindel_lives", "are you ok"],
+        ["23:56", "tegan_a87", "i'm great actually. that's the problem. i can't sleep because i'm thinking about her"],
+        ["23:56", "glorfindel_lives", "oh"],
+        ["23:57", "tegan_a87", "i've never been HAPPY-insomniac before"],
+        ["23:57", "glorfindel_lives", "i love this for you"],
+        ["system", null, "** session opened :: aug 4 2004 :: 00:42 **"],
+        ["00:42", "glorfindel_lives", "are you still leaving after camp"],
+        ["00:42", "tegan_a87", "yes"],
+        ["00:42", "tegan_a87", "yes. i have to. nothing about wren changes that"],
+        ["00:43", "tegan_a87", "probably it makes it worse actually. i can't be a girl who has a secret with a 19 year old at camp pinecrest forever"],
+        ["system", null, "** session opened :: aug 5 2004 :: 23:22 **"],
+        ["23:22", "tegan_a87", "my mom emailed marcia today asking how i'm \"adjusting\""],
+        ["23:22", "tegan_a87", "my MOTHER is checking up on me with the camp director"],
+        ["23:23", "glorfindel_lives", "how do you know"],
+        ["23:23", "tegan_a87", "marcia mentioned it casually like \"your mom says hi\" with this LOOK"],
+        ["23:24", "tegan_a87", "she KNOWS. she has to know. she has to suspect SOMETHING"],
+        ["23:24", "glorfindel_lives", "tegan it's probably nothing"],
+        ["23:25", "tegan_a87", "it is NEVER nothing with my mom"],
+        ["system", null, "** session opened :: aug 6 2004 :: 23:18 **"],
+        ["23:18", "tegan_a87", "bonfire tonight"],
+        ["23:18", "tegan_a87", "i kissed wren in front of everyone"],
+        ["23:19", "glorfindel_lives", "WHAT"],
+        ["23:19", "tegan_a87", "ok hear me out. there's this boy who keeps doing the thing where he sits next to me. so i had this idea"],
+        ["23:20", "tegan_a87", "i told wren to play along. then at the bonfire i grabbed her face and kissed her like full on. for like five seconds"],
+        ["23:20", "tegan_a87", "everyone laughed. the boy laughed. like haha look at the girls being silly"],
+        ["23:21", "glorfindel_lives", "tegan"],
+        ["23:21", "tegan_a87", "i KNOW. i got to actually kiss her. in front of everyone. and have it not count"],
+        ["23:22", "tegan_a87", "it was the best thing"],
+        ["23:22", "glorfindel_lives", "was she into it"],
+        ["23:23", "tegan_a87", "i mean she kissed me back"],
+        ["23:23", "tegan_a87", "she didn't really talk to me after though. i'll see her tomorrow"],
+        ["system", null, "** session opened :: aug 7 2004 :: 23:48 **"],
+        ["23:48", "tegan_a87", "she barely looked at me today"],
+        ["23:48", "glorfindel_lives", "yeah"],
+        ["23:49", "tegan_a87", "i'm going to find her tonight after lights out"],
+        ["23:49", "glorfindel_lives", "be careful"],
+        ["23:50", "tegan_a87", "i'm always careful"],
+        ["23:50", "glorfindel_lives", "lol you are NEVER careful"],
+        ["system", null, "** session opened :: aug 8 2004 :: 00:33 **"],
+        ["00:33", "tegan_a87", "ok we talked. she was hurt. she said she felt like a prop"],
+        ["00:33", "tegan_a87", "i told her she wasn't. that i wanted to kiss her so badly i invented an excuse"],
+        ["00:34", "glorfindel_lives", "did she believe you"],
+        ["00:34", "tegan_a87", "i think so. eventually. she stayed"],
+        ["23:15", "tegan_a87", "i have $640 saved"],
+        ["23:15", "tegan_a87", "it's not a lot but it's a lot for me"],
+        ["23:16", "glorfindel_lives", "it's enough for the first month. [REDACTED] won't take rent"],
+        ["23:16", "tegan_a87", "i'm going to insist"],
+        ["23:17", "glorfindel_lives", "she'll insist back. you'll lose"],
+        ["system", null, "** session opened :: aug 9 2004 :: 22:18 **"],
+        ["22:18", "tegan_a87", "i had to swap dish duty with tyler tonight because hattie's cabin had a thing"],
+        ["22:19", "tegan_a87", "he was being weirdly nice about it"],
+        ["22:19", "tegan_a87", "like talking to me the whole time"],
+        ["22:20", "tegan_a87", "like sir i just want to wash these plates and leave"],
+        ["22:20", "glorfindel_lives", "lmao"],
+        ["22:21", "tegan_a87", "anyway briar wants me to do the morning swim shift tomorrow which is at SIX AM"],
+        ["22:21", "tegan_a87", "i'd rather die"],
+        ["system", null, "** session opened :: aug 10 2004 :: 23:42 **"],
+        ["23:42", "tegan_a87", "wren said she loves me"],
+        ["23:42", "tegan_a87", "i didn't say it back"],
+        ["23:43", "glorfindel_lives", "oh"],
+        ["23:43", "tegan_a87", "i couldn't. i'm leaving in four days. it would have been the worst thing i could say to her"],
+        ["23:44", "glorfindel_lives", "did you say anything"],
+        ["23:44", "tegan_a87", "i kissed her. that's all i could do"],
+        ["system", null, "** session opened :: aug 11 2004 :: 23:18 **"],
+        ["23:18", "tegan_a87", "she keeps trying to make plans for after camp"],
+        ["23:19", "tegan_a87", "she's like \"we'll figure out how to see each other in the school year. i can drive up sometimes\""],
+        ["23:19", "glorfindel_lives", "tegan"],
+        ["23:20", "tegan_a87", "i KNOW. i'm letting her plan it. i can't tell her i won't be there"],
+        ["23:20", "tegan_a87", "she'll know in like four days. she'll find out the same way everyone else does"],
+        ["23:21", "glorfindel_lives", "she's going to be devastated"],
+        ["23:21", "tegan_a87", "i know"],
+        ["23:22", "tegan_a87", "i think about it constantly. it's the only part i don't know how to feel about"],
+        ["system", null, "** session opened :: aug 12 2004 :: 23:54 **"],
+        ["23:54", "tegan_a87", "two days to go"],
+        ["23:54", "tegan_a87", "[REDACTED] confirmed for the 14th. 11 PM at the boathouse"],
+        ["23:55", "glorfindel_lives", "i'll be at the rendezvous. i'll be there the whole time"],
+        ["23:56", "tegan_a87", "how long do you wait if i don't show up"],
+        ["23:56", "glorfindel_lives", "i'm not leaving until you're there"],
+        ["23:57", "tegan_a87", "hannah you can't sit in [REDACTED] for 14 hours"],
+        ["23:57", "glorfindel_lives", "watch me"],
+        ["system", null, "** session opened :: aug 13 2004 :: 22:30 **"],
+        ["22:30", "tegan_a87", "i wrote the letter today. encrypted it. hid it"],
+        ["22:30", "glorfindel_lives", "who's it for"],
+        ["22:31", "tegan_a87", "anyone who cares enough to crack it. mostly i think nobody will"],
+        ["22:31", "glorfindel_lives", "someone will"],
+        ["22:32", "tegan_a87", "i hope so"],
+        ["22:32", "tegan_a87", "i used your screenname as the key. felt right"],
+        ["22:33", "glorfindel_lives", "oh"],
+        ["22:33", "glorfindel_lives", "tegan"],
+        ["22:34", "tegan_a87", "don't get weird about it"],
+        ["22:34", "glorfindel_lives", "i'm not getting weird i'm just. you used my screenname"],
+        ["22:35", "tegan_a87", "it's a balrog slayer. it's protective"],
+        ["system", null, "** session opened :: aug 14 2004 :: 09:47 **"],
+        ["09:47", "tegan_a87", "see you on the other side"],
+        ["system", null, "** session closed **"]
       ]
     }
   };
@@ -1050,20 +1530,101 @@ her name is wren halloway`
     return { title: filename, chromeClass: 'vw-chrome-diary', html: html };
   }
 
+  // ---- Outlook Express :: 2004 staff email archive ----
+  // Reads window.EMAIL_CORPUS (loaded by email_corpus.js). Gated to ch7+ at the
+  // call site (the desktop icon only appears once the player has diegetically
+  // recovered the archive). The viewer mirrors classic OE chrome — a list pane
+  // (top) summarising sender/subject/date, plus per-message reading via
+  // pushView('email-msg', idx).
+  function emailCorpusOrEmpty() {
+    return (typeof window !== 'undefined' && Array.isArray(window.EMAIL_CORPUS))
+      ? window.EMAIL_CORPUS : [];
+  }
+  function shortDate(rfcDate) {
+    // 'Sun, 15 Aug 2004 09:14:22 -0600' → 'Aug 15 09:14'
+    const m = (rfcDate || '').match(/\d{2} (\w{3}) (\d{4}) (\d{2}):(\d{2})/);
+    if (!m) return rfcDate || '';
+    return m[1] + ' ' + m[3] + ':' + m[4];
+  }
+  function shortFrom(fromHdr) {
+    // 'Briar Vance <briar.vance@camppinecrest.ca>' → 'Briar Vance'
+    const m = (fromHdr || '').match(/^([^<]+?)\s*</);
+    return m ? m[1] : (fromHdr || '');
+  }
+  function viewEmailIndex() {
+    setPath('C:\\Documents and Settings\\tegan\\Desktop\\pinecrest_summer\\inbox\\');
+    const corpus = emailCorpusOrEmpty();
+    setStatus(corpus.length + ' message(s)');
+    if (corpus.length === 0) {
+      return { title: 'Inbox', chromeClass: 'vw-chrome-outlook',
+        html: '<div style="padding:40px;text-align:center;color:#888;font-family:Tahoma,sans-serif;">inbox is empty. (the 2004 staff archive isn\'t loaded.)</div>' };
+    }
+    // sort by date ascending — earliest emails first, matches a real inbox view
+    const indexed = corpus.map((e, i) => ({ e: e, i: i, ts: Date.parse(e.date) || 0 }));
+    indexed.sort((a, b) => a.ts - b.ts);
+    const rows = indexed.map(rec => {
+      const e = rec.e;
+      return '<div class="vw-oe-row" onclick="Viewers.pushView(\'email-msg\', ' + rec.i + ')">' +
+               '<span class="vw-oe-cell vw-oe-cell-from">' + escapeHtml(shortFrom(e.from)) + '</span>' +
+               '<span class="vw-oe-cell vw-oe-cell-subject">' + escapeHtml(e.subject || '(no subject)') + '</span>' +
+               '<span class="vw-oe-cell vw-oe-cell-date">' + escapeHtml(shortDate(e.date)) + '</span>' +
+             '</div>';
+    }).join('');
+    const html =
+      '<div class="vw-oe-folder-bar">📥 Inbox &nbsp;·&nbsp; ' + corpus.length + ' messages</div>' +
+      '<div class="vw-oe-row vw-oe-header">' +
+        '<span class="vw-oe-cell vw-oe-cell-from">From</span>' +
+        '<span class="vw-oe-cell vw-oe-cell-subject">Subject</span>' +
+        '<span class="vw-oe-cell vw-oe-cell-date">Received</span>' +
+      '</div>' +
+      '<div class="vw-oe-list">' + rows + '</div>' +
+      '<div class="vw-oe-statusbar">' +
+        'tegan was on the camp staff mailing list. this archive came from the camp\'s public web directory. ' +
+        'every staff message from january to august 2004.' +
+      '</div>';
+    return { title: 'Inbox - Outlook Express', chromeClass: 'vw-chrome-outlook', html: html };
+  }
+  function viewEmailMessage(idx) {
+    const corpus = emailCorpusOrEmpty();
+    const i = parseInt(idx, 10);
+    const e = corpus[i];
+    if (!e) return { title: 'not found', chromeClass: 'vw-chrome-outlook', html: '<div style="padding:40px;">message not found.</div>' };
+    setPath('inbox\\msg-' + i);
+    setStatus(e.subject || '(no subject)');
+    const bodyHtml = escapeHtml(e.body || '').replace(/\n/g, '<br>');
+    const html =
+      '<div class="vw-oe-msg-headers">' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">From:</span> ' + escapeHtml(e.from || '') + '</div>' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">To:</span> ' + escapeHtml(e.to || '') + '</div>' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">Date:</span> ' + escapeHtml(e.date || '') + '</div>' +
+        '<div class="vw-oe-hdr"><span class="vw-oe-hdr-label">Subject:</span> ' + escapeHtml(e.subject || '') + '</div>' +
+      '</div>' +
+      '<div class="vw-oe-msg-body">' + bodyHtml + '</div>';
+    return { title: e.subject || '(no subject)', chromeClass: 'vw-chrome-outlook', html: html };
+  }
+
   // ---- pinecrest_summer/ (the unzipped archive) ----
   function viewPinecrest() {
     setPath('C:\\Documents and Settings\\tegan\\Desktop\\pinecrest_summer\\');
-    setStatus('5 object(s)');
+    const ch = currentChapter();
+    // Outlook only appears once the player has diegetically pulled the camp
+    // staff email archive from camppinecrest.ca/staff in ch7.
+    const showOutlook = ch >= 7 && Array.isArray(window.EMAIL_CORPUS);
+    const itemCount = 5 + (showOutlook ? 1 : 0);
+    setStatus(itemCount + ' object(s)');
     const html =
       '<div class="vw-explorer-grid">' +
         explorerItem('💬', 'AIM_archives', "Viewers.pushView('aim')") +
         explorerItem('📱', 'SMS_dumps', "Viewers.pushView('sms')") +
         explorerItem('📔', 'diary', "Viewers.pushView('diary')") +
+        (showOutlook ? explorerItem('📧', 'inbox (Outlook)', "Viewers.pushView('email')") : '') +
         explorerItem('📂', 'staff_2003.txt', "alert('roster of pinecrest counsellors, summer 2003. extracted in chapter 4.')") +
         explorerItem('📂', 'staff_2004.txt', "alert('roster of pinecrest counsellors, summer 2004. extracted in chapter 4.')") +
       '</div>' +
       '<div style="margin-top:16px; padding:8px; background:#fffbe6; border:1px solid #d4d0c8; font-family:Tahoma,sans-serif; font-size:11px; color:#666;">' +
-        '<em>extracted from pinecrest_summer.zip on chapter 2. password: birchwoodcounsellor1985.</em>' +
+        '<em>extracted from pinecrest_summer.zip on chapter 2. password: birchwoodcounsellor1985.' +
+        (showOutlook ? ' inbox archive added in chapter 7 from the camp\'s public web directory.' : '') +
+        '</em>' +
       '</div>';
     return { title: 'pinecrest_summer', chromeClass: 'vw-chrome-explorer', html: html };
   }

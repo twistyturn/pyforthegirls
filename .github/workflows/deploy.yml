@@ -26,7 +26,7 @@ jobs:
           mkdir -p public
           cp -v *.html public/
           cp -v favicon.png public/
-          cp -v caseboard.js clutter.js study_notes.js sounds.js practice.js viewers.js public/
+          cp -v caseboard.js clutter.js study_notes.js sounds.js practice.js viewers.js email_corpus.js public/
           cp -rv cursors public/
           cp -rv images public/
           cp -rv python_practice public/
