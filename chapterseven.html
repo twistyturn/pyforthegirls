@@ -1887,7 +1887,7 @@ aug_emails = []
 # print the count, then loop printing each as
 # [<abbrev date>] <subject>
 `,
-    expectedOutput: `22 emails between Aug 13 and Aug 16.
+    expectedOutput: `23 emails between Aug 13 and Aug 16.
 [Aug 13, 14:08] Re: parent pickup change for Saturday
 [Aug 13, 16:33] supplies for closing bonfire
 [Aug 13, 19:51] Re: Casey's nut allergy update
@@ -1909,6 +1909,7 @@ aug_emails = []
 [Aug 16, 09:08] Re: Camille McCleod requests early pickup
 [Aug 16, 10:42] media protocol reminder
 [Aug 16, 11:22] Re: missing camper update \u2014 please see attached
+[Aug 16, 13:42] search-area update
 [Aug 16, 17:31] Re: closing ceremony postponed`,
     matchType: 'exact',
     codeMustContain: ['parsedate_to_datetime('],
