@@ -1866,13 +1866,13 @@ Re: lifeguard rotation update`,
     title: 'python.exe :: filter_aug_dates.py',
     meta: 'narrow the corpus. four days.',
     skill: 'DATETIME PARSING :: email.utils.parsedate_to_datetime',
-    hint: `<code>for em in emails:</code> indented <code>dt = parsedate_to_datetime(em["date"])</code> then <code>if start <= dt < end: aug_emails.append(em)</code>. then print count, then loop again printing <code>f"[{dt.strftime('%b %d, %H:%M')}] {em['subject']}"</code>.`,
+    hint: `<code>for em in emails:</code> indented <code>dt = parsedate_to_datetime(em["date"])</code> then <code>if start <= dt < end: aug_emails.append(em)</code>. then print the summary line as <code>f"{len(aug_emails)} emails between Aug 13 and Aug 16."</code>, then loop again printing each email as <code>f"[{dt.strftime('%b %d, %H:%M')}] {em['subject']}"</code>.`,
     storyAbove: `the date headers in emails are formatted like <code>Sun, 15 Aug 2004 09:14:22 -0600</code>. python's <code>email.utils.parsedate_to_datetime</code> turns those into <strong>datetime</strong> objects you can compare and format:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">from email.utils import parsedate_to_datetime
 dt = parsedate_to_datetime("Sun, 15 Aug 2004 09:14:22 -0600")
 print(dt)
 # → 2004-08-15 09:14:22-06:00</pre>once you have a datetime, you can compare it with <code>&lt;</code>, <code>&gt;=</code>, etc. you can also format it as a string with <code>.strftime()</code> using format codes:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">dt.strftime("%b %d, %H:%M")
 # → "Aug 15, 09:14"</pre><code>%b</code> is the abbreviated month, <code>%d</code> is the day-of-month, <code>%H:%M</code> is hours:minutes. you don't need to memorize these — just know they exist and you can look them up.<br><br>you want emails from August 13 through August 16, 2004. the starter pre-builds the start and end datetime objects for you, in mountain-time (UTC-6).`,
-    instructions: `your task: import datetime and email.utils. for each email, parse its date header into a datetime. filter to those between Aug 13, 2004 and Aug 17, 2004 (start inclusive, end exclusive) using a UTC-6 timezone. store in <code>aug_emails</code>. print the count and the subject + abbreviated date of each one.`,
+    instructions: `your task: import datetime and email.utils. for each email, parse its date header into a datetime. filter to those between Aug 13, 2004 and Aug 17, 2004 (start inclusive, end exclusive) using a UTC-6 timezone. store in <code>aug_emails</code>. then print one summary line of the form <code>"N emails between Aug 13 and Aug 16."</code>, followed by one line per email of the form <code>"[Aug DD, HH:MM] subject"</code>.`,
     starter: `import datetime
 from email.utils import parsedate_to_datetime
 
@@ -1884,8 +1884,8 @@ aug_emails = []
 
 # loop emails. parse each "date". if start <= dt < end, append.
 
-# print the count, then loop printing each as
-# [<abbrev date>] <subject>
+# print one summary line: "<N> emails between Aug 13 and Aug 16."
+# then loop printing each as "[Aug DD, HH:MM] <subject>"
 `,
     expectedOutput: `23 emails between Aug 13 and Aug 16.
 [Aug 13, 14:08] Re: parent pickup change for Saturday
