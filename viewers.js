@@ -26,6 +26,24 @@
   // onto this stack so the back button restores the folder.
   const viewStack = [];
 
+  // --- CHAPTER DETECTION ---
+  // viewers.js is shared across all chapter HTML files. content like the
+  // AIM archive index needs to gate by chapter so logs that haven't been
+  // diegetically recovered yet don't show up in the file list. filename
+  // is the source of truth — no globals to set per chapter.
+  function currentChapter() {
+    const path = (typeof window !== 'undefined' && window.location && window.location.pathname || '').toLowerCase();
+    if (path.indexOf('chaptereight') !== -1) return 8;
+    if (path.indexOf('chapterseven') !== -1) return 7;
+    if (path.indexOf('chaptersix')   !== -1) return 6;
+    if (path.indexOf('chapterfive')  !== -1) return 5;
+    if (path.indexOf('chapterfour')  !== -1) return 4;
+    if (path.indexOf('chapterthree') !== -1) return 3;
+    if (path.indexOf('chaptertwo')   !== -1) return 2;
+    if (path.indexOf('chapterone')   !== -1) return 1;
+    return 99; // index page or unknown context — show everything
+  }
+
   // ===========================================================================
   // CSS — shared modal + Windows 2000 chrome. each viewer body switches
   // its own .vw-chrome-* class to opt into a period-correct skin.
@@ -469,9 +487,12 @@
 
   // ---- AIM_archives/ ----
   // each entry's `messages` is an array of [timestamp, who, text].
-  // who: 'tegan' | 'self' (for whichever side is tegan in this log) | 'other' | 'system'
+  // who: 'tegan_a87' (or whatever string is in selfHandle) | another handle | 'system'
+  // chapter: minimum chapter at which this log appears in the index. lets the
+  // viewer only surface logs that have been diegetically recovered by then.
   const AIM_LOGS = {
     'camille_summer04.txt': {
+      chapter: 2, // first opened in ch2's aim_log_1 beat
       buddy: 'camille.j.89',
       title: 'AIM with camille.j.89',
       blurb: 'cousin from edmonton. summer ’04. background lurker.',
@@ -489,46 +510,87 @@
         ['system', null, '** session closed :: 22:41 **']
       ]
     },
-    'glorfindel_lives.txt': {
-      buddy: 'glorfindel_lives',
-      title: 'AIM with glorfindel_lives',
-      blurb: 'LJ friend. talked tolkien fic mostly. only outside witness on aug 14.',
-      messages: [
-        ['system', null, '** session opened :: jul 26 2004 :: 23:08 **'],
-        ['23:08', 'tegan_a87', 'have you read the silmarillion fic where Maedhros and Fingon both survive'],
-        ['23:09', 'glorfindel_lives', 'ofc i wrote half the rec list'],
-        ['23:09', 'tegan_a87', 'i have a question for you'],
-        ['23:10', 'glorfindel_lives', '?'],
-        ['23:10', 'tegan_a87', 'if you knew you were about to do something stupid would you tell anyone first'],
-        ['23:11', 'glorfindel_lives', 'depends on the kind of stupid'],
-        ['23:11', 'tegan_a87', 'the kind where you\'re going to feel it for the rest of your life'],
-        ['23:12', 'glorfindel_lives', 'tegan'],
-        ['23:12', 'glorfindel_lives', 'are you ok'],
-        ['23:13', 'tegan_a87', 'yeah. just thinking. nvm.'],
-        ['system', null, '** session closed :: 23:45 **']
-      ]
-    },
     'wren_h_briar_v.txt': {
-      buddy: 'wren_h ↔ briar_v',
-      title: 'AIM :: wren_h ↔ briar_v (recovered fragments)',
-      blurb: 'recovered from her cache during chapter 3. NOT one of tegan\'s logs — these are wren and briar covering for each other on aug 14.',
+      chapter: 3, // recovered from her cache during ch3's fragment_board beat
+      buddy: 'wren_h → briar_v',
+      title: 'AIM :: wren_h → briar_v (recovered fragments)',
+      blurb: 'NOT one of tegan\'s logs. recovered from her cache aug 17. only wren\'s outgoing side survived — briar\'s replies aren\'t here.',
       selfHandle: 'wren_h',
       messages: [
-        ['system', null, '** fragments — not in chronological order — recovered aug 17 **'],
+        ['system', null, '** recovered fragments :: wren_h outgoing only :: aug 14 2004 **'],
         ['21:30', 'wren_h', 'covering for me tonight right? i\'m in the cabin. you saw me in the cabin.'],
-        ['21:33', 'briar_v', 'yeah. obviously. i was with you.'],
-        ['22:48', 'wren_h', 'if anyone asks, we were both at the cabin all night.'],
-        ['23:51', 'wren_h', 'cabin. cabin. say it like you believe it.'],
-        ['00:12', 'briar_v', 'wren what did you do'],
-        ['system', null, '** more fragments unlocked in chapter 3 **']
+        ['22:42', 'wren_h', 'if anyone asks: i was in my cabin all night. you were in yours. study session if they push.'],
+        ['00:08', 'wren_h', 'thanks. you\'re a real one.'],
+        ['07:22', 'wren_h', 'i was in the cabin all night. you saw me. right?'],
+        ['system', null, '** end of recovered fragments **']
+      ]
+    },
+    'glorfindel_lives.txt': {
+      chapter: 6, // ch6's player_browses_august archive beat surfaces this log
+      buddy: 'glorfindel_lives',
+      title: 'AIM with glorfindel_lives',
+      blurb: 'LJ friend. talked tolkien fic mostly. only outside witness on aug 14. dense final two weeks before camp ended.',
+      messages: [
+        ['system', null, '** session opened :: aug 1 2004 :: 23:11 **'],
+        ['23:11', 'tegan_a87', 'wren kissed me'],
+        ['23:11', 'tegan_a87', 'wren KISSED me'],
+        ['23:11', 'glorfindel_lives', 'WHAT'],
+        ['23:12', 'tegan_a87', 'at the boathouse. after lights out. she said she\'s been thinking about me since last summer'],
+        ['23:13', 'tegan_a87', 'i know. i KNOW. she\'s 19. she\'s a counsellor. i\'m a JC. it\'s bad'],
+        ['23:14', 'tegan_a87', 'i don\'t care'],
+        ['system', null, '** session opened :: aug 4 2004 :: 00:42 **'],
+        ['00:42', 'glorfindel_lives', 'are you still leaving after camp'],
+        ['00:42', 'tegan_a87', 'yes'],
+        ['00:42', 'tegan_a87', 'yes. i have to. nothing about wren changes that'],
+        ['00:43', 'tegan_a87', 'probably it makes it worse actually. i can\'t be a girl who has a secret with a 19 year old at camp pinecrest forever'],
+        ['system', null, '** session opened :: aug 6 2004 :: 23:18 **'],
+        ['23:18', 'tegan_a87', 'bonfire tonight'],
+        ['23:18', 'tegan_a87', 'i kissed wren in front of everyone'],
+        ['23:19', 'glorfindel_lives', 'WHAT'],
+        ['23:19', 'tegan_a87', 'ok hear me out. there\'s this boy who keeps doing the thing where he sits next to me. so i had this idea'],
+        ['23:20', 'tegan_a87', 'i told wren to play along. then at the bonfire i grabbed her face and kissed her like full on. for like five seconds'],
+        ['23:20', 'tegan_a87', 'everyone laughed. the boy laughed. like haha look at the girls being silly'],
+        ['23:21', 'glorfindel_lives', 'tegan'],
+        ['23:21', 'tegan_a87', 'i KNOW. i got to actually kiss her. in front of everyone. and have it not count'],
+        ['23:22', 'tegan_a87', 'it was the best thing'],
+        ['23:22', 'glorfindel_lives', 'was she into it'],
+        ['23:23', 'tegan_a87', 'i mean she kissed me back'],
+        ['23:23', 'tegan_a87', 'she didn\'t really talk to me after though. i\'ll see her tomorrow'],
+        ['system', null, '** session opened :: aug 8 2004 :: 23:15 **'],
+        ['23:15', 'tegan_a87', 'i have $640 saved'],
+        ['23:15', 'tegan_a87', 'it\'s not a lot but it\'s a lot for me'],
+        ['23:16', 'glorfindel_lives', 'it\'s enough for the first month. [REDACTED] won\'t take rent'],
+        ['system', null, '** session opened :: aug 12 2004 :: 23:54 **'],
+        ['23:54', 'tegan_a87', 'two days to go'],
+        ['23:54', 'tegan_a87', '[REDACTED] confirmed for the 14th. 11 PM at the boathouse'],
+        ['23:55', 'glorfindel_lives', 'i\'ll be at the rendezvous. i\'ll be there the whole time'],
+        ['23:56', 'tegan_a87', 'how long do you wait if i don\'t show up'],
+        ['23:56', 'glorfindel_lives', 'i\'m not leaving until you\'re there'],
+        ['23:57', 'tegan_a87', 'hannah you can\'t sit in [REDACTED] for 14 hours'],
+        ['23:57', 'glorfindel_lives', 'watch me'],
+        ['system', null, '** session opened :: aug 13 2004 :: 22:30 **'],
+        ['22:30', 'tegan_a87', 'i wrote the letter today. encrypted it. hid it'],
+        ['22:31', 'tegan_a87', 'anyone who cares enough to crack it. mostly i think nobody will'],
+        ['22:31', 'glorfindel_lives', 'someone will'],
+        ['system', null, '** session opened :: aug 13 2004 :: 23:48 **'],
+        ['23:48', 'tegan_a87', 'i\'m scared'],
+        ['23:48', 'glorfindel_lives', 'you\'re allowed to be'],
+        ['23:51', 'tegan_a87', 'thank you'],
+        ['23:51', 'glorfindel_lives', 'don\'t thank me yet'],
+        ['23:52', 'tegan_a87', 'thank you anyway'],
+        ['system', null, '** session opened :: aug 14 2004 :: 09:47 **'],
+        ['09:47', 'tegan_a87', 'see you on the other side'],
+        ['system', null, '** session closed **']
       ]
     }
   };
 
   function viewAimIndex() {
     setPath('C:\\Documents and Settings\\tegan\\Desktop\\pinecrest_summer\\AIM_archives\\');
-    setStatus(Object.keys(AIM_LOGS).length + ' file(s)');
-    const rows = Object.keys(AIM_LOGS).map(fn => {
+    const ch = currentChapter();
+    const visible = Object.keys(AIM_LOGS).filter(fn => (AIM_LOGS[fn].chapter || 0) <= ch);
+    setStatus(visible.length + ' file(s)');
+    const rows = visible.map(fn => {
       const log = AIM_LOGS[fn];
       return '<div class="vw-explorer-list-row" onclick="Viewers.pushView(\'aim-log\', \'' + fn + '\')">' +
                '<span>💬</span>' +
@@ -538,15 +600,23 @@
                '<span>' + escapeHtml(log.buddy) + '</span>' +
              '</div>';
     }).join('');
+    const emptyNote = visible.length === 0
+      ? '<div style="padding:40px;text-align:center;color:#888;font-family:\'Courier New\',monospace;">this folder is empty.</div>'
+      : '';
     const html =
       '<div class="vw-explorer-list-row vw-explorer-list-header">' +
         '<span></span><span>Name</span><span>Size</span><span>Type</span><span>Buddy</span>' +
-      '</div>' + rows;
+      '</div>' + rows + emptyNote;
     return { title: 'AIM_archives', chromeClass: 'vw-chrome-explorer', html: html };
   }
 
   function viewAimLog(filename) {
     const log = AIM_LOGS[filename];
+    // refuse to open logs that haven't been recovered yet, even if someone
+    // crafts a Viewers.pushView('aim-log', '<filename>') call directly.
+    if (log && (log.chapter || 0) > currentChapter()) {
+      return { title: 'not found', chromeClass: 'vw-chrome-explorer', html: '<div style="padding:40px;">log not found.</div>' };
+    }
     if (!log) return { title: 'not found', chromeClass: 'vw-chrome-explorer', html: '<div style="padding:40px;">log not found.</div>' };
     setPath('AIM_archives\\' + filename);
     setStatus(log.blurb);

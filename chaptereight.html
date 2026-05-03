@@ -2339,7 +2339,7 @@ const BEATS = [
 
 tyler's dad is a mountie. whitecourt detachment. the same detachment that responded.
 
-this isn't going to come from outside. nobody is going to look at what i have and act on it. i could send a packet to the edmonton journal. they'd put it in a drawer. i could send it to RCMP K Division. it would land on the same desk her dad sits at.
+this isn't going to come from outside. nobody is going to look at what i have and act on it. i could send a packet to the edmonton journal. they'd put it in a drawer. i could send it to RCMP K Division. it would land on the same desk his dad sits at.
 
 the body is in the lake somewhere. it's been there fifteen months.
 
@@ -2557,6 +2557,7 @@ camille_m_88`,
       sex: 'female',
       location: 'edmonton, alberta',
       lastLogin: '2005-10-02',
+      memberSince: '2002-08-22',
       photoSrc: 'images/camille-at-galaxyland.png',
       photoAlt: 'Camille at Galaxyland inside West Edmonton Mall, posing in front of the rides.',
       mood: '',
@@ -2569,8 +2570,8 @@ camille_m_88`,
         { from: 'matt_n_ab', date: '2005-07-03', text: 'hope u have a good summer girl' }
       ]
     },
-    diaryAfter: `// she's a normal kid. nexopia profile she stopped updating.
-// her wall is friends. her music is what every other 17-year-old in alberta is listening to.
+    diaryAfter: `// she's a normal kid. she made this profile when she was 14 and never rewrote the about me.
+// the age field updates itself; the rest of the page hasn't aged with her. her music's been kept current — what every other 17-year-old in alberta is listening to. her wall is friends.
 // i'm going to AIM her.`,
     nextBtn: '\u25b8 message camille'
   },
@@ -3307,6 +3308,7 @@ function renderNexopiaView(beat, isActive) {
         <div class="nx-stat"><span class="nx-stat-label">age:</span> ${escapeHtml(String(p.age || ''))}</div>
         <div class="nx-stat"><span class="nx-stat-label">sex:</span> ${escapeHtml(p.sex || '')}</div>
         <div class="nx-stat"><span class="nx-stat-label">location:</span> ${escapeHtml(p.location || '')}</div>
+        ${p.memberSince ? `<div class="nx-stat"><span class="nx-stat-label">member since:</span> ${escapeHtml(p.memberSince)}</div>` : ''}
         <div class="nx-stat"><span class="nx-stat-label">last login:</span> ${escapeHtml(p.lastLogin || '')}</div>
       </div>
     </div>
@@ -3418,8 +3420,8 @@ function renderCamilleAim(beat, isActive) {
           <span class="titlebar-btn">×</span>
         </div>
       </div>
-      <div class="aim-meta">${escapeHtml(beat.meta || '')}</div>
-      <div class="aim-log">${renderCamilleFullLog()}</div>
+      <div class="aim-buddy-strip"><span class="online-dot">●</span> ${escapeHtml(beat.meta || '')}</div>
+      <div class="aim-log-body">${renderCamilleFullLog()}</div>
       ${beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
       ${isActive ? `<div class="aim-send-bar" style="text-align: center;">
         <button class="aim-send-btn" onclick="advanceBeat()">${beat.nextBtn || 'continue ▸'}</button>
@@ -3433,8 +3435,8 @@ function renderCamilleAim(beat, isActive) {
     // Past beat, not yet completed (shouldn't really happen but safety)
     w.innerHTML = `
       <div class="window-titlebar"><span>${escapeHtml(beat.title)}</span></div>
-      <div class="aim-meta">${escapeHtml(beat.meta || '')}</div>
-      <div class="aim-log">${renderCamilleLog(window._camilleState ? window._camilleState.log : [])}</div>
+      <div class="aim-buddy-strip"><span class="online-dot">●</span> ${escapeHtml(beat.meta || '')}</div>
+      <div class="aim-log-body">${renderCamilleLog(window._camilleState ? window._camilleState.log : [])}</div>
     `;
     storyContainer.appendChild(w);
     return;
@@ -3483,8 +3485,8 @@ function renderCamilleAim(beat, isActive) {
         <span class="titlebar-btn">×</span>
       </div>
     </div>
-    <div class="aim-meta">${escapeHtml(beat.meta || '')}</div>
-    <div class="aim-log" id="camille-log">${logHtml}</div>
+    <div class="aim-buddy-strip"><span class="online-dot">●</span> ${escapeHtml(beat.meta || '')}</div>
+    <div class="aim-log-body" id="camille-log">${logHtml}</div>
     ${st.stage === 'closed' && beat.diaryAfter ? `<div class="email-diary-below">${escapeHtml(beat.diaryAfter).replace(/\n/g, '<br>')}</div>` : ''}
     ${inputHtml}
   `;
@@ -3610,15 +3612,21 @@ function renderTimelineMap(beat, isActive) {
 }
 
 function renderCamilleLog(log) {
+  // Reuses the same .aim-message / .aim-message-from / .aim-message-system /
+  // .aim-message-pause classes as renderAimLog so this interactive AIM picks
+  // up the same legible styling. previous classes (.aim-line, .aim-handle,
+  // .aim-text) had no matching CSS and rendered as bare colored handles
+  // with invisible message bodies.
   return log.map(entry => {
     if (entry.who === 'system') {
-      return `<div class="aim-line aim-system">${escapeHtml(entry.text)}</div>`;
+      return `<div class="aim-message-system">${escapeHtml(entry.text)}</div>`;
     }
     if (entry.who === 'pause') {
-      return `<div class="aim-line aim-system">[${escapeHtml(entry.text)}]</div>`;
+      return `<div class="aim-message-pause">[${escapeHtml(entry.text)}]</div>`;
     }
     const isYou = entry.who === 'you';
-    return `<div class="aim-line"><span class="aim-handle ${isYou ? 'aim-handle-you' : 'aim-handle-them'}">${escapeHtml(entry.who)}:</span> <span class="aim-text">${escapeHtml(entry.text)}</span></div>`;
+    const cls = isYou ? 'aim-message aim-message-player' : 'aim-message';
+    return `<div class="${cls}"><span class="aim-message-from">${escapeHtml(entry.who)}:</span>${escapeHtml(entry.text)}</div>`;
   }).join('');
 }
 
@@ -3690,7 +3698,7 @@ function camilleSubmit(stage) {
       st.log.push({ who: 'camille_m_88', text: 'tyler had this hockey jersey he wore literally everywhere. whitecourt minor hockey, his old team. he\'d talk about it to the campers. the pucks, the scouts, all that' });
       st.log.push({ who: 'camille_m_88', text: 'he wore it to the bonfire. i remember bc i thought it was weird he wore it to a CAMP bonfire on the last weekend' });
       st.log.push({ who: 'camille_m_88', text: 'after that night i never saw him in it again' });
-      st.log.push({ who: 'camille_m_88', text: 'i thought maybe his mom finally made him stop wearing it like a freshman or whatever lol' });
+      st.log.push({ who: 'camille_m_88', text: 'i thought maybe his mom finally made him stop wearing it like a 12-year-old or whatever lol' });
       st.log.push({ who: 'camille_m_88', text: 'i didn\'t think anything of it bc i was so locked onto wren' });
       st.log.push({ who: 'camille_m_88', text: 'but if it was tyler' });
       st.log.push({ who: 'camille_m_88', text: 'he was wearing the jersey when he did it' });
