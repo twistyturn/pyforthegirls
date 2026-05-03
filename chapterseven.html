@@ -1914,6 +1914,19 @@ aug_emails = []
     matchType: 'exact',
     codeMustContain: ['parsedate_to_datetime('],
     fileInjection: true,
+    preloadCode: `import os
+import email as _email_mod
+emails = []
+for _fn in sorted(os.listdir("2004_archive")):
+    with open(os.path.join("2004_archive", _fn)) as _eml:
+        _msg = _email_mod.message_from_file(_eml)
+        emails.append({
+            "from":    _msg["From"],
+            "to":      _msg["To"],
+            "date":    _msg["Date"],
+            "subject": _msg["Subject"],
+            "body":    _msg.get_payload(),
+        })`,
     onComplete: {
       diary: `// friday afternoon: bonfire snacks. saturday morning: emergency dispatch.`
     }
@@ -1943,6 +1956,25 @@ aug_emails = []
     matchType: 'exact',
     codeMustContain: ['any('],
     fileInjection: true,
+    preloadCode: `import os
+import datetime as _datetime
+import email as _email_mod
+from email.utils import parsedate_to_datetime as _parsedate_to_datetime
+emails = []
+for _fn in sorted(os.listdir("2004_archive")):
+    with open(os.path.join("2004_archive", _fn)) as _eml:
+        _msg = _email_mod.message_from_file(_eml)
+        emails.append({
+            "from":    _msg["From"],
+            "to":      _msg["To"],
+            "date":    _msg["Date"],
+            "subject": _msg["Subject"],
+            "body":    _msg.get_payload(),
+        })
+_tz = _datetime.timezone(_datetime.timedelta(hours=-6))
+_start = _datetime.datetime(2004, 8, 13, tzinfo=_tz)
+_end   = _datetime.datetime(2004, 8, 17, tzinfo=_tz)
+aug_emails = [_em for _em in emails if _start <= _parsedate_to_datetime(_em["date"]) < _end]`,
     onComplete: {
       diary: `// one i wasn't expecting. nine AM the morning after.`
     }
@@ -2774,6 +2806,14 @@ try { await injectChapter7Files(); } catch (e) {
 outEl.innerHTML = `<span class="err">// could not set up the task files: ${escapeHtml(String(e.message || e))}</span>\n<span class="info">// try refreshing the page. if it keeps happening, the python sandbox failed to load.</span>`;
 return;
 }
+}
+
+// Tasks 3+ depend on variables defined by earlier tasks (emails, aug_emails),
+// but each runTask runs in a fresh Python context. preloadCode lets a beat
+// invisibly recreate those variables before the player's code runs, so the
+// visible starter stays focused on the new lesson.
+if (beat.preloadCode) {
+runCode = beat.preloadCode + '\n' + runCode;
 }
 
 const result = await runPython(runCode);
