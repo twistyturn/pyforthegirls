@@ -2405,10 +2405,21 @@ attached: find_person.py
 
 \u2014 h.`,
     attachment: { name: 'find_person.py', size: '2 KB' },
-    diaryAfter: `// hannah is a programmer. i forgot. she's been programming as long as she's been online.
-// i'm going to read what she sent me.`,
+
+    nextBtn: '\u25b8 jot a note'
+  },
+  // ---- notes_hannah ----
+  {
+    id: 'notes_hannah',
+    type: 'diary',
+    title: 'open file: notes/hannah.txt',
+    meta: 'you opened a fresh file.',
+    body: `hannah is a programmer. i forgot. she's been programming as long as she's been online.
+
+i'm going to read what she sent me.`,
     nextBtn: '\u25b8 open the script'
   },
+
 
   // ---- BEAT 3: read_script — code-as-document, functions introduced by reading ----
   {
@@ -2477,12 +2488,23 @@ def find_person(name, region):
 # result = find_person("First Last", "alberta")
 # print(result["nexopia"])
 `,
-    diaryAfter: `// she defined functions.
-// i've been writing scripts top to bottom this whole time. she defined four functions and put them in a file and now she can call any one of them whenever she wants.
-// it's the same code i would have written, just \u2014 organized.
-// ok. i'm going to do this myself.`,
+
+    nextBtn: '\u25b8 jot a note'
+  },
+  // ---- notes_functions ----
+  {
+    id: 'notes_functions',
+    type: 'diary',
+    title: 'open file: notes/functions.txt',
+    meta: 'you typed this fast.',
+    body: `she defined functions.
+
+i've been writing scripts top to bottom this whole time. she defined four functions and put them in a file and now she can call any one of them whenever she wants. it's the same code i would have written, just \u2014 organized.
+
+ok. i'm going to do this myself.`,
     nextBtn: '\u25b8 python.exe'
   },
+
 
   // ---- BEAT 4: task_define_function — first function, def + parameters ----
   {
@@ -2580,11 +2602,21 @@ camille_m_88`,
         { from: 'matt_n_ab', date: '2005-07-03', text: 'hope u have a good summer girl' }
       ]
     },
-    diaryAfter: `// she's a normal kid. she made this profile when she was 14 and never rewrote the about me.
-// the age field updates itself; the rest of the page hasn't aged with her. her music's been kept current — what every other 17-year-old in alberta is listening to. her wall is friends.
-// i'm going to AIM her.`,
+
+    nextBtn: '\u25b8 jot a note'
+  },
+  // ---- notes_camille_now ----
+  {
+    id: 'notes_camille_now',
+    type: 'diary',
+    title: 'open file: notes/camille_now.txt',
+    meta: 'you typed this before opening AIM.',
+    body: `she's a normal kid. she made this profile when she was 14 and never rewrote the about me. the age field updates itself; the rest of the page hasn't aged with her. her music's been kept current \u2014 what every other 17-year-old in alberta is listening to. her wall is friends.
+
+i'm going to AIM her.`,
     nextBtn: '\u25b8 message camille'
   },
+
 
   // ---- BEAT 7: camille_one_message — interactive AIM with player input ----
   // The chapter's emotional center. Camille opens confident Wren did it.
@@ -2599,12 +2631,23 @@ camille_m_88`,
     // States: opening -> ask_how_found -> camille_recognizes -> conviction_speech ->
     //         redirect_check -> tyler_processing -> jersey_memory ->
     //         betrayal_correction -> camille_close
-    diaryAfter: `// i told her.
-// she'd been certain it was wren for fifteen months. she'd told the police, she'd been brushed off, she'd carried it.
-// she was so right about wren and so wrong about what wren did.
-// tyler wore his lucky jersey to the bonfire and never wore it again.`,
+
+    nextBtn: '\u25b8 jot a note'
+  },
+  // ---- notes_told_her ----
+  {
+    id: 'notes_told_her',
+    type: 'diary',
+    title: 'open file: notes/told_her.txt',
+    meta: 'you typed this slowly.',
+    body: `i told her.
+
+she'd been certain it was wren for fifteen months. she'd told the police, she'd been brushed off, she'd carried it. she was so right about wren and so wrong about what wren did.
+
+tyler wore his lucky jersey to the bonfire and never wore it again.`,
     nextBtn: '\u25b8 python.exe'
   },
+
 
   // ---- BEAT 8: task_find_melissa — function reuse on different input ----
   {
@@ -2734,12 +2777,25 @@ i'm just gonna leave that here.`,
         locked: false
       }
     ],
-    diaryAfter: `// melissa is alive. melissa is fine. she clocked exactly what happened to her.
-// wren did this to her. wren did it again to tegan. tegan knew the pattern and walked into it because she was already planning to leave.
-// i'm not going to message her. she did the work to get out from under it. she doesn't need me dragging her back.
-// one more name to check before wren.`,
+
+    nextBtn: '\u25b8 jot a note'
+  },
+  // ---- notes_melissa_alive ----
+  {
+    id: 'notes_melissa_alive',
+    type: 'diary',
+    title: 'open file: notes/melissa_alive.txt',
+    meta: 'you typed this carefully.',
+    body: `melissa is alive. melissa is fine. she clocked exactly what happened to her.
+
+wren did this to her. wren did it again to tegan. tegan knew the pattern and walked into it because she was already planning to leave.
+
+i'm not going to message her. she did the work to get out from under it. she doesn't need me dragging her back.
+
+one more name to check before wren.`,
     nextBtn: '\u25b8 check briar'
   },
+
 
   // ---- BEAT 9.5: cousin_notes_briar \u2014 close briar's arc, parallel to the melissa beat ----
   {
@@ -2780,13 +2836,27 @@ i'm not going to message her.`,
       { who: 'wren_h', text: "i hope you find what you need. i'm done after this" },
       { who: 'system', text: 'wren_h has signed off.' }
     ],
-    diaryAfter: `// tyler at the bonfire. tegan called him "the boy with the staring problem."
-// tegan was alive when wren left. the dock acoustics confirm camille's timing on tyler.
-// wren was a piece of shit. wren also isn't the killer. both can be true at once.
-// she gave me the bonfire and the gravel and the timing. i'll use it. we both want this guy caught and i'll work with anyone who can get me there. that isn't the same as liking her or being grateful to her. she manipulated a seventeen-year-old for an entire summer. it's hers to live with.
-// she signed off. i'm letting her be done.`,
+
+    nextBtn: '\u25b8 jot a note'
+  },
+  // ---- notes_wren_signoff ----
+  {
+    id: 'notes_wren_signoff',
+    type: 'diary',
+    title: 'open file: notes/wren_signoff.txt',
+    meta: 'you typed this after she logged off.',
+    body: `tyler at the bonfire. tegan called him "the boy with the staring problem."
+
+tegan was alive when wren left. the dock acoustics confirm camille's timing on tyler.
+
+wren was a piece of shit. wren also isn't the killer. both can be true at once.
+
+she gave me the bonfire and the gravel and the timing. i'll use it. we both want this guy caught and i'll work with anyone who can get me there. that isn't the same as liking her or being grateful to her. she manipulated a seventeen-year-old for an entire summer. it's hers to live with.
+
+she signed off. i'm letting her be done.`,
     nextBtn: '\u25b8 open notes'
   },
+
 
   // ---- BEAT 10.5: ch8_timeline_open \u2014 cousin starts the gravel-acoustics deduction ----
   {
@@ -3002,9 +3072,9 @@ he came out of the bushes at 11:44.`,
       { who: 'glorfindel_lives', text: "can i call you" },
       { who: 'you', text: "yes" },
       { who: 'you', text: "my number is [redacted]" },
-      { who: 'glorfindel_lives', text: "calling now" }
+      { who: 'glorfindel_lives', text: "calling now" },
+      { who: 'system', text: 'the phone is ringing.' }
     ],
-    diaryAfter: `// the phone is ringing.`,
     nextBtn: '\u25b8 wrap'
   },
 
@@ -3933,6 +4003,13 @@ function renderHBoard(beat, isActive) {
 }
 
 function renderDiary(beat, isActive) {
+  // notify on first render of notes/*.txt diary beats
+  if (isActive && beat && beat.title && beat.title.indexOf('open file: notes/') === 0
+      && !state.completedBeats.includes(beat.id)
+      && typeof Viewers !== 'undefined' && Viewers.notify) {
+    const fname = beat.title.replace('open file: ', '');
+    Viewers.notify('file saved', fname);
+  }
   const w = document.createElement('div');
   w.className = 'window story-window';
   w.innerHTML = `
@@ -4420,6 +4497,16 @@ document.addEventListener('click', (e) => {
   }
 });
 
+
+// Expose this chapter's reachable notes/*.txt entries to viewers.js,
+// which renders them in the desktop notes/ folder.
+window.PYFTG_GET_NOTES = function() {
+  if (typeof BEATS === 'undefined' || typeof state === 'undefined') return [];
+  return BEATS
+    .filter(b => b.type === 'diary' && b.title && b.title.indexOf('open file: notes/') === 0)
+    .filter(b => state.completedBeats.includes(b.id))
+    .map(b => ({ id: b.id, title: b.title, body: b.body, meta: b.meta }));
+};
 </script>
 
 <script src="caseboard.js"></script>

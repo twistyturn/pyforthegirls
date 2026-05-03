@@ -1586,7 +1586,7 @@ const SAVE_KEY = 'pyforthegirls_save_ch7_v1';
 // IN-GAME FILE CONTENTS — written into Pyodide's virtual FS at task time
 // ===========================================================================
 
-// the 150-email corpus has been lifted into email_corpus.js (shared with viewers.js
+// the 153-email corpus has been lifted into email_corpus.js (shared with viewers.js
 // for the desktop outlook viewer). it lands on window.EMAIL_CORPUS at script load.
 
 // Write Ch7's filesystem layout into Pyodide's virtual FS.
@@ -1642,7 +1642,7 @@ def _patched_urlopen(url, *args, **kwargs):
 urllib.request.urlopen = _patched_urlopen
 `); } catch (e) { /* setup may fail; player code will surface the real error */ }
 
-  // Write the 150 emails as .eml files under 2004_archive/
+  // Write the 153 emails as .eml files under 2004_archive/
   const emails = window.EMAIL_CORPUS;
   try { py.FS.mkdir('2004_archive'); } catch (e) { /* exists */ }
   emails.forEach((em, idx) => {
@@ -1811,7 +1811,7 @@ url = "https://camppinecrest.ca/staff/"
     meta: 'the zip is a folder of .eml files. parse them.',
     skill: 'EMAIL PARSING :: THE email MODULE AND DICT-OF-DICTS',
     hint: `<code>folder = "2004_archive"</code>. <code>for fname in sorted(os.listdir(folder)):</code> indented <code>with open(os.path.join(folder, fname)) as eml: msg = email.message_from_file(eml)</code>. then build a dict with msg["From"], msg["To"], msg["Date"], msg["Subject"], msg.get_payload(). append to emails. print len and emails[0]["subject"].`,
-    storyAbove: `the zip extracts to a folder called <code>2004_archive/</code> with 150 files in <code>.eml</code> format. <code>.eml</code> is just plain text — a header section (From, To, Date, Subject) on top, then the body. python has a built-in <code>email</code> module that parses these files for you, plus an <code>os</code> module for working with folders.<br><br>the API has a few pieces. for one email file:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">import email
+    storyAbove: `the zip extracts to a folder called <code>2004_archive/</code> with 153 files in <code>.eml</code> format. <code>.eml</code> is just plain text — a header section (From, To, Date, Subject) on top, then the body. python has a built-in <code>email</code> module that parses these files for you, plus an <code>os</code> module for working with folders.<br><br>the API has a few pieces. for one email file:<br><pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">import email
 
 with open("2004_archive/sample.eml") as eml:
     msg = email.message_from_file(eml)
@@ -1827,7 +1827,7 @@ for filename in sorted(os.listdir("2004_archive")):
     print(full_path)</pre><code>os.listdir(folder)</code> gives you a list of filenames. <code>os.path.join("a", "b")</code> joins them into a path like <code>"a/b"</code> — handles the slash for you so it works on any system.`,
     instructions: `<p><strong>your task:</strong> for each <code>.eml</code> file in <code>2004_archive/</code>, parse it and pull out From, To, Date, Subject, and the body. store each as a dict in a list called <code>emails</code>. then print the count and the subject of the first email.</p>
                    <p>expected output:</p>
-                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">150 emails loaded.
+                   <pre style="background:#1a0628;color:#c8ff66;padding:10px;font-size:15px;line-height:1.3;margin:8px 0;overflow-x:auto;max-width:100%;">153 emails loaded.
 Re: lifeguard rotation update</pre>`,
     starter: `import os
 import email
@@ -1846,13 +1846,13 @@ emails = []
 
 # print the total count and emails[0]["subject"]
 `,
-    expectedOutput: `150 emails loaded.
+    expectedOutput: `153 emails loaded.
 Re: lifeguard rotation update`,
     matchType: 'exact',
     codeMustContain: ['email.message_from_file('],
     fileInjection: true,
     onComplete: {
-      diary: `// 150 emails. seven and a half months of camp staff communications. schedules, parent inquiries, food orders.
+      diary: `// 153 emails. seven and a half months of camp staff communications. schedules, parent inquiries, food orders.
 // somewhere in here is whatever they wrote that week.`
     }
   },
@@ -2002,7 +2002,16 @@ to flag anything from staff this weekend.
 
 \u2014 P. Henley, RN`
     },
-    diaryAfter: `tyler hughes.
+    nextBtn: '\u25b8 jot a note'
+  },
+
+  // ---- BEAT 5.5: notes/tyler_hughes.txt \u2014 cousin opens a notes file ----
+  {
+    id: 'notes_tyler_hughes',
+    type: 'diary',
+    title: 'open file: notes/tyler_hughes.txt',
+    meta: 'you closed the email and opened a notes file.',
+    body: `tyler hughes.
 
 i had to think for a minute about who that was. he was a JC. pinewood cabin. boys' side.
 
@@ -2129,7 +2138,16 @@ gap = infirmary - boathouse
         snippet: '... Sgt. David Hughes has been with K Division for fourteen years and serves the Whitecourt detachment. He and his wife Linda have one son, Tyler ...'
       }
     ],
-    diaryAfter: `his dad is a mountie. whitecourt detachment.
+    nextBtn: '\u25b8 jot a note'
+  },
+
+  // ---- BEAT 8.5: notes/tyler_father.txt \u2014 cousin connects the rcmp dot ----
+  {
+    id: 'notes_tyler_father',
+    type: 'diary',
+    title: 'open file: notes/tyler_father.txt',
+    meta: 'you opened a fresh file.',
+    body: `his dad is a mountie. whitecourt detachment.
 
 i sat with that for a while.
 
@@ -2249,7 +2267,16 @@ i'm going to read every page he ever made.`,
         body: 'tryouts this saturday. who\'s in.'
       }
     ],
-    diaryAfter: `before camp: hockey, his cousin's wedding, school.
+    nextBtn: '\u25b8 jot a note'
+  },
+
+  // ---- BEAT 9.5: notes/tyler_summary.txt \u2014 cousin's summary of the dossier ----
+  {
+    id: 'notes_tyler_summary',
+    type: 'diary',
+    title: 'open file: notes/tyler_summary.txt',
+    meta: 'you saved a summary to a fresh file.',
+    body: `before camp: hockey, his cousin's wedding, school.
 
 during camp: nothing. he didn't have a device.
 
@@ -2598,6 +2625,13 @@ function renderHBoard(beat, isActive) {
 }
 
 function renderDiary(beat, isActive) {
+  // notify on first render of notes/*.txt diary beats
+  if (isActive && beat && beat.title && beat.title.indexOf('open file: notes/') === 0
+      && !state.completedBeats.includes(beat.id)
+      && typeof Viewers !== 'undefined' && Viewers.notify) {
+    const fname = beat.title.replace('open file: ', '');
+    Viewers.notify('file saved', fname);
+  }
   const w = document.createElement('div');
   w.className = 'window story-window';
   w.innerHTML = `
@@ -3092,6 +3126,16 @@ document.addEventListener('click', (e) => {
   }
 });
 
+
+// Expose this chapter's reachable notes/*.txt entries to viewers.js,
+// which renders them in the desktop notes/ folder.
+window.PYFTG_GET_NOTES = function() {
+  if (typeof BEATS === 'undefined' || typeof state === 'undefined') return [];
+  return BEATS
+    .filter(b => b.type === 'diary' && b.title && b.title.indexOf('open file: notes/') === 0)
+    .filter(b => state.completedBeats.includes(b.id))
+    .map(b => ({ id: b.id, title: b.title, body: b.body, meta: b.meta }));
+};
 </script>
 
 <script src="caseboard.js"></script>

@@ -49,6 +49,29 @@
   // its own .vw-chrome-* class to opt into a period-correct skin.
   // ===========================================================================
   const CSS = `
+.vw-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 600;
+  min-width: 240px;
+  max-width: 320px;
+  background: #ece9d8;
+  border: 1px solid #1a4ab0;
+  border-top: 16px solid #316ac5;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.28);
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  color: #1a1a1a;
+  padding: 10px 12px 12px;
+  transform: translateX(360px);
+  transition: transform 0.3s ease-out;
+  pointer-events: none;
+}
+.vw-toast.vw-toast-shown { transform: translateX(0); }
+.vw-toast-title { font-weight: bold; color: #1a4ab0; margin-bottom: 4px; }
+.vw-toast-body { color: #555; line-height: 1.3; }
+
 .vw-overlay {
   position: fixed; inset: 0; z-index: 520;
   background: rgba(20, 8, 36, 0.78);
@@ -513,6 +536,8 @@
       case 'diary-entry':      return viewDiaryEntry(arg);
       case 'email':            return viewEmailIndex();
       case 'email-msg':        return viewEmailMessage(arg);
+      case 'notes':            return viewNotesIndex();
+      case 'notes-entry':      return viewNotesEntry(arg);
       default:
         return { title: 'unknown', chromeClass: 'vw-chrome-explorer',
                  html: '<div style="padding:40px; text-align:center; font-size:11px; color:#888;">unknown view: ' + escapeHtml(type) + '</div>' };
@@ -1603,6 +1628,58 @@ her name is wren halloway`
     return { title: e.subject || '(no subject)', chromeClass: 'vw-chrome-outlook', html: html };
   }
 
+  // ---- notes/ — the cousin's investigative notebook ----
+  // Each chapter exposes window.PYFTG_GET_NOTES(): an array of
+  // { id, title, body, meta } for every notes/*.txt diary beat the player
+  // has already advanced past in the current chapter. Earlier-chapter notes
+  // aren't carried across (the player can revisit those chapters directly).
+  function fetchNotes() {
+    if (typeof window === 'undefined' || typeof window.PYFTG_GET_NOTES !== 'function') return [];
+    try { return window.PYFTG_GET_NOTES() || []; } catch (e) { return []; }
+  }
+  function notesShortTitle(t) {
+    // 'open file: notes/tyler_hughes.txt' → 'tyler_hughes.txt'
+    const m = (t || '').match(/notes\/(.+)$/);
+    return m ? m[1] : (t || '');
+  }
+  function viewNotesIndex() {
+    setPath('C:\\Documents and Settings\\tegan\\Desktop\\pinecrest_summer\\notes\\');
+    const notes = fetchNotes();
+    setStatus(notes.length + ' file(s)');
+    if (notes.length === 0) {
+      return { title: 'notes', chromeClass: 'vw-chrome-explorer',
+        html: '<div style="padding:40px;text-align:center;color:#888;font-family:\'Courier New\',monospace;">no notes yet. they appear here as you write them.</div>' };
+    }
+    const rows = notes.map(n => {
+      const fname = notesShortTitle(n.title);
+      const preview = (n.body || '').replace(/\s+/g, ' ').slice(0, 80);
+      return '<div class="vw-explorer-list-row" onclick="Viewers.pushView(\'notes-entry\', \'' + escapeHtml(n.id) + '\')">' +
+               '<span>📓</span>' +
+               '<span style="font-family:\'Courier New\',monospace;">' + escapeHtml(fname) + '</span>' +
+               '<span style="color:#888;">' + escapeHtml(preview) + (n.body && n.body.length > 80 ? '…' : '') + '</span>' +
+             '</div>';
+    }).join('');
+    const html =
+      '<div class="vw-explorer-list-row vw-explorer-list-header">' +
+        '<span></span><span>Name</span><span>Preview</span>' +
+      '</div>' + rows;
+    return { title: 'notes', chromeClass: 'vw-chrome-explorer', html: html };
+  }
+  function viewNotesEntry(id) {
+    const notes = fetchNotes();
+    const n = notes.find(x => x.id === id);
+    if (!n) return { title: 'not found', chromeClass: 'vw-chrome-explorer', html: '<div style="padding:40px;">note not found.</div>' };
+    setPath('notes\\' + notesShortTitle(n.title));
+    setStatus(n.meta || '');
+    const body = escapeHtml(n.body || '').replace(/\n/g, '<br>');
+    const html =
+      '<div class="vw-diary-entry">' +
+        (n.meta ? '<div class="vw-diary-meta">' + escapeHtml(n.meta) + '</div>' : '') +
+        '<div class="vw-diary-body">' + body + '</div>' +
+      '</div>';
+    return { title: notesShortTitle(n.title), chromeClass: 'vw-chrome-diary', html: html };
+  }
+
   // ---- pinecrest_summer/ (the unzipped archive) ----
   function viewPinecrest() {
     setPath('C:\\Documents and Settings\\tegan\\Desktop\\pinecrest_summer\\');
@@ -1610,13 +1687,18 @@ her name is wren halloway`
     // Outlook only appears once the player has diegetically pulled the camp
     // staff email archive from camppinecrest.ca/staff in ch7.
     const showOutlook = ch >= 7 && Array.isArray(window.EMAIL_CORPUS);
-    const itemCount = 5 + (showOutlook ? 1 : 0);
+    // notes/ only appears once the chapter has at least one completed
+    // notes/*.txt diary beat. queries the chapter's exposed getter.
+    const notesCount = fetchNotes().length;
+    const showNotes = notesCount > 0;
+    const itemCount = 5 + (showOutlook ? 1 : 0) + (showNotes ? 1 : 0);
     setStatus(itemCount + ' object(s)');
     const html =
       '<div class="vw-explorer-grid">' +
         explorerItem('💬', 'AIM_archives', "Viewers.pushView('aim')") +
         explorerItem('📱', 'SMS_dumps', "Viewers.pushView('sms')") +
         explorerItem('📔', 'diary', "Viewers.pushView('diary')") +
+        (showNotes ? explorerItem('📓', 'notes', "Viewers.pushView('notes')") : '') +
         (showOutlook ? explorerItem('📧', 'inbox (Outlook)', "Viewers.pushView('email')") : '') +
         explorerItem('📂', 'staff_2003.txt', "alert('roster of pinecrest counsellors, summer 2003. extracted in chapter 4.')") +
         explorerItem('📂', 'staff_2004.txt', "alert('roster of pinecrest counsellors, summer 2004. extracted in chapter 4.')") +
@@ -1624,6 +1706,7 @@ her name is wren halloway`
       '<div style="margin-top:16px; padding:8px; background:#fffbe6; border:1px solid #d4d0c8; font-family:Tahoma,sans-serif; font-size:11px; color:#666;">' +
         '<em>extracted from pinecrest_summer.zip on chapter 2. password: birchwoodcounsellor1985.' +
         (showOutlook ? ' inbox archive added in chapter 7 from the camp\'s public web directory.' : '') +
+        (showNotes ? ' notes/ is your own — anything you wrote in this chapter.' : '') +
         '</em>' +
       '</div>';
     return { title: 'pinecrest_summer', chromeClass: 'vw-chrome-explorer', html: html };
@@ -1706,7 +1789,31 @@ her name is wren halloway`
     if (typeof r.afterMount === 'function') r.afterMount(win);
   }
 
-  window.Viewers = { open, close, back, pushView };
+  // ---- desktop toast notification ----
+  // Brief Windows-style toast in the bottom-right of the viewport. Used to
+  // signal "a file was just saved to your desktop" — mainly when a notes/*.txt
+  // diary beat advances. Stays for ~4s, can stack.
+  function notify(title, body) {
+    if (typeof document === 'undefined' || !document.body) return;
+    const t = document.createElement('div');
+    t.className = 'vw-toast';
+    t.innerHTML =
+      '<div class="vw-toast-title">' + escapeHtml(title || '') + '</div>' +
+      (body ? '<div class="vw-toast-body">' + escapeHtml(body) + '</div>' : '');
+    // stack toasts
+    const existing = Array.from(document.querySelectorAll('.vw-toast')).length;
+    t.style.bottom = (16 + existing * 64) + 'px';
+    document.body.appendChild(t);
+    // animate in
+    requestAnimationFrame(() => { t.classList.add('vw-toast-shown'); });
+    // remove after 4s
+    setTimeout(() => {
+      t.classList.remove('vw-toast-shown');
+      setTimeout(() => { try { t.remove(); } catch (e) {} }, 400);
+    }, 4000);
+  }
+
+  window.Viewers = { open, close, back, pushView, notify };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {});
