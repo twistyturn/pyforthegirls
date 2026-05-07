@@ -1519,7 +1519,7 @@ Camp Pinecrest 2004
   FILES['song_list_2004.txt'] = {
     type: 'txt',
     content: `PINECREST 2004 — APPROVED & PROHIBITED SONGS
-Maintained by: Briar W. (last updated July 8 2004)
+Maintained by: Briar V. (last updated July 8 2004)
 
 CHAPEL / MORNING (no bops, please)
 - "Lean on Me" — Bill Withers ✓
@@ -1571,7 +1571,7 @@ PARENT'S DAY PLAYLIST: ASK MARCIA. she's particular.
     type: 'txt',
     content: `PINECREST OLYMPICS 2004 — PLANNING DOC
 Lead organizer: Wren Halloway
-Co-organizer: Briar Whelan
+Co-organizer: Briar Vance
 Date: Saturday Aug 7 (week 5)
 
 TEAMS (assigned by cabin pairings):
