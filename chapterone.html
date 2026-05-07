@@ -983,15 +983,27 @@ async function loadPyodideOnce() {
   return pyodideLoadingPromise;
 }
 
-async function runPython(code) {
+async function runPython(code, opts) {
   document.body.classList.add('is-loading');
   try {
     const py = await loadPyodideOnce();
     let stdout = '';
     py.setStdout({ batched: (s) => { stdout += s + '\n'; } });
     py.setStderr({ batched: (s) => { stdout += s + '\n'; } });
+    // Each task gets its own globals dict when isolate=true, so a stray
+    // shadowing of a builtin in one run (e.g. `int = 5` typed by mistake in
+    // an earlier task) can't break the next one. Without this, pyodide
+    // reuses the same globals across every RUN click and a polluted name
+    // surfaces as a confusing "'int' object is not callable" on perfectly
+    // correct code in a later beat.
+    const ns = (opts && opts.isolate) ? py.runPython('dict()') : null;
     try {
-      await py.runPythonAsync(code);
+      if (ns) {
+        try { await py.runPythonAsync(code, { globals: ns }); }
+        finally { ns.destroy(); }
+      } else {
+        await py.runPythonAsync(code);
+      }
       return { ok: true, output: stdout };
     } catch (err) {
       return { ok: false, output: stdout, error: String(err.message || err) };
@@ -1886,7 +1898,7 @@ builtins.input = __patched_input
 ` + code;
 }
 
-const result = await runPython(runCode);
+const result = await runPython(runCode, { isolate: true });
 const actualOutput = (result.output || '').trimEnd();
 
 if (!result.ok) {
